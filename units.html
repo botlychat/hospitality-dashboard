@@ -592,6 +592,9 @@
 				document.getElementById('shortDescription').value = '';
 				document.getElementById('longDescription').value = '';
 				
+				// Populate weekday pricing grid
+				populateWeekdayPricing();
+				
 				// Switch to first tab
 				document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
 				document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
@@ -603,6 +606,34 @@
 				
 				backdrop.classList.add('show');
 			}
+		}
+		
+		// Populate weekday pricing inputs
+		function populateWeekdayPricing(prices = {}) {
+			const grid = document.getElementById('weekdayPricingGrid');
+			if (!grid) return;
+			
+			const weekdays = [
+				{ key: 'sunday', label: 'Sunday' },
+				{ key: 'monday', label: 'Monday' },
+				{ key: 'tuesday', label: 'Tuesday' },
+				{ key: 'wednesday', label: 'Wednesday' },
+				{ key: 'thursday', label: 'Thursday' },
+				{ key: 'friday', label: 'Friday' },
+				{ key: 'saturday', label: 'Saturday' }
+			];
+			
+			grid.innerHTML = '';
+			
+			weekdays.forEach(day => {
+				const card = document.createElement('div');
+				card.className = 'weekday-card';
+				card.innerHTML = `
+					<label style="font-weight:600;font-size:12px;color:#64748b;text-transform:uppercase">${day.label}</label>
+					<input type="number" id="price_${day.key}" min="0" placeholder="Price (USD)" value="${prices[day.key] || ''}" style="padding:8px;border:1px solid #e5e7eb;border-radius:8px;font-size:13px">
+				`;
+				grid.appendChild(card);
+			});
 		}
 		
 		function closeUnitSheet() {
@@ -650,6 +681,17 @@
 				groupId = unitsGroups[0].id;
 			}
 			
+			// Collect weekday prices
+			const weekdayPrices = {
+				sunday: parseFloat(document.getElementById('price_sunday')?.value) || null,
+				monday: parseFloat(document.getElementById('price_monday')?.value) || null,
+				tuesday: parseFloat(document.getElementById('price_tuesday')?.value) || null,
+				wednesday: parseFloat(document.getElementById('price_wednesday')?.value) || null,
+				thursday: parseFloat(document.getElementById('price_thursday')?.value) || null,
+				friday: parseFloat(document.getElementById('price_friday')?.value) || null,
+				saturday: parseFloat(document.getElementById('price_saturday')?.value) || null
+			};
+			
 			if (currentEditUnitId) {
 				// Edit existing unit
 				const unit = units.find(u => u.id === currentEditUnitId);
@@ -665,6 +707,7 @@
 					unit.checkOutHour = parseInt(document.getElementById('checkOutHour').value) || 11;
 					unit.shortDescription = document.getElementById('shortDescription').value;
 					unit.longDescription = document.getElementById('longDescription').value;
+					unit.weekdayPrices = weekdayPrices;
 				}
 				currentEditUnitId = null;
 				showConfirmation('Unit updated successfully!');
@@ -677,7 +720,8 @@
 					status: status,
 					maxGuests: maxGuests,
 					nightlyRate: nightlyRate,
-					groupId: groupId
+					groupId: groupId,
+					weekdayPrices: weekdayPrices
 				};
 				
 				units.push(newUnit);
@@ -719,6 +763,9 @@
 				document.getElementById('checkOutHour').value = unit.checkOutHour || '11';
 				document.getElementById('shortDescription').value = unit.shortDescription || '';
 				document.getElementById('longDescription').value = unit.longDescription || '';
+				
+				// Populate weekday pricing grid with unit data
+				populateWeekdayPricing(unit.weekdayPrices || {});
 				
 				// Switch to first tab
 				document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));

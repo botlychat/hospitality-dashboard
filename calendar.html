@@ -153,7 +153,7 @@
       /* Mobile Layout Reordering */
       .toolbar{flex-direction:column;gap:8px;align-items:stretch}
       .toolbar-left{flex-direction:column;width:100%;gap:8px}
-      .toolbar-right{flex-direction:row;width:100%;gap:8px}
+      .toolbar-right{flex-direction:column;width:100%;gap:8px;order:3}
       
       .group-selector-wrapper{flex-direction:column;gap:8px}
       
@@ -170,8 +170,19 @@
       }
       
       .filter{
-        width:calc(50% - 4px);
+        width:100%;
         order:2;
+      }
+      
+      /* Hide desktop filter on mobile, show mobile filter */
+      .group-selector-wrapper .filter{
+        display:none !important;
+      }
+      
+      .filter-mobile{
+        display:flex !important;
+        order:2; /* Second in toolbar-right, above sync */
+        width:100%;
       }
       
       #addBookingBtn{
@@ -179,24 +190,27 @@
         align-items:center;
         justify-content:center;
         gap:8px;
-        width:calc(50% - 4px);
-        flex:1;
-        order:2;
+        width:100%;
+        order:1; /* First in toolbar-right */
         padding:10px 12px;
         font-size:13px;
+        min-height:44px;
       }
       
       #addBookingBtnDesktop{
         display:none !important; /* Hide desktop button on mobile */
       }
       
-      .toolbar-right{
-        order:3;
-        justify-content:space-between;
+      #getCalendarUrlBtn{
+        order:3; /* Third in toolbar-right */
+      }
+      
+      #syncCalendarBtn{
+        order:4; /* Fourth in toolbar-right */
       }
       
       .toolbar-right .btn{
-        flex:1;
+        width:100%;
         padding:10px 12px;
         font-size:12px;
         display:flex;
@@ -350,6 +364,10 @@
           <!-- Right side buttons for desktop -->
           <div class="toolbar-right">
             <button class="btn primary" id="addBookingBtnDesktop" data-i18n="newManualBooking"><i class="fa-solid fa-plus"></i> New Manual Booking</button>
+            
+            <!-- Unit filter for mobile (hidden on desktop) -->
+            <div class="filter filter-mobile" style="display:none"><i class="fa-solid fa-filter"></i><select id="unitFilterMobile"><option value="all" data-i18n="allUnits">All Units</option></select></div>
+            
             <button class="btn ghost" id="syncCalendarBtn" title="Sync external calendars to units"><i class="fa-solid fa-link"></i> Sync Calendar</button>
             <button class="btn ghost" id="getCalendarUrlBtn" title="Get shareable calendar URL for each unit"><i class="fa-solid fa-share"></i> Get Calendar URL</button>
           </div>
@@ -2238,6 +2256,14 @@
     document.getElementById('prevMonth').addEventListener('click',()=>{currentMonth.setMonth(currentMonth.getMonth()-1);renderCalendar();});
     document.getElementById('nextMonth').addEventListener('click',()=>{currentMonth.setMonth(currentMonth.getMonth()+1);renderCalendar();});
     document.getElementById('unitFilter').addEventListener('change',e=>{filters.unit=e.target.value;renderCalendar();});
+    
+    // Sync mobile filter with desktop filter
+    document.getElementById('unitFilterMobile')?.addEventListener('change',e=>{
+      filters.unit=e.target.value;
+      document.getElementById('unitFilter').value=e.target.value;
+      renderCalendar();
+    });
+    
     const viewSelectElement = document.getElementById('viewSelect');
     if(viewSelectElement) {
       viewSelectElement.addEventListener('change',e=>{filters.view=e.target.value;renderCalendar();});
@@ -2287,6 +2313,8 @@
 
     function populateUnitControls(){
       const unitFilterSelect=document.getElementById('unitFilter');
+      const unitFilterMobile=document.getElementById('unitFilterMobile');
+      
       unitPalette.forEach(unit=>{
         const option=document.createElement('option');
         option.value=unit.name;
@@ -2294,7 +2322,15 @@
         const range = formatRateRange(baseRates[unit.name]);
         if(range) option.title=`Base range ${range}`;
         unitFilterSelect.appendChild(option);
+        
+        // Add to mobile filter too
+        const optionMobile=document.createElement('option');
+        optionMobile.value=unit.name;
+        optionMobile.textContent=unit.name;
+        if(range) optionMobile.title=`Base range ${range}`;
+        unitFilterMobile.appendChild(optionMobile);
       });
+      
       const legend=document.getElementById('unitLegend');
       legend.innerHTML='';
       unitPalette.forEach(unit=>{
