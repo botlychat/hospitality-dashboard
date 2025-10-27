@@ -1080,7 +1080,7 @@
 <div style="display:grid;gap:16px;margin-top:8px">
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
     <div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px">Client Name *</label><input id="abName" placeholder="Full name" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit"></div>
-    <div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px">Phone Number *</label><input id="abPhone" placeholder="+966..." style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit"></div>
+    <div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px">Phone Number *</label><div style="display:grid;grid-template-columns:95px 1fr;gap:8px"><select id="abCountryCode" style="padding:10px 8px;border:1px solid #e5e7eb;border-radius:10px;font-size:14px;font-family:inherit;appearance:none;background-image:url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2712%27 height=%2712%27 viewBox=%270 0 12 12%27%3E%3Cpath fill=%27%231f2937%27 d=%27M6 9L1 4h10z%27/%3E%3C/svg%3E');background-repeat:no-repeat;background-position:right 6px center;padding-right:24px;background-color:#fff;text-align:left"><option value="+966">🇸🇦 +966</option></select><input id="abPhone" placeholder="501234567" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit;min-width:0;color:#1f2937" type="tel"></div></div>
   </div>
   <div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px">Email Address</label><input id="abEmail" type="email" placeholder="guest@example.com" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit"></div>
   <div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px">Unit *</label><select id="abUnit" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit"><option value="">Select a unit</option></select></div>
@@ -1122,6 +1122,29 @@
 			// Open modal with the wrapper
 			openModal(wrapper);
 
+			// Populate country code selector
+			const countryCodeSelect = document.getElementById('abCountryCode');
+			if(countryCodeSelect) {
+				const countryCodes = [
+					{code: '+966', country: 'Saudi Arabia', flag: '🇸🇦'},
+					{code: '+971', country: 'UAE', flag: '🇦🇪'},
+					{code: '+974', country: 'Qatar', flag: '🇶🇦'},
+					{code: '+965', country: 'Kuwait', flag: '🇰🇼'},
+					{code: '+973', country: 'Bahrain', flag: '🇧🇭'},
+					{code: '+968', country: 'Oman', flag: '🇴🇲'},
+					{code: '+1', country: 'USA/Canada', flag: '🇺🇸'},
+					{code: '+44', country: 'UK', flag: '🇬🇧'}
+				];
+				countryCodeSelect.innerHTML = '';
+				countryCodes.forEach(c => {
+					const option = document.createElement('option');
+					option.value = c.code;
+					option.textContent = `${c.flag} ${c.code}`;
+					if(c.code === '+966') option.selected = true; // Default to Saudi Arabia
+					countryCodeSelect.appendChild(option);
+				});
+			}
+
 			// Now populate unit select - elements are immediately available
 			const unitSelect = document.getElementById('abUnit');
 			populateUnitSelect(unitSelect);
@@ -1158,7 +1181,9 @@
 			// Save button click handler
 			saveBtn.addEventListener('click', function(){
 				const name = document.getElementById('abName').value;
-				const phone = document.getElementById('abPhone').value;
+				const countryCode = document.getElementById('abCountryCode').value;
+				const phoneOnly = document.getElementById('abPhone').value;
+				const phone = countryCode + phoneOnly;
 				const email = document.getElementById('abEmail').value || '';
 				const unit = document.getElementById('abUnit').value;
 				const start = document.getElementById('abStart').value;
@@ -1168,7 +1193,7 @@
 				const paid = parseFloat(document.getElementById('abPaid').value) || 0;
 				const notes = document.getElementById('abNotes').value || '';
 				
-				if(!name || !phone || !unit || !start || !end || !rate){
+				if(!name || !phoneOnly || !unit || !start || !end || !rate){
 					showConfirmation('Please fill in all required fields (marked with *)');
 					return;
 				}
