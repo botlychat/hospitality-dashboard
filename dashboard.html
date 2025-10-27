@@ -1074,119 +1074,137 @@
 		}
 
 		function openAddBooking(){
-			const tpl=document.getElementById('addBookingTpl');
-			if(!tpl){
-				console.error('[DASHBOARD] addBookingTpl template not found');
-				showConfirmation('Error: Booking template not found. Please refresh the page.');
-				return;
-			}
-			const frag=tpl.content.cloneNode(true);
-			const unitSelect = frag.querySelector('#abUnit');
-			if(!unitSelect){
-				console.error('[DASHBOARD] Unit select element not found in template');
-			}
+			// Create wrapper element with innerHTML (same as calendar.html)
+			const wrapper = document.createElement('div');
+			wrapper.innerHTML = `<h3 style="margin-bottom:20px;font-size:18px;color:#0f1729">Add New Reservation</h3>
+<div style="display:grid;gap:16px;margin-top:8px">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px">Client Name *</label><input id="abName" placeholder="Full name" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit"></div>
+    <div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px">Phone Number *</label><input id="abPhone" placeholder="+966..." style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit"></div>
+  </div>
+  <div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px">Email Address</label><input id="abEmail" type="email" placeholder="guest@example.com" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit"></div>
+  <div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px">Unit *</label><select id="abUnit" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit"><option value="">Select a unit</option></select></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px">Check-in Date *</label><input id="abStart" type="date" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit"></div>
+    <div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px">Check-out Date *</label><input id="abEnd" type="date" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit"></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px">Nightly Rate ($) *</label><input id="abRate" type="number" placeholder="0.00" min="0" step="0.01" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit"></div>
+    <div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px">Total Amount ($)</label><input id="abTotal" type="text" placeholder="0.00" disabled style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit;background:#f3f4f6;color:#6b7280"></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px">Payment Status *</label><select id="abPayment" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit"><option value="Paid">Paid</option><option value="Pending">Pending</option><option value="Partial">Partial Payment</option></select></div>
+    <div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px">Paid Amount ($)</label><input id="abPaid" type="number" placeholder="0.00" min="0" step="0.01" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit"></div>
+  </div>
+  <div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px">Special Requests / Notes</label><textarea id="abNotes" placeholder="Any special requests or additional notes..." style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit;resize:vertical;min-height:80px"></textarea></div>
+  <div style="background:#f0f9ff;border:1px solid #bfdbfe;border-radius:10px;padding:12px;margin-top:8px"><div style="display:flex;justify-content:space-between;align-items:center;font-size:14px;font-weight:600;color:#0f1729"><span>Summary:</span><span><strong id="abSummary">0 nights × $0.00 = $0.00</strong></span></div></div>
+</div>`;
+
+			// Create footer with buttons
+			const footer = document.createElement('div');
+			footer.className = 'modal-actions';
+			footer.style.marginTop = '20px';
+			
+			const cancelBtn = document.createElement('button');
+			cancelBtn.className = 'btn ghost';
+			cancelBtn.textContent = 'Cancel';
+			cancelBtn.addEventListener('click', closeModal);
+			
+			const saveBtn = document.createElement('button');
+			saveBtn.className = 'btn primary';
+			saveBtn.textContent = 'Create Reservation';
+			saveBtn.id = 'confirmAddBooking';
+			
+			footer.appendChild(cancelBtn);
+			footer.appendChild(saveBtn);
+			wrapper.appendChild(footer);
+
+			// Open modal with the wrapper
+			openModal(wrapper);
+
+			// Now populate unit select - elements are immediately available
+			const unitSelect = document.getElementById('abUnit');
 			populateUnitSelect(unitSelect);
-			openModal(frag);
 
-			// Use requestAnimationFrame for better DOM synchronization
-			requestAnimationFrame(() => {
-				requestAnimationFrame(() => {
-					// Calculate total when dates or rate changes
-					const startInput = document.getElementById('abStart');
-					const endInput = document.getElementById('abEnd');
-					const rateInput = document.getElementById('abRate');
-					const totalInput = document.getElementById('abTotal');
-					const paidInput = document.getElementById('abPaid');
-					const summarySpan = document.getElementById('abSummary');
-					
-					console.log('[DASHBOARD] Looking for booking form elements:', {
-						startInput: !!startInput,
-						endInput: !!endInput,
-						rateInput: !!rateInput,
-						totalInput: !!totalInput,
-						summarySpan: !!summarySpan,
-						modalContent: document.getElementById('modalContent')?.innerHTML.substring(0, 200)
-					});
-					
-					// Verify all required elements exist before proceeding
-					if(!startInput || !endInput || !rateInput || !totalInput || !summarySpan){
-						console.error('[DASHBOARD] Required booking form elements missing', {startInput, endInput, rateInput, totalInput, summarySpan});
-						showConfirmation('Error: Booking form could not be initialized. Please try again.');
-						closeModal();
-						return;
-					}
+			// Get form elements - they exist immediately
+			const startInput = document.getElementById('abStart');
+			const endInput = document.getElementById('abEnd');
+			const rateInput = document.getElementById('abRate');
+			const totalInput = document.getElementById('abTotal');
+			const summarySpan = document.getElementById('abSummary');
 
-				const calculateTotal = () => {
-					const start = new Date(startInput.value);
-					const end = new Date(endInput.value);
-					const rate = parseFloat(rateInput.value) || 0;
-					
-					if(startInput.value && endInput.value && end > start){
-						const nights = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
-						const total = nights * rate;
-						totalInput.value = total.toFixed(2);
-						summarySpan.textContent = `${nights} nights × $${rate.toFixed(2)} = $${total.toFixed(2)}`;
-					} else {
-						totalInput.value = '0.00';
-						summarySpan.textContent = '0 nights × $0.00 = $0.00';
-					}
-				};
-
-				startInput.addEventListener('change', calculateTotal);
-				endInput.addEventListener('change', calculateTotal);
-				rateInput.addEventListener('input', calculateTotal);
-
-				document.getElementById('confirmAddBooking').onclick=function(){
-					const name=document.getElementById('abName').value;
-					const phone=document.getElementById('abPhone').value;
-					const email=document.getElementById('abEmail').value||'';
-					const unit=document.getElementById('abUnit').value;
-					const start=document.getElementById('abStart').value;
-					const end=document.getElementById('abEnd').value;
-					const rate=parseFloat(document.getElementById('abRate').value)||0;
-					const payment=document.getElementById('abPayment').value;
-					const paid=parseFloat(document.getElementById('abPaid').value)||0;
-					const notes=document.getElementById('abNotes').value||'';
-					
-					if(!name||!phone||!unit||!start||!end||!rate){
-						showConfirmation('Please fill in all required fields (marked with *)');
-						return;
-					}
-					
-					const startDate = new Date(start);
-					const endDate = new Date(end);
-					if(endDate <= startDate){
-						showConfirmation('Check-out date must be after check-in date');
-						return;
-					}
-					
-					const nights = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+			// Calculate total function
+			const calculateTotal = () => {
+				const start = new Date(startInput.value);
+				const end = new Date(endInput.value);
+				const rate = parseFloat(rateInput.value) || 0;
+				
+				if(startInput.value && endInput.value && end > start){
+					const nights = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
 					const total = nights * rate;
-					
-					const id='BKG-'+String(Math.floor(Math.random()*9000+1000));
-					sampleBookings.unshift({
-						id,
-						client:name,
-						unit,
-						start,
-						end,
-						status:'Active',
-						phone,
-						email,
-						payment,
-						source:'Manual',
-						rate,
-						nights,
-						total,
-						paid,
-						notes
-					});
-					renderRecentBookings();
-					closeModal();
-					showConfirmation(`Booking created successfully!\nBooking ID: ${id}\nClient: ${name}\nNights: ${nights}\nTotal: $${total.toFixed(2)}`);
-				};
-				}); // End of second requestAnimationFrame
-			}); // End of first requestAnimationFrame - ensures DOM is fully rendered
+					totalInput.value = total.toFixed(2);
+					summarySpan.textContent = `${nights} nights × $${rate.toFixed(2)} = $${total.toFixed(2)}`;
+				} else {
+					totalInput.value = '0.00';
+					summarySpan.textContent = '0 nights × $0.00 = $0.00';
+				}
+			};
+
+			// Attach event listeners
+			startInput.addEventListener('change', calculateTotal);
+			endInput.addEventListener('change', calculateTotal);
+			rateInput.addEventListener('input', calculateTotal);
+
+			// Save button click handler
+			saveBtn.addEventListener('click', function(){
+				const name = document.getElementById('abName').value;
+				const phone = document.getElementById('abPhone').value;
+				const email = document.getElementById('abEmail').value || '';
+				const unit = document.getElementById('abUnit').value;
+				const start = document.getElementById('abStart').value;
+				const end = document.getElementById('abEnd').value;
+				const rate = parseFloat(document.getElementById('abRate').value) || 0;
+				const payment = document.getElementById('abPayment').value;
+				const paid = parseFloat(document.getElementById('abPaid').value) || 0;
+				const notes = document.getElementById('abNotes').value || '';
+				
+				if(!name || !phone || !unit || !start || !end || !rate){
+					showConfirmation('Please fill in all required fields (marked with *)');
+					return;
+				}
+				
+				const startDate = new Date(start);
+				const endDate = new Date(end);
+				if(endDate <= startDate){
+					showConfirmation('Check-out date must be after check-in date');
+					return;
+				}
+				
+				const nights = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+				const total = nights * rate;
+				
+				const id = 'BKG-' + String(Math.floor(Math.random() * 9000 + 1000));
+				sampleBookings.unshift({
+					id,
+					client: name,
+					unit,
+					start,
+					end,
+					status: 'Active',
+					phone,
+					email,
+					payment,
+					source: 'Manual',
+					rate,
+					nights,
+					total,
+					paid,
+					notes
+				});
+				renderRecentBookings();
+				closeModal();
+				showConfirmation(`Booking created successfully!\nBooking ID: ${id}\nClient: ${name}\nNights: ${nights}\nTotal: $${total.toFixed(2)}`);
+			});
 		}
 
 	function openBlockDates(){
