@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <base href="/chaletdashboard/">
+  <title>Website Settings — Hospitality Booking Admin</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root{--bg:#f5f7fa;--bg-gradient:linear-gradient(130deg,#f5f7fa 0%,#f0f4ff 32%,#fff8f2 100%);--sidebar:#0f1729;--accent:#f97316;--accent-soft:rgba(249,115,22,0.12);--muted:#64748b;--card:#fff;--stroke:#e5e7eb}
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{font-family:Inter,Segoe UI,Arial;background:var(--bg-gradient);margin:0;color:#111;position:relative}
+    body::before{content:"";position:fixed;inset:0;background:radial-gradient(circle at 15% 20%,rgba(249,115,22,0.18),transparent 46%),radial-gradient(circle at 85% -10%,rgba(99,102,241,0.18),transparent 45%);pointer-events:none;opacity:.7}
+    .app{display:flex;min-height:100vh;position:relative;z-index:1}
+    .sidebar{width:260px;background:var(--sidebar);color:#fff;display:flex;flex-direction:column;padding:22px 20px;gap:18px;box-shadow:6px 0 24px rgba(15,23,41,0.12)}
+    .brand{display:flex;align-items:center;gap:14px}
+    .brand .logo{width:46px;height:46px;border-radius:14px;background:linear-gradient(140deg,var(--accent),#fdba74);display:flex;align-items:center;justify-content:center;font-weight:700;letter-spacing:.3px}
+    .brand h1{font-size:17px;margin:0}
+    nav{display:flex;flex-direction:column;gap:6px}
+    .nav-item{display:flex;align-items:center;gap:12px;padding:11px;border-radius:10px;color:#d6d9df;cursor:pointer;transition:background .2s ease,transform .2s ease}
+    .nav-item:hover,.nav-item.active{background:rgba(255,255,255,0.1);color:#fff;transform:translateX(2px)}
+    .nav-item i{width:20px;text-align:center}
+    .sidebar-footer{margin-top:auto;font-size:13px;color:rgba(255,255,255,0.55)}
+
+    .main{flex:1;display:flex;flex-direction:column}
+    .header{height:70px;background:rgba(255,255,255,0.85);backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:space-between;padding:0 26px;border-bottom:1px solid rgba(15,23,41,0.06);gap:12px;position:sticky;top:0;z-index:5}
+    .header .left{display:flex;align-items:center;gap:16px}
+    .search{background:#fff;padding:9px 14px;border-radius:12px;box-shadow:0 6px 20px rgba(15,23,41,0.06);min-width:320px;display:flex;align-items:center}
+    .search input{border:none;outline:none;margin-left:8px;font-size:14px;width:100%;background:transparent}
+    .profile{display:flex;align-items:center;gap:10px;cursor:pointer;position:relative}
+    .avatar{width:36px;height:36px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700}
+    .profile-menu{position:absolute;right:0;top:48px;background:#fff;border-radius:10px;box-shadow:0 14px 30px rgba(15,23,41,0.12);min-width:190px;overflow:hidden;display:none}
+    .profile-menu.show{display:block}
+    .profile-menu button{width:100%;padding:10px 12px;border:none;background:transparent;text-align:left;cursor:pointer;font-size:14px}
+
+    .content{padding:26px;display:grid;grid-template-columns:1fr 320px;gap:22px}
+
+    .panel{background:var(--card);padding:18px;border-radius:18px;box-shadow:0 14px 30px rgba(15,23,41,0.08)}
+    .panel h3{margin:0 0 12px 0;font-size:15px}
+    
+    .form-group{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+    .form-group label{font-weight:600;font-size:14px}
+    .form-group input,.form-group select,.form-group textarea{padding:10px;border:1px solid var(--stroke);border-radius:8px;font-family:inherit;font-size:14px}
+    .form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(249,115,22,0.1)}
+    .form-group textarea{resize:vertical;min-height:100px}
+
+    .btn{padding:10px 16px;border-radius:12px;border:none;cursor:pointer;font-weight:600;font-size:14px;transition:all .2s ease;user-select:none}
+    .btn.primary{background:var(--accent);color:#fff;box-shadow:0 10px 24px rgba(249,115,22,0.26)}
+    .btn.primary:hover{filter:brightness(.92)}
+    .btn.ghost{background:rgba(255,255,255,0.6);border:1px solid rgba(15,23,41,0.08)}
+    .btn.ghost:hover{background:rgba(255,255,255,0.8)}
+
+    @media(max-width:980px){.sidebar{display:none}.search{display:none}.content{padding:18px;grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand"><div class="logo">RG</div><h1>Riyadh Getaways</h1></div>
+      <nav>
+        <div class="nav-item" data-link="dashboard.html"><i class="fa-solid fa-gauge"></i> <span data-i18n="dashboard">Dashboard</span></div>
+        <div class="nav-item" data-link="calendar.html"><i class="fa-regular fa-calendar"></i> <span data-i18n="calendar">Calendar</span></div>
+        <div class="nav-item" data-link="units.html"><i class="fa-solid fa-building"></i> <span data-i18n="units">Units</span></div>
+        <div class="nav-item active" data-link="website.html"><i class="fa-solid fa-globe"></i> <span data-i18n="website">Website Settings</span></div>
+        <div class="nav-item" data-link="aiagent.html"><i class="fa-solid fa-robot"></i> <span data-i18n="aiagent">AI Agent</span></div>
+        <div class="nav-item" data-link="contacts.html"><i class="fa-solid fa-address-book"></i> <span data-i18n="contacts">Contacts</span></div>
+      </nav>
+      <div class="sidebar-footer">© <strong>Riyadh Getaways</strong><br>Admin Dashboard</div>
+    </aside>
+
+    <main class="main">
+      <header class="header">
+        <div class="left">
+          <h2 style="margin:0">Website Settings</h2>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <div class="profile" id="profileBtn" tabindex="0">
+            <div style="text-align:right;margin-right:8px;font-size:13px"><div style="font-weight:700" data-i18n="admin">Admin</div><div style="font-size:12px;color:var(--muted)">riyadh@getaways</div></div>
+            <div class="avatar">A</div>
+            <div class="profile-menu" id="profileMenu">
+              <button id="profileSettings" data-i18n="completeProfile">Complete Profile</button>
+              <button id="changePassword" data-i18n="changePassword">Change Password</button>
+              <button id="changeEmail" data-i18n="changeEmail">Change Email</button>
+              <div style="border-top:1px solid #e5e7eb;padding:8px 0;margin:8px 0;display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap">
+                <button id="currencyUSD" style="display:flex;align-items:center;gap:4px;padding:8px 10px;border:none;background:transparent;cursor:pointer;font-size:12px;font-weight:600;color:#64748b;border-radius:6px;transition:all 0.2s ease" title="US Dollar">
+                  USD
+                </button>
+                <button id="currencySAR" style="display:flex;align-items:center;gap:4px;padding:8px 10px;border:none;background:transparent;cursor:pointer;font-size:12px;font-weight:600;color:#f97316;border-radius:6px;transition:all 0.2s ease" title="Saudi Riyal">
+                  SAR
+                </button>
+                <button id="currencyEUR" style="display:flex;align-items:center;gap:4px;padding:8px 10px;border:none;background:transparent;cursor:pointer;font-size:12px;font-weight:600;color:#64748b;border-radius:6px;transition:all 0.2s ease" title="Euro">
+                  EUR
+                </button>
+                <div style="width:1px;height:16px;background:#e5e7eb"></div>
+                <button id="langEnglish" style="display:flex;align-items:center;gap:4px;padding:8px 10px;border:none;background:transparent;cursor:pointer;font-size:12px;font-weight:600;color:#f97316;border-radius:6px;transition:all 0.2s ease" title="English">
+                  EN
+                </button>
+                <button id="langArabic" style="display:flex;align-items:center;gap:4px;padding:8px 10px;border:none;background:transparent;cursor:pointer;font-size:12px;font-weight:600;color:#64748b;border-radius:6px;transition:all 0.2s ease" title="العربية">
+                  AR
+                </button>
+              </div>
+              <button id="logoutBtn" data-i18n="logout">Logout</button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section class="content">
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px">
+            <h2 style="margin:0" data-i18n="websiteSettings">Website Settings</h2>
+            <select id="websiteGroupSelector" style="padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:13px;font-weight:600;background:#fff;cursor:pointer;min-width:220px">
+              <!-- Group options will be populated by JavaScript -->
+            </select>
+          </div>
+          <div class="panel">
+            <h3><i class="fa-solid fa-image"></i> <span data-i18n="homePagePicture">Home Page Picture</span></h3>
+            <div style="margin-top:12px">
+              <div class="form-group">
+                <label data-i18n="uploadHomePicture">Upload Home Picture</label>
+                <input type="file" id="homePictureUpload" accept="image/*" style="padding:8px;border:2px dashed var(--accent);border-radius:8px">
+                <div id="homePicturePreview"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel" style="margin-top:16px">
+            <h3><i class="fa-solid fa-palette"></i> <span data-i18n="websiteThemeColor">Website Theme Color</span></h3>
+            <div style="margin-top:12px">
+              <p style="font-size:13px;color:var(--muted)" data-i18n="selectThemeColor">Select your preferred theme color for the website:</p>
+              <div style="display:flex;gap:12px;align-items:center;margin-bottom:12px">
+                <div style="display:flex;gap:8px;align-items:center;flex:1">
+                  <label style="font-weight:600;font-size:13px">Color:</label>
+                  <input type="color" id="websiteColorPicker" style="width:50px;height:50px;border:none;border-radius:8px;cursor:pointer">
+                  <div id="colorDisplay" style="width:50px;height:50px;border:2px solid #e5e7eb;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;background:#f97316;font-weight:600"></div>
+                </div>
+              </div>
+              <div style="display:flex;gap:8px;margin-bottom:12px">
+                <input type="text" id="colorCodeInput" placeholder="#f97316" maxlength="7" style="flex:1;padding:10px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:13px;font-family:monospace">
+                <button class="btn primary" id="applyWebsiteColorBtn" style="margin:0"><i class="fa-solid fa-check"></i> Apply</button>
+              </div>
+              <button class="btn primary" onclick="showConfirmation('Theme saved (simulated)')" style="width:100%"><i class="fa-solid fa-floppy-disk"></i> <span data-i18n="saveTheme">Save Theme</span></button>
+            </div>
+          </div>
+
+          <div class="panel" style="margin-top:16px">
+            <h3><i class="fa-solid fa-sliders"></i> <span data-i18n="generalSettings">General Settings</span></h3>
+            <div style="margin-top:12px">
+              <div class="form-group">
+                <label data-i18n="websiteTitle">Website Title</label>
+                <input type="text" value="Riyadh Getaways" placeholder="Website title">
+              </div>
+              <div class="form-group">
+                <label data-i18n="websiteDescription">Website Description</label>
+                <textarea placeholder="Short description of your business">Premium chalets and apartments in Riyadh</textarea>
+              </div>
+              <div class="form-group">
+                <label data-i18n="contactEmail">Contact Email</label>
+                <input type="email" value="info@riyadhgetaways.com" placeholder="Contact email">
+              </div>
+              <div class="form-group">
+                <label data-i18n="contactPhone">Contact Phone</label>
+                <input type="tel" value="+966-11-XXXX-XXXX" placeholder="Contact phone">
+              </div>
+              <button class="btn primary" onclick="showConfirmation('Settings saved (simulated)')"><i class="fa-solid fa-floppy-disk"></i> <span data-i18n="saveSettings">Save Settings</span></button>
+            </div>
+          </div>
+        </div>
+
+        <aside>
+          <div class="panel">
+            <h3 data-i18n="preview">Preview</h3>
+            <div style="margin-top:12px;padding:16px;border-radius:8px;background:#f3f4f6;text-align:center">
+              <div style="font-weight:600;margin-bottom:8px" data-i18n="themePreview">Theme Preview</div>
+              <div id="colorPreview" style="width:100%;height:60px;border-radius:8px;background-color:#f97316;transition:background-color .3s"></div>
+              <div style="margin-top:8px;font-size:12px;color:var(--muted)" data-i18n="themeAppearance">This is how your theme will look</div>
+            </div>
+          </div>
+        </aside>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // Helper function to get proper file path (works on GitHub Pages)
+    function getPagePath(filename) {
+      const currentPath = window.location.pathname;
+      // Check if we're on GitHub Pages (path contains /chaletdashboard/)
+      if(currentPath.includes('/chaletdashboard/')) {
+        return '/chaletdashboard/' + filename;
+      }
+      // Otherwise use relative path (local development)
+      return filename;
+    }
+
+    // Language translations
+    const translations = {
+      en: {
+        dashboard: 'Dashboard',
+        calendar: 'Calendar',
+        units: 'Units',
+        website: 'Website Settings',
+        aiagent: 'AI Agent',
+        completeProfile: 'Complete Profile',
+        changePassword: 'Change Password',
+        changeEmail: 'Change Email',
+        logout: 'Logout',
+        websiteSettings: 'Website Settings',
+        homePagePicture: 'Home Page Picture',
+        uploadHomePicture: 'Upload Home Picture',
+        savePicture: 'Save Picture',
+        websiteThemeColor: 'Website Theme Color',
+        selectThemeColor: 'Select your preferred theme color for the website:',
+        saveTheme: 'Save Theme',
+        generalSettings: 'General Settings',
+        websiteTitle: 'Website Title',
+        websiteDescription: 'Website Description',
+        contactEmail: 'Contact Email',
+        contactPhone: 'Contact Phone',
+        saveSettings: 'Save Settings',
+        preview: 'Preview',
+        themePreview: 'Theme Preview',
+        themeAppearance: 'This is how your theme will look'
+      },
+      ar: {
+        dashboard: 'لوحة التحكم',
+        calendar: 'التقويم',
+        units: 'الوحدات',
+        website: 'إعدادات الموقع',
+        aiagent: 'وكيل الذكاء الاصطناعي',
+        completeProfile: 'إكمال الملف الشخصي',
+        changePassword: 'تغيير كلمة المرور',
+        changeEmail: 'تغيير عنوان البريد الإلكتروني',
+        logout: 'تسجيل الخروج',
+        websiteSettings: 'إعدادات الموقع',
+        homePagePicture: 'صورة الصفحة الرئيسية',
+        uploadHomePicture: 'تحميل صورة الصفحة الرئيسية',
+        savePicture: 'حفظ الصورة',
+        websiteThemeColor: 'لون موضوع الموقع',
+        selectThemeColor: 'اختر لون الموضوع المفضل لديك للموقع:',
+        saveTheme: 'حفظ الموضوع',
+        generalSettings: 'الإعدادات العامة',
+        websiteTitle: 'عنوان الموقع',
+        websiteDescription: 'وصف الموقع',
+        contactEmail: 'البريد الإلكتروني للتواصل',
+        contactPhone: 'رقم الهاتف للتواصل',
+        saveSettings: 'حفظ الإعدادات',
+        preview: 'معاينة',
+        themePreview: 'معاينة الموضوع',
+        themeAppearance: 'هذا هو شكل موضوعك'
+      }
+    };
+
+    let currentLanguage = localStorage.getItem('language') || 'en';
+
+    // Current currency
+    let currentCurrency = localStorage.getItem('currency') || 'SAR';
+
+    // Units Groups Management
+    let unitsGroups = JSON.parse(localStorage.getItem('unitsGroups')) || [
+      { id: 'group_1', name: 'Main Hotel', type: 'Hotel Room', license: 'TRN-2024-001' },
+      { id: 'group_2', name: 'Chalets Collection', type: 'Chalet', license: 'TRN-2024-002' }
+    ];
+    let currentGroupId = localStorage.getItem('currentGroupId') || 'group_1';
+
+    function populateGroupSelectors(){
+      const selector = document.getElementById('websiteGroupSelector');
+      if(selector){
+        selector.innerHTML = '';
+        unitsGroups.forEach(group => {
+          const option = document.createElement('option');
+          option.value = group.id;
+          option.textContent = `${group.name} (${group.type})`;
+          option.selected = group.id === currentGroupId;
+          selector.appendChild(option);
+        });
+        selector.addEventListener('change', (e) => {
+          currentGroupId = e.target.value;
+          localStorage.setItem('currentGroupId', currentGroupId);
+        });
+      }
+    }
+
+    function setLanguage(lang){
+      currentLanguage = lang;
+      localStorage.setItem('language', lang);
+      document.documentElement.lang = lang;
+      document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+      applyTranslations();
+      updateLanguageButtons();
+    }
+
+    function t(key){
+      const translated = translations[currentLanguage]?.[key] || translations.en[key];
+      if (translated) return translated;
+      return key.replace(/([A-Z])/g, ' $1').replace(/^./, (char) => char.toUpperCase()).trim();
+    }
+
+    function applyTranslations(){
+      document.querySelectorAll('[data-i18n]').forEach(el=>{
+        const key = el.dataset.i18n;
+        if(el.tagName === 'INPUT' && el.type === 'placeholder'){
+          el.placeholder = t(key);
+        } else if(el.tagName === 'INPUT' || el.tagName === 'TEXTAREA'){
+          el.value = t(key);
+        } else {
+          el.textContent = t(key);
+        }
+      });
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{
+        el.placeholder = t(el.dataset.i18nPlaceholder);
+      });
+    }
+
+    function updateLanguageButtons(){
+      const enBtn = document.getElementById('langEnglish');
+      const arBtn = document.getElementById('langArabic');
+      if(currentLanguage === 'en'){
+        enBtn.style.color = '#f97316';
+        enBtn.style.fontWeight = '600';
+        arBtn.style.color = '#64748b';
+        arBtn.style.fontWeight = 'normal';
+      } else {
+        arBtn.style.color = '#f97316';
+        arBtn.style.fontWeight = '600';
+        enBtn.style.color = '#64748b';
+        enBtn.style.fontWeight = 'normal';
+      }
+    }
+
+    document.getElementById('langEnglish').addEventListener('click',()=>{setLanguage('en');});
+    document.getElementById('langArabic').addEventListener('click',()=>{setLanguage('ar');});
+
+    // Home Page Picture Upload Handler
+    const homePictureUpload = document.getElementById('homePictureUpload');
+    const homePicturePreview = document.getElementById('homePicturePreview');
+
+    // Load saved picture on page load
+    function loadSavedHomePicture(){
+      const savedPicture = localStorage.getItem('websiteHomePicture');
+      if(savedPicture){
+        displayHomePicturePreview(savedPicture);
+      }
+    }
+
+    function displayHomePicturePreview(base64Image){
+      homePicturePreview.innerHTML = `
+        <div style="margin-top:12px;border-radius:12px;overflow:hidden;border:1px solid #e5e7eb">
+          <img src="${base64Image}" style="width:100%;max-height:300px;object-fit:cover;display:block">
+          <div style="padding:12px;background:#f3f4f6;border-top:1px solid #e5e7eb">
+            <div style="font-size:12px;color:var(--muted)">Preview (saved)</div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Handle file upload
+    homePictureUpload.addEventListener('change', (e)=>{
+      const file = e.target.files[0];
+      if(!file) return;
+
+      // Check file size (max 5MB)
+      if(file.size > 5 * 1024 * 1024){
+        showConfirmation('File size must be less than 5MB');
+        homePictureUpload.value = '';
+        return;
+      }
+
+      // Check file type
+      if(!file.type.startsWith('image/')){
+        showConfirmation('Please select a valid image file');
+        homePictureUpload.value = '';
+        return;
+      }
+
+      // Read and display file
+      const reader = new FileReader();
+      reader.onload = (event)=>{
+        const base64Image = event.target.result;
+        homePicturePreview.innerHTML = `
+          <div style="margin-top:12px;border-radius:12px;overflow:hidden;border:1px solid #e5e7eb">
+            <img src="${base64Image}" style="width:100%;max-height:300px;object-fit:cover;display:block">
+            <div style="padding:12px;background:#f3f4f6;border-top:1px solid #e5e7eb">
+              <div style="font-size:12px;color:var(--muted)">Preview (unsaved changes)</div>
+              <button class="btn primary" style="margin-top:8px;width:100%" onclick="saveHomePictureToStorage('${base64Image.replace(/'/g, "\\'")}')">
+                <i class="fa-solid fa-floppy-disk"></i> Save Picture
+              </button>
+            </div>
+          </div>
+        `;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    function saveHomePictureToStorage(base64Image){
+      localStorage.setItem('websiteHomePicture', base64Image);
+      displayHomePicturePreview(base64Image);
+      showConfirmation('✅ Home picture saved successfully!');
+      homePictureUpload.value = '';
+    }
+
+    // Navigation handlers - redirect to appropriate pages
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        // Get the closest nav-item (in case user clicked child element)
+        const navItem = e.target.closest('.nav-item');
+        if(!navItem) return;
+        
+        const link = navItem.dataset.link;
+        if (link) {
+          const fullPath = getPagePath(link);
+          console.log('Navigating to:', fullPath);
+          window.location.href = fullPath;
+        }
+      });
+    });
+
+    function showConfirmation(message){
+      alert(message);
+    }
+
+    // Currency and Language switchers
+    function updateCurrencyButtons(){
+      const usdBtn = document.getElementById('currencyUSD');
+      const sarBtn = document.getElementById('currencySAR');
+      const eurBtn = document.getElementById('currencyEUR');
+      
+      // Reset all buttons
+      [usdBtn, sarBtn, eurBtn].forEach(btn => {
+        btn.style.color = '#64748b';
+        btn.style.fontWeight = 'normal';
+      });
+      
+      // Highlight selected currency
+      if(currentCurrency === 'USD') usdBtn.style.color = '#f97316';
+      else if(currentCurrency === 'SAR') sarBtn.style.color = '#f97316';
+      else if(currentCurrency === 'EUR') eurBtn.style.color = '#f97316';
+      
+      // Update font weight for active
+      const activeBtn = document.getElementById('currency' + currentCurrency);
+      if(activeBtn) activeBtn.style.fontWeight = '600';
+    }
+
+    function setCurrency(currency){
+      currentCurrency = currency;
+      localStorage.setItem('currency', currency);
+      updateCurrencyButtons();
+    }
+
+    function updateLanguageButtons(){
+      const enBtn = document.getElementById('langEnglish');
+      const arBtn = document.getElementById('langArabic');
+      if(currentLanguage === 'en'){
+        enBtn.style.color = '#f97316';
+        enBtn.style.fontWeight = '600';
+        arBtn.style.color = '#64748b';
+        arBtn.style.fontWeight = 'normal';
+      } else {
+        arBtn.style.color = '#f97316';
+        arBtn.style.fontWeight = '600';
+        enBtn.style.color = '#64748b';
+        enBtn.style.fontWeight = 'normal';
+      }
+    }
+
+    setLanguage(currentLanguage);
+    populateGroupSelectors();
+    loadSavedHomePicture();
+
+    // Initialize currency and language buttons
+    updateCurrencyButtons();
+    updateLanguageButtons();
+    document.getElementById('currencyUSD').addEventListener('click', () => { setCurrency('USD'); });
+    document.getElementById('currencySAR').addEventListener('click', () => { setCurrency('SAR'); });
+    document.getElementById('currencyEUR').addEventListener('click', () => { setCurrency('EUR'); });
+    document.getElementById('langEnglish').addEventListener('click', () => { setLanguage('en'); });
+    document.getElementById('langArabic').addEventListener('click', () => { setLanguage('ar'); });
+
+    // Profile menu toggle
+    document.getElementById('profileBtn').addEventListener('click', function(e){
+      e.stopPropagation();
+      document.getElementById('profileMenu').classList.toggle('show');
+    });
+
+    document.addEventListener('click', function(){
+      document.getElementById('profileMenu').classList.remove('show');
+    });
+  </script>
+</body>
+</html>

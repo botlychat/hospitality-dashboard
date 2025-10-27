@@ -1,0 +1,1310 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <base href="/chaletdashboard/">
+  <title>AI Agent — Hospitality Booking Admin</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root{--bg:#f5f7fa;--bg-gradient:linear-gradient(130deg,#f5f7fa 0%,#f0f4ff 32%,#fff8f2 100%);--sidebar:#0f1729;--accent:#f97316;--accent-soft:rgba(249,115,22,0.12);--muted:#64748b;--card:#fff;--stroke:#e5e7eb}
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{font-family:Inter,Segoe UI,Arial;background:var(--bg-gradient);margin:0;color:#111;position:relative;overflow-x:hidden}
+    body::before{content:"";position:fixed;inset:0;background:radial-gradient(circle at 15% 20%,rgba(249,115,22,0.18),transparent 46%),radial-gradient(circle at 85% -10%,rgba(99,102,241,0.18),transparent 45%);pointer-events:none;opacity:.7}
+    .app{display:flex;min-height:100vh;position:relative;z-index:1}
+    .sidebar{width:260px;background:var(--sidebar);color:#fff;display:flex;flex-direction:column;padding:22px 20px;gap:18px;box-shadow:6px 0 24px rgba(15,23,41,0.12);overflow-y:auto}
+    .brand{display:flex;align-items:center;gap:14px}
+    .brand .logo{width:46px;height:46px;border-radius:14px;background:linear-gradient(140deg,var(--accent),#fdba74);display:flex;align-items:center;justify-content:center;font-weight:700;letter-spacing:.3px}
+    .brand h1{font-size:17px;margin:0}
+    nav{display:flex;flex-direction:column;gap:6px}
+    .nav-item{display:flex;align-items:center;gap:12px;padding:11px;border-radius:10px;color:#d6d9df;cursor:pointer;transition:background .2s ease,transform .2s ease;user-select:none}
+    .nav-item:hover,.nav-item.active{background:rgba(255,255,255,0.1);color:#fff;transform:translateX(2px)}
+    .nav-item i{width:20px;text-align:center}
+    .sidebar-footer{margin-top:auto;font-size:13px;color:rgba(255,255,255,0.55)}
+
+    .main{flex:1;display:flex;flex-direction:column}
+    .header{height:70px;background:rgba(255,255,255,0.82);backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:space-between;padding:0 26px;border-bottom:1px solid rgba(15,23,41,0.06);gap:12px;position:sticky;top:0;z-index:5}
+    .header .left{display:flex;align-items:center;gap:18px}
+    .profile{display:flex;align-items:center;gap:10px;cursor:pointer;position:relative}
+    .avatar{width:36px;height:36px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700}
+    .profile-menu{position:absolute;right:0;top:48px;background:#fff;border-radius:8px;box-shadow:0 8px 24px rgba(16,24,40,0.12);min-width:180px;overflow:hidden;display:none;z-index:10}
+    .profile-menu.show{display:block}
+    .profile-menu button{width:100%;padding:10px 12px;border:none;background:transparent;text-align:left;cursor:pointer;transition:background .2s;user-select:none;font-size:13px}
+    .profile-menu button:hover{background:#f3f4f6}
+
+    .content{padding:24px;display:flex;flex-direction:column;gap:22px;overflow-y:auto}
+
+    .panel{background:var(--card);padding:18px;border-radius:16px;box-shadow:0 14px 30px rgba(15,23,41,0.08)}
+    .panel h3{margin:0 0 12px 0;font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px}
+
+    .form-group{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+    .form-group label{font-weight:600;font-size:14px;color:#111}
+    .form-group input,.form-group textarea,.form-group select{padding:10px;border:1px solid var(--stroke);border-radius:8px;font-family:inherit;font-size:14px}
+    .form-group input:focus,.form-group textarea:focus,.form-group select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(249,115,22,0.1)}
+    .form-group textarea{resize:vertical;min-height:100px}
+    .form-group small{color:var(--muted);font-size:12px}
+
+    .btn{padding:8px 14px;border-radius:10px;border:none;cursor:pointer;font-weight:600;font-size:13px;transition:all .2s ease;user-select:none;display:inline-flex;align-items:center;gap:6px}
+    .btn.primary{background:var(--accent);color:#fff;box-shadow:0 10px 24px rgba(249,115,22,0.26)}
+    .btn.primary:hover{filter:brightness(.92)}
+    .btn.secondary{background:#f0f0f0;color:#111;border:1px solid #ddd}
+    .btn.secondary:hover{background:#e5e5e5}
+    .btn:disabled{opacity:0.5;cursor:not-allowed}
+
+    .progress-bar{width:100%;height:24px;background:#e5e7eb;border-radius:12px;overflow:hidden;position:relative}
+    .progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),#fdba74);transition:width .3s ease;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:600}
+    .progress-label{display:flex;justify-content:space-between;margin-top:6px;font-size:12px;color:var(--muted)}
+
+    .role-item{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:#f3f4f6;border-radius:8px;border-left:3px solid var(--accent);margin-bottom:8px}
+    .role-item span{font-weight:500;flex:1;font-size:14px}
+    .role-item button{padding:4px 8px;font-size:11px;border:none;background:rgba(249,115,22,0.1);color:var(--accent);border-radius:4px;cursor:pointer;transition:all .2s}
+    .role-item button:hover{background:rgba(249,115,22,0.2)}
+
+    .stat-card{background:linear-gradient(135deg,rgba(249,115,22,0.1),rgba(249,115,22,0.05));padding:16px;border-radius:12px;border-left:4px solid var(--accent);margin-bottom:12px}
+    .stat-card .stat-label{font-size:13px;color:var(--muted);margin-bottom:4px}
+    .stat-card .stat-value{font-size:28px;font-weight:700;color:#111}
+    .stat-card .stat-meta{font-size:12px;color:var(--muted);margin-top:4px}
+
+    .button-group{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+
+    @media(max-width:980px){
+      .sidebar{display:none}
+      .content{padding:18px}
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand"><div class="logo">RG</div><h1>Riyadh Getaways</h1></div>
+      <nav>
+        <div class="nav-item" data-link="dashboard.html"><i class="fa-solid fa-gauge"></i> <span data-i18n="dashboard">Dashboard</span></div>
+        <div class="nav-item" data-link="calendar.html"><i class="fa-regular fa-calendar"></i> <span data-i18n="calendar">Calendar</span></div>
+        <div class="nav-item" data-link="units.html"><i class="fa-solid fa-building"></i> <span data-i18n="units">Units</span></div>
+        <div class="nav-item" data-link="website.html"><i class="fa-solid fa-globe"></i> <span data-i18n="website">Website Settings</span></div>
+        <div class="nav-item active" data-link="aiagent.html"><i class="fa-solid fa-robot"></i> <span data-i18n="aiagent">AI Agent</span></div>
+        <div class="nav-item" data-link="contacts.html"><i class="fa-solid fa-address-book"></i> <span data-i18n="contacts">Contacts</span></div>
+      </nav>
+      <div class="sidebar-footer">© <strong>Riyadh Getaways</strong><br>Admin Dashboard</div>
+    </aside>
+
+    <main class="main">
+      <header class="header">
+        <div class="left" style="display:flex;flex-direction:column;gap:12px">
+          <h2 style="margin:0" id="pageTitle">AI Agent Configuration</h2>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <div class="profile" id="profileBtn" tabindex="0">
+            <div style="text-align:right;margin-right:8px;font-size:13px"><div style="font-weight:700" data-i18n="admin">Admin</div><div style="font-size:12px;color:var(--muted)">riyadh@getaways</div></div>
+            <div class="avatar">A</div>
+            <div class="profile-menu" id="profileMenu">
+              <button id="profileSettings" data-i18n="completeProfile">Complete Profile</button>
+              <button id="changePassword" data-i18n="changePassword">Change Password</button>
+              <button id="changeEmail" data-i18n="changeEmail">Change Email</button>
+              <div style="border-top:1px solid #e5e7eb;padding:8px 0;margin:8px 0;display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap">
+                <button id="currencyUSD" style="display:flex;align-items:center;gap:4px;padding:8px 10px;border:none;background:transparent;cursor:pointer;font-size:12px;font-weight:600;color:#64748b;border-radius:6px;transition:all 0.2s ease" title="US Dollar">
+                  USD
+                </button>
+                <button id="currencySAR" style="display:flex;align-items:center;gap:4px;padding:8px 10px;border:none;background:transparent;cursor:pointer;font-size:12px;font-weight:600;color:#f97316;border-radius:6px;transition:all 0.2s ease" title="Saudi Riyal">
+                  SAR
+                </button>
+                <button id="currencyEUR" style="display:flex;align-items:center;gap:4px;padding:8px 10px;border:none;background:transparent;cursor:pointer;font-size:12px;font-weight:600;color:#64748b;border-radius:6px;transition:all 0.2s ease" title="Euro">
+                  EUR
+                </button>
+                <div style="width:1px;height:16px;background:#e5e7eb"></div>
+                <button id="langEnglish" style="display:flex;align-items:center;gap:4px;padding:8px 10px;border:none;background:transparent;cursor:pointer;font-size:12px;font-weight:600;color:#f97316;border-radius:6px;transition:all 0.2s ease" title="English">
+                  EN
+                </button>
+                <button id="langArabic" style="display:flex;align-items:center;gap:4px;padding:8px 10px;border:none;background:transparent;cursor:pointer;font-size:12px;font-weight:600;color:#64748b;border-radius:6px;transition:all 0.2s ease" title="العربية">
+                  AR
+                </button>
+              </div>
+              <button id="logoutBtn" data-i18n="logout">Logout</button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section class="content" id="aiAgentConfigContent">
+        <div style="margin-bottom:16px;display:flex;justify-content:flex-end">
+          <select id="aiAgentGroupSelector" style="padding:10px 14px;border:1px solid #e5e7eb;border-radius:8px;font-size:13px;font-weight:600;background:#fff;cursor:pointer;min-width:240px;box-shadow:0 2px 6px rgba(15,23,41,0.06);transition:all 0.2s ease;z-index:100">
+            <!-- Group options will be populated by JavaScript -->
+          </select>
+        </div>
+
+        <!-- Active Conversations Section -->
+        <div class="panel">
+          <h3><i class="fa-solid fa-comments"></i> Active Conversations</h3>
+          <div class="stat-card">
+            <div class="stat-label">Current Active Conversations</div>
+            <div style="display:flex;gap:8px;align-items:baseline">
+              <div class="stat-value" id="activeConvCount" style="font-size:32px">278</div>
+              <div style="font-size:16px;color:var(--muted)">/</div>
+              <div class="stat-value" id="totalPlanConv" style="font-size:24px;color:var(--muted)">500</div>
+            </div>
+            <div class="stat-meta">conversations in your plan</div>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="convProgressBar" style="width:55.6%"></div>
+          </div>
+          <div class="progress-label">
+            <span><span id="convPercent">55.6</span>% Used</span>
+            <span id="convRemaining">222 remaining</span>
+          </div>
+        </div>
+
+        <!-- Booking Method Selection -->
+        <div class="panel">
+          <h3><i class="fa-solid fa-credit-card"></i> Booking Method</h3>
+          <p style="font-size:13px;color:var(--muted);margin:0 0 16px 0">Choose how the AI Agent handles bookings and payments</p>
+          
+          <div class="form-group">
+            <label style="display:flex;align-items:center;gap:12px;cursor:pointer;font-weight:normal;margin-bottom:12px;padding:12px;border:2px solid #e5e7eb;border-radius:8px;transition:all .2s" id="bookingMethodLabel1">
+              <input type="radio" id="bookingFull" name="bookingMethod" value="full" style="width:18px;height:18px;cursor:pointer" onchange="updateBookingMethodDisplay()">
+              <div style="flex:1">
+                <div style="font-weight:600;color:#111">AI Agent Full Booking</div>
+                <div style="font-size:12px;color:var(--muted);margin-top:4px">AI Agent can answer questions, make suggestions, AND process payments & reservations</div>
+              </div>
+            </label>
+          </div>
+
+          <div class="form-group">
+            <label style="display:flex;align-items:center;gap:12px;cursor:pointer;font-weight:normal;margin-bottom:12px;padding:12px;border:2px solid #e5e7eb;border-radius:8px;transition:all .2s" id="bookingMethodLabel2">
+              <input type="radio" id="bookingWebsiteOnly" name="bookingMethod" value="website_only" style="width:18px;height:18px;cursor:pointer" onchange="updateBookingMethodDisplay()">
+              <div style="flex:1">
+                <div style="font-weight:600;color:#111">Website Only Booking</div>
+                <div style="font-size:12px;color:var(--muted);margin-top:4px">AI Agent provides information & suggestions only, redirects to website for payments & reservations</div>
+              </div>
+            </label>
+          </div>
+
+          <div id="bookingMethodInfo" style="padding:12px;background:#f0f9ff;border:1px solid #bfdbfe;border-radius:8px;border-left:3px solid #3b82f6;font-size:12px;color:#0c4a6e;display:none;margin-bottom:12px">
+            <strong>ℹ️ Selected Mode:</strong> <span id="bookingMethodText">-</span>
+          </div>
+
+          <div class="button-group">
+            <button class="btn primary" onclick="saveBookingMethod()"><i class="fa-solid fa-floppy-disk"></i> Save Booking Method</button>
+          </div>
+        </div>
+
+        <!-- Discount Settings -->
+        <div class="panel">
+          <h3><i class="fa-solid fa-tag"></i> Discount Settings</h3>
+          <div class="form-group" style="margin-bottom:16px">
+            <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-weight:normal;margin:0">
+              <input type="checkbox" id="discountToggle" style="width:18px;height:18px;cursor:pointer">
+              <span>Enable AI Agent Discount</span>
+            </label>
+          </div>
+          <div class="form-group" id="discountAmountGroup" style="display:none">
+            <label>Discount Amount (SAR)</label>
+            <input type="number" id="discountAmount" placeholder="e.g., 50" min="0" step="1" onchange="updateDiscountPreview()">
+            <small>Enter fixed amount that will be applied by AI Agent</small>
+          </div>
+          <div id="discountPreview" style="padding:12px;background:#f3f4f6;border-radius:8px;margin-top:12px;display:none;border-left:3px solid var(--accent)">
+            <div style="font-size:13px;color:#111">Current discount: <strong id="discountPreviewAmount" style="color:var(--accent)">SAR 0</strong></div>
+          </div>
+          <div class="button-group">
+            <button class="btn primary" id="discountEditBtn" onclick="toggleDiscountEdit()"><i class="fa-solid fa-pen"></i> Edit</button>
+            <button class="btn primary" id="discountSaveBtn" onclick="saveDiscountSettings()" style="display:none"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+          </div>
+        </div>
+
+        <!-- Welcome Message -->
+        <div class="panel">
+          <h3><i class="fa-solid fa-comment-dots"></i> Welcome Message</h3>
+          <div class="form-group">
+            <label>Welcome Message</label>
+            <textarea id="welcomeMessage" placeholder="Enter the welcome message that AI Agent will show to guests..." readonly>Hello! Welcome to Riyadh Getaways. How can I help you today?</textarea>
+            <small>Character count: <span id="welcomeCharCount">0</span>/500</small>
+          </div>
+          <div class="button-group">
+            <button class="btn primary" id="welcomeEditBtn" onclick="toggleWelcomeEdit()"><i class="fa-solid fa-pen"></i> Edit</button>
+            <button class="btn primary" id="welcomeSaveBtn" onclick="saveWelcomeMessage()" style="display:none"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+          </div>
+          <div id="welcomeModified" style="display:none;margin-top:8px;font-size:13px;color:var(--accent)"><i class="fa-solid fa-circle-info"></i> Changes not saved</div>
+        </div>
+
+        <!-- Reminders Section -->
+        <div class="panel">
+          <h3><i class="fa-solid fa-bell"></i> Reminders</h3>
+          
+          <div style="margin-bottom:16px">
+            <h4 style="margin:0 0 8px 0;font-size:13px;font-weight:600">Reminder 1</h4>
+            <div class="form-group">
+              <textarea id="reminder1" placeholder="Enter first reminder message..." readonly></textarea>
+            </div>
+            <div class="button-group">
+              <button class="btn primary" id="reminder1EditBtn" onclick="toggleReminderEdit(1)"><i class="fa-solid fa-pen"></i> Edit</button>
+              <button class="btn primary" id="reminder1SaveBtn" onclick="saveReminder(1)" style="display:none"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+            </div>
+            <div id="reminder1Modified" style="display:none;margin-top:8px;font-size:13px;color:var(--accent)"><i class="fa-solid fa-circle-info"></i> Changes not saved</div>
+          </div>
+
+          <div>
+            <h4 style="margin:0 0 8px 0;font-size:13px;font-weight:600">Reminder 2</h4>
+            <div class="form-group">
+              <textarea id="reminder2" placeholder="Enter second reminder message..." readonly></textarea>
+            </div>
+            <div class="button-group">
+              <button class="btn primary" id="reminder2EditBtn" onclick="toggleReminderEdit(2)"><i class="fa-solid fa-pen"></i> Edit</button>
+              <button class="btn primary" id="reminder2SaveBtn" onclick="saveReminder(2)" style="display:none"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+            </div>
+            <div id="reminder2Modified" style="display:none;margin-top:8px;font-size:13px;color:var(--accent)"><i class="fa-solid fa-circle-info"></i> Changes not saved</div>
+          </div>
+        </div>
+
+        <!-- Custom Roles Section -->
+        <div class="panel">
+          <h3><i class="fa-solid fa-mask"></i> Custom Roles</h3>
+          <p style="font-size:13px;color:var(--muted);margin:0 0 12px 0">Add up to 10 custom roles for your AI Agent (e.g., Booking Assistant, Support Specialist, Manager)</p>
+          
+          <div class="form-group" style="display:flex;gap:8px;margin-bottom:16px;flex-direction:row">
+            <input type="text" id="newRoleInput" placeholder="Enter role description..." style="flex:1;margin-bottom:0">
+            <button class="btn primary" onclick="addCustomRole()" style="width:auto"><i class="fa-solid fa-plus"></i> Add</button>
+          </div>
+
+          <div id="rolesList" style="margin-bottom:16px;min-height:10px">
+            <!-- Roles will be added here -->
+          </div>
+
+          <div style="padding:12px;background:#f3f4f6;border-radius:8px;font-size:13px;border-left:3px solid var(--accent)">
+            <div style="color:#111">Total Roles: <strong id="roleCount">0</strong>/10</div>
+          </div>
+
+          <div class="button-group">
+            <button class="btn primary" id="rolesEditBtn" onclick="enableRolesEdit()" style="display:none"><i class="fa-solid fa-pen"></i> Edit</button>
+            <button class="btn primary" id="rolesSaveBtn" onclick="saveCustomRoles()" style="display:none"><i class="fa-solid fa-floppy-disk"></i> Save Roles</button>
+          </div>
+          <div id="rolesModified" style="display:none;margin-top:8px;font-size:13px;color:var(--accent)"><i class="fa-solid fa-circle-info"></i> Changes not saved</div>
+        </div>
+
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // Helper function to get proper file path (works on GitHub Pages)
+    function getPagePath(filename) {
+      const currentPath = window.location.pathname;
+      // Check if we're on GitHub Pages (path contains /chaletdashboard/)
+      if(currentPath.includes('/chaletdashboard/')) {
+        return '/chaletdashboard/' + filename;
+      }
+      // Otherwise use relative path (local development)
+      return filename;
+    }
+
+    // Language translations
+    const translations = {
+      en: {
+        dashboard: 'Dashboard',
+        calendar: 'Calendar',
+        units: 'Units',
+        website: 'Website Settings',
+        aiagent: 'AI Agent',
+        completeProfile: 'Complete Profile',
+        changePassword: 'Change Password',
+        changeEmail: 'Change Email',
+        logout: 'Logout'
+      },
+      ar: {
+        dashboard: 'لوحة التحكم',
+        calendar: 'التقويم',
+        units: 'الوحدات',
+        website: 'إعدادات الموقع',
+        aiagent: 'وكيل الذكاء الاصطناعي',
+        completeProfile: 'إكمال الملف الشخصي',
+        changePassword: 'تغيير كلمة المرور',
+        changeEmail: 'تغيير عنوان البريد الإلكتروني',
+        logout: 'تسجيل الخروج'
+      }
+    };
+
+    let currentLanguage = localStorage.getItem('language') || 'en';
+
+    // Current currency
+    let currentCurrency = localStorage.getItem('currency') || 'SAR';
+
+    // Units Groups Management
+    let unitsGroups = JSON.parse(localStorage.getItem('unitsGroups')) || [
+      { id: 'group_1', name: 'Main Hotel', type: 'Hotel Room', license: 'TRN-2024-001' },
+      { id: 'group_2', name: 'Chalets Collection', type: 'Chalet', license: 'TRN-2024-002' }
+    ];
+    let currentGroupId = localStorage.getItem('currentGroupId') || 'group_1';
+
+    function populateGroupSelectors(){
+      const selector = document.getElementById('aiAgentGroupSelector');
+      if(selector){
+        selector.innerHTML = '';
+        // Add "All Groups" option
+        const allOption = document.createElement('option');
+        allOption.value = 'all';
+        allOption.textContent = '📊 All Groups';
+        allOption.selected = currentGroupId === 'all';
+        selector.appendChild(allOption);
+        
+        if(unitsGroups && unitsGroups.length > 0){
+          unitsGroups.forEach(group => {
+            const option = document.createElement('option');
+            option.value = group.id;
+            option.textContent = `${group.name} (${group.type})`;
+            option.selected = group.id === currentGroupId;
+            selector.appendChild(option);
+          });
+        } else {
+          // If no groups found, load from units.html data
+          const savedGroups = JSON.parse(localStorage.getItem('unitsGroups'));
+          if(savedGroups && savedGroups.length > 0){
+            unitsGroups = savedGroups;
+            savedGroups.forEach(group => {
+              const option = document.createElement('option');
+              option.value = group.id;
+              option.textContent = `${group.name} (${group.type})`;
+              option.selected = group.id === currentGroupId;
+              selector.appendChild(option);
+            });
+          }
+        }
+        // Remove any existing listeners by cloning the node
+        const newSelector = selector.cloneNode(true);
+        selector.parentNode.replaceChild(newSelector, selector);
+        
+        // Add the change event listener to the new selector
+        const finalSelector = document.getElementById('aiAgentGroupSelector');
+        finalSelector.addEventListener('change', (e) => {
+          currentGroupId = e.target.value;
+          localStorage.setItem('currentGroupId', currentGroupId);
+          // Trigger any UI updates that depend on currentGroupId
+          if(typeof renderAgentConfig === 'function') renderAgentConfig();
+        });
+      }
+    }
+    let customRoles = [];
+    let aiAgentConfig = {};
+    let welcomeOriginal = '';
+    let reminder1Original = '';
+    let reminder2Original = '';
+    let rolesOriginal = [];
+
+    function setLanguage(lang){
+      currentLanguage = lang;
+      localStorage.setItem('language', lang);
+      document.documentElement.lang = lang;
+      document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+      applyTranslations();
+      updateLanguageButtons();
+    }
+
+    function t(key){
+      const translated = translations[currentLanguage]?.[key] || translations.en[key];
+      return translated || key;
+    }
+
+    function applyTranslations(){
+      document.querySelectorAll('[data-i18n]').forEach(el=>{
+        const key = el.dataset.i18n;
+        el.textContent = t(key);
+      });
+    }
+
+    function updateLanguageButtons(){
+      const enBtn = document.getElementById('langEnglish');
+      const arBtn = document.getElementById('langArabic');
+      if(currentLanguage === 'en'){
+        enBtn.style.color = '#f97316';
+        enBtn.style.fontWeight = '600';
+        arBtn.style.color = '#64748b';
+        arBtn.style.fontWeight = 'normal';
+      } else {
+        arBtn.style.color = '#f97316';
+        arBtn.style.fontWeight = '600';
+        enBtn.style.color = '#64748b';
+        enBtn.style.fontWeight = 'normal';
+      }
+    }
+
+    // Load configuration from localStorage
+    function loadConfiguration(){
+      const saved = localStorage.getItem('aiAgentConfig');
+      if(saved){
+        aiAgentConfig = JSON.parse(saved);
+      } else {
+        aiAgentConfig = {
+          activeConversations: 278,
+          planConversations: 500,
+          bookingMethod: 'full',
+          discountEnabled: false,
+          discountAmount: 0,
+          welcomeMessage: 'Hello! Welcome to Riyadh Getaways. How can I help you today?',
+          reminder1: '',
+          reminder2: '',
+          roles: []
+        };
+      }
+      loadRoles();
+      updateUI();
+    }
+
+    function updateUI(){
+      // Update conversations - display both current and total
+      document.getElementById('activeConvCount').textContent = aiAgentConfig.activeConversations;
+      document.getElementById('totalPlanConv').textContent = aiAgentConfig.planConversations;
+      const convPercent = Math.round((aiAgentConfig.activeConversations / aiAgentConfig.planConversations) * 1000) / 10;
+      document.getElementById('convPercent').textContent = convPercent;
+      document.getElementById('convProgressBar').style.width = convPercent + '%';
+      document.getElementById('convRemaining').textContent = (aiAgentConfig.planConversations - aiAgentConfig.activeConversations) + ' remaining';
+
+      // Update discount
+      document.getElementById('discountToggle').checked = aiAgentConfig.discountEnabled;
+      document.getElementById('discountAmount').value = aiAgentConfig.discountAmount || '';
+      document.getElementById('discountAmountGroup').style.display = aiAgentConfig.discountEnabled ? 'flex' : 'none';
+      document.getElementById('discountPreview').style.display = aiAgentConfig.discountEnabled ? 'block' : 'none';
+      document.getElementById('discountPreviewAmount').textContent = 'SAR ' + (aiAgentConfig.discountAmount || 0);
+
+      // Update welcome message
+      welcomeOriginal = aiAgentConfig.welcomeMessage;
+      document.getElementById('welcomeMessage').value = aiAgentConfig.welcomeMessage;
+      document.getElementById('welcomeCharCount').textContent = aiAgentConfig.welcomeMessage.length;
+      document.getElementById('welcomeModified').style.display = 'none';
+
+      // Update reminders
+      reminder1Original = aiAgentConfig.reminder1 || '';
+      reminder2Original = aiAgentConfig.reminder2 || '';
+      document.getElementById('reminder1').value = aiAgentConfig.reminder1 || '';
+      document.getElementById('reminder2').value = aiAgentConfig.reminder2 || '';
+      document.getElementById('reminder1Modified').style.display = 'none';
+      document.getElementById('reminder2Modified').style.display = 'none';
+
+      // Update roles
+      rolesOriginal = [...aiAgentConfig.roles || []];
+      document.getElementById('rolesModified').style.display = 'none';
+
+      // Update booking method
+      const bookingMethod = aiAgentConfig.bookingMethod || 'full';
+      document.getElementById('bookingFull').checked = (bookingMethod === 'full');
+      document.getElementById('bookingWebsiteOnly').checked = (bookingMethod === 'website_only');
+      updateBookingMethodDisplay();
+    }
+
+    function updateBookingMethodDisplay(){
+      const selectedMethod = document.querySelector('input[name="bookingMethod"]:checked')?.value || 'full';
+      const label1 = document.getElementById('bookingMethodLabel1');
+      const label2 = document.getElementById('bookingMethodLabel2');
+      const infoDiv = document.getElementById('bookingMethodInfo');
+      const infoText = document.getElementById('bookingMethodText');
+
+      label1.style.borderColor = (selectedMethod === 'full') ? '#f97316' : '#e5e7eb';
+      label1.style.background = (selectedMethod === 'full') ? 'rgba(249,115,22,0.05)' : 'transparent';
+      label2.style.borderColor = (selectedMethod === 'website_only') ? '#f97316' : '#e5e7eb';
+      label2.style.background = (selectedMethod === 'website_only') ? 'rgba(249,115,22,0.05)' : 'transparent';
+
+      infoDiv.style.display = 'block';
+      if(selectedMethod === 'full'){
+        infoText.textContent = 'Full Booking - AI Agent can process payments and make reservations';
+      } else {
+        infoText.textContent = 'Website Only - AI Agent provides info and suggestions, redirects for payments';
+      }
+    }
+
+    function updateDiscountPreview(){
+      document.getElementById('discountPreviewAmount').textContent = 'SAR ' + (document.getElementById('discountAmount').value || 0);
+    }
+
+    // Toggle edit mode
+    function toggleDiscountEdit(){
+      const input = document.getElementById('discountAmount');
+      const editBtn = document.getElementById('discountEditBtn');
+      const saveBtn = document.getElementById('discountSaveBtn');
+      input.readOnly = !input.readOnly;
+      editBtn.style.display = input.readOnly ? 'inline-flex' : 'none';
+      saveBtn.style.display = input.readOnly ? 'none' : 'inline-flex';
+    }
+
+    function toggleWelcomeEdit(){
+      const textarea = document.getElementById('welcomeMessage');
+      const editBtn = document.getElementById('welcomeEditBtn');
+      const saveBtn = document.getElementById('welcomeSaveBtn');
+      textarea.readOnly = !textarea.readOnly;
+      if(!textarea.readOnly){
+        editBtn.style.display = 'none';
+      } else {
+        editBtn.style.display = 'inline-flex';
+        saveBtn.style.display = 'none';
+      }
+    }
+
+    function toggleReminderEdit(num){
+      const textarea = document.getElementById('reminder' + num);
+      const editBtn = document.getElementById('reminder' + num + 'EditBtn');
+      const saveBtn = document.getElementById('reminder' + num + 'SaveBtn');
+      textarea.readOnly = !textarea.readOnly;
+      if(!textarea.readOnly){
+        editBtn.style.display = 'none';
+      } else {
+        editBtn.style.display = 'inline-flex';
+        saveBtn.style.display = 'none';
+      }
+    }
+
+    // Discount toggle
+    document.getElementById('discountToggle').addEventListener('change', (e)=>{
+      document.getElementById('discountAmountGroup').style.display = e.target.checked ? 'flex' : 'none';
+      document.getElementById('discountPreview').style.display = e.target.checked ? 'block' : 'none';
+    });
+
+    // Welcome message character count and change detection
+    document.getElementById('welcomeMessage').addEventListener('input', (e)=>{
+      document.getElementById('welcomeCharCount').textContent = e.target.value.length;
+      if(e.target.value.length > 500){
+        e.target.value = e.target.value.substring(0, 500);
+      }
+      // Show save button if content changed
+      if(e.target.value !== welcomeOriginal){
+        document.getElementById('welcomeSaveBtn').style.display = 'inline-flex';
+        document.getElementById('welcomeModified').style.display = 'inline';
+      }
+    });
+
+    // Reminder 1 change detection
+    document.getElementById('reminder1').addEventListener('input', (e)=>{
+      if(e.target.value !== reminder1Original){
+        document.getElementById('reminder1SaveBtn').style.display = 'inline-flex';
+        document.getElementById('reminder1Modified').style.display = 'inline';
+      }
+    });
+
+    // Reminder 2 change detection
+    document.getElementById('reminder2').addEventListener('input', (e)=>{
+      if(e.target.value !== reminder2Original){
+        document.getElementById('reminder2SaveBtn').style.display = 'inline-flex';
+        document.getElementById('reminder2Modified').style.display = 'inline';
+      }
+    });
+
+    function saveDiscountSettings(){
+      aiAgentConfig.discountEnabled = document.getElementById('discountToggle').checked;
+      aiAgentConfig.discountAmount = parseInt(document.getElementById('discountAmount').value) || 0;
+      saveToLocalStorage();
+      toggleDiscountEdit();
+      showNotification('Discount settings saved successfully!');
+    }
+
+    function saveBookingMethod(){
+      const selectedMethod = document.querySelector('input[name="bookingMethod"]:checked')?.value || 'full';
+      aiAgentConfig.bookingMethod = selectedMethod;
+      saveToLocalStorage();
+      showNotification(`✅ Booking method saved! ${selectedMethod === 'full' ? 'Full Booking' : 'Website Only'} mode activated`);
+    }
+
+    function saveWelcomeMessage(){
+      const message = document.getElementById('welcomeMessage').value.trim();
+      if(!message){
+        showNotification('Welcome message cannot be empty');
+        return;
+      }
+      aiAgentConfig.welcomeMessage = message;
+      welcomeOriginal = message;
+      saveToLocalStorage();
+      toggleWelcomeEdit();
+      showNotification('Welcome message saved successfully!');
+    }
+
+    function saveReminder(num){
+      const textarea = document.getElementById('reminder' + num);
+      const message = textarea.value.trim();
+      if(!message){
+        showNotification('Reminder cannot be empty');
+        return;
+      }
+      aiAgentConfig['reminder' + num] = message;
+      if(num === 1) reminder1Original = message;
+      else reminder2Original = message;
+      saveToLocalStorage();
+      toggleReminderEdit(num);
+      showNotification('Reminder ' + num + ' saved successfully!');
+    }
+
+    function addCustomRole(){
+      const input = document.getElementById('newRoleInput');
+      const role = input.value.trim();
+      if(!role){
+        showNotification('Please enter a role description');
+        return;
+      }
+      if(customRoles.length >= 10){
+        showNotification('Maximum 10 roles allowed');
+        return;
+      }
+      if(customRoles.includes(role)){
+        showNotification('This role already exists');
+        return;
+      }
+      customRoles.push(role);
+      input.value = '';
+      renderRoles();
+      updateRoleCount();
+    }
+
+    function removeCustomRole(index){
+      customRoles.splice(index, 1);
+      renderRoles();
+      updateRoleCount();
+    }
+
+    function editCustomRole(index){
+      const currentRole = customRoles[index];
+      const backdrop = document.createElement('div');
+      backdrop.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;z-index:5000';
+      
+      const modal = document.createElement('div');
+      modal.style.cssText = 'background:#fff;border-radius:12px;padding:24px;max-width:400px;box-shadow:0 20px 40px rgba(0,0,0,0.15);animation:slideUp 0.3s ease';
+      modal.innerHTML = `
+        <h3 style="margin:0 0 16px 0;font-size:16px;font-weight:600;color:#0f1729">Edit Role Description</h3>
+        <div style="margin-bottom:16px">
+          <label style="display:block;font-weight:600;font-size:13px;margin-bottom:8px;color:#111">Role Description</label>
+          <input type="text" id="editRoleInput" value="${currentRole}" placeholder="Enter role description" style="width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:8px;font-family:inherit;font-size:14px">
+        </div>
+        <div style="display:flex;gap:8px;justify-content:flex-end">
+          <button style="padding:8px 16px;border:none;background:#f0f0f0;color:#111;border-radius:8px;cursor:pointer;font-weight:600;font-size:13px" onclick="document.querySelector('[data-edit-modal]').parentElement.remove()">Cancel</button>
+          <button style="padding:8px 16px;border:none;background:#f97316;color:#fff;border-radius:8px;cursor:pointer;font-weight:600;font-size:13px" onclick="saveEditedRole(${index}, document.getElementById('editRoleInput').value.trim())">Save</button>
+        </div>
+      `;
+      modal.setAttribute('data-edit-modal', 'true');
+      backdrop.appendChild(modal);
+      document.body.appendChild(backdrop);
+      document.getElementById('editRoleInput').focus();
+      document.getElementById('editRoleInput').select();
+    }
+
+    function saveEditedRole(index, newRole){
+      if(!newRole){
+        showNotification('Role description cannot be empty');
+        return;
+      }
+      if(customRoles.includes(newRole) && customRoles[index] !== newRole){
+        showNotification('This role already exists');
+        return;
+      }
+      customRoles[index] = newRole;
+      document.querySelector('[data-edit-modal]').parentElement.remove();
+      renderRoles();
+      updateRoleCount();
+      showNotification('✅ Role updated successfully!');
+    }
+
+    function renderRoles(){
+      const list = document.getElementById('rolesList');
+      list.innerHTML = '';
+      customRoles.forEach((role, index)=>{
+        const roleDiv = document.createElement('div');
+        roleDiv.className = 'role-item';
+        roleDiv.innerHTML = `
+          <span>${role}</span>
+          <div style="display:flex;gap:6px">
+            <button onclick="editCustomRole(${index})" style="padding:4px 8px;font-size:11px;border:none;background:rgba(59,130,246,0.1);color:#3b82f6;border-radius:4px;cursor:pointer;transition:all .2s"><i class="fa-solid fa-pen"></i> Edit</button>
+            <button onclick="removeCustomRole(${index})" style="padding:4px 8px;font-size:11px;border:none;background:rgba(249,115,22,0.1);color:#f97316;border-radius:4px;cursor:pointer;transition:all .2s"><i class="fa-solid fa-trash"></i> Remove</button>
+          </div>
+        `;
+        list.appendChild(roleDiv);
+      });
+      checkRolesModified();
+    }
+
+    function checkRolesModified(){
+      const saveBtn = document.getElementById('rolesSaveBtn');
+      const editBtn = document.getElementById('rolesEditBtn');
+      const modifiedDiv = document.getElementById('rolesModified');
+      const hasChanged = JSON.stringify(customRoles) !== JSON.stringify(rolesOriginal);
+      if(hasChanged){
+        saveBtn.style.display = 'inline-flex';
+        editBtn.style.display = 'none';
+        modifiedDiv.style.display = 'inline';
+      } else {
+        saveBtn.style.display = 'none';
+        editBtn.style.display = 'none';
+        modifiedDiv.style.display = 'none';
+      }
+    }
+
+    function enableRolesEdit(){
+      document.getElementById('rolesSaveBtn').style.display = 'inline-flex';
+      document.getElementById('rolesEditBtn').style.display = 'none';
+    }
+
+    function updateRoleCount(){
+      document.getElementById('roleCount').textContent = customRoles.length;
+    }
+
+    function loadRoles(){
+      customRoles = aiAgentConfig.roles || [];
+      renderRoles();
+      updateRoleCount();
+    }
+
+    function saveCustomRoles(){
+      aiAgentConfig.roles = customRoles;
+      rolesOriginal = [...customRoles];
+      saveToLocalStorage();
+      checkRolesModified();
+      showNotification('Custom roles saved successfully! Total: ' + customRoles.length);
+    }
+
+    function saveToLocalStorage(){
+      localStorage.setItem('aiAgentConfig', JSON.stringify(aiAgentConfig));
+    }
+
+    function showNotification(message){
+      const backdrop = document.createElement('div');
+      backdrop.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;z-index:5000';
+      const modal = document.createElement('div');
+      modal.style.cssText = 'background:#fff;border-radius:12px;padding:24px;max-width:400px;box-shadow:0 20px 40px rgba(0,0,0,0.15);text-align:center;animation:slideUp 0.3s ease';
+      modal.innerHTML = `<p style="margin:0;color:#111;font-size:14px">${message}</p><button style="margin-top:16px;padding:8px 16px;background:#f97316;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600" onclick="this.parentElement.parentElement.remove()">OK</button>`;
+      backdrop.appendChild(modal);
+      document.body.appendChild(backdrop);
+    }
+
+    // Navigation
+    document.querySelectorAll('.nav-item').forEach(item=>{
+      item.addEventListener('click', (e)=>{
+        e.preventDefault();
+        e.stopPropagation();
+        // Get the closest nav-item (in case user clicked child element)
+        const navItem = e.target.closest('.nav-item');
+        if(!navItem) return;
+        
+        const link = navItem.dataset.link;
+        if(link) {
+          const fullPath = getPagePath(link);
+          console.log('Navigating to:', fullPath);
+          window.location.href = fullPath;
+        }
+      });
+    });
+
+    // Profile menu
+    document.getElementById('profileBtn').addEventListener('click', (e)=>{
+      e.stopPropagation();
+      document.getElementById('profileMenu').classList.toggle('show');
+    });
+
+    document.addEventListener('click', ()=>{
+      document.getElementById('profileMenu').classList.remove('show');
+    });
+
+    // ========== CLIENTS MANAGEMENT ==========
+    let clientsDatabase = JSON.parse(localStorage.getItem('clientsDatabase')) || [
+      {id:1, name:'Ahmed Hassan', phone:'+966501234567', email:'ahmed@example.com', groupId:'group_1', groupName:'Main Hotel', unitId:'HR-305', unitName:'City Studio Deluxe', bookingDates:'2025-10-15 to 2025-10-17', review:'5 stars - Excellent service!', paymentMethod:'Credit Card'},
+      {id:2, name:'Fatima Al-Rashid', phone:'+966591234567', email:'fatima@example.com', groupId:'group_2', groupName:'Chalets Collection', unitId:'CH-101', unitName:'Palm Oasis Chalet', bookingDates:'2025-10-10 to 2025-10-14', review:'5 stars - Amazing experience', paymentMethod:'Debit Card'},
+      {id:3, name:'Mohammad Khan', phone:'+966551234567', email:'mohammad@example.com', groupId:'group_1', groupName:'Main Hotel', unitId:'APT-402', unitName:'Skyline Executive Apartment', bookingDates:'2025-09-20 to 2025-09-22', review:'4 stars - Good location', paymentMethod:'Apple Pay'},
+      {id:4, name:'Sarah Johnson', phone:'+966591111111', email:'sarah.j@example.com', groupId:'group_2', groupName:'Chalets Collection', unitId:'CH-212', unitName:'Desert Bloom Retreat', bookingDates:'2025-09-05 to 2025-09-08', review:'5 stars - Perfect for family', paymentMethod:'Bank Transfer'},
+      {id:5, name:'Abdullah Saeed', phone:'+966561111111', email:'abdullah@example.com', groupId:'group_1', groupName:'Main Hotel', unitId:'HR-305', unitName:'City Studio Deluxe', bookingDates:'2025-08-25 to 2025-08-27', review:'4 stars - Good value', paymentMethod:'Credit Card'},
+      {id:6, name:'Aisha Mohammed', phone:'+966501111111', email:'aisha.m@example.com', groupId:'group_2', groupName:'Chalets Collection', unitId:'CH-101', unitName:'Palm Oasis Chalet', bookingDates:'2025-08-10 to 2025-08-15', review:'5 stars - Highly recommend', paymentMethod:'Debit Card'},
+    ];
+
+    let currentPage = 1;
+    let itemsPerPage = 25;
+    let filteredClients = [...clientsDatabase];
+    let selectedClients = new Set();
+
+    function saveClientsDatabase(){
+      localStorage.setItem('clientsDatabase', JSON.stringify(clientsDatabase));
+    }
+
+    function renderClientsTable(){
+      const startIdx = (currentPage - 1) * itemsPerPage;
+      const endIdx = startIdx + itemsPerPage;
+      const paginatedClients = filteredClients.slice(startIdx, endIdx);
+      
+      const tbody = document.getElementById('clientsTableBody');
+      tbody.innerHTML = '';
+      
+      if(paginatedClients.length === 0){
+        tbody.innerHTML = '<tr><td colspan="10" style="padding:20px;text-align:center;color:#6b7280">No clients found</td></tr>';
+        return;
+      }
+
+      paginatedClients.forEach(client => {
+        const tr = document.createElement('tr');
+        tr.style.borderBottom = '1px solid #e5e7eb';
+        tr.innerHTML = `
+          <td style="padding:12px"><input type="checkbox" class="client-checkbox" value="${client.id}" onchange="updateSelectedCount()"></td>
+          <td style="padding:12px">${client.name}</td>
+          <td style="padding:12px"><a href="tel:${client.phone}" style="color:#f97316;text-decoration:none">${client.phone}</a></td>
+          <td style="padding:12px"><a href="mailto:${client.email}" style="color:#f97316;text-decoration:none;word-break:break-all">${client.email}</a></td>
+          <td style="padding:12px">${client.groupName}</td>
+          <td style="padding:12px">${client.unitName}</td>
+          <td style="padding:12px;font-size:12px">${client.bookingDates}</td>
+          <td style="padding:12px;font-size:12px">${client.review}</td>
+          <td style="padding:12px;font-size:12px">${client.paymentMethod}</td>
+          <td style="padding:12px;text-align:center">
+            <button onclick="editClient(${client.id})" style="background:none;border:none;color:#f97316;cursor:pointer;padding:4px" title="Edit"><i class="fa-solid fa-pen"></i></button>
+            <button onclick="deleteClient(${client.id})" style="background:none;border:none;color:#ef4444;cursor:pointer;padding:4px" title="Delete"><i class="fa-solid fa-trash"></i></button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      // Update pagination info
+      const total = filteredClients.length;
+      document.getElementById('pageStart').textContent = startIdx + 1;
+      document.getElementById('pageEnd').textContent = Math.min(endIdx, total);
+      document.getElementById('totalClients').textContent = total;
+      document.getElementById('pageInput').max = Math.ceil(total / itemsPerPage) || 1;
+      document.getElementById('pageInput').value = currentPage;
+    }
+
+    function applyFilters(){
+      const nameFilter = document.getElementById('filterName').value.toLowerCase();
+      const phoneFilter = document.getElementById('filterPhone').value.toLowerCase();
+      const emailFilter = document.getElementById('filterEmail').value.toLowerCase();
+      const groupFilter = document.getElementById('filterGroup').value;
+      const unitFilter = document.getElementById('filterUnit').value;
+
+      filteredClients = clientsDatabase.filter(client => {
+        const nameMatch = client.name.toLowerCase().includes(nameFilter);
+        const phoneMatch = client.phone.toLowerCase().includes(phoneFilter);
+        const emailMatch = client.email.toLowerCase().includes(emailFilter);
+        const groupMatch = !groupFilter || client.groupId === groupFilter;
+        const unitMatch = !unitFilter || client.unitId === unitFilter;
+        return nameMatch && phoneMatch && emailMatch && groupMatch && unitMatch;
+      });
+
+      currentPage = 1;
+      selectedClients.clear();
+      renderClientsTable();
+      updateFilterDropdowns();
+    }
+
+    function updateFilterDropdowns(){
+      const groupSelect = document.getElementById('filterGroup');
+      const unitSelect = document.getElementById('filterUnit');
+      const groups = new Set(clientsDatabase.map(c => `${c.groupId}|${c.groupName}`));
+      const units = new Set(clientsDatabase.map(c => `${c.unitId}|${c.unitName}`));
+
+      groupSelect.innerHTML = '<option value="">All Groups</option>';
+      groups.forEach(g => {
+        const [id, name] = g.split('|');
+        const opt = document.createElement('option');
+        opt.value = id;
+        opt.textContent = name;
+        groupSelect.appendChild(opt);
+      });
+
+      unitSelect.innerHTML = '<option value="">All Units</option>';
+      units.forEach(u => {
+        const [id, name] = u.split('|');
+        const opt = document.createElement('option');
+        opt.value = id;
+        opt.textContent = name;
+        unitSelect.appendChild(opt);
+      });
+    }
+
+    function clearFilters(){
+      document.getElementById('filterName').value = '';
+      document.getElementById('filterPhone').value = '';
+      document.getElementById('filterEmail').value = '';
+      document.getElementById('filterGroup').value = '';
+      document.getElementById('filterUnit').value = '';
+      applyFilters();
+    }
+
+    function toggleSelectAll(){
+      const checkboxes = document.querySelectorAll('.client-checkbox');
+      const isChecked = document.getElementById('selectAllCheckbox').checked;
+      checkboxes.forEach(cb => {
+        cb.checked = isChecked;
+        if(isChecked){
+          selectedClients.add(Number(cb.value));
+        } else {
+          selectedClients.delete(Number(cb.value));
+        }
+      });
+      updateSelectedCount();
+    }
+
+    function updateSelectedCount(){
+      const checkboxes = document.querySelectorAll('.client-checkbox:checked');
+      selectedClients.clear();
+      checkboxes.forEach(cb => selectedClients.add(Number(cb.value)));
+      document.getElementById('selectedCount').textContent = selectedClients.size;
+    }
+
+    function previousPage(){
+      if(currentPage > 1){
+        currentPage--;
+        renderClientsTable();
+      }
+    }
+
+    function nextPage(){
+      const maxPages = Math.ceil(filteredClients.length / itemsPerPage);
+      if(currentPage < maxPages){
+        currentPage++;
+        renderClientsTable();
+      }
+    }
+
+    function goToPage(){
+      const pageNum = Number(document.getElementById('pageInput').value);
+      const maxPages = Math.ceil(filteredClients.length / itemsPerPage);
+      if(pageNum >= 1 && pageNum <= maxPages){
+        currentPage = pageNum;
+        renderClientsTable();
+      } else {
+        alert(`Please enter a page number between 1 and ${maxPages}`);
+      }
+    }
+
+    function deleteClient(clientId){
+      if(confirm('Are you sure you want to delete this client?')){
+        clientsDatabase = clientsDatabase.filter(c => c.id !== clientId);
+        saveClientsDatabase();
+        applyFilters();
+      }
+    }
+
+    function editClient(clientId){
+      const client = clientsDatabase.find(c => c.id === clientId);
+      if(!client) return;
+
+      const backdrop = document.createElement('div');
+      backdrop.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;z-index:5000';
+      backdrop.id = 'editClientBackdrop';
+      
+      const modal = document.createElement('div');
+      modal.style.cssText = 'background:#fff;border-radius:12px;padding:24px;max-width:700px;width:90%;box-shadow:0 20px 40px rgba(0,0,0,0.15);max-height:90vh;overflow-y:auto';
+      modal.innerHTML = `
+        <h3 style="margin:0 0 20px 0;font-size:18px;font-weight:600">Edit Client</h3>
+        <div style="margin-bottom:16px">
+          <label style="display:block;font-weight:600;font-size:13px;margin-bottom:8px">Name</label>
+          <input type="text" id="editName" value="${client.name}" style="width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:8px;font-family:inherit;font-size:14px">
+        </div>
+        <div style="margin-bottom:16px">
+          <label style="display:block;font-weight:600;font-size:13px;margin-bottom:8px">Phone</label>
+          <input type="tel" id="editPhone" value="${client.phone}" style="width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:8px;font-family:inherit;font-size:14px">
+        </div>
+        <div style="margin-bottom:20px">
+          <label style="display:block;font-weight:600;font-size:13px;margin-bottom:8px">Email</label>
+          <input type="email" id="editEmail" value="${client.email}" style="width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:8px;font-family:inherit;font-size:14px">
+        </div>
+        <div style="display:flex;gap:8px;justify-content:flex-end">
+          <button id="cancelEditBtn" style="padding:10px 20px;border:none;background:#f0f0f0;color:#111;border-radius:8px;cursor:pointer;font-weight:600;font-size:13px">Cancel</button>
+          <button id="saveEditBtn" data-client-id="${clientId}" style="padding:10px 20px;border:none;background:#f97316;color:#fff;border-radius:8px;cursor:pointer;font-weight:600;font-size:13px">Save</button>
+        </div>
+      `;
+      backdrop.appendChild(modal);
+      document.body.appendChild(backdrop);
+      
+      // Add event listeners
+      document.getElementById('cancelEditBtn').addEventListener('click', () => backdrop.remove());
+      document.getElementById('saveEditBtn').addEventListener('click', function() {
+        saveEditedClient(this.dataset.clientId);
+        backdrop.remove();
+      });
+    }
+
+    function saveEditedClient(clientId){
+      const client = clientsDatabase.find(c => c.id === clientId);
+      if(!client) return;
+
+      const name = document.getElementById('editName').value.trim();
+      const phone = document.getElementById('editPhone').value.trim();
+      const email = document.getElementById('editEmail').value.trim();
+
+      if(!name || !phone || !email){
+        alert('Please fill in all fields');
+        return;
+      }
+
+      client.name = name;
+      client.phone = phone;
+      client.email = email;
+      saveClientsDatabase();
+      applyFilters();
+    }
+
+    function exportClients(type){
+      let toExport = [];
+      if(type === 'all'){
+        toExport = filteredClients;
+      } else if(type === 'selected'){
+        toExport = filteredClients.filter(c => selectedClients.has(c.id));
+        if(toExport.length === 0){
+          alert('Please select at least one client to export');
+          return;
+        }
+      }
+
+      // Create CSV
+      const headers = ['Name', 'Phone', 'Email', 'Last Group', 'Last Unit', 'Last Booking', 'Review', 'Payment Method'];
+      const rows = toExport.map(c => [c.name, c.phone, c.email, c.groupName, c.unitName, c.bookingDates, c.review, c.paymentMethod]);
+      
+      let csv = headers.join(',') + '\n';
+      rows.forEach(row => {
+        csv += row.map(cell => `"${cell}"`).join(',') + '\n';
+      });
+
+      const blob = new Blob([csv], {type: 'text/csv;charset=utf-8;'});
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `clients_${new Date().getTime()}.csv`;
+      link.click();
+    }
+
+    function openCampaignModal(){
+      if(selectedClients.size === 0){
+        alert('Please select at least one client for the campaign');
+        return;
+      }
+
+      const remainingConv = Number(document.getElementById('convRemaining').textContent);
+      const backdrop = document.createElement('div');
+      backdrop.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;z-index:5001';
+      backdrop.id = 'campaignBackdrop';
+      
+      const modal = document.createElement('div');
+      modal.style.cssText = 'background:#fff;border-radius:12px;padding:24px;max-width:600px;box-shadow:0 20px 40px rgba(0,0,0,0.15);max-height:90vh;overflow-y:auto';
+      
+      const now = new Date();
+      const minDate = new Date(now.getTime() + 48 * 60 * 60 * 1000);
+      const minDateTime = minDate.toISOString().slice(0, 16);
+      const totalCost = selectedClients.size * 0.2;
+
+      modal.innerHTML = `
+        <h3 style="margin:0 0 20px 0;font-size:18px;font-weight:600">Create WhatsApp Campaign</h3>
+        
+        <div style="padding:12px;background:#fef3c7;border:1px solid #fcd34d;border-radius:8px;margin-bottom:16px;font-size:13px;color:#92400e">
+          <strong>📱 Recipients:</strong> ${selectedClients.size} contacts selected
+        </div>
+
+        <div style="margin-bottom:16px">
+          <label style="display:block;font-weight:600;font-size:13px;margin-bottom:8px">Message Content *</label>
+          <textarea id="campaignMessage" placeholder="Enter your message..." style="width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:8px;font-family:inherit;font-size:14px;height:120px;resize:vertical"></textarea>
+          <small style="color:#6b7280">Messages will be sent to selected contacts via WhatsApp</small>
+        </div>
+
+        <div style="margin-bottom:16px">
+          <label style="display:block;font-weight:600;font-size:13px;margin-bottom:8px">Add Attachment</label>
+          <select id="attachmentType" onchange="updateAttachmentUI()" style="width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:8px;font-family:inherit;font-size:14px;margin-bottom:8px">
+            <option value="none">No Attachment</option>
+            <option value="photo">Photo</option>
+            <option value="video">Video</option>
+            <option value="document">Document</option>
+          </select>
+          <input type="file" id="attachmentFile" style="display:none;width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:8px;font-size:14px">
+          <div id="attachmentPreview" style="margin-top:8px;font-size:12px;color:#6b7280"></div>
+        </div>
+
+        <div style="margin-bottom:20px">
+          <label style="display:block;font-weight:600;font-size:13px;margin-bottom:8px">Schedule Campaign *</label>
+          <input type="datetime-local" id="campaignDateTime" min="${minDateTime}" value="${minDateTime}" style="width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:8px;font-family:inherit;font-size:14px">
+          <small style="color:#6b7280">Minimum 48 hours from now</small>
+        </div>
+
+        <!-- Cost Summary -->
+        <div style="padding:12px;background:#f0f9ff;border:1px solid #bfdbfe;border-radius:8px;margin-bottom:16px;font-size:13px;color:#0c4a6e">
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+            <span>Recipients:</span>
+            <strong>${selectedClients.size}</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+            <span>Cost per message:</span>
+            <strong>0.2 SR</strong>
+          </div>
+          <div style="border-top:1px solid #bfdbfe;padding-top:8px;display:flex;justify-content:space-between">
+            <span style="font-weight:600">Total Cost:</span>
+            <strong style="font-size:16px">${totalCost.toFixed(2)} SR</strong>
+          </div>
+        </div>
+
+        <div id="limitWarning" style="display:none;padding:12px;background:#fee2e2;border:1px solid #fca5a5;border-radius:8px;margin-bottom:16px;font-size:13px;color:#991b1b">
+          <strong>⚠️ Limit Exceeded:</strong> <span id="warningText"></span>
+          <button class="btn primary" onclick="goToUpgrade()" style="margin-top:8px;width:100%;padding:10px">Upgrade Plan</button>
+        </div>
+
+        <div style="display:flex;gap:8px;justify-content:flex-end">
+          <button id="cancelCampaignBtn" style="padding:10px 20px;border:none;background:#f0f0f0;color:#111;border-radius:8px;cursor:pointer;font-weight:600;font-size:13px">Cancel</button>
+          <button style="padding:10px 20px;border:none;background:#f97316;color:#fff;border-radius:8px;cursor:pointer;font-weight:600;font-size:13px" onclick="submitCampaign()">Submit Campaign</button>
+        </div>
+      `;
+      backdrop.appendChild(modal);
+      document.body.appendChild(backdrop);
+      document.getElementById('attachmentFile').addEventListener('change', updateAttachmentPreview);
+      document.getElementById('cancelCampaignBtn').addEventListener('click', () => backdrop.remove());
+    }
+
+    function updateAttachmentUI(){
+      const type = document.getElementById('attachmentType').value;
+      const fileInput = document.getElementById('attachmentFile');
+      if(type === 'none'){
+        fileInput.style.display = 'none';
+        fileInput.value = '';
+      } else {
+        fileInput.style.display = 'block';
+        const accepts = type === 'photo' ? 'image/*' : type === 'video' ? 'video/*' : 'application/pdf,.doc,.docx';
+        fileInput.accept = accepts;
+      }
+    }
+
+    function updateAttachmentPreview(){
+      const file = document.getElementById('attachmentFile').files[0];
+      const preview = document.getElementById('attachmentPreview');
+      if(file){
+        preview.innerHTML = `<i class="fa-solid fa-check" style="color:#10b981"></i> ${file.name} (${(file.size/1024/1024).toFixed(2)} MB)`;
+      }
+    }
+
+    function submitCampaign(){
+      const message = document.getElementById('campaignMessage').value.trim();
+      const dateTime = document.getElementById('campaignDateTime').value;
+      const attachmentType = document.getElementById('attachmentType').value;
+      const remainingConv = Number(document.getElementById('convRemaining').textContent);
+
+      if(!message){
+        alert('Please enter a message');
+        return;
+      }
+
+      if(selectedClients.size > remainingConv){
+        document.getElementById('warningText').innerHTML = `You have only <strong>${remainingConv}</strong> conversations remaining, but selected <strong>${selectedClients.size}</strong> contacts.`;
+        document.getElementById('limitWarning').style.display = 'block';
+        return;
+      }
+
+      if(attachmentType !== 'none'){
+        const file = document.getElementById('attachmentFile').files[0];
+        if(!file){
+          alert('Please select an attachment file');
+          return;
+        }
+      }
+
+      const scheduledDate = new Date(dateTime).toLocaleString();
+      const totalCost = selectedClients.size * 0.2;
+
+      // Show success notification with better design
+      const backdrop = document.getElementById('campaignBackdrop');
+      if(backdrop) backdrop.remove();
+
+      const successBackdrop = document.createElement('div');
+      successBackdrop.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;z-index:5002';
+      
+      const successModal = document.createElement('div');
+      successModal.style.cssText = 'background:#fff;border-radius:16px;padding:40px;max-width:500px;box-shadow:0 20px 40px rgba(0,0,0,0.15);text-align:center';
+      
+      successModal.innerHTML = `
+        <div style="font-size:48px;margin-bottom:16px">✅</div>
+        <h2 style="margin:0 0 12px 0;font-size:24px;font-weight:700;color:#111">Campaign Scheduled!</h2>
+        <p style="margin:0 0 20px 0;color:#6b7280;font-size:14px">Your WhatsApp campaign has been created successfully</p>
+        
+        <div style="background:#f0f9ff;border-radius:12px;padding:16px;margin-bottom:20px;text-align:left;font-size:13px;color:#0c4a6e">
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid #bfdbfe">
+            <span>Start Time:</span>
+            <strong>${scheduledDate}</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid #bfdbfe">
+            <span>Recipients:</span>
+            <strong>${selectedClients.size} contacts</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between">
+            <span>Total Cost:</span>
+            <strong>${totalCost.toFixed(2)} SR</strong>
+          </div>
+        </div>
+
+        <button onclick="this.closest('[style*=position:fixed]').remove(); location.reload();" style="width:100%;padding:12px;border:none;background:#f97316;color:#fff;border-radius:8px;cursor:pointer;font-weight:600;font-size:14px">Close & Return</button>
+      `;
+      
+      successBackdrop.appendChild(successModal);
+      document.body.appendChild(successBackdrop);
+      
+      // Auto close after 5 seconds if user doesn't click
+      setTimeout(() => {
+        if(document.body.contains(successBackdrop)){
+          successBackdrop.remove();
+          window.location.reload();
+        }
+      }, 5000);
+    }
+
+    function goToUpgrade(){
+      alert('Redirecting to upgrade page...');
+    }
+
+    // Filter event listeners
+    document.getElementById('filterName').addEventListener('input', applyFilters);
+    document.getElementById('filterPhone').addEventListener('input', applyFilters);
+    document.getElementById('filterEmail').addEventListener('input', applyFilters);
+    document.getElementById('filterGroup').addEventListener('change', applyFilters);
+    document.getElementById('filterUnit').addEventListener('change', applyFilters);
+
+    // Language buttons
+    document.getElementById('langEnglish').addEventListener('click', ()=>setLanguage('en'));
+    document.getElementById('langArabic').addEventListener('click', ()=>setLanguage('ar'));
+
+    // Currency and Language switchers
+    function updateCurrencyButtons(){
+      const usdBtn = document.getElementById('currencyUSD');
+      const sarBtn = document.getElementById('currencySAR');
+      const eurBtn = document.getElementById('currencyEUR');
+      
+      // Reset all buttons
+      [usdBtn, sarBtn, eurBtn].forEach(btn => {
+        btn.style.color = '#64748b';
+        btn.style.fontWeight = 'normal';
+      });
+      
+      // Highlight selected currency
+      if(currentCurrency === 'USD') usdBtn.style.color = '#f97316';
+      else if(currentCurrency === 'SAR') sarBtn.style.color = '#f97316';
+      else if(currentCurrency === 'EUR') eurBtn.style.color = '#f97316';
+      
+      // Update font weight for active
+      const activeBtn = document.getElementById('currency' + currentCurrency);
+      if(activeBtn) activeBtn.style.fontWeight = '600';
+    }
+
+    function setCurrency(currency){
+      currentCurrency = currency;
+      localStorage.setItem('currency', currency);
+      updateCurrencyButtons();
+    }
+
+    function updateLanguageButtons(){
+      const enBtn = document.getElementById('langEnglish');
+      const arBtn = document.getElementById('langArabic');
+      if(currentLanguage === 'en'){
+        enBtn.style.color = '#f97316';
+        enBtn.style.fontWeight = '600';
+        arBtn.style.color = '#64748b';
+        arBtn.style.fontWeight = 'normal';
+      } else {
+        arBtn.style.color = '#f97316';
+        arBtn.style.fontWeight = '600';
+        enBtn.style.color = '#64748b';
+        enBtn.style.fontWeight = 'normal';
+      }
+    }
+
+    // Initialize currency and language buttons
+    updateCurrencyButtons();
+    updateLanguageButtons();
+    document.getElementById('currencyUSD').addEventListener('click', () => { setCurrency('USD'); });
+    document.getElementById('currencySAR').addEventListener('click', () => { setCurrency('SAR'); });
+    document.getElementById('currencyEUR').addEventListener('click', () => { setCurrency('EUR'); });
+
+    // Logout
+    document.getElementById('logoutBtn').addEventListener('click', ()=>{
+      document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:Inter"><div style="text-align:center"><h2>You are logged out</h2><p>Simulation only. Reload to return.</p></div></div>';
+    });
+
+    // Initialize
+    setLanguage(currentLanguage);
+    populateGroupSelectors();
+    loadConfiguration();
+  </script>
+</body>
+</html>

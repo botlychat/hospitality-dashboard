@@ -1,0 +1,860 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <base href="/chaletdashboard/">
+  <title>Contacts — Hospitality Booking Admin</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root{--bg:#f5f7fa;--bg-gradient:linear-gradient(130deg,#f5f7fa 0%,#f0f4ff 32%,#fff8f2 100%);--sidebar:#0f1729;--accent:#f97316;--accent-soft:rgba(249,115,22,0.12);--muted:#64748b;--card:#fff;--stroke:#e5e7eb}
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{font-family:Inter,Segoe UI,Arial;background:var(--bg-gradient);margin:0;color:#111;position:relative;overflow-x:hidden}
+    body::before{content:"";position:fixed;inset:0;background:radial-gradient(circle at 15% 20%,rgba(249,115,22,0.18),transparent 46%),radial-gradient(circle at 85% -10%,rgba(99,102,241,0.18),transparent 45%);pointer-events:none;opacity:.7}
+    .app{display:flex;min-height:100vh;position:relative;z-index:1}
+    .sidebar{width:260px;background:var(--sidebar);color:#fff;display:flex;flex-direction:column;padding:22px 20px;gap:18px;box-shadow:6px 0 24px rgba(15,23,41,0.12);overflow-y:auto}
+    .brand{display:flex;align-items:center;gap:14px}
+    .brand .logo{width:46px;height:46px;border-radius:14px;background:linear-gradient(140deg,var(--accent),#fdba74);display:flex;align-items:center;justify-content:center;font-weight:700;letter-spacing:.3px}
+    .brand h1{font-size:17px;margin:0}
+    nav{display:flex;flex-direction:column;gap:6px}
+    .nav-item{display:flex;align-items:center;gap:12px;padding:11px;border-radius:10px;color:#d6d9df;cursor:pointer;transition:background .2s ease,transform .2s ease;user-select:none}
+    .nav-item:hover,.nav-item.active{background:rgba(255,255,255,0.1);color:#fff;transform:translateX(2px)}
+    .nav-item i{width:20px;text-align:center}
+    .sidebar-footer{margin-top:auto;font-size:13px;color:rgba(255,255,255,0.55)}
+
+    .main{flex:1;display:flex;flex-direction:column}
+    .header{height:70px;background:rgba(255,255,255,0.82);backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:space-between;padding:0 26px;border-bottom:1px solid rgba(15,23,41,0.06);gap:12px;position:sticky;top:0;z-index:5}
+    .header .left{display:flex;align-items:center;gap:18px}
+    .profile{display:flex;align-items:center;gap:10px;cursor:pointer;position:relative}
+    .avatar{width:36px;height:36px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700}
+    .profile-menu{position:absolute;right:0;top:48px;background:#fff;border-radius:8px;box-shadow:0 8px 24px rgba(16,24,40,0.12);min-width:180px;overflow:hidden;display:none;z-index:10}
+    .profile-menu.show{display:block}
+    .profile-menu button{width:100%;padding:10px 12px;border:none;background:transparent;text-align:left;cursor:pointer;transition:background .2s;user-select:none;font-size:13px}
+    .profile-menu button:hover{background:#f3f4f6}
+
+    .content{padding:24px;display:flex;flex-direction:column;gap:22px;overflow-y:auto}
+
+    .panel{background:var(--card);padding:18px;border-radius:16px;box-shadow:0 14px 30px rgba(15,23,41,0.08)}
+    .panel h3{margin:0 0 12px 0;font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px}
+
+    .btn{padding:8px 14px;border-radius:10px;border:none;cursor:pointer;font-weight:600;font-size:13px;transition:all .2s ease;user-select:none;display:inline-flex;align-items:center;gap:6px}
+    .btn.primary{background:var(--accent);color:#fff;box-shadow:0 10px 24px rgba(249,115,22,0.26)}
+    .btn.primary:hover{filter:brightness(.92)}
+    .btn.ghost{background:#f0f0f0;color:#111;border:1px solid #ddd}
+    .btn.ghost:hover{background:#e5e5e5}
+    .btn:disabled{opacity:0.5;cursor:not-allowed}
+
+    .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.45);display:none;align-items:center;justify-content:center;padding:20px;z-index:1000}
+    .modal-backdrop.show{display:flex}
+    .modal{background:#fff;border-radius:16px;max-width:720px;width:100%;max-height:90vh;overflow:auto;padding:22px 20px;box-shadow:0 24px 48px rgba(15,23,41,0.18)}
+    .modal .modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}
+
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--stroke);font-size:13px}
+    th{font-weight:600;color:var(--muted);background:rgba(15,23,41,0.02)}
+    td{color:#111}
+
+    @media(max-width:980px){.sidebar{display:none}.content{padding:18px}}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand"><div class="logo">RG</div><h1>Riyadh Getaways</h1></div>
+      <nav>
+        <div class="nav-item" data-link="dashboard.html"><i class="fa-solid fa-gauge"></i> <span data-i18n="dashboard">Dashboard</span></div>
+        <div class="nav-item" data-link="calendar.html"><i class="fa-regular fa-calendar"></i> <span data-i18n="calendar">Calendar</span></div>
+        <div class="nav-item" data-link="units.html"><i class="fa-solid fa-building"></i> <span data-i18n="units">Units</span></div>
+        <div class="nav-item" data-link="website.html"><i class="fa-solid fa-globe"></i> <span data-i18n="website">Website Settings</span></div>
+        <div class="nav-item" data-link="aiagent.html"><i class="fa-solid fa-robot"></i> <span data-i18n="aiagent">AI Agent</span></div>
+        <div class="nav-item active" data-link="contacts.html"><i class="fa-solid fa-address-book"></i> <span data-i18n="contacts">Contacts</span></div>
+      </nav>
+      <div class="sidebar-footer">© <strong>Riyadh Getaways</strong><br>Admin Dashboard</div>
+    </aside>
+
+    <main class="main">
+      <header class="header">
+        <div class="left">
+          <h2 style="margin:0">Contacts Management</h2>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <div class="profile" id="profileBtn" tabindex="0">
+            <div style="text-align:right;margin-right:8px;font-size:13px"><div style="font-weight:700" data-i18n="admin">Admin</div><div style="font-size:12px;color:var(--muted)">riyadh@getaways</div></div>
+            <div class="avatar">A</div>
+            <div class="profile-menu" id="profileMenu">
+              <button id="profileSettings" data-i18n="completeProfile">Complete Profile</button>
+              <button id="changePassword" data-i18n="changePassword">Change Password</button>
+              <button id="changeEmail" data-i18n="changeEmail">Change Email</button>
+              <div style="border-top:1px solid #e5e7eb;padding:8px 0;margin:8px 0;display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap">
+                <button id="currencyUSD" style="display:flex;align-items:center;gap:4px;padding:8px 10px;border:none;background:transparent;cursor:pointer;font-size:12px;font-weight:600;color:#f97316;border-radius:6px;transition:all 0.2s ease" title="US Dollar">
+                  USD
+                </button>
+                <button id="currencySAR" style="display:flex;align-items:center;gap:4px;padding:8px 10px;border:none;background:transparent;cursor:pointer;font-size:12px;font-weight:600;color:#64748b;border-radius:6px;transition:all 0.2s ease" title="Saudi Riyal">
+                  SAR
+                </button>
+                <button id="currencyEUR" style="display:flex;align-items:center;gap:4px;padding:8px 10px;border:none;background:transparent;cursor:pointer;font-size:12px;font-weight:600;color:#64748b;border-radius:6px;transition:all 0.2s ease" title="Euro">
+                  EUR
+                </button>
+                <div style="width:1px;height:16px;background:#e5e7eb"></div>
+                <button id="langEnglish" style="width:auto;padding:8px 10px;border:none;background:transparent;cursor:pointer;font-size:12px;border-radius:6px;font-weight:600;color:#f97316;transition:all 0.2s ease" title="English">EN</button>
+                <button id="langArabic" style="width:auto;padding:8px 10px;border:none;background:transparent;cursor:pointer;font-size:12px;border-radius:6px;color:#64748b;transition:all 0.2s ease" title="العربية">AR</button>
+              </div>
+              <button id="logoutBtn" data-i18n="logout">Logout</button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section class="content">
+        <div class="panel">
+          <h3><i class="fa-solid fa-users"></i> Contacts Management</h3>
+          
+          <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap">
+            <button class="btn primary" onclick="openCampaignModal()"><i class="fa-solid fa-envelope"></i> WhatsApp Campaign</button>
+            <button class="btn ghost" onclick="exportClients('all')"><i class="fa-solid fa-download"></i> Export All</button>
+            <button class="btn ghost" onclick="exportClients('selected')"><i class="fa-solid fa-download"></i> Export Selected</button>
+          </div>
+
+          <!-- Filters -->
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:16px;padding:12px;background:#f9fafb;border-radius:8px">
+            <input type="text" id="filterName" placeholder="Filter by name..." style="padding:8px;border:1px solid #e5e7eb;border-radius:6px;font-size:13px">
+            <input type="text" id="filterPhone" placeholder="Filter by phone..." style="padding:8px;border:1px solid #e5e7eb;border-radius:6px;font-size:13px">
+            <input type="text" id="filterEmail" placeholder="Filter by email..." style="padding:8px;border:1px solid #e5e7eb;border-radius:6px;font-size:13px">
+            <select id="filterGroup" style="padding:8px;border:1px solid #e5e7eb;border-radius:6px;font-size:13px">
+              <option value="">All Groups</option>
+            </select>
+            <select id="filterUnit" style="padding:8px;border:1px solid #e5e7eb;border-radius:6px;font-size:13px">
+              <option value="">All Units</option>
+            </select>
+            <button class="btn ghost" onclick="clearFilters()" style="padding:8px">Clear Filters</button>
+          </div>
+
+          <!-- Contacts Table -->
+          <div style="overflow-x:auto;margin-bottom:16px">
+            <table>
+              <thead>
+                <tr style="background:#f3f4f6;border-bottom:1px solid #e5e7eb">
+                  <th><input type="checkbox" id="selectAllCheckbox" onchange="toggleSelectAll()"></th>
+                  <th>Name</th>
+                  <th>Phone</th>
+                  <th>Email</th>
+                  <th>Last Group</th>
+                  <th>Last Unit</th>
+                  <th>Last Booking</th>
+                  <th>Review</th>
+                  <th>Payment</th>
+                  <th style="text-align:center">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="clientsTableBody">
+                <!-- Populated by JavaScript -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Pagination -->
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:#f9fafb;border-radius:8px">
+            <div style="font-size:13px;color:#6b7280">
+              Showing <strong id="pageStart">1</strong>-<strong id="pageEnd">25</strong> of <strong id="totalClients">0</strong> contacts
+            </div>
+            <div style="display:flex;gap:8px">
+              <button class="btn ghost" onclick="previousPage()" style="padding:6px 12px;font-size:12px"><i class="fa-solid fa-chevron-left"></i></button>
+              <input type="number" id="pageInput" min="1" style="width:50px;padding:6px;border:1px solid #e5e7eb;border-radius:6px;font-size:12px;text-align:center">
+              <button class="btn ghost" onclick="goToPage()" style="padding:6px 12px;font-size:12px">Go</button>
+              <button class="btn ghost" onclick="nextPage()" style="padding:6px 12px;font-size:12px"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+          </div>
+
+          <div style="margin-top:12px;font-size:12px;color:#6b7280">
+            Selected: <strong id="selectedCount">0</strong> contacts
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modal for campaigns -->
+  <div class="modal-backdrop" id="campaignBackdrop">
+    <div class="modal" id="campaignModal">
+      <h3 style="margin-top:0">Send WhatsApp Campaign</h3>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div>
+          <label style="font-weight:600;font-size:13px;display:block;margin-bottom:6px">Recipients <span style="color:#ef4444">*</span></label>
+          <div id="recipientsList" style="padding:12px;background:#f9fafb;border-radius:8px;border:1px solid #e5e7eb;min-height:40px;font-size:13px;color:#6b7280">Loading...</div>
+        </div>
+        <div>
+          <label style="font-weight:600;font-size:13px;display:block;margin-bottom:6px">Schedule Date & Time <span style="color:#ef4444">*</span></label>
+          <div style="position:relative;margin-bottom:8px">
+            <input type="text" id="campaignDateTimeDisplay" placeholder="Select date and time from calendar..." readonly style="width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:8px;font-size:13px;background:#f9fafb;cursor:pointer">
+            <i class="fa-solid fa-calendar" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#6b7280;pointer-events:none"></i>
+          </div>
+          <div id="campaignCalendarPicker" style="display:none;background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:12px;position:absolute;z-index:1000;width:300px;box-shadow:0 10px 25px rgba(0,0,0,0.1)">
+            <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:12px" id="campaignCalendarDays"></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+              <div><input type="number" id="campaignHour" placeholder="Hour (0-23)" min="0" max="23" style="width:100%;padding:8px;border:1px solid #e5e7eb;border-radius:6px;font-size:12px;text-align:center"></div>
+              <div><input type="number" id="campaignMinute" placeholder="Min (0-59)" min="0" max="59" style="width:100%;padding:8px;border:1px solid #e5e7eb;border-radius:6px;font-size:12px;text-align:center"></div>
+            </div>
+            <div style="display:flex;gap:8px">
+              <button style="flex:1;padding:6px 10px;border:1px solid #e5e7eb;background:#f9fafb;border-radius:6px;font-size:12px;cursor:pointer;font-weight:600" onclick="closeCampaignCalendar()">Cancel</button>
+              <button style="flex:1;padding:6px 10px;border:none;background:#f97316;color:#fff;border-radius:6px;font-size:12px;cursor:pointer;font-weight:600" onclick="confirmCampaignDateTime()">Confirm</button>
+            </div>
+          </div>
+          <small style="color:#6b7280;margin-top:4px;display:block">Click the field to open calendar. Campaigns must be scheduled at least 48 hours in advance.</small>
+          <input type="hidden" id="campaignDate">
+        </div>
+        <div>
+          <label style="font-weight:600;font-size:13px;display:block;margin-bottom:6px">Message</label>
+          <textarea id="campaignMessage" placeholder="Enter your message..." style="width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:8px;font-size:13px;font-family:inherit;resize:vertical;min-height:100px"></textarea>
+          <small style="color:#6b7280;margin-top:4px;display:block">Characters: <span id="msgCharCount">0</span>/500</small>
+        </div>
+        <div>
+          <label style="font-weight:600;font-size:13px;display:block;margin-bottom:6px">Attachment (Optional)</label>
+          <div style="display:flex;align-items:center;gap:8px">
+            <input type="file" id="campaignAttachment" style="flex:1;padding:10px;border:1px solid #e5e7eb;border-radius:8px;font-size:13px">
+            <span id="attachmentInfo" style="font-size:12px;color:#6b7280">No file selected</span>
+          </div>
+          <small style="color:#6b7280;margin-top:4px;display:block">Max size: 10 MB (Images, PDFs, Videos)</small>
+        </div>
+        <div style="padding:12px;background:#f0f9ff;border-radius:8px;border:1px solid #bfdbfe;border-left:3px solid #3b82f6">
+          <div style="font-size:13px;color:#0c4a6e">
+            <strong>Cost Summary:</strong><br>
+            Recipients: <span id="costRecipients">0</span> × 0.2 SR = <strong id="totalCost">0</strong> SR
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button class="btn ghost" onclick="closeCampaignModal()">Cancel</button>
+          <button class="btn primary" onclick="submitCampaign()">Send Campaign</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for editing contacts -->
+  <div class="modal-backdrop" id="editContactBackdrop">
+    <div class="modal" id="editContactModal">
+      <h3 style="margin-top:0">Edit Contact</h3>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div>
+          <label style="font-weight:600;font-size:13px;display:block;margin-bottom:6px">Name</label>
+          <input id="editContactName" type="text" placeholder="Contact name" style="width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:8px;font-size:13px">
+        </div>
+        <div>
+          <label style="font-weight:600;font-size:13px;display:block;margin-bottom:6px">Phone</label>
+          <input id="editContactPhone" type="text" placeholder="Phone number" style="width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:8px;font-size:13px">
+        </div>
+        <div>
+          <label style="font-weight:600;font-size:13px;display:block;margin-bottom:6px">Email</label>
+          <input id="editContactEmail" type="email" placeholder="Email address" style="width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:8px;font-size:13px">
+        </div>
+        <div>
+          <label style="font-weight:600;font-size:13px;display:block;margin-bottom:6px">Group</label>
+          <select id="editContactGroup" style="width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:8px;font-size:13px">
+            <option value="">Select Group</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-weight:600;font-size:13px;display:block;margin-bottom:6px">Unit</label>
+          <select id="editContactUnit" style="width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:8px;font-size:13px">
+            <option value="">Select Unit</option>
+          </select>
+        </div>
+        <div class="modal-actions">
+          <button class="btn ghost" onclick="closeEditContactModal()">Cancel</button>
+          <button class="btn primary" onclick="saveEditContact()">Save Contact</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Helper function to get proper file path (works on GitHub Pages)
+    function getPagePath(filename) {
+      const currentPath = window.location.pathname;
+      // Check if we're on GitHub Pages (path contains /chaletdashboard/)
+      if(currentPath.includes('/chaletdashboard/')) {
+        return '/chaletdashboard/' + filename;
+      }
+      // Otherwise use relative path (local development)
+      return filename;
+    }
+
+    // Navigation handler
+    document.querySelectorAll('.nav-item').forEach(n=>{
+      n.addEventListener('click',(e)=>{
+        e.preventDefault();
+        e.stopPropagation();
+        // Get the closest nav-item (in case user clicked child element)
+        const navItem = e.target.closest('.nav-item');
+        if(!navItem) return;
+        
+        const link = navItem.dataset.link;
+        if(link) {
+          const fullPath = getPagePath(link);
+          console.log('Navigating to:', fullPath);
+          window.location.href = fullPath;
+        }
+      });
+    });
+
+    // Profile menu
+    document.getElementById('profileBtn').addEventListener('click',()=>{
+      document.getElementById('profileMenu').classList.toggle('show');
+    });
+    document.addEventListener('click',(e)=>{
+      if(!e.target.closest('.profile')){
+        document.getElementById('profileMenu').classList.remove('show');
+      }
+    });
+
+    // Current currency and language
+    let currentCurrency = localStorage.getItem('currency') || 'SAR';
+    let currentLanguage = localStorage.getItem('language') || 'en';
+
+    // Clients management
+    let clientsDatabase = JSON.parse(localStorage.getItem('clientsDatabase')) || [
+      {id:1,name:'Ahmed Ali',phone:'+966501234567',email:'ahmed@example.com',groupId:'group_2',groupName:'Chalets Collection',unitId:'CH-201',unitName:'Desert Escape Chalet',lastBooking:'2025-10-20',review:'5',payment:'Paid'},
+      {id:2,name:'Sara Khan',phone:'+966502345678',email:'sara@example.com',groupId:'group_1',groupName:'Main Hotel',unitId:'HR-101',unitName:'Deluxe King Room',lastBooking:'2025-10-18',review:'4',payment:'Pending'},
+      {id:3,name:'John Doe',phone:'+966503456789',email:'john@example.com',groupId:'group_2',groupName:'Chalets Collection',unitId:'CH-202',unitName:'Luxury Mountain Villa',lastBooking:'2025-10-15',review:'5',payment:'Paid'},
+      {id:4,name:'Fatima Al-Otaibi',phone:'+966504567890',email:'fatima@example.com',groupId:'group_2',groupName:'Chalets Collection',unitId:'CH-203',unitName:'Garden Oasis Resort',lastBooking:'2025-10-22',review:'5',payment:'Paid'},
+      {id:5,name:'Mohammed Hassan',phone:'+966505678901',email:'m.hassan@example.com',groupId:'group_1',groupName:'Main Hotel',unitId:'HR-102',unitName:'Twin Bedroom Suite',lastBooking:'2025-10-21',review:'5',payment:'Paid'},
+      {id:6,name:'Leila Mansouri',phone:'+966506789012',email:'leila.m@example.com',groupId:'group_2',groupName:'Chalets Collection',unitId:'CH-204',unitName:'Romantic Starlight Chalet',lastBooking:'2025-10-19',review:'4',payment:'Paid'},
+      {id:7,name:'David Wilson',phone:'+966507890123',email:'d.wilson@example.com',groupId:'group_1',groupName:'Main Hotel',unitId:'HR-103',unitName:'Executive Suite',lastBooking:'2025-10-23',review:'4',payment:'Paid'},
+      {id:8,name:'Noor Al-Rashid',phone:'+966508901234',email:'noor.rashid@example.com',groupId:'group_2',groupName:'Chalets Collection',unitId:'CH-201',unitName:'Desert Escape Chalet',lastBooking:'2025-10-17',review:'5',payment:'Pending'},
+      {id:9,name:'Lisa Thompson',phone:'+966509012345',email:'lisa.t@example.com',groupId:'group_1',groupName:'Main Hotel',unitId:'HR-104',unitName:'Family Room',lastBooking:'2025-10-12',review:'5',payment:'Paid'},
+      {id:10,name:'Omar Khalil',phone:'+966510123456',email:'omar.k@example.com',groupId:'group_2',groupName:'Chalets Collection',unitId:'CH-202',unitName:'Luxury Mountain Villa',lastBooking:'2025-10-10',review:'4',payment:'Paid'},
+    ];
+
+    let filteredClients = [...clientsDatabase];
+    let selectedClients = new Set();
+    let currentPage = 1;
+    const itemsPerPage = 25;
+
+    function saveClientsDatabase(){
+      localStorage.setItem('clientsDatabase', JSON.stringify(clientsDatabase));
+    }
+
+    function renderClientsTable(){
+      const startIdx = (currentPage - 1) * itemsPerPage;
+      const endIdx = startIdx + itemsPerPage;
+      const paginatedClients = filteredClients.slice(startIdx, endIdx);
+      const tbody = document.getElementById('clientsTableBody');
+      tbody.innerHTML = '';
+
+      if(paginatedClients.length === 0){
+        tbody.innerHTML = '<tr><td colspan="10" style="padding:20px;text-align:center;color:#6b7280">No contacts found</td></tr>';
+        document.getElementById('totalClients').textContent = '0';
+        document.getElementById('pageStart').textContent = '0';
+        document.getElementById('pageEnd').textContent = '0';
+        return;
+      }
+
+      paginatedClients.forEach(client => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><input type="checkbox" class="client-checkbox" value="${client.id}" onchange="updateSelectedCount()"></td>
+          <td><strong>${client.name}</strong></td>
+          <td>${client.phone}</td>
+          <td>${client.email}</td>
+          <td>${client.groupName}</td>
+          <td>${client.unitName}</td>
+          <td>${client.lastBooking}</td>
+          <td>⭐ ${client.review}</td>
+          <td><span style="padding:4px 8px;background:${client.payment==='Paid'?'#dcfce7':'#fef3c7'};color:${client.payment==='Paid'?'#166534':'#92400e'};border-radius:4px;font-size:12px;font-weight:600">${client.payment}</span></td>
+          <td style="text-align:center"><button class="btn ghost" style="padding:4px 8px;font-size:11px" onclick="editClient(${client.id})"><i class="fa-solid fa-pen"></i></button></td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      const total = filteredClients.length;
+      const maxPage = Math.ceil(total / itemsPerPage);
+      document.getElementById('pageStart').textContent = startIdx + 1;
+      document.getElementById('pageEnd').textContent = Math.min(endIdx, total);
+      document.getElementById('totalClients').textContent = total;
+      document.getElementById('pageInput').max = maxPage;
+    }
+
+    function applyFilters(){
+      const nameFilter = document.getElementById('filterName').value.toLowerCase();
+      const phoneFilter = document.getElementById('filterPhone').value.toLowerCase();
+      const emailFilter = document.getElementById('filterEmail').value.toLowerCase();
+      const groupFilter = document.getElementById('filterGroup').value;
+      const unitFilter = document.getElementById('filterUnit').value;
+
+      filteredClients = clientsDatabase.filter(client => {
+        const nameMatch = client.name.toLowerCase().includes(nameFilter);
+        const phoneMatch = client.phone.toLowerCase().includes(phoneFilter);
+        const emailMatch = client.email.toLowerCase().includes(emailFilter);
+        const groupMatch = !groupFilter || client.groupId === groupFilter;
+        const unitMatch = !unitFilter || client.unitId === unitFilter;
+        return nameMatch && phoneMatch && emailMatch && groupMatch && unitMatch;
+      });
+
+      currentPage = 1;
+      selectedClients.clear();
+      renderClientsTable();
+      updateFilterDropdowns();
+    }
+
+    function updateFilterDropdowns(){
+      const groupSelect = document.getElementById('filterGroup');
+      const unitSelect = document.getElementById('filterUnit');
+      const groups = new Set(clientsDatabase.map(c => `${c.groupId}|${c.groupName}`));
+      const units = new Set(clientsDatabase.map(c => `${c.unitId}|${c.unitName}`));
+
+      groupSelect.innerHTML = '<option value="">All Groups</option>';
+      groups.forEach(g => {
+        const [id, name] = g.split('|');
+        const opt = document.createElement('option');
+        opt.value = id;
+        opt.textContent = name;
+        groupSelect.appendChild(opt);
+      });
+
+      unitSelect.innerHTML = '<option value="">All Units</option>';
+      units.forEach(u => {
+        const [id, name] = u.split('|');
+        const opt = document.createElement('option');
+        opt.value = id;
+        opt.textContent = name;
+        unitSelect.appendChild(opt);
+      });
+    }
+
+    function clearFilters(){
+      document.getElementById('filterName').value = '';
+      document.getElementById('filterPhone').value = '';
+      document.getElementById('filterEmail').value = '';
+      document.getElementById('filterGroup').value = '';
+      document.getElementById('filterUnit').value = '';
+      applyFilters();
+    }
+
+    function toggleSelectAll(){
+      const checkboxes = document.querySelectorAll('.client-checkbox');
+      const isChecked = document.getElementById('selectAllCheckbox').checked;
+      checkboxes.forEach(cb => {
+        cb.checked = isChecked;
+        if(isChecked){
+          selectedClients.add(Number(cb.value));
+        } else {
+          selectedClients.delete(Number(cb.value));
+        }
+      });
+      updateSelectedCount();
+    }
+
+    function updateSelectedCount(){
+      const checkboxes = document.querySelectorAll('.client-checkbox:checked');
+      selectedClients.clear();
+      checkboxes.forEach(cb => selectedClients.add(Number(cb.value)));
+      document.getElementById('selectedCount').textContent = selectedClients.size;
+    }
+
+    function previousPage(){
+      if(currentPage > 1){
+        currentPage--;
+        renderClientsTable();
+      }
+    }
+
+    function nextPage(){
+      const maxPages = Math.ceil(filteredClients.length / itemsPerPage);
+      if(currentPage < maxPages){
+        currentPage++;
+        renderClientsTable();
+      }
+    }
+
+    function goToPage(){
+      const pageNum = Number(document.getElementById('pageInput').value);
+      const maxPages = Math.ceil(filteredClients.length / itemsPerPage);
+      if(pageNum >= 1 && pageNum <= maxPages){
+        currentPage = pageNum;
+        renderClientsTable();
+      } else {
+        alert(`Please enter a page number between 1 and ${maxPages}`);
+      }
+    }
+
+    function editClient(clientId){
+      const client = clientsDatabase.find(c => c.id === clientId);
+      if(!client) {
+        alert('Contact not found');
+        return;
+      }
+      
+      // Populate edit form
+      document.getElementById('editContactName').value = client.name || '';
+      document.getElementById('editContactPhone').value = client.phone || '';
+      document.getElementById('editContactEmail').value = client.email || '';
+      
+      // Populate group dropdown
+      const groupSelect = document.getElementById('editContactGroup');
+      const groups = new Set(clientsDatabase.map(c => `${c.groupId}|${c.groupName}`));
+      groupSelect.innerHTML = '<option value="">Select Group</option>';
+      groups.forEach(g => {
+        const [id, name] = g.split('|');
+        const opt = document.createElement('option');
+        opt.value = id;
+        opt.textContent = name;
+        opt.selected = id === client.groupId;
+        groupSelect.appendChild(opt);
+      });
+      
+      // Populate unit dropdown
+      const unitSelect = document.getElementById('editContactUnit');
+      const units = new Set(clientsDatabase.map(c => `${c.unitId}|${c.unitName}`));
+      unitSelect.innerHTML = '<option value="">Select Unit</option>';
+      units.forEach(u => {
+        const [id, name] = u.split('|');
+        const opt = document.createElement('option');
+        opt.value = id;
+        opt.textContent = name;
+        opt.selected = id === client.unitId;
+        unitSelect.appendChild(opt);
+      });
+      
+      // Store the client ID for save
+      document.getElementById('editContactModal').dataset.clientId = clientId;
+      
+      // Open modal
+      document.getElementById('editContactBackdrop').classList.add('show');
+    }
+    
+    function closeEditContactModal(){
+      document.getElementById('editContactBackdrop').classList.remove('show');
+    }
+    
+    function saveEditContact(){
+      const clientId = Number(document.getElementById('editContactModal').dataset.clientId);
+      const client = clientsDatabase.find(c => c.id === clientId);
+      if(!client) {
+        alert('Contact not found');
+        return;
+      }
+      
+      const name = document.getElementById('editContactName').value.trim();
+      const phone = document.getElementById('editContactPhone').value.trim();
+      const email = document.getElementById('editContactEmail').value.trim();
+      const groupId = document.getElementById('editContactGroup').value;
+      const unitId = document.getElementById('editContactUnit').value;
+      
+      if(!name) {
+        alert('Please enter contact name');
+        return;
+      }
+      
+      // Update client
+      client.name = name;
+      client.phone = phone;
+      client.email = email;
+      
+      if(groupId) {
+        const groupSelect = document.getElementById('editContactGroup');
+        const selectedOption = groupSelect.options[groupSelect.selectedIndex];
+        client.groupId = groupId;
+        client.groupName = selectedOption.textContent;
+      }
+      
+      if(unitId) {
+        const unitSelect = document.getElementById('editContactUnit');
+        const selectedOption = unitSelect.options[unitSelect.selectedIndex];
+        client.unitId = unitId;
+        client.unitName = selectedOption.textContent;
+      }
+      
+      // Save to localStorage
+      saveClientsDatabase();
+      
+      // Close modal and refresh table
+      closeEditContactModal();
+      applyFilters();
+      alert('Contact updated successfully');
+    }
+
+    // Campaign modal
+    function openCampaignModal(){
+      const recipients = Array.from(selectedClients).length;
+      if(recipients === 0){
+        alert('Please select at least one contact');
+        return;
+      }
+      document.getElementById('costRecipients').textContent = recipients;
+      document.getElementById('totalCost').textContent = (recipients * 0.2).toFixed(2);
+      document.getElementById('recipientsList').textContent = `${recipients} contact(s) selected`;
+      
+      // Set minimum date to 48 hours from now
+      const minDate = new Date();
+      minDate.setDate(minDate.getDate() + 2);
+      document.getElementById('campaignDate').min = minDate.toISOString().split('T')[0];
+      document.getElementById('campaignDate').value = minDate.toISOString().split('T')[0];
+      
+      // Set default time to 10:00 AM
+      document.getElementById('campaignHour').value = '10';
+      document.getElementById('campaignMinute').value = '00';
+      
+      // Reset attachment
+      document.getElementById('campaignAttachment').value = '';
+      document.getElementById('attachmentInfo').textContent = 'No file selected';
+      
+      document.getElementById('campaignBackdrop').classList.add('show');
+    }
+
+    function closeCampaignModal(){
+      document.getElementById('campaignBackdrop').classList.remove('show');
+      document.getElementById('campaignMessage').value = '';
+      document.getElementById('msgCharCount').textContent = '0';
+    }
+
+    function submitCampaign(){
+      const message = document.getElementById('campaignMessage').value;
+      const date = document.getElementById('campaignDate').value;
+      const hour = document.getElementById('campaignHour').value;
+      const minute = document.getElementById('campaignMinute').value;
+      const attachment = document.getElementById('campaignAttachment').files[0];
+      
+      if(!message){
+        alert('Please enter a message');
+        return;
+      }
+      
+      if(!date){
+        alert('Please select a date');
+        return;
+      }
+      
+      if(hour === '' || minute === ''){
+        alert('Please enter both hour and minute');
+        return;
+      }
+      
+      const hour_num = Number(hour);
+      const minute_num = Number(minute);
+      
+      if(hour_num < 0 || hour_num > 23){
+        alert('Hour must be between 0 and 23');
+        return;
+      }
+      
+      if(minute_num < 0 || minute_num > 59){
+        alert('Minute must be between 0 and 59');
+        return;
+      }
+      
+      const scheduleTime = `${date} ${String(hour_num).padStart(2,'0')}:${String(minute_num).padStart(2,'0')}`;
+      const attachmentInfo = attachment ? `Attachment: ${attachment.name}` : 'No attachment';
+      
+      alert(`Campaign scheduled successfully!\nRecipients: ${selectedClients.size}\nScheduled: ${scheduleTime}\nCost: ${(selectedClients.size * 0.2).toFixed(2)} SR\n${attachmentInfo}`);
+      closeCampaignModal();
+    }
+
+    function exportClients(type){
+      alert(`Export ${type} feature not yet implemented`);
+    }
+
+    // Message character counter
+    document.getElementById('campaignMessage').addEventListener('input', (e)=>{
+      document.getElementById('msgCharCount').textContent = e.target.value.length;
+    });
+
+    // Attachment file input
+    document.getElementById('campaignAttachment').addEventListener('change', (e)=>{
+      const file = e.target.files[0];
+      if(file){
+        const maxSize = 10 * 1024 * 1024; // 10 MB
+        if(file.size > maxSize){
+          alert('File size exceeds 10 MB limit');
+          e.target.value = '';
+          document.getElementById('attachmentInfo').textContent = 'No file selected';
+          return;
+        }
+        const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf', 'video/mp4', 'video/quicktime'];
+        if(!validTypes.includes(file.type)){
+          alert('File type not supported. Please use images, PDFs, or videos.');
+          e.target.value = '';
+          document.getElementById('attachmentInfo').textContent = 'No file selected';
+          return;
+        }
+        document.getElementById('attachmentInfo').textContent = `✓ ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
+      } else {
+        document.getElementById('attachmentInfo').textContent = 'No file selected';
+      }
+    });
+
+    // Filter event listeners
+    ['filterName', 'filterPhone', 'filterEmail', 'filterGroup', 'filterUnit'].forEach(id => {
+      document.getElementById(id).addEventListener('input', applyFilters);
+      document.getElementById(id).addEventListener('change', applyFilters);
+    });
+
+    // Campaign calendar picker functions
+    let selectedCampaignDate = null;
+    let campaignCalendarCurrentMonth = new Date();
+    
+    function renderCampaignCalendar(){
+      const year = campaignCalendarCurrentMonth.getFullYear();
+      const month = campaignCalendarCurrentMonth.getMonth();
+      const firstDay = new Date(year, month, 1);
+      const lastDay = new Date(year, month + 1, 0);
+      const daysInMonth = lastDay.getDate();
+      const startDate = new Date(firstDay);
+      startDate.setDate(startDate.getDate() - firstDay.getDay());
+      
+      const minDate = new Date();
+      minDate.setDate(minDate.getDate() + 2);
+      
+      const calendarDaysContainer = document.getElementById('campaignCalendarDays');
+      calendarDaysContainer.innerHTML = '';
+      
+      let currentDate = new Date(startDate);
+      for(let i = 0; i < 42; i++){
+        const day = document.createElement('div');
+        day.style.cssText = 'text-align:center;padding:6px;cursor:pointer;border-radius:4px;font-size:12px;border:1px solid transparent';
+        
+        if(currentDate.getMonth() !== month){
+          day.style.color = '#ccc';
+          day.textContent = currentDate.getDate();
+        } else {
+          day.textContent = currentDate.getDate();
+          day.style.border = '1px solid #e5e7eb';
+          
+          if(currentDate < minDate){
+            day.style.color = '#ccc';
+            day.style.cursor = 'not-allowed';
+          } else {
+            day.style.cursor = 'pointer';
+            day.style.color = '#111';
+            day.addEventListener('click', () => selectCampaignDate(new Date(currentDate)));
+            day.addEventListener('mouseover', () => day.style.background = '#f3f4f6');
+            day.addEventListener('mouseout', () => day.style.background = 'transparent');
+            
+            if(selectedCampaignDate && selectedCampaignDate.toDateString() === currentDate.toDateString()){
+              day.style.background = '#f97316';
+              day.style.color = '#fff';
+            }
+          }
+        }
+        calendarDaysContainer.appendChild(day);
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
+    }
+    
+    function selectCampaignDate(date){
+      selectedCampaignDate = new Date(date);
+      document.getElementById('campaignDate').value = selectedCampaignDate.toISOString().split('T')[0];
+      renderCampaignCalendar();
+      updateCampaignDateTimeDisplay();
+    }
+    
+    function updateCampaignDateTimeDisplay(){
+      if(selectedCampaignDate){
+        const hour = document.getElementById('campaignHour').value || '00';
+        const minute = document.getElementById('campaignMinute').value || '00';
+        const dateStr = selectedCampaignDate.toLocaleDateString('en-US', {weekday: 'short', month: 'short', day: 'numeric'});
+        document.getElementById('campaignDateTimeDisplay').value = `${dateStr} at ${hour}:${minute}`;
+      }
+    }
+    
+    function confirmCampaignDateTime(){
+      if(!selectedCampaignDate){
+        alert('Please select a date');
+        return;
+      }
+      const hour = document.getElementById('campaignHour').value;
+      const minute = document.getElementById('campaignMinute').value;
+      if(hour === '' || minute === ''){
+        alert('Please enter time');
+        return;
+      }
+      updateCampaignDateTimeDisplay();
+      document.getElementById('campaignCalendarPicker').style.display = 'none';
+    }
+    
+    function closeCampaignCalendar(){
+      document.getElementById('campaignCalendarPicker').style.display = 'none';
+    }
+
+    // Initialize
+    updateFilterDropdowns();
+    
+    // Campaign calendar picker event listeners
+    document.getElementById('campaignDateTimeDisplay').addEventListener('click', () => {
+      const picker = document.getElementById('campaignCalendarPicker');
+      picker.style.display = picker.style.display === 'none' ? 'block' : 'none';
+      if(picker.style.display === 'block'){
+        campaignCalendarCurrentMonth = selectedCampaignDate ? new Date(selectedCampaignDate) : new Date();
+        renderCampaignCalendar();
+      }
+    });
+    
+    ['campaignHour', 'campaignMinute'].forEach(id => {
+      document.getElementById(id).addEventListener('change', updateCampaignDateTimeDisplay);
+    });
+    
+    // Currency and Language switchers
+    function updateCurrencyButtons(){
+      const usdBtn = document.getElementById('currencyUSD');
+      const sarBtn = document.getElementById('currencySAR');
+      const eurBtn = document.getElementById('currencyEUR');
+      
+      // Reset all buttons
+      [usdBtn, sarBtn, eurBtn].forEach(btn => {
+        btn.style.color = '#64748b';
+        btn.style.fontWeight = 'normal';
+      });
+      
+      // Highlight selected currency
+      if(currentCurrency === 'USD') usdBtn.style.color = '#f97316';
+      else if(currentCurrency === 'SAR') sarBtn.style.color = '#f97316';
+      else if(currentCurrency === 'EUR') eurBtn.style.color = '#f97316';
+      
+      // Update font weight for active
+      const activeBtn = document.getElementById('currency' + currentCurrency);
+      if(activeBtn) activeBtn.style.fontWeight = '600';
+    }
+
+    function setCurrency(currency){
+      currentCurrency = currency;
+      localStorage.setItem('currency', currency);
+      updateCurrencyButtons();
+      renderClientsTable();
+    }
+
+    function updateLanguageButtons(){
+      const enBtn = document.getElementById('langEnglish');
+      const arBtn = document.getElementById('langArabic');
+      if(currentLanguage === 'en'){
+        enBtn.style.color = '#f97316';
+        enBtn.style.fontWeight = '600';
+        arBtn.style.color = '#64748b';
+        arBtn.style.fontWeight = 'normal';
+      } else {
+        arBtn.style.color = '#f97316';
+        arBtn.style.fontWeight = '600';
+        enBtn.style.color = '#64748b';
+        enBtn.style.fontWeight = 'normal';
+      }
+    }
+
+    function setLanguage(lang){
+      currentLanguage = lang;
+      localStorage.setItem('language', lang);
+      document.documentElement.lang = lang;
+      document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+      updateLanguageButtons();
+    }
+
+    // Initialize buttons
+    updateCurrencyButtons();
+    updateLanguageButtons();
+    document.getElementById('currencyUSD').addEventListener('click', () => { setCurrency('USD'); });
+    document.getElementById('currencySAR').addEventListener('click', () => { setCurrency('SAR'); });
+    document.getElementById('currencyEUR').addEventListener('click', () => { setCurrency('EUR'); });
+    document.getElementById('langEnglish').addEventListener('click', () => { setLanguage('en'); });
+    document.getElementById('langArabic').addEventListener('click', () => { setLanguage('ar'); });
+    
+    renderClientsTable();
+  </script>
+</body>
+</html>
