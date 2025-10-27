@@ -138,6 +138,24 @@
 								<button class="btn ghost" data-link="aiagent.html"><i class="fa-solid fa-robot"></i> <span data-i18n="aiagent">AI Agent</span></button>
 							</div>
 						</div>
+
+						<!-- Active Conversations Card -->
+						<div class="panel" style="margin-top:16px">
+							<h3 style="font-size:15px;margin-bottom:12px"><i class="fa-solid fa-comments"></i> <span data-i18n="activeConversations">Active Conversations</span></h3>
+							<div style="display:flex;gap:8px;align-items:baseline;margin-bottom:8px">
+								<div style="font-size:28px;font-weight:700;color:var(--accent)" id="dashboardActiveConvCount">278</div>
+								<div style="font-size:14px;color:var(--muted)">/</div>
+								<div style="font-size:20px;font-weight:600;color:var(--muted)" id="dashboardTotalPlanConv">500</div>
+							</div>
+							<div style="font-size:12px;color:var(--muted);margin-bottom:10px" data-i18n="conversationsInPlan">conversations in your plan</div>
+							<div class="progress-bar" style="height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;margin-bottom:8px">
+								<div class="progress-fill" id="dashboardConvProgressBar" style="width:55.6%;height:100%;background:var(--accent);transition:width 0.3s ease"></div>
+							</div>
+							<div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted)">
+								<span><span id="dashboardConvPercent">55.6</span>% Used</span>
+								<span id="dashboardConvRemaining">222 remaining</span>
+							</div>
+						</div>
 					</aside>
 				</div>
 			</section>
@@ -395,6 +413,8 @@
 				bookings: 'Bookings',
 				quickActions: 'Quick Actions',
 				openCalendar: 'Open Calendar',
+				activeConversations: 'Active Conversations',
+				conversationsInPlan: 'conversations in your plan',
 				websiteSettings: 'Website Settings',
 				manageUnits: 'Manage Units',
 				homePagePicture: 'Home Page Picture',
@@ -530,6 +550,8 @@
 				bookings: 'الحجوزات',
 				quickActions: 'إجراءات سريعة',
 				openCalendar: 'فتح التقويم',
+				activeConversations: 'المحادثات النشطة',
+				conversationsInPlan: 'محادثة في خطتك',
 				websiteSettings: 'إعدادات الموقع',
 				manageUnits: 'إدارة الوحدات',
 				homePagePicture: 'صورة الصفحة الرئيسية',
@@ -1066,89 +1088,95 @@
 			populateUnitSelect(unitSelect);
 			openModal(frag);
 
-			// Calculate total when dates or rate changes
-			const startInput = document.getElementById('abStart');
-			const endInput = document.getElementById('abEnd');
-			const rateInput = document.getElementById('abRate');
-			const totalInput = document.getElementById('abTotal');
-			const paidInput = document.getElementById('abPaid');
-			const summarySpan = document.getElementById('abSummary');
-			
-			// Verify all required elements exist before proceeding
-			if(!startInput || !endInput || !rateInput || !totalInput || !summarySpan){
-				console.error('[DASHBOARD] Required booking form elements missing', {startInput, endInput, rateInput, totalInput, summarySpan});
-				showConfirmation('Error: Booking form could not be initialized. Please try again.');
-				return;
-			}
-
-			const calculateTotal = () => {
-				const start = new Date(startInput.value);
-				const end = new Date(endInput.value);
-				const rate = parseFloat(rateInput.value) || 0;
+			// Wait for next tick to ensure DOM elements are available
+			setTimeout(() => {
+				// Calculate total when dates or rate changes
+				const startInput = document.getElementById('abStart');
+				const endInput = document.getElementById('abEnd');
+				const rateInput = document.getElementById('abRate');
+				const totalInput = document.getElementById('abTotal');
+				const paidInput = document.getElementById('abPaid');
+				const summarySpan = document.getElementById('abSummary');
 				
-				if(startInput.value && endInput.value && end > start){
-					const nights = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
-					const total = nights * rate;
-					totalInput.value = total.toFixed(2);
-					summarySpan.textContent = `${nights} nights × $${rate.toFixed(2)} = $${total.toFixed(2)}`;
-				} else {
-					totalInput.value = '0.00';
-					summarySpan.textContent = '0 nights × $0.00 = $0.00';
+				// Verify all required elements exist before proceeding
+				if(!startInput || !endInput || !rateInput || !totalInput || !summarySpan){
+					console.error('[DASHBOARD] Required booking form elements missing', {startInput, endInput, rateInput, totalInput, summarySpan});
+					showConfirmation('Error: Booking form could not be initialized. Please try again.');
+					closeModal();
+					return;
 				}
-			};
 
-			startInput.addEventListener('change', calculateTotal);
-			endInput.addEventListener('change', calculateTotal);
-			rateInput.addEventListener('input', calculateTotal);
+				const calculateTotal = () => {
+					const start = new Date(startInput.value);
+					const end = new Date(endInput.value);
+					const rate = parseFloat(rateInput.value) || 0;
+					
+					if(startInput.value && endInput.value && end > start){
+						const nights = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+						const total = nights * rate;
+						totalInput.value = total.toFixed(2);
+						summarySpan.textContent = `${nights} nights × $${rate.toFixed(2)} = $${total.toFixed(2)}`;
+					} else {
+						totalInput.value = '0.00';
+						summarySpan.textContent = '0 nights × $0.00 = $0.00';
+					}
+				};
 
-			document.getElementById('confirmAddBooking').onclick=function(){
-				const name=document.getElementById('abName').value;
-				const phone=document.getElementById('abPhone').value;
-				const email=document.getElementById('abEmail').value||'';
-				const unit=document.getElementById('abUnit').value;
-				const start=document.getElementById('abStart').value;
-				const end=document.getElementById('abEnd').value;
-				const rate=parseFloat(document.getElementById('abRate').value)||0;
-				const payment=document.getElementById('abPayment').value;
-				const paid=parseFloat(document.getElementById('abPaid').value)||0;
-				const notes=document.getElementById('abNotes').value||'';
-				
-			if(!name||!phone||!unit||!start||!end||!rate){
-				showConfirmation('Please fill in all required fields (marked with *)');
-				return;
-			}
-			
-			const startDate = new Date(start);
-			const endDate = new Date(end);
-			if(endDate <= startDate){
-				showConfirmation('Check-out date must be after check-in date');
-				return;
-			}				const nights = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
-				const total = nights * rate;
-				
-				const id='BKG-'+String(Math.floor(Math.random()*9000+1000));
-				sampleBookings.unshift({
-					id,
-					client:name,
-					unit,
-					start,
-					end,
-					status:'Active',
-					phone,
-					email,
-					payment,
-					source:'Manual',
-					rate,
-					nights,
-					total,
-					paid,
-					notes
-				});
-				renderRecentBookings();
-			closeModal();
-			showConfirmation(`Booking created successfully!\nBooking ID: ${id}\nClient: ${name}\nNights: ${nights}\nTotal: $${total.toFixed(2)}`);
-		};
-	}
+				startInput.addEventListener('change', calculateTotal);
+				endInput.addEventListener('change', calculateTotal);
+				rateInput.addEventListener('input', calculateTotal);
+
+				document.getElementById('confirmAddBooking').onclick=function(){
+					const name=document.getElementById('abName').value;
+					const phone=document.getElementById('abPhone').value;
+					const email=document.getElementById('abEmail').value||'';
+					const unit=document.getElementById('abUnit').value;
+					const start=document.getElementById('abStart').value;
+					const end=document.getElementById('abEnd').value;
+					const rate=parseFloat(document.getElementById('abRate').value)||0;
+					const payment=document.getElementById('abPayment').value;
+					const paid=parseFloat(document.getElementById('abPaid').value)||0;
+					const notes=document.getElementById('abNotes').value||'';
+					
+					if(!name||!phone||!unit||!start||!end||!rate){
+						showConfirmation('Please fill in all required fields (marked with *)');
+						return;
+					}
+					
+					const startDate = new Date(start);
+					const endDate = new Date(end);
+					if(endDate <= startDate){
+						showConfirmation('Check-out date must be after check-in date');
+						return;
+					}
+					
+					const nights = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+					const total = nights * rate;
+					
+					const id='BKG-'+String(Math.floor(Math.random()*9000+1000));
+					sampleBookings.unshift({
+						id,
+						client:name,
+						unit,
+						start,
+						end,
+						status:'Active',
+						phone,
+						email,
+						payment,
+						source:'Manual',
+						rate,
+						nights,
+						total,
+						paid,
+						notes
+					});
+					renderRecentBookings();
+					closeModal();
+					showConfirmation(`Booking created successfully!\nBooking ID: ${id}\nClient: ${name}\nNights: ${nights}\nTotal: $${total.toFixed(2)}`);
+				};
+			}, 50); // End of setTimeout - give DOM time to render
+		}
 
 	function openBlockDates(){
 		const tpl=document.getElementById('blockDatesTpl');const frag=tpl.content.cloneNode(true);
@@ -1755,6 +1783,44 @@
 			});
 		}
 		console.log('[DASHBOARD] Language toggle button initialized');
+		
+		// Update Active Conversations display
+		function updateActiveConversations() {
+			// Get data from localStorage (synced with AI Agent page)
+			const activeCount = parseInt(localStorage.getItem('activeConvCount') || '278');
+			const totalPlan = parseInt(localStorage.getItem('totalPlanConv') || '500');
+			const percent = ((activeCount / totalPlan) * 100).toFixed(1);
+			const remaining = totalPlan - activeCount;
+			
+			// Update dashboard conversation card
+			const countEl = document.getElementById('dashboardActiveConvCount');
+			const totalEl = document.getElementById('dashboardTotalPlanConv');
+			const percentEl = document.getElementById('dashboardConvPercent');
+			const remainingEl = document.getElementById('dashboardConvRemaining');
+			const progressBar = document.getElementById('dashboardConvProgressBar');
+			
+			if(countEl) countEl.textContent = activeCount;
+			if(totalEl) totalEl.textContent = totalPlan;
+			if(percentEl) percentEl.textContent = percent;
+			if(remainingEl) remainingEl.textContent = remaining + ' remaining';
+			if(progressBar) progressBar.style.width = percent + '%';
+		}
+		
+		// Initialize conversation data if not exists
+		if(!localStorage.getItem('activeConvCount')) {
+			localStorage.setItem('activeConvCount', '278');
+			localStorage.setItem('totalPlanConv', '500');
+		}
+		
+		// Update on page load
+		updateActiveConversations();
+		
+		// Listen for storage changes from AI Agent page
+		window.addEventListener('storage', function(e) {
+			if(e.key === 'activeConvCount' || e.key === 'totalPlanConv') {
+				updateActiveConversations();
+			}
+		});
 	</script>
 
 	<!-- Extracted JavaScript Files - Load external dependencies -->

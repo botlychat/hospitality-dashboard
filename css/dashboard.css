@@ -248,6 +248,7 @@
 /* Table styling within panels */
 .panel table {
   width: 100%;
+  min-width: 600px; /* Minimum width for better column spacing */
   border-collapse: collapse;
 }
 
@@ -257,6 +258,7 @@
   text-align: left;
   border-bottom: 1px solid var(--stroke);
   font-size: var(--font-size-base);
+  white-space: nowrap; /* Prevent text wrapping */
 }
 
 .panel th {
@@ -267,6 +269,30 @@
 
 .panel tbody tr:hover {
   background: rgba(249, 115, 22, 0.04);
+}
+
+/* Table container for horizontal scrolling */
+.panel {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
+
+.panel::-webkit-scrollbar {
+  height: 8px;
+}
+
+.panel::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.panel::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.panel::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 }
 
 /* Empty state messaging */
