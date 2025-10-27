@@ -128,6 +128,9 @@
       .calendar-grid{grid-template-columns:1fr}
       .toolbar{flex-direction:column;gap:12px}
       .toolbar-left{flex-direction:column;width:100%}
+      .header h2{font-size:16px;font-weight:700}
+      .header h1{font-size:16px;font-weight:700}
+      #monthLabel{font-size:14px !important}
       .toolbar-right{flex-direction:column;width:100%}
       .btn{width:100%;padding:10px 12px;font-size:13px}
       .header{padding:0 12px}
@@ -179,16 +182,15 @@
       <section class="content">
         <div class="toolbar">
           <div class="toolbar-left">
-            <select id="calendarGroupSelector" style="padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:13px;font-weight:600;background:#fff;cursor:pointer;min-width:220px">
+            <select id="calendarGroupSelector" style="padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:13px;font-weight:600;background:#fff;cursor:pointer;min-width:220px;appearance:none;background-image:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%2712%22 viewBox=%220 0 12 12%22%3E%3Cpath fill=%22%231f2937%22 d=%22M6 9L1 4h10z%22/%3E%3C/svg%3E');background-repeat:no-repeat;background-position:right 10px center;padding-right:32px">
               <!-- Group options will be populated by JavaScript -->
             </select>
             <div class="month-switcher">
               <button id="prevMonth" aria-label="Previous month"><i class="fa-solid fa-chevron-left"></i></button>
-              <div style="font-weight:700;font-size:18px" id="monthLabel">October 2025</div>
+              <div style="font-weight:700;font-size:14px" id="monthLabel">October 2025</div>
               <button id="nextMonth" aria-label="Next month"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
             <div class="filter"><i class="fa-solid fa-filter"></i><select id="unitFilter"><option value="all" data-i18n="allUnits">All Units</option></select></div>
-            <div class="filter"><i class="fa-solid fa-layer-group"></i><select id="viewSelect"><option value="month" data-i18n="monthView">Month view</option><option value="week" data-i18n="weekView">Week view</option></select></div>
           </div>
           <div class="toolbar-right" style="display:flex;gap:8px;align-items:center">
             <button class="btn ghost" id="syncCalendarBtn" title="Sync external calendars to units"><i class="fa-solid fa-link"></i> Sync Calendar</button>
@@ -672,22 +674,18 @@
           <div style="display:flex;align-items:center;gap:8px">
             <div style="width:12px;height:12px;background:#0f172a;border-radius:50%"></div>
             <span style="color:#111;font-weight:600">Under Booking</span>
-            <span style="color:var(--muted);font-size:12px">(Tentative)</span>
           </div>
           <div style="display:flex;align-items:center;gap:8px">
             <div style="width:12px;height:12px;background:#22c55e;border-radius:50%"></div>
             <span style="color:#111;font-weight:600">Active</span>
-            <span style="color:var(--muted);font-size:12px">(Confirmed)</span>
           </div>
           <div style="display:flex;align-items:center;gap:8px">
             <div style="width:12px;height:12px;background:#eab308;border-radius:50%"></div>
             <span style="color:#111;font-weight:600">Waiting Approval</span>
-            <span style="color:var(--muted);font-size:12px">(Awaiting confirmation)</span>
           </div>
           <div style="display:flex;align-items:center;gap:8px">
             <div style="width:12px;height:12px;background:#ef4444;border-radius:50%"></div>
             <span style="color:#111;font-weight:600">Canceled</span>
-            <span style="color:var(--muted);font-size:12px">(Canceled booking)</span>
           </div>
         </div>
       `;
@@ -1697,32 +1695,38 @@
             // Add units under this group
             groupedUnits[groupId].forEach(unit => {
               const unitUrlDiv = document.createElement('div');
-              unitUrlDiv.style.cssText = 'border:1px solid #e5e7eb;border-bottom:1px solid #e5e7eb;padding:12px;display:flex;gap:8px;align-items:center';
+              unitUrlDiv.style.cssText = 'border:1px solid #e5e7eb;border-top:none;padding:12px;display:flex;flex-direction:column;gap:8px';
+              
+              const unitNameAndCopy = document.createElement('div');
+              unitNameAndCopy.style.cssText = 'display:flex;align-items:center;justify-content:space-between;gap:8px';
               
               const unitLabel = document.createElement('div');
-              unitLabel.style.cssText = 'flex:1;display:flex;align-items:center;gap:8px';
+              unitLabel.style.cssText = 'display:flex;align-items:center;gap:8px;flex:1;min-width:0';
               const unitPaletteItem = unitPalette.find(u => u.name === unit.name);
-              unitLabel.innerHTML = `<div style="width:16px;height:16px;border-radius:50%;background:${unitPaletteItem?.color || '#ccc'}"></div><span style="font-weight:600;color:#1f2937">${unit.name}</span>`;
-              unitUrlDiv.appendChild(unitLabel);
-              
-              const urlInput = document.createElement('input');
-              urlInput.type = 'text';
-              urlInput.value = `${baseUrl}?unit=${unit.name}&calendar=true`;
-              urlInput.style.cssText = 'flex:2;padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:11px;font-family:monospace;color:#475569';
-              urlInput.readOnly = true;
-              unitUrlDiv.appendChild(urlInput);
+              unitLabel.innerHTML = `<div style="width:16px;height:16px;border-radius:50%;background:${unitPaletteItem?.color || '#ccc'};flex-shrink:0"></div><span style="font-weight:600;color:#1f2937;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${unit.name}</span>`;
+              unitNameAndCopy.appendChild(unitLabel);
               
               const copyBtn = document.createElement('button');
               copyBtn.className = 'btn primary';
-              copyBtn.style.cssText = 'padding:8px 12px;font-size:12px;flex-shrink:0';
-              copyBtn.innerHTML = '<i class="fa-solid fa-copy"></i> Copy';
+              copyBtn.style.cssText = 'padding:6px 8px;font-size:12px;flex-shrink:0;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer';
+              copyBtn.title = 'Copy URL';
+              copyBtn.innerHTML = '<i class="fa-solid fa-copy"></i>';
+              const currentUrl = `${baseUrl}?unit=${unit.name}&calendar=true`;
               copyBtn.addEventListener('click', () => {
-                navigator.clipboard.writeText(urlInput.value);
-                const originalText = copyBtn.innerHTML;
-                copyBtn.innerHTML = '✓ Copied!';
-                setTimeout(() => { copyBtn.innerHTML = originalText; }, 2000);
+                navigator.clipboard.writeText(currentUrl);
+                const originalHTML = copyBtn.innerHTML;
+                copyBtn.innerHTML = '✓';
+                setTimeout(() => { copyBtn.innerHTML = originalHTML; }, 2000);
               });
-              unitUrlDiv.appendChild(copyBtn);
+              unitNameAndCopy.appendChild(copyBtn);
+              unitUrlDiv.appendChild(unitNameAndCopy);
+              
+              const urlInput = document.createElement('input');
+              urlInput.type = 'text';
+              urlInput.value = currentUrl;
+              urlInput.style.cssText = 'width:100%;padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:11px;font-family:monospace;color:#475569;overflow:hidden;text-overflow:ellipsis';
+              urlInput.readOnly = true;
+              unitUrlDiv.appendChild(urlInput);
               urlList.appendChild(unitUrlDiv);
             });
           });
@@ -1730,31 +1734,37 @@
           // No groups, show flat list
           units.forEach(unit => {
             const unitUrlDiv = document.createElement('div');
-            unitUrlDiv.style.cssText = 'border:1px solid #e5e7eb;border-radius:10px;padding:12px;display:flex;gap:8px;align-items:center';
+            unitUrlDiv.style.cssText = 'border:1px solid #e5e7eb;border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px';
+            
+            const unitNameAndCopy = document.createElement('div');
+            unitNameAndCopy.style.cssText = 'display:flex;align-items:center;justify-content:space-between;gap:8px';
             
             const unitLabel = document.createElement('div');
-            unitLabel.style.cssText = 'flex:1;display:flex;align-items:center;gap:8px';
-            unitLabel.innerHTML = `<div style="width:16px;height:16px;border-radius:50%;background:${unitPalette.find(u=>u.name===unit.name)?.color}"></div><span style="font-weight:600;color:#1f2937">${unit.name}</span>`;
-            unitUrlDiv.appendChild(unitLabel);
-            
-            const urlInput = document.createElement('input');
-            urlInput.type = 'text';
-            urlInput.value = `${baseUrl}?unit=${unit.name}&calendar=true`;
-            urlInput.style.cssText = 'flex:2;padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:11px;font-family:monospace;color:#475569';
-            urlInput.readOnly = true;
-            unitUrlDiv.appendChild(urlInput);
+            unitLabel.style.cssText = 'display:flex;align-items:center;gap:8px;flex:1;min-width:0';
+            unitLabel.innerHTML = `<div style="width:16px;height:16px;border-radius:50%;background:${unitPalette.find(u=>u.name===unit.name)?.color};flex-shrink:0"></div><span style="font-weight:600;color:#1f2937;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${unit.name}</span>`;
+            unitNameAndCopy.appendChild(unitLabel);
             
             const copyBtn = document.createElement('button');
             copyBtn.className = 'btn primary';
-            copyBtn.style.cssText = 'padding:8px 12px;font-size:12px;flex-shrink:0';
-            copyBtn.innerHTML = '<i class="fa-solid fa-copy"></i> Copy';
+            copyBtn.style.cssText = 'padding:6px 8px;font-size:12px;flex-shrink:0;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer';
+            copyBtn.title = 'Copy URL';
+            copyBtn.innerHTML = '<i class="fa-solid fa-copy"></i>';
+            const currentUrl = `${baseUrl}?unit=${unit.name}&calendar=true`;
             copyBtn.addEventListener('click', () => {
-              navigator.clipboard.writeText(urlInput.value);
-              const originalText = copyBtn.innerHTML;
-              copyBtn.innerHTML = '✓ Copied!';
-              setTimeout(() => { copyBtn.innerHTML = originalText; }, 2000);
+              navigator.clipboard.writeText(currentUrl);
+              const originalHTML = copyBtn.innerHTML;
+              copyBtn.innerHTML = '✓';
+              setTimeout(() => { copyBtn.innerHTML = originalHTML; }, 2000);
             });
-            unitUrlDiv.appendChild(copyBtn);
+            unitNameAndCopy.appendChild(copyBtn);
+            unitUrlDiv.appendChild(unitNameAndCopy);
+            
+            const urlInput = document.createElement('input');
+            urlInput.type = 'text';
+            urlInput.value = currentUrl;
+            urlInput.style.cssText = 'width:100%;padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:11px;font-family:monospace;color:#475569;overflow:hidden;text-overflow:ellipsis';
+            urlInput.readOnly = true;
+            unitUrlDiv.appendChild(urlInput);
             urlList.appendChild(unitUrlDiv);
           });
         }
