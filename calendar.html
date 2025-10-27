@@ -321,7 +321,7 @@
             <div style="text-align:right;margin-right:8px;font-size:13px"><div style="font-weight:700" data-i18n="admin">Admin</div><div style="font-size:12px;color:var(--muted)">riyadh@getaways</div></div>
             <div class="avatar"><i class="fa-solid fa-user"></i></div>
             <div class="profile-menu" id="profileMenu">
-              <button id="profileSettings" data-i18n="completeProfile">Complete Profile</button>
+              <button id="profileSettings" data-i18n="businessInfo">Business Information</button>
               <button id="changePassword" data-i18n="changePassword">Change Password</button>
               <button id="changeEmail" data-i18n="changeEmail">Change Email</button>
               <div style="border-top:1px solid #e5e7eb;padding:8px 0;margin:8px 0;display:flex;gap:8px;align-items:center;justify-content:center">
@@ -2285,7 +2285,7 @@
 
     // Profile handlers
     if(profileBtnElement) profileBtnElement.addEventListener('click',()=>{document.getElementById('profileMenu').classList.toggle('show');});
-    if(profileSettingsElement) profileSettingsElement.addEventListener('click',()=>showConfirmation('Open Profile Settings (simulated)'));
+    if(profileSettingsElement) profileSettingsElement.addEventListener('click',()=>{window.location.href='business-info.html'});
     if(logoutBtnElement) logoutBtnElement.addEventListener('click',()=>{
       document.body.innerHTML='<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:Inter"><div style="text-align:center"><h2>You are logged out</h2><p>Simulation only. Reload to return.</p></div></div>';
     });
@@ -2437,9 +2437,15 @@
     document.addEventListener('click', (e) => {
       if(!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
         sidebar.classList.remove('active');
-      }
-    });
-  }
-  </script>
+    }
+  });
+}
+</script>
+
+<!-- Loading Overlay -->
+<div id="loadingOverlay">
+	<div class="loading-spinner"></div>
+</div>
+
 </body>
 </html>

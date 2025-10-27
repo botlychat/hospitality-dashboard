@@ -39,7 +39,7 @@
             <div style="text-align:right;margin-right:8px;font-size:13px"><div style="font-weight:700" data-i18n="admin">Admin</div><div style="font-size:12px;color:var(--muted)">riyadh@getaways</div></div>
             <div class="avatar">A</div>
             <div class="profile-menu" id="profileMenu">
-              <button id="profileSettings" data-i18n="completeProfile">Complete Profile</button>
+              <button id="profileSettings" data-i18n="businessInfo">Business Information</button>
               <button id="changePassword" data-i18n="changePassword">Change Password</button>
               <button id="changeEmail" data-i18n="changeEmail">Change Email</button>
               <div style="border-top:1px solid #e5e7eb;padding:8px 0;margin:8px 0;display:flex;gap:8px;align-items:center;justify-content:center">
@@ -149,21 +149,92 @@
 			});
 		}
 
+		// Website Groups Management
+		let currentGroupId = localStorage.getItem('currentWebsiteGroup') || 'group_1';
+		
+		// Initialize sample groups if not already present
+		function initializeWebsiteGroups() {
+			let groups = JSON.parse(localStorage.getItem('websiteGroups') || 'null');
+			if (!groups) {
+				groups = [
+					{ id: 'group_1', name: 'Main Hotel Collection', type: 'Hotel' },
+					{ id: 'group_2', name: 'Chalets & Villas', type: 'Chalet' }
+				];
+				localStorage.setItem('websiteGroups', JSON.stringify(groups));
+			}
+			return groups;
+		}
+
+		// Populate group selector
+		function populateGroupSelector() {
+			const selector = document.getElementById('websiteGroupSelector');
+			if (!selector) return;
+			
+			const groups = initializeWebsiteGroups();
+			selector.innerHTML = '';
+			
+			groups.forEach(group => {
+				const option = document.createElement('option');
+				option.value = group.id;
+				option.textContent = `${group.name} (${group.type})`;
+				if (group.id === currentGroupId) {
+					option.selected = true;
+				}
+				selector.appendChild(option);
+			});
+			
+			selector.addEventListener('change', function() {
+				currentGroupId = this.value;
+				localStorage.setItem('currentWebsiteGroup', currentGroupId);
+				loadGroupSettings(currentGroupId);
+			});
+		}
+
+		// Load settings for a specific group
+		function loadGroupSettings(groupId) {
+			let groupSettings = JSON.parse(localStorage.getItem('websiteGroupSettings') || '{}');
+			const settings = groupSettings[groupId] || {};
+			
+			// Load theme color
+			const themeColor = settings.themeColor || '#f97316';
+			const colorPicker = document.getElementById('websiteColorPicker');
+			const colorCodeInput = document.getElementById('colorCodeInput');
+			const colorDisplay = document.getElementById('colorDisplay');
+			const colorCodeDisplay = document.getElementById('colorCodeDisplay');
+			
+			if(colorPicker) colorPicker.value = themeColor;
+			if(colorCodeInput) colorCodeInput.value = themeColor;
+			if(colorDisplay) colorDisplay.style.background = themeColor;
+			if(colorCodeDisplay) colorCodeDisplay.textContent = themeColor.toUpperCase();
+			document.documentElement.style.setProperty('--accent', themeColor);
+			
+			// Load general settings (if you want to add more fields later)
+			// Example: document.querySelector('[data-field="title"]').value = settings.title || '';
+		}
+
+		// Save settings for current group
+		function saveGroupSettings() {
+			let groupSettings = JSON.parse(localStorage.getItem('websiteGroupSettings') || '{}');
+			
+			const colorPicker = document.getElementById('websiteColorPicker');
+			
+			groupSettings[currentGroupId] = {
+				themeColor: colorPicker ? colorPicker.value : '#f97316',
+				// Add more settings here as needed
+			};
+			
+			localStorage.setItem('websiteGroupSettings', JSON.stringify(groupSettings));
+		}
+
+		// Initialize groups on page load
+		populateGroupSelector();
+		loadGroupSettings(currentGroupId);
+
 		// Color picker initialization and functionality
 		const colorPicker = document.getElementById('websiteColorPicker');
 		const colorCodeInput = document.getElementById('colorCodeInput');
 		const colorDisplay = document.getElementById('colorDisplay');
 		const colorCodeDisplay = document.getElementById('colorCodeDisplay');
-
-		// Load saved color on page load
-		const savedColor = localStorage.getItem('websiteThemeColor') || '#f97316';
-		if(colorPicker) colorPicker.value = savedColor;
-		if(colorCodeInput) colorCodeInput.value = savedColor;
-		if(colorDisplay) colorDisplay.style.background = savedColor;
-		if(colorCodeDisplay) colorCodeDisplay.textContent = savedColor.toUpperCase();
-		
-		// Apply saved color to current page
-		document.documentElement.style.setProperty('--accent', savedColor);
 
 		// Real-time color picker update
 		if(colorPicker) {
@@ -176,7 +247,9 @@
 				
 				// Update theme immediately
 				document.documentElement.style.setProperty('--accent', color);
-				localStorage.setItem('websiteThemeColor', color);
+				
+				// Save to current group
+				saveGroupSettings();
 			});
 		}
 
@@ -191,10 +264,18 @@
 					
 					// Update theme immediately
 					document.documentElement.style.setProperty('--accent', color);
-					localStorage.setItem('websiteThemeColor', color);
-				}
-			});
-		}
-	</script>
+					
+					// Save to current group
+					saveGroupSettings();
+			}
+		});
+	}
+</script>
+
+<!-- Loading Overlay -->
+<div id="loadingOverlay">
+	<div class="loading-spinner"></div>
+</div>
+
 </body>
 </html>

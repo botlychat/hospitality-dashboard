@@ -335,6 +335,12 @@ function setupNavigation() {
       
       const link = element.dataset.link;
       if (link) {
+        // Show loading overlay
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        if (loadingOverlay) {
+          loadingOverlay.classList.add('show');
+        }
+        
         const fullPath = getPagePath(link);
         window.location.href = fullPath;
       }

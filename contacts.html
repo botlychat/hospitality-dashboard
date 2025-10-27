@@ -39,7 +39,7 @@
             <div style="text-align:right;margin-right:8px;font-size:13px"><div style="font-weight:700" data-i18n="admin">Admin</div><div style="font-size:12px;color:var(--muted)">riyadh@getaways</div></div>
             <div class="avatar">A</div>
             <div class="profile-menu" id="profileMenu">
-              <button id="profileSettings" data-i18n="completeProfile">Complete Profile</button>
+              <button id="profileSettings" data-i18n="businessInfo">Business Information</button>
               <button id="changePassword" data-i18n="changePassword">Change Password</button>
               <button id="changeEmail" data-i18n="changeEmail">Change Email</button>
               <div style="border-top:1px solid #e5e7eb;padding:8px 0;margin:8px 0;display:flex;gap:8px;align-items:center;justify-content:center">
@@ -242,11 +242,142 @@
 			
 			// Close sidebar when clicking outside
 			document.addEventListener('click', (e) => {
-				if(!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
-					sidebar.classList.remove('active');
-				}
-			});
+			if(!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
+				sidebar.classList.remove('active');
 		}
-	</script>
+	});
+}
+
+// Sample contacts data
+let clients = JSON.parse(localStorage.getItem('clients')) || [
+	{
+		id: 1,
+		name: 'Ahmed Al-Mansouri',
+		phone: '+966-50-123-4567',
+		email: 'ahmed.mansouri@email.com',
+		lastGroup: 'Main Hotel',
+		lastUnit: 'Luxury Ocean View Suite',
+		lastBooking: '2025-10-15',
+		review: 4.8,
+		payment: 'Paid'
+	},
+	{
+		id: 2,
+		name: 'Sarah Johnson',
+		phone: '+966-55-987-6543',
+		email: 'sarah.j@email.com',
+		lastGroup: 'Chalets Collection',
+		lastUnit: 'Garden Villa with Private Pool',
+		lastBooking: '2025-10-22',
+		review: 5.0,
+		payment: 'Paid'
+	},
+	{
+		id: 3,
+		name: 'Mohammed bin Khalid',
+		phone: '+966-50-555-8888',
+		email: 'm.khalid@email.com',
+		lastGroup: 'Main Hotel',
+		lastUnit: 'Downtown Executive Apartment',
+		lastBooking: '2025-10-25',
+		review: 4.5,
+		payment: 'Pending'
+	}
+];
+
+// Render contacts table
+function renderClientsTable() {
+	const tbody = document.getElementById('clientsTableBody');
+	if (!tbody) return;
+	
+	tbody.innerHTML = '';
+	
+	clients.forEach(client => {
+		const row = document.createElement('tr');
+		row.innerHTML = `
+			<td><input type="checkbox" class="client-checkbox" data-id="${client.id}"></td>
+			<td style="font-weight:600">${client.name}</td>
+			<td>${client.phone}</td>
+			<td>${client.email}</td>
+			<td>${client.lastGroup}</td>
+			<td>${client.lastUnit}</td>
+			<td style="font-size:12px;color:#6b7280">${client.lastBooking}</td>
+			<td style="color:var(--accent);font-weight:600">⭐ ${client.review}</td>
+			<td>
+				<span style="padding:4px 12px;border-radius:6px;font-size:12px;font-weight:600;${
+					client.payment === 'Paid' 
+						? 'background:rgba(22,163,74,0.14);color:#15803d' 
+						: 'background:rgba(245,158,11,0.14);color:#b45309'
+				}">
+					${client.payment}
+				</span>
+			</td>
+			<td style="text-align:center">
+				<button onclick="editClient(${client.id})" style="padding:6px 12px;border:none;background:transparent;color:var(--accent);cursor:pointer;font-size:12px;font-weight:600;border-radius:6px;transition:all 0.2s" onmouseover="this.style.background='rgba(249,115,22,0.1)'" onmouseout="this.style.background='transparent'">
+					Edit
+				</button>
+				<button onclick="deleteClient(${client.id})" style="padding:6px 12px;border:none;background:transparent;color:#ef4444;cursor:pointer;font-size:12px;font-weight:600;border-radius:6px;transition:all 0.2s" onmouseover="this.style.background='rgba(239,68,68,0.1)'" onmouseout="this.style.background='transparent'">
+					Delete
+				</button>
+			</td>
+		`;
+		tbody.appendChild(row);
+	});
+	
+	// Update total count
+	const totalClients = document.getElementById('totalClients');
+	if (totalClients) totalClients.textContent = clients.length;
+	
+	const pageEnd = document.getElementById('pageEnd');
+	if (pageEnd) pageEnd.textContent = clients.length;
+}
+
+// Dummy functions for buttons
+function editClient(id) {
+	alert('Edit contact ID: ' + id);
+}
+
+function deleteClient(id) {
+	if (confirm('Delete this contact?')) {
+		clients = clients.filter(c => c.id !== id);
+		localStorage.setItem('clients', JSON.stringify(clients));
+		renderClientsTable();
+	}
+}
+
+function openCampaignModal() {
+	alert('WhatsApp Campaign feature');
+}
+
+function exportClients(type) {
+	alert('Export ' + type + ' contacts');
+}
+
+function clearFilters() {
+	document.getElementById('filterName').value = '';
+	document.getElementById('filterPhone').value = '';
+	document.getElementById('filterEmail').value = '';
+	document.getElementById('filterGroup').value = '';
+	document.getElementById('filterUnit').value = '';
+}
+
+function toggleSelectAll() {
+	const checkboxes = document.querySelectorAll('.client-checkbox');
+	const selectAll = document.getElementById('selectAllCheckbox');
+	checkboxes.forEach(cb => cb.checked = selectAll.checked);
+	
+	const selectedCount = document.getElementById('selectedCount');
+	if (selectedCount) {
+		selectedCount.textContent = selectAll.checked ? clients.length : 0;
+	}
+}
+
+// Initialize table on page load
+renderClientsTable();
+</script><!-- Loading Overlay -->
+<div id="loadingOverlay">
+	<div class="loading-spinner"></div>
+</div>
+
 </body>
 </html>

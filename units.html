@@ -40,7 +40,7 @@
             <div style="text-align:right;margin-right:8px;font-size:13px"><div style="font-weight:700" data-i18n="admin">Admin</div><div style="font-size:12px;color:var(--muted)">riyadh@getaways</div></div>
             <div class="avatar">A</div>
             <div class="profile-menu" id="profileMenu">
-              <button id="profileSettings" data-i18n="completeProfile">Complete Profile</button>
+              <button id="profileSettings" data-i18n="businessInfo">Business Information</button>
               <button id="changePassword" data-i18n="changePassword">Change Password</button>
               <button id="changeEmail" data-i18n="changeEmail">Change Email</button>
               <div style="border-top:1px solid #e5e7eb;padding:8px 0;margin:8px 0;display:flex;gap:8px;align-items:center;justify-content:center">
@@ -361,14 +361,11 @@
 			{ id: 'group_2', name: 'Chalets Collection', type: 'Chalet', license: 'TRN-2024-002' }
 		];
 		
-		let units = JSON.parse(localStorage.getItem('units')) || [
-			{ id: 1, name: 'Palm Oasis Chalet', type: 'Chalet', maxGuests: 6, nightlyRate: 800, status: 'Active', groupId: 'group_2' },
-			{ id: 2, name: 'Skyline Executive Apartment', type: 'Apartment', maxGuests: 4, nightlyRate: 650, status: 'Active', groupId: 'group_1' },
-			{ id: 3, name: 'Desert Bloom Retreat', type: 'Chalet', maxGuests: 8, nightlyRate: 950, status: 'Maintenance', groupId: 'group_2' },
-			{ id: 4, name: 'City Studio Deluxe', type: 'Studio', maxGuests: 2, nightlyRate: 400, status: 'Active', groupId: 'group_1' }
-		];
-		
-		let currentGroupId = localStorage.getItem('currentGroupId') || 'all';
+	let units = JSON.parse(localStorage.getItem('units')) || [
+		{ id: 1, name: 'Luxury Ocean View Suite', type: 'Hotel Room', maxGuests: 4, nightlyRate: 1200, status: 'Active', groupId: 'group_1' },
+		{ id: 2, name: 'Garden Villa with Private Pool', type: 'Chalet', maxGuests: 8, nightlyRate: 2500, status: 'Active', groupId: 'group_2' },
+		{ id: 3, name: 'Downtown Executive Apartment', type: 'Hotel Apartment', maxGuests: 6, nightlyRate: 950, status: 'Maintenance', groupId: 'group_1' }
+	];		let currentGroupId = localStorage.getItem('currentGroupId') || 'all';
 		
 		// Update property-specific fields based on unit type selection
 		function updatePropertyFields() {
@@ -992,9 +989,15 @@
 			document.addEventListener('click', (e) => {
 				if(!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
 					sidebar.classList.remove('active');
-				}
-			});
-		}
-	</script>
+			}
+		});
+	}
+</script>
+
+<!-- Loading Overlay -->
+<div id="loadingOverlay">
+	<div class="loading-spinner"></div>
+</div>
+
 </body>
 </html>

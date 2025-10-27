@@ -39,7 +39,7 @@
             <div style="text-align:right;margin-right:8px;font-size:13px"><div style="font-weight:700" data-i18n="admin">Admin</div><div style="font-size:12px;color:var(--muted)">riyadh@getaways</div></div>
             <div class="avatar">A</div>
             <div class="profile-menu" id="profileMenu">
-              <button id="profileSettings" data-i18n="completeProfile">Complete Profile</button>
+              <button id="profileSettings" data-i18n="businessInfo">Business Information</button>
               <button id="changePassword" data-i18n="changePassword">Change Password</button>
               <button id="changeEmail" data-i18n="changeEmail">Change Email</button>
               <div style="border-top:1px solid #e5e7eb;padding:8px 0;margin:8px 0;display:flex;gap:8px;align-items:center;justify-content:center">
@@ -507,12 +507,79 @@
 			selector.addEventListener('change', function() {
 				localStorage.setItem('aiAgentSelectedGroup', this.value);
 			});
-		}
+	}
 
-		function showConfirmation(message) {
-			// Simple confirmation (replace with your existing notification system if available)
-			alert(message);
+	function showConfirmation(message) {
+		// Create notification element
+		const notification = document.createElement('div');
+		notification.style.cssText = `
+			position: fixed;
+			top: 20px;
+			right: 20px;
+			background: white;
+			padding: 16px 24px;
+			border-radius: 12px;
+			box-shadow: 0 10px 30px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.05);
+			z-index: 10000;
+			display: flex;
+			align-items: center;
+			gap: 12px;
+			font-size: 14px;
+			color: #0f172a;
+			font-weight: 500;
+			animation: slideIn 0.3s ease;
+			max-width: 400px;
+		`;
+		
+		notification.innerHTML = `
+			<div style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; flex-shrink: 0;"></div>
+			<div style="flex: 1;">${message}</div>
+			<i class="fa-solid fa-check" style="color: #10b981; font-size: 16px; flex-shrink: 0;"></i>
+		`;
+		
+		// Add animation keyframes if not already added
+		if (!document.getElementById('notificationStyles')) {
+			const style = document.createElement('style');
+			style.id = 'notificationStyles';
+			style.textContent = `
+				@keyframes slideIn {
+					from {
+						transform: translateX(400px);
+						opacity: 0;
+					}
+					to {
+						transform: translateX(0);
+						opacity: 1;
+					}
+				}
+				@keyframes slideOut {
+					from {
+						transform: translateX(0);
+						opacity: 1;
+					}
+					to {
+						transform: translateX(400px);
+						opacity: 0;
+					}
+				}
+			`;
+			document.head.appendChild(style);
 		}
-	</script>
+		
+		document.body.appendChild(notification);
+		
+		// Remove after 3 seconds
+		setTimeout(() => {
+			notification.style.animation = 'slideOut 0.3s ease';
+			setTimeout(() => {
+				notification.remove();
+			}, 300);
+		}, 3000);
+	}
+</script><!-- Loading Overlay -->
+<div id="loadingOverlay">
+	<div class="loading-spinner"></div>
+</div>
+
 </body>
 </html>
