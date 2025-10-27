@@ -30,6 +30,15 @@
   max-height: calc(100vh - 94px);
 }
 
+/* Mobile: override display: contents for flex layout */
+@media (max-width: 980px) {
+  .tab-section.active {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
 /* KPI grid - Key Performance Indicators */
 .kpis {
   display: grid;
