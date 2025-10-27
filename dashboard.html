@@ -780,9 +780,11 @@
 			}
 		}
 
-		// Language switcher listeners
-		document.getElementById('langEnglish').addEventListener('click',()=>{setLanguage('en');});
-		document.getElementById('langArabic').addEventListener('click',()=>{setLanguage('ar');});
+		// Language switcher listeners (with null checks)
+		const langEnglishBtn = document.getElementById('langEnglish');
+		if(langEnglishBtn) langEnglishBtn.addEventListener('click',()=>{setLanguage('en');});
+		const langArabicBtn = document.getElementById('langArabic');
+		if(langArabicBtn) langArabicBtn.addEventListener('click',()=>{setLanguage('ar');});
 
 		// Currency selector listener - removed as currencySelect element doesn't exist
 		// Using button clicks instead (see line 1930+)
