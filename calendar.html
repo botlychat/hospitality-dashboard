@@ -2074,10 +2074,13 @@
     document.getElementById('prevMonth').addEventListener('click',()=>{currentMonth.setMonth(currentMonth.getMonth()-1);renderCalendar();});
     document.getElementById('nextMonth').addEventListener('click',()=>{currentMonth.setMonth(currentMonth.getMonth()+1);renderCalendar();});
     document.getElementById('unitFilter').addEventListener('change',e=>{filters.unit=e.target.value;renderCalendar();});
-    document.getElementById('viewSelect').addEventListener('change',e=>{filters.view=e.target.value;renderCalendar();});
-  document.getElementById('addBookingBtn').addEventListener('click',()=>openAddBooking(null,filters.unit!=='all'?filters.unit:null));
-  document.getElementById('syncCalendarBtn').addEventListener('click',()=>openSyncCalendarModal());
-  document.getElementById('getCalendarUrlBtn').addEventListener('click',()=>openGetCalendarUrlModal());
+    const viewSelectElement = document.getElementById('viewSelect');
+    if(viewSelectElement) {
+      viewSelectElement.addEventListener('change',e=>{filters.view=e.target.value;renderCalendar();});
+    }
+    document.getElementById('addBookingBtn').addEventListener('click',()=>openAddBooking(null,filters.unit!=='all'?filters.unit:null));
+    document.getElementById('syncCalendarBtn').addEventListener('click',()=>openSyncCalendarModal());
+    document.getElementById('getCalendarUrlBtn').addEventListener('click',()=>openGetCalendarUrlModal());
 
     // Profile handlers
     document.getElementById('profileBtn').addEventListener('click',()=>{document.getElementById('profileMenu').classList.toggle('show');});
