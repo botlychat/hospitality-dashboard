@@ -1,0 +1,460 @@
+/* Contacts Management Page - Specific Styles */
+
+/* Contacts table styling */
+.contacts-table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow-x: auto;
+}
+
+.contacts-table thead tr {
+  background: #f3f4f6;
+  border-bottom: 1px solid var(--stroke);
+}
+
+.contacts-table th {
+  padding: var(--space-md) var(--space-xl);
+  text-align: left;
+  font-weight: 600;
+  color: var(--stroke);
+  font-size: var(--font-size-base);
+}
+
+.contacts-table td {
+  padding: var(--space-md) var(--space-xl);
+  border-bottom: 1px solid var(--stroke);
+  font-size: var(--font-size-base);
+  color: var(--text-primary);
+}
+
+.contacts-table tbody tr:hover {
+  background: rgba(249, 115, 22, 0.04);
+}
+
+/* Filter section */
+.filters-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-lg);
+  margin-bottom: var(--space-2xl);
+  padding: var(--space-lg);
+  background: #f9fafb;
+  border-radius: var(--border-radius-lg);
+}
+
+.filters-group input,
+.filters-group select {
+  padding: var(--space-lg);
+  border: 1px solid var(--stroke);
+  border-radius: var(--border-radius-md);
+  font-size: var(--font-size-base);
+  font-family: inherit;
+}
+
+.filters-group input:focus,
+.filters-group select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+/* Pagination controls */
+.pagination-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-lg);
+  background: #f9fafb;
+  border-radius: var(--border-radius-lg);
+  margin-top: var(--space-lg);
+}
+
+.pagination-info .info-text {
+  font-size: var(--font-size-base);
+  color: #6b7280;
+}
+
+.pagination-info .info-text strong {
+  font-weight: 600;
+}
+
+.pagination-controls {
+  display: flex;
+  gap: var(--space-lg);
+}
+
+.pagination-controls input {
+  width: 50px;
+  padding: var(--space-xs);
+  border: 1px solid var(--stroke);
+  border-radius: var(--border-radius-md);
+  font-size: var(--font-size-sm);
+  text-align: center;
+}
+
+.pagination-controls button {
+  padding: var(--space-xs) var(--space-md);
+  font-size: var(--font-size-sm);
+}
+
+/* Selected count display */
+.selection-info {
+  margin-top: var(--space-lg);
+  font-size: var(--font-size-sm);
+  color: #6b7280;
+}
+
+.selection-info strong {
+  font-weight: 600;
+}
+
+/* Action buttons group */
+.action-buttons {
+  display: flex;
+  gap: var(--space-lg);
+  margin-bottom: var(--space-2xl);
+  flex-wrap: wrap;
+}
+
+/* Modal - Campaign */
+.campaign-modal {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.campaign-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.campaign-field label {
+  font-weight: 600;
+  font-size: var(--font-size-base);
+  display: block;
+  margin-bottom: var(--space-xs);
+}
+
+.campaign-field label span {
+  color: #ef4444;
+}
+
+.recipients-display {
+  padding: var(--space-lg);
+  background: #f9fafb;
+  border-radius: var(--border-radius-lg);
+  border: 1px solid var(--stroke);
+  min-height: 40px;
+  font-size: var(--font-size-base);
+  color: #6b7280;
+}
+
+/* DateTime picker styling */
+.datetime-input {
+  position: relative;
+  margin-bottom: var(--space-lg);
+}
+
+.datetime-input input {
+  width: 100%;
+  padding: var(--space-md);
+  border: 1px solid var(--stroke);
+  border-radius: var(--border-radius-lg);
+  font-size: var(--font-size-base);
+  background: #f9fafb;
+  cursor: pointer;
+}
+
+.datetime-icon {
+  position: absolute;
+  right: var(--space-lg);
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6b7280;
+  pointer-events: none;
+}
+
+.calendar-picker {
+  display: none;
+  background: #fff;
+  border: 1px solid var(--stroke);
+  border-radius: var(--border-radius-lg);
+  padding: var(--space-lg);
+  position: absolute;
+  z-index: 1000;
+  width: 300px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  margin-top: var(--space-lg);
+}
+
+.calendar-picker.show {
+  display: block;
+}
+
+.calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: var(--space-xs);
+  margin-bottom: var(--space-lg);
+}
+
+.calendar-day {
+  padding: var(--space-xs);
+  text-align: center;
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  transition: all var(--transition-base);
+}
+
+.calendar-day:hover {
+  background: var(--accent-soft);
+}
+
+.calendar-day.selected {
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+
+.time-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-lg);
+  margin-bottom: var(--space-lg);
+}
+
+.time-inputs input {
+  padding: var(--space-lg);
+  border: 1px solid var(--stroke);
+  border-radius: var(--border-radius-md);
+  font-size: var(--font-size-sm);
+  text-align: center;
+}
+
+.calendar-actions {
+  display: flex;
+  gap: var(--space-lg);
+}
+
+.calendar-actions button {
+  flex: 1;
+  padding: var(--space-xs) var(--space-md);
+  border: 1px solid var(--stroke);
+  background: #f9fafb;
+  border-radius: var(--border-radius-md);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  font-weight: 600;
+  transition: all var(--transition-base);
+}
+
+.calendar-actions button:hover {
+  border-color: var(--accent);
+}
+
+.calendar-actions button.confirm {
+  border: none;
+  background: var(--accent);
+  color: #fff;
+}
+
+.calendar-actions button.confirm:hover {
+  filter: brightness(0.92);
+}
+
+/* Campaign message textarea */
+.campaign-message {
+  width: 100%;
+  padding: var(--space-md);
+  border: 1px solid var(--stroke);
+  border-radius: var(--border-radius-lg);
+  font-size: var(--font-size-base);
+  font-family: inherit;
+  resize: vertical;
+  min-height: 100px;
+}
+
+.message-counter {
+  font-size: var(--font-size-sm);
+  color: #6b7280;
+  margin-top: var(--space-xs);
+}
+
+/* Attachment section */
+.attachment-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+.attachment-group input[type="file"] {
+  flex: 1;
+  padding: var(--space-md);
+  border: 1px solid var(--stroke);
+  border-radius: var(--border-radius-lg);
+  font-size: var(--font-size-base);
+}
+
+.attachment-info {
+  font-size: var(--font-size-sm);
+  color: #6b7280;
+}
+
+.attachment-note {
+  font-size: var(--font-size-sm);
+  color: #6b7280;
+  margin-top: var(--space-xs);
+  display: block;
+}
+
+/* Cost summary */
+.cost-summary {
+  padding: var(--space-lg);
+  background: #f0f9ff;
+  border-radius: var(--border-radius-lg);
+  border: 1px solid #bfdbfe;
+  border-left: 3px solid #3b82f6;
+}
+
+.cost-summary-title {
+  font-size: var(--font-size-base);
+  color: #0c4a6e;
+  font-weight: 600;
+  margin-bottom: var(--space-xs);
+}
+
+.cost-summary-line {
+  font-size: var(--font-size-sm);
+  color: #0c4a6e;
+  margin-bottom: var(--space-xs);
+}
+
+.cost-summary-line strong {
+  font-weight: 600;
+}
+
+/* Modal - Edit Contact */
+.edit-contact-modal {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.edit-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.edit-field label {
+  font-weight: 600;
+  font-size: var(--font-size-base);
+  display: block;
+  margin-bottom: var(--space-xs);
+}
+
+.edit-field input,
+.edit-field select {
+  width: 100%;
+  padding: var(--space-md);
+  border: 1px solid var(--stroke);
+  border-radius: var(--border-radius-lg);
+  font-size: var(--font-size-base);
+  font-family: inherit;
+}
+
+.edit-field input:focus,
+.edit-field select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+}
+
+.modal-actions {
+  display: flex;
+  gap: var(--space-lg);
+  justify-content: flex-end;
+  margin-top: var(--space-lg);
+}
+
+/* Checkbox styling */
+.checkbox-cell input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+/* Contact data cells */
+.contact-name {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.contact-meta {
+  font-size: var(--font-size-sm);
+  color: var(--muted);
+}
+
+.contact-last-booking {
+  font-size: var(--font-size-sm);
+  color: var(--muted);
+}
+
+.contact-review {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.contact-payment {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--border-radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+.contact-payment.paid {
+  background: rgba(22, 163, 74, 0.14);
+  color: #15803d;
+}
+
+.contact-payment.pending {
+  background: rgba(245, 158, 11, 0.14);
+  color: #b45309;
+}
+
+.contact-actions {
+  display: flex;
+  gap: var(--space-xs);
+  justify-content: center;
+}
+
+.contact-actions button {
+  padding: var(--space-xs) var(--space-lg);
+  border: none;
+  background: transparent;
+  color: var(--accent);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  border-radius: var(--border-radius-md);
+  transition: all var(--transition-base);
+}
+
+.contact-actions button:hover {
+  background: var(--accent-soft);
+}
+
+.contact-actions .danger {
+  color: var(--color-red-dark);
+}
+
+.contact-actions .danger:hover {
+  background: rgba(239, 68, 68, 0.1);
+}
