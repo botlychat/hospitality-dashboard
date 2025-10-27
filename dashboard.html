@@ -134,7 +134,7 @@
 							<h3 data-i18n="quickActions">Quick Actions</h3>
 							<div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
 								<button class="btn primary" data-link="calendar.html"><i class="fa-regular fa-calendar"></i> <span data-i18n="openCalendar">Open Calendar</span></button>
-								<button class="btn primary" id="newBookingBtn"><i class="fa-solid fa-plus"></i> <span data-i18n="newManualBooking">New Manual Booking</span></button>
+								<button class="btn primary" id="quickActionNewBookingBtn"><i class="fa-solid fa-plus"></i> <span data-i18n="newManualBooking">New Manual Booking</span></button>
 								<button class="btn ghost" data-link="aiagent.html"><i class="fa-solid fa-robot"></i> <span data-i18n="aiagent">AI Agent</span></button>
 							</div>
 						</div>
@@ -1264,9 +1264,11 @@
 	// New Booking button
 		console.log('[DASHBOARD] Attaching booking & refresh listeners...');
 		const newBookingBtn = document.getElementById('newBookingBtn');
+		const quickActionNewBookingBtn = document.getElementById('quickActionNewBookingBtn');
 		const refreshBtn = document.getElementById('refreshBtn');
 		
 		if(newBookingBtn) newBookingBtn.addEventListener('click',()=>{openAddBooking()});
+		if(quickActionNewBookingBtn) quickActionNewBookingBtn.addEventListener('click',()=>{openAddBooking()});
 		if(refreshBtn) refreshBtn.addEventListener('click',()=>{
 			updateKPIs();
 			renderRecentBookings();

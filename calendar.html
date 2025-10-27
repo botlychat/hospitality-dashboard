@@ -2078,14 +2078,23 @@
     if(viewSelectElement) {
       viewSelectElement.addEventListener('change',e=>{filters.view=e.target.value;renderCalendar();});
     }
-    document.getElementById('addBookingBtn').addEventListener('click',()=>openAddBooking(null,filters.unit!=='all'?filters.unit:null));
-    document.getElementById('syncCalendarBtn').addEventListener('click',()=>openSyncCalendarModal());
-    document.getElementById('getCalendarUrlBtn').addEventListener('click',()=>openGetCalendarUrlModal());
+    
+    // Add event listeners with safety checks
+    const addBookingBtnElement = document.getElementById('addBookingBtn');
+    const syncCalendarBtnElement = document.getElementById('syncCalendarBtn');
+    const getCalendarUrlBtnElement = document.getElementById('getCalendarUrlBtn');
+    const profileBtnElement = document.getElementById('profileBtn');
+    const profileSettingsElement = document.getElementById('profileSettings');
+    const logoutBtnElement = document.getElementById('logoutBtn');
+    
+    if(addBookingBtnElement) addBookingBtnElement.addEventListener('click',()=>openAddBooking(null,filters.unit!=='all'?filters.unit:null));
+    if(syncCalendarBtnElement) syncCalendarBtnElement.addEventListener('click',()=>openSyncCalendarModal());
+    if(getCalendarUrlBtnElement) getCalendarUrlBtnElement.addEventListener('click',()=>openGetCalendarUrlModal());
 
     // Profile handlers
-    document.getElementById('profileBtn').addEventListener('click',()=>{document.getElementById('profileMenu').classList.toggle('show');});
-    document.getElementById('profileSettings').addEventListener('click',()=>showConfirmation('Open Profile Settings (simulated)'));
-    document.getElementById('logoutBtn').addEventListener('click',()=>{
+    if(profileBtnElement) profileBtnElement.addEventListener('click',()=>{document.getElementById('profileMenu').classList.toggle('show');});
+    if(profileSettingsElement) profileSettingsElement.addEventListener('click',()=>showConfirmation('Open Profile Settings (simulated)'));
+    if(logoutBtnElement) logoutBtnElement.addEventListener('click',()=>{
       document.body.innerHTML='<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:Inter"><div style="text-align:center"><h2>You are logged out</h2><p>Simulation only. Reload to return.</p></div></div>';
     });
 
