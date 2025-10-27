@@ -1052,8 +1052,17 @@
 		}
 
 		function openAddBooking(){
-			const tpl=document.getElementById('addBookingTpl');const frag=tpl.content.cloneNode(true);
-			const unitSelect = frag.getElementById('abUnit');
+			const tpl=document.getElementById('addBookingTpl');
+			if(!tpl){
+				console.error('[DASHBOARD] addBookingTpl template not found');
+				showConfirmation('Error: Booking template not found. Please refresh the page.');
+				return;
+			}
+			const frag=tpl.content.cloneNode(true);
+			const unitSelect = frag.querySelector('#abUnit');
+			if(!unitSelect){
+				console.error('[DASHBOARD] Unit select element not found in template');
+			}
 			populateUnitSelect(unitSelect);
 			openModal(frag);
 
@@ -1064,6 +1073,13 @@
 			const totalInput = document.getElementById('abTotal');
 			const paidInput = document.getElementById('abPaid');
 			const summarySpan = document.getElementById('abSummary');
+			
+			// Verify all required elements exist before proceeding
+			if(!startInput || !endInput || !rateInput || !totalInput || !summarySpan){
+				console.error('[DASHBOARD] Required booking form elements missing', {startInput, endInput, rateInput, totalInput, summarySpan});
+				showConfirmation('Error: Booking form could not be initialized. Please try again.');
+				return;
+			}
 
 			const calculateTotal = () => {
 				const start = new Date(startInput.value);
