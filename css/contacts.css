@@ -51,15 +51,16 @@ html[lang="en"] .table-scroll-wrapper table {
 
 /* Contacts table - specific column minimum widths for mobile */
 @media (max-width: 768px) {
-  /* Extend table wrapper beyond panel boundaries */
+  /* Extend table wrapper beyond panel boundaries - full viewport width */
   .panel .table-scroll-wrapper {
-    width: calc(100% + 2 * var(--space-3xl)); /* Extend by panel padding */
-    margin-left: calc(-1 * var(--space-3xl)); /* Negative margin to extend left */
-    margin-right: calc(-1 * var(--space-3xl)); /* Negative margin to extend right */
-    margin-bottom: calc(-1 * var(--space-3xl)); /* Extend to bottom */
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
     border: none;
     border-radius: 0;
     border-bottom: 1px solid #e5e7eb;
+    padding: 0 16px;
   }
   
   .table-scroll-wrapper table th:nth-child(1),
