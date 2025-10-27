@@ -165,23 +165,9 @@
               <button id="profileSettings" data-i18n="completeProfile">Complete Profile</button>
               <button id="changePassword" data-i18n="changePassword">Change Password</button>
               <button id="changeEmail" data-i18n="changeEmail">Change Email</button>
-              <div style="border-top:1px solid #e5e7eb;padding:8px 0;margin:8px 0;display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap">
-                <button id="currencyUSD" style="display:flex;align-items:center;gap:6px;padding:8px 12px;border:none;background:transparent;cursor:pointer;font-size:13px;font-weight:600;color:#f97316;border-radius:6px;transition:all 0.2s ease" title="US Dollar">
-                  <i class="fa-solid fa-dollar-sign"></i> USD
-                </button>
-                <button id="currencySAR" style="display:flex;align-items:center;gap:6px;padding:8px 12px;border:none;background:transparent;cursor:pointer;font-size:13px;font-weight:600;color:#64748b;border-radius:6px;transition:all 0.2s ease" title="Saudi Riyal">
-                  <i class="fa-solid fa-coins"></i> SAR
-                </button>
-                <button id="currencyEUR" style="display:flex;align-items:center;gap:6px;padding:8px 12px;border:none;background:transparent;cursor:pointer;font-size:13px;font-weight:600;color:#64748b;border-radius:6px;transition:all 0.2s ease" title="Euro">
-                  <i class="fa-solid fa-euro-sign"></i> EUR
-                </button>
-                <div style="width:1px;height:20px;background:#e5e7eb"></div>
-                <button id="langEnglish" style="display:flex;align-items:center;gap:6px;padding:8px 12px;border:none;background:transparent;cursor:pointer;font-size:13px;font-weight:600;color:#f97316;border-radius:6px;transition:all 0.2s ease" title="English">
-                  <i class="fa-solid fa-globe"></i> EN
-                </button>
-                <div style="width:1px;height:20px;background:#e5e7eb"></div>
-                <button id="langArabic" style="display:flex;align-items:center;gap:6px;padding:8px 12px;border:none;background:transparent;cursor:pointer;font-size:13px;font-weight:600;color:#64748b;border-radius:6px;transition:all 0.2s ease" title="العربية">
-                  <i class="fa-solid fa-globe"></i> AR
+              <div style="border-top:1px solid #e5e7eb;padding:8px 0;margin:8px 0;display:flex;gap:8px;align-items:center;justify-content:center">
+                <button id="langToggle" style="display:flex;align-items:center;gap:6px;padding:8px 12px;border:1px solid #e5e7eb;background:#fff;cursor:pointer;font-size:12px;font-weight:600;color:#f97316;border-radius:6px;transition:all 0.2s ease" title="Toggle Language">
+                  <i class="fa-solid fa-globe"></i> <span id="langText">العربية</span>
                 </button>
               </div>
               <button id="logoutBtn" data-i18n="logout">Logout</button>
@@ -2153,18 +2139,14 @@
 
     // Update language button styles
     function updateLanguageButtons(){
-      const enBtn = document.getElementById('langEnglish');
-      const arBtn = document.getElementById('langArabic');
-      if(currentLanguage === 'en'){
-        enBtn.style.color = '#f97316';
-        enBtn.style.fontWeight = '600';
-        arBtn.style.color = '#64748b';
-        arBtn.style.fontWeight = 'normal';
-      } else {
-        arBtn.style.color = '#f97316';
-        arBtn.style.fontWeight = '600';
-        enBtn.style.color = '#64748b';
-        enBtn.style.fontWeight = 'normal';
+      const langToggle = document.getElementById('langToggle');
+      const langText = document.getElementById('langText');
+      if(langToggle && langText){
+        if(currentLanguage === 'en'){
+          langText.textContent = 'العربية';
+        } else {
+          langText.textContent = 'English';
+        }
       }
     }
 
@@ -2188,44 +2170,14 @@
     renderLegend();
     renderCalendar();
 
-    // Language switcher listeners
-    document.getElementById('langEnglish').addEventListener('click',()=>{setLanguage('en');});
-    document.getElementById('langArabic').addEventListener('click',()=>{setLanguage('ar');});
-
-    // Currency switcher listeners
-    function updateCurrencyButtons(){
-      const usdBtn = document.getElementById('currencyUSD');
-      const sarBtn = document.getElementById('currencySAR');
-      const eurBtn = document.getElementById('currencyEUR');
-      
-      // Reset all buttons
-      [usdBtn, sarBtn, eurBtn].forEach(btn => {
-        btn.style.color = '#64748b';
-        btn.style.fontWeight = 'normal';
+    // Language switcher listener
+    const langToggle = document.getElementById('langToggle');
+    if(langToggle) {
+      langToggle.addEventListener('click', () => {
+        const newLang = currentLanguage === 'en' ? 'ar' : 'en';
+        setLanguage(newLang);
       });
-      
-      // Highlight selected currency
-      if(currentCurrency === 'USD') usdBtn.style.color = '#f97316';
-      else if(currentCurrency === 'SAR') sarBtn.style.color = '#f97316';
-      else if(currentCurrency === 'EUR') eurBtn.style.color = '#f97316';
-      
-      // Update font weight for active
-      const activeBtn = document.getElementById('currency' + currentCurrency);
-      if(activeBtn) activeBtn.style.fontWeight = '600';
     }
-
-    function setCurrency(currency){
-      currentCurrency = currency;
-      localStorage.setItem('currency', currency);
-      updateCurrencyButtons();
-      renderCalendar();
-    }
-
-    // Initialize currency buttons
-    updateCurrencyButtons();
-    document.getElementById('currencyUSD').addEventListener('click', () => { setCurrency('USD'); });
-    document.getElementById('currencySAR').addEventListener('click', () => { setCurrency('SAR'); });
-    document.getElementById('currencyEUR').addEventListener('click', () => { setCurrency('EUR'); });
 
     // Navigation handlers - redirect to dashboard.html with tab parameter
     document.querySelectorAll('.nav-item').forEach(item => {

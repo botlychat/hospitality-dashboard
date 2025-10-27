@@ -43,19 +43,8 @@
 							<button id="profileSettings" data-i18n="completeProfile">Complete Profile</button>
 							<button id="changePassword" data-i18n="changePassword">Change Password</button>
 							<button id="changeEmail" data-i18n="changeEmail">Change Email</button>
-							<div style="border-top:1px solid #e5e7eb;padding:8px 0;margin:8px 0;display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap">
-								<button id="currencyUSD" style="display:flex;align-items:center;gap:4px;padding:8px 10px;border:none;background:transparent;cursor:pointer;font-size:12px;font-weight:600;color:#64748b;border-radius:6px;transition:all 0.2s ease" title="US Dollar">
-									USD
-								</button>
-								<button id="currencySAR" style="display:flex;align-items:center;gap:4px;padding:8px 10px;border:none;background:transparent;cursor:pointer;font-size:12px;font-weight:600;color:#f97316;border-radius:6px;transition:all 0.2s ease" title="Saudi Riyal">
-									SAR
-								</button>
-								<button id="currencyEUR" style="display:flex;align-items:center;gap:4px;padding:8px 10px;border:none;background:transparent;cursor:pointer;font-size:12px;font-weight:600;color:#64748b;border-radius:6px;transition:all 0.2s ease" title="Euro">
-									EUR
-								</button>
-								<div style="width:1px;height:16px;background:#e5e7eb"></div>
-								<button id="langEnglish" style="width:auto;padding:8px 10px;border:none;background:transparent;cursor:pointer;font-size:12px;border-radius:6px;font-weight:600;color:#64748b;transition:all 0.2s ease" title="English">EN</button>
-								<button id="langArabic" style="width:auto;padding:8px 10px;border:none;background:transparent;cursor:pointer;font-size:12px;border-radius:6px;color:#64748b;transition:all 0.2s ease" title="العربية">AR</button>
+							<div style="border-top:1px solid #e5e7eb;padding:8px 0;margin:8px 0;display:flex;gap:8px;align-items:center;justify-content:center">
+								<button id="langToggle" style="display:flex;align-items:center;gap:6px;padding:8px 12px;border:1px solid #e5e7eb;background:#fff;cursor:pointer;font-size:12px;font-weight:600;color:#f97316;border-radius:6px;transition:all 0.2s ease" title="Toggle Language"><i class="fa-solid fa-globe"></i> <span id="langText">العربية</span></button>
 							</div>
 							<button id="logoutBtn" data-i18n="logout">Logout</button>
 						</div>
@@ -1716,18 +1705,14 @@
 		}
 
 		function updateLanguageButtons(){
-			const enBtn = document.getElementById('langEnglish');
-			const arBtn = document.getElementById('langArabic');
-			if(currentLanguage === 'en'){
-				enBtn.style.color = '#f97316';
-				enBtn.style.fontWeight = '600';
-				arBtn.style.color = '#64748b';
-				arBtn.style.fontWeight = 'normal';
-			} else {
-				arBtn.style.color = '#f97316';
-				arBtn.style.fontWeight = '600';
-				enBtn.style.color = '#64748b';
-				enBtn.style.fontWeight = 'normal';
+			const langToggle = document.getElementById('langToggle');
+			const langText = document.getElementById('langText');
+			if(langToggle && langText){
+				if(currentLanguage === 'en'){
+					langText.textContent = 'العربية';
+				} else {
+					langText.textContent = 'English';
+				}
 			}
 		}
 
@@ -1740,22 +1725,18 @@
 		}
 
 		// Initialize buttons with null checks
-		console.log('[DASHBOARD] Initializing currency and language buttons...');
-		updateCurrencyButtons();
+		console.log('[DASHBOARD] Initializing language toggle button...');
 		updateLanguageButtons();
 		
-		const currencyUSD = document.getElementById('currencyUSD');
-		const currencySAR = document.getElementById('currencySAR');
-		const currencyEUR = document.getElementById('currencyEUR');
-		const langEnglish = document.getElementById('langEnglish');
-		const langArabic = document.getElementById('langArabic');
+		const langToggle = document.getElementById('langToggle');
 		
-		if(currencyUSD) currencyUSD.addEventListener('click', () => { setCurrency('USD'); });
-		if(currencySAR) currencySAR.addEventListener('click', () => { setCurrency('SAR'); });
-		if(currencyEUR) currencyEUR.addEventListener('click', () => { setCurrency('EUR'); });
-		if(langEnglish) langEnglish.addEventListener('click', () => { setLanguage('en'); });
-		if(langArabic) langArabic.addEventListener('click', () => { setLanguage('ar'); });
-		console.log('[DASHBOARD] Currency and language buttons initialized');
+		if(langToggle) {
+			langToggle.addEventListener('click', () => {
+				const newLang = currentLanguage === 'en' ? 'ar' : 'en';
+				setLanguage(newLang);
+			});
+		}
+		console.log('[DASHBOARD] Language toggle button initialized');
 	</script>
 
 	<!-- Extracted JavaScript Files - Load external dependencies -->
