@@ -36,8 +36,18 @@
 
     .content{padding:26px;display:flex;flex-direction:column;gap:18px}
 
-    .toolbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px}
-    .toolbar-left{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px}
+    /* Desktop Layout */
+    .toolbar{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:12px}
+    .toolbar-left{display:flex;flex-wrap:wrap;align-items:center;gap:12px;flex:1}
+    .toolbar-right{display:flex;flex-direction:column;gap:8px;min-width:200px}
+    
+    .group-selector-wrapper{display:flex;gap:8px;align-items:center;width:100%}
+    .month-centered{display:flex;justify-content:center;margin:12px 0}
+    
+    /* Show/hide add booking buttons for desktop vs mobile */
+    #addBookingBtn{display:none} /* Mobile button hidden by default */
+    #addBookingBtnDesktop{display:flex} /* Desktop button shown by default */
+    
     .filter{background:#fff;border:1px solid rgba(15,23,41,0.08);border-radius:12px;padding:8px 12px;display:flex;align-items:center;gap:8px;box-shadow:0 6px 18px rgba(15,23,41,0.05)}
     .filter select{border:none;font-size:13px;color:#111;background:transparent;outline:none}
     .month-switcher{display:flex;align-items:center;gap:10px}
@@ -137,6 +147,60 @@
         font-size:10px;
         margin-bottom:6px;
       }
+      
+      /* Mobile Layout Reordering */
+      .toolbar{flex-direction:column;gap:8px;align-items:stretch}
+      .toolbar-left{flex-direction:column;width:100%;gap:8px}
+      .toolbar-right{flex-direction:row;width:100%;gap:8px}
+      
+      .group-selector-wrapper{flex-direction:column;gap:8px}
+      
+      #calendarGroupSelector{
+        width:100%;
+        font-size:14px;
+        padding:10px 12px;
+      }
+      
+      .month-switcher{
+        width:100%;
+        justify-content:center;
+        order:1;
+      }
+      
+      .filter{
+        width:calc(50% - 4px);
+        order:2;
+      }
+      
+      #addBookingBtn{
+        display:flex !important; /* Show mobile button */
+        width:calc(50% - 4px);
+        flex:1;
+        order:2;
+        padding:10px 12px;
+        font-size:13px;
+      }
+      
+      #addBookingBtnDesktop{
+        display:none !important; /* Hide desktop button on mobile */
+      }
+      
+      .toolbar-right{
+        order:3;
+        justify-content:space-between;
+      }
+      
+      .toolbar-right .btn{
+        flex:1;
+        padding:10px 12px;
+        font-size:12px;
+      }
+      
+      .legend{
+        order:4;
+        margin-top:8px;
+      }
+      
       .day-cell{
         min-height:80px;
         max-height:80px;
@@ -199,13 +263,9 @@
     
     @media(max-width:640px){
       .sidebar{width:240px}
-      .toolbar{flex-direction:column;gap:12px}
-      .toolbar-left{flex-direction:column;width:100%}
       .header h2{font-size:16px;font-weight:700}
       .header h1{font-size:16px;font-weight:700}
       #monthLabel{font-size:14px !important}
-      .toolbar-right{flex-direction:column;width:100%}
-      .btn{width:100%;padding:10px 12px;font-size:13px}
       .header{padding:0 12px}
       .content{padding:12px}
     }
@@ -255,20 +315,34 @@
       <section class="content">
         <div class="toolbar">
           <div class="toolbar-left">
-            <select id="calendarGroupSelector" style="padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:13px;font-weight:600;background:#fff;cursor:pointer;min-width:220px;appearance:none;background-image:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%2712%22 viewBox=%220 0 12 12%22%3E%3Cpath fill=%22%231f2937%22 d=%22M6 9L1 4h10z%22/%3E%3C/svg%3E');background-repeat:no-repeat;background-position:right 10px center;padding-right:32px">
-              <!-- Group options will be populated by JavaScript -->
-            </select>
-            <div class="month-switcher">
-              <button id="prevMonth" aria-label="Previous month"><i class="fa-solid fa-chevron-left"></i></button>
-              <div style="font-weight:700;font-size:14px" id="monthLabel">October 2025</div>
-              <button id="nextMonth" aria-label="Next month"><i class="fa-solid fa-chevron-right"></i></button>
+            <!-- Group selector with arrow indicator -->
+            <div class="group-selector-wrapper">
+              <select id="calendarGroupSelector" style="padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:13px;font-weight:600;background:#fff;cursor:pointer;min-width:180px;appearance:none;background-image:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%2212%22 viewBox=%220 0 12 12%22%3E%3Cpath fill=%22%231f2937%22 d=%22M6 9L1 4h10z%22/%3E%3C/svg%3E');background-repeat:no-repeat;background-position:right 10px center;padding-right:32px">
+                <!-- Group options will be populated by JavaScript -->
+              </select>
+              
+              <!-- Unit filter next to group selector on desktop -->
+              <div class="filter" style="flex:1;min-width:180px"><i class="fa-solid fa-filter"></i><select id="unitFilter"><option value="all" data-i18n="allUnits">All Units</option></select></div>
             </div>
-            <div class="filter"><i class="fa-solid fa-filter"></i><select id="unitFilter"><option value="all" data-i18n="allUnits">All Units</option></select></div>
+            
+            <!-- Month switcher centered -->
+            <div class="month-centered" style="width:100%">
+              <div class="month-switcher">
+                <button id="prevMonth" aria-label="Previous month"><i class="fa-solid fa-chevron-left"></i></button>
+                <div style="font-weight:700;font-size:14px" id="monthLabel">October 2025</div>
+                <button id="nextMonth" aria-label="Next month"><i class="fa-solid fa-chevron-right"></i></button>
+              </div>
+            </div>
+            
+            <!-- New Booking button (will be repositioned on mobile) -->
+            <button class="btn primary" id="addBookingBtn" data-i18n="newManualBooking" style="display:none"><i class="fa-solid fa-plus"></i> New Manual Booking</button>
           </div>
-          <div class="toolbar-right" style="display:flex;gap:8px;align-items:center">
+          
+          <!-- Right side buttons for desktop -->
+          <div class="toolbar-right">
+            <button class="btn primary" id="addBookingBtnDesktop" data-i18n="newManualBooking"><i class="fa-solid fa-plus"></i> New Manual Booking</button>
             <button class="btn ghost" id="syncCalendarBtn" title="Sync external calendars to units"><i class="fa-solid fa-link"></i> Sync Calendar</button>
             <button class="btn ghost" id="getCalendarUrlBtn" title="Get shareable calendar URL for each unit"><i class="fa-solid fa-share"></i> Get Calendar URL</button>
-            <button class="btn primary" id="addBookingBtn" data-i18n="newManualBooking"><i class="fa-solid fa-plus"></i> New Manual Booking</button>
           </div>
         </div>
 
@@ -2167,8 +2241,10 @@
     const profileBtnElement = document.getElementById('profileBtn');
     const profileSettingsElement = document.getElementById('profileSettings');
     const logoutBtnElement = document.getElementById('logoutBtn');
+    const addBookingBtnDesktopElement = document.getElementById('addBookingBtnDesktop');
     
     if(addBookingBtnElement) addBookingBtnElement.addEventListener('click',()=>openAddBooking(null,filters.unit!=='all'?filters.unit:null));
+    if(addBookingBtnDesktopElement) addBookingBtnDesktopElement.addEventListener('click',()=>openAddBooking(null,filters.unit!=='all'?filters.unit:null));
     if(syncCalendarBtnElement) syncCalendarBtnElement.addEventListener('click',()=>openSyncCalendarModal());
     if(getCalendarUrlBtnElement) getCalendarUrlBtnElement.addEventListener('click',()=>openGetCalendarUrlModal());
 
