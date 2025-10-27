@@ -218,10 +218,17 @@ function applyTranslations(language = 'en') {
  */
 function setLanguage(language) {
   localStorage.setItem('language', language);
+  window.currentLanguage = language; // Update global variable
   document.documentElement.lang = language;
   document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
   applyTranslations(language);
   updateLanguageButtons(language);
+  
+  // Update the toggle button text if it exists
+  const langText = document.getElementById('langText');
+  if (langText) {
+    langText.textContent = language === 'en' ? 'العربية' : 'English';
+  }
 }
 
 /**
@@ -395,6 +402,7 @@ function showError(message, duration = 3000) {
 function initializeSharedUtilities() {
   // Set initial language
   const currentLanguage = localStorage.getItem('language') || 'en';
+  window.currentLanguage = currentLanguage; // Set global variable
   document.documentElement.lang = currentLanguage;
   document.documentElement.dir = currentLanguage === 'ar' ? 'rtl' : 'ltr';
   applyTranslations(currentLanguage);
@@ -409,6 +417,24 @@ function initializeSharedUtilities() {
   const langArBtn = document.getElementById('langArabic');
   if (langEnBtn) langEnBtn.addEventListener('click', () => setLanguage('en'));
   if (langArBtn) langArBtn.addEventListener('click', () => setLanguage('ar'));
+  
+  // Setup universal language toggle button (single button that switches between languages)
+  const langToggle = document.getElementById('langToggle');
+  const langText = document.getElementById('langText');
+  if (langToggle) {
+    langToggle.addEventListener('click', () => {
+      const newLang = currentLanguage === 'en' ? 'ar' : 'en';
+      setLanguage(newLang);
+      // Update the toggle button text
+      if (langText) {
+        langText.textContent = newLang === 'en' ? 'العربية' : 'English';
+      }
+    });
+    // Set initial button text based on current language
+    if (langText) {
+      langText.textContent = currentLanguage === 'en' ? 'العربية' : 'English';
+    }
+  }
   
   // Setup currency switchers
   const currencyUSD = document.getElementById('currencyUSD');

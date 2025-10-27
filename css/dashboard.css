@@ -271,6 +271,14 @@
   background: rgba(249, 115, 22, 0.04);
 }
 
+/* Mobile: Center align all table columns */
+@media (max-width: 768px) {
+  .panel th,
+  .panel td {
+    text-align: center;
+  }
+}
+
 /* Table container for horizontal scrolling */
 .panel {
   overflow-x: auto;

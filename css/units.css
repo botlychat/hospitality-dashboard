@@ -1,5 +1,30 @@
 /* Units Management Page - Specific Styles */
 
+/* Table scroll wrapper - mobile direction based on language */
+.table-scroll-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* For English (LTR), scroll starts from left */
+html[lang="en"] .table-scroll-wrapper {
+  direction: ltr;
+}
+
+/* For Arabic (RTL), scroll starts from right */
+html[lang="ar"] .table-scroll-wrapper {
+  direction: rtl;
+}
+
+/* Ensure table content remains in correct direction */
+html[lang="ar"] .table-scroll-wrapper table {
+  direction: rtl;
+}
+
+html[lang="en"] .table-scroll-wrapper table {
+  direction: ltr;
+}
+
 /* Units content layout */
 .units-content {
   display: grid;
@@ -17,7 +42,7 @@
 
 .stat-card {
   background: var(--card);
-  padding: var(--space-3xl);
+  padding: var(--space-2xl);
   border-radius: var(--border-radius-3xl);
   box-shadow: 0 14px 30px rgba(15, 23, 41, 0.08);
   position: relative;
@@ -34,19 +59,37 @@
 }
 
 .stat-title {
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-sm);
   color: var(--muted);
   margin-bottom: var(--space-xs);
+  font-weight: 600;
 }
 
 .stat-value {
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 700;
+  margin-bottom: 2px;
 }
 
 .stat-sub {
-  font-size: var(--font-size-sm);
+  font-size: 11px;
   color: var(--muted);
+}
+
+/* Responsive stat cards */
+@media (max-width: 768px) {
+  .stat-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-lg);
+  }
+  
+  .stat-card {
+    padding: var(--space-lg);
+  }
+  
+  .stat-value {
+    font-size: 20px;
+  }
 }
 
 /* Toolbar - Filters & Actions */

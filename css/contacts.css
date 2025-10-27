@@ -1,5 +1,30 @@
 /* Contacts Management Page - Specific Styles */
 
+/* Table scroll wrapper - mobile direction based on language */
+.table-scroll-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* For English (LTR), scroll starts from left */
+html[lang="en"] .table-scroll-wrapper {
+  direction: ltr;
+}
+
+/* For Arabic (RTL), scroll starts from right */
+html[lang="ar"] .table-scroll-wrapper {
+  direction: rtl;
+}
+
+/* Ensure table content remains in correct direction */
+html[lang="ar"] .table-scroll-wrapper table {
+  direction: rtl;
+}
+
+html[lang="en"] .table-scroll-wrapper table {
+  direction: ltr;
+}
+
 /* Contacts table styling */
 .contacts-table {
   width: 100%;

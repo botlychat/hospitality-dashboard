@@ -66,22 +66,22 @@
             <div class="stat-card">
               <div class="stat-title">Total Units</div>
               <div class="stat-value" id="statTotal">0</div>
-              <div class="stat-sub">Across all property types</div>
+              <div class="stat-sub">All properties</div>
             </div>
             <div class="stat-card">
-              <div class="stat-title">Active Listings</div>
+              <div class="stat-title">Active</div>
               <div class="stat-value" id="statActive">0</div>
-              <div class="stat-sub">Currently bookable</div>
+              <div class="stat-sub">Bookable</div>
             </div>
             <div class="stat-card">
               <div class="stat-title">Maintenance</div>
               <div class="stat-value" id="statMaintenance">0</div>
-              <div class="stat-sub">Temporarily unavailable</div>
+              <div class="stat-sub">Unavailable</div>
             </div>
             <div class="stat-card">
-              <div class="stat-title">Average ADR</div>
+              <div class="stat-title">Avg. Rate</div>
               <div class="stat-value" id="statADR">$0</div>
-              <div class="stat-sub">Average nightly rate</div>
+              <div class="stat-sub">Per night</div>
             </div>
           </div>
 
@@ -92,7 +92,7 @@
             <button class="btn primary" id="addUnitBtn"><i class="fa-solid fa-plus"></i> Add New Unit</button>
           </div>
 
-          <div class="panel">
+          <div class="panel table-scroll-wrapper" style="overflow-x:auto">
             <table aria-label="Units list">
               <thead>
                 <tr><th>Unit</th><th>Type</th><th>Max Guests</th><th>Nightly Rate</th><th>Status</th><th style="width:120px">Actions</th></tr>
@@ -288,6 +288,214 @@
 		if(savedColor && /^#[0-9A-F]{6}$/i.test(savedColor)) {
 			document.documentElement.style.setProperty('--accent', savedColor);
 		}
+
+		// Units data and groups management
+		let unitsGroups = JSON.parse(localStorage.getItem('unitsGroups')) || [
+			{ id: 'group_1', name: 'Main Hotel', type: 'Hotel Room', license: 'TRN-2024-001' },
+			{ id: 'group_2', name: 'Chalets Collection', type: 'Chalet', license: 'TRN-2024-002' }
+		];
+		
+		let units = JSON.parse(localStorage.getItem('units')) || [
+			{ id: 1, name: 'Palm Oasis Chalet', type: 'Chalet', maxGuests: 6, nightlyRate: 800, status: 'Active', groupId: 'group_2' },
+			{ id: 2, name: 'Skyline Executive Apartment', type: 'Apartment', maxGuests: 4, nightlyRate: 650, status: 'Active', groupId: 'group_1' },
+			{ id: 3, name: 'Desert Bloom Retreat', type: 'Chalet', maxGuests: 8, nightlyRate: 950, status: 'Maintenance', groupId: 'group_2' },
+			{ id: 4, name: 'City Studio Deluxe', type: 'Studio', maxGuests: 2, nightlyRate: 400, status: 'Active', groupId: 'group_1' }
+		];
+		
+		let currentGroupId = localStorage.getItem('currentGroupId') || 'all';
+		
+		// Populate group tabs
+		function populateGroupTabs() {
+			const groupsTabs = document.getElementById('groupsTabs');
+			if (!groupsTabs) return;
+			
+			groupsTabs.innerHTML = '';
+			
+			// Add "All Groups" tab
+			const allTab = document.createElement('div');
+			allTab.className = 'group-tab' + (currentGroupId === 'all' ? ' active' : '');
+			allTab.textContent = 'All Groups';
+			allTab.style.cssText = 'padding:8px 16px;border-radius:6px;cursor:pointer;font-size:14px;font-weight:600;transition:all 0.2s';
+			allTab.style.background = currentGroupId === 'all' ? 'var(--accent)' : '#f3f4f6';
+			allTab.style.color = currentGroupId === 'all' ? '#fff' : '#64748b';
+			allTab.addEventListener('click', () => switchGroup('all'));
+			groupsTabs.appendChild(allTab);
+			
+			// Add group tabs
+			unitsGroups.forEach(group => {
+				const tab = document.createElement('div');
+				tab.className = 'group-tab' + (currentGroupId === group.id ? ' active' : '');
+				tab.textContent = `${group.name} (${group.type})`;
+				tab.style.cssText = 'padding:8px 16px;border-radius:6px;cursor:pointer;font-size:14px;font-weight:600;transition:all 0.2s;white-space:nowrap';
+				tab.style.background = currentGroupId === group.id ? 'var(--accent)' : '#f3f4f6';
+				tab.style.color = currentGroupId === group.id ? '#fff' : '#64748b';
+				tab.addEventListener('click', () => switchGroup(group.id));
+				groupsTabs.appendChild(tab);
+			});
+		}
+		
+		// Switch active group
+		function switchGroup(groupId) {
+			currentGroupId = groupId;
+			localStorage.setItem('currentGroupId', groupId);
+			populateGroupTabs();
+			renderUnitsTable();
+			updateStats();
+		}
+		
+		// Render units table
+		function renderUnitsTable() {
+			const tbody = document.getElementById('unitsTableBody');
+			if (!tbody) return;
+			
+			const filteredUnits = currentGroupId === 'all' 
+				? units 
+				: units.filter(u => u.groupId === currentGroupId);
+			
+			tbody.innerHTML = '';
+			
+			if (filteredUnits.length === 0) {
+				tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:#64748b">No units found. Click "Add New Unit" to get started.</td></tr>';
+				return;
+			}
+			
+			filteredUnits.forEach(unit => {
+				const tr = document.createElement('tr');
+				tr.innerHTML = `
+					<td><strong>${unit.name}</strong></td>
+					<td>${unit.type}</td>
+					<td>${unit.maxGuests}</td>
+					<td>$${unit.nightlyRate}</td>
+					<td><span class="status ${unit.status.toLowerCase()}">${unit.status}</span></td>
+					<td style="text-align:center">
+						<button class="btn ghost" style="padding:4px 8px;font-size:12px" onclick="editUnit(${unit.id})">
+							<i class="fa-solid fa-pen"></i> Edit
+						</button>
+						<button class="btn ghost" style="padding:4px 8px;font-size:12px;color:#ef4444" onclick="deleteUnit(${unit.id})">
+							<i class="fa-solid fa-trash"></i>
+						</button>
+					</td>
+				`;
+				tbody.appendChild(tr);
+			});
+		}
+		
+		// Update statistics
+		function updateStats() {
+			const filteredUnits = currentGroupId === 'all' 
+				? units 
+				: units.filter(u => u.groupId === currentGroupId);
+			
+			document.getElementById('statTotal').textContent = filteredUnits.length;
+			document.getElementById('statActive').textContent = filteredUnits.filter(u => u.status === 'Active').length;
+			document.getElementById('statMaintenance').textContent = filteredUnits.filter(u => u.status === 'Maintenance').length;
+			
+			const avgRate = filteredUnits.length > 0 
+				? Math.round(filteredUnits.reduce((sum, u) => sum + u.nightlyRate, 0) / filteredUnits.length)
+				: 0;
+			document.getElementById('statADR').textContent = '$' + avgRate;
+		}
+		
+		// Open add group modal
+		function openAddGroupModal() {
+			const name = prompt('Group Name:');
+			if (!name) return;
+			
+			const type = prompt('Group Type (e.g., Hotel, Chalet, Apartment):');
+			if (!type) return;
+			
+			const license = prompt('License Number (optional):') || '';
+			
+			const newGroup = {
+				id: 'group_' + Date.now(),
+				name: name,
+				type: type,
+				license: license
+			};
+			
+			unitsGroups.push(newGroup);
+			localStorage.setItem('unitsGroups', JSON.stringify(unitsGroups));
+			
+			populateGroupTabs();
+			showConfirmation('Group added successfully!');
+		}
+		
+		// Add unit button handler
+		document.getElementById('addUnitBtn')?.addEventListener('click', () => {
+			const name = prompt('Unit Name:');
+			if (!name) return;
+			
+			const type = prompt('Unit Type (e.g., Chalet, Apartment, Studio):');
+			if (!type) return;
+			
+			const maxGuests = parseInt(prompt('Max Guests:') || '0');
+			if (!maxGuests) return;
+			
+			const nightlyRate = parseFloat(prompt('Nightly Rate:') || '0');
+			if (!nightlyRate) return;
+			
+			let groupId = currentGroupId;
+			if (currentGroupId === 'all' && unitsGroups.length > 0) {
+				groupId = unitsGroups[0].id;
+			}
+			
+			const newUnit = {
+				id: Date.now(),
+				name: name,
+				type: type,
+				maxGuests: maxGuests,
+				nightlyRate: nightlyRate,
+				status: 'Active',
+				groupId: groupId
+			};
+			
+			units.push(newUnit);
+			localStorage.setItem('units', JSON.stringify(units));
+			
+			renderUnitsTable();
+			updateStats();
+			showConfirmation('Unit added successfully!');
+		});
+		
+		// Edit unit
+		function editUnit(id) {
+			const unit = units.find(u => u.id === id);
+			if (!unit) return;
+			
+			const name = prompt('Unit Name:', unit.name);
+			if (name !== null) unit.name = name;
+			
+			const type = prompt('Unit Type:', unit.type);
+			if (type !== null) unit.type = type;
+			
+			const maxGuests = prompt('Max Guests:', unit.maxGuests);
+			if (maxGuests !== null) unit.maxGuests = parseInt(maxGuests);
+			
+			const nightlyRate = prompt('Nightly Rate:', unit.nightlyRate);
+			if (nightlyRate !== null) unit.nightlyRate = parseFloat(nightlyRate);
+			
+			localStorage.setItem('units', JSON.stringify(units));
+			renderUnitsTable();
+			updateStats();
+			showConfirmation('Unit updated successfully!');
+		}
+		
+		// Delete unit
+		function deleteUnit(id) {
+			if (!confirm('Are you sure you want to delete this unit?')) return;
+			
+			units = units.filter(u => u.id !== id);
+			localStorage.setItem('units', JSON.stringify(units));
+			
+			renderUnitsTable();
+			updateStats();
+			showConfirmation('Unit deleted successfully!');
+		}
+		
+		// Initialize on load
+		populateGroupTabs();
+		renderUnitsTable();
+		updateStats();
 
 		// Mobile sidebar toggle functionality
 		const sidebarToggle = document.getElementById('sidebarToggle');
