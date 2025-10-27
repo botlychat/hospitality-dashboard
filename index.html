@@ -369,30 +369,9 @@
 
 		console.log('[DASHBOARD] Script initialized - getPagePath() ready');
 
-		// ✅ LOAD USER DATA (Authentication will be added later)
-		(async () => {
-			try {
-				console.log('[DASHBOARD] Dashboard loaded - authentication will be added later')
-				
-				// For now, use mock data
-				window.isAuthenticated = true
-				
-				// Try to load real units from Supabase if available
-				try {
-					const realUnits = await getUserUnits()
-					if (realUnits && realUnits.length > 0) {
-						console.log('✅ Loaded units from Supabase:', realUnits.length)
-						window.realUnitsFromSupabase = realUnits
-					}
-				} catch (e) {
-					console.log('ℹ️  Using mock data (Supabase not available)')
-				}
-
-			} catch (error) {
-				console.error('⚠️  Error during initialization:', error)
-				// Continue anyway - use mock data
-			}
-		})();
+		// Initialize dashboard with mock data
+		window.isAuthenticated = true;
+		console.log('[DASHBOARD] Dashboard ready - using mock data');
 
 		// Language translations
 		const translations = {
@@ -809,60 +788,24 @@
 			{id:'BKG-008',client:'Zainab Al',unit:'City Studio Deluxe',start:'2025-10-28',end:'2025-10-31',status:'Pending',phone:'+966512345000',payment:'Pending',source:'Website'},
 		];
 
-		// Get units from Supabase, fallback to mock data if not available
+		// Initialize dashboard with mock units
 		let units = [];
 		const initializeDashboardUnits = () => {
-			// First, try to use real units from Supabase
-			if (typeof window.realUnitsFromSupabase !== 'undefined' && window.realUnitsFromSupabase && window.realUnitsFromSupabase.length > 0) {
-				console.log('✅ Using REAL units from Supabase')
-				units = window.realUnitsFromSupabase.map(u => ({
-					id: u.id,
-					name: u.name,
-					room_number: u.room_number,
-					status: u.status === 'available' ? 'Available' : u.status,
-					groupId: u.unit_groups?.id || 'unknown',
-					price_per_night: u.price_per_night,
-					currency: u.currency,
-					capacity: u.capacity,
-					description: u.description
-				}))
-			}
-			// Otherwise try window.unitDataset
-			else if(typeof window.unitDataset !== 'undefined' && window.unitDataset && window.unitDataset.length > 0){
-				console.log('✅ Using units from window.unitDataset')
-				units = window.unitDataset.map(u => ({
-					id: u.id,
-					name: u.name,
-					status: 'Active',
-					groupId: u.groupId
-				}));
-			} 
-			// Finally, fallback to mock data
-			else {
-				console.log('ℹ️  Using MOCK units (no real data available)')
-				units = [
-					{name:'Deluxe King Room',status:'Available',groupId:'group_1'},
-					{name:'Twin Bedroom Suite',status:'Available',groupId:'group_1'},
-					{name:'Executive Suite',status:'Booked',groupId:'group_1'},
-					{name:'Family Room',status:'Available',groupId:'group_1'},
-					{name:'Desert Escape Chalet',status:'Available',groupId:'group_2'},
-					{name:'Luxury Mountain Villa',status:'Booked',groupId:'group_2'},
-					{name:'Garden Oasis Resort',status:'Available',groupId:'group_2'},
-					{name:'Romantic Starlight Chalet',status:'Maintenance',groupId:'group_2'}
-				];
-			}
+			console.log('ℹ️  Using MOCK units')
+		units = [
+			{name:'Deluxe King Room',status:'Available',groupId:'group_1'},
+			{name:'Twin Bedroom Suite',status:'Available',groupId:'group_1'},
+			{name:'Executive Suite',status:'Booked',groupId:'group_1'},
+			{name:'Family Room',status:'Available',groupId:'group_1'},
+			{name:'Desert Escape Chalet',status:'Available',groupId:'group_2'},
+			{name:'Luxury Mountain Villa',status:'Booked',groupId:'group_2'},
+			{name:'Garden Oasis Resort',status:'Available',groupId:'group_2'},
+			{name:'Romantic Starlight Chalet',status:'Maintenance',groupId:'group_2'}
+		];
 		};
 		
-		// Initialize units after a short delay to allow unitDataset to load
-		initializeDashboardUnits();
-		setTimeout(() => {
-			if(window.unitDataset && window.unitDataset.length > 0 && units.length < 3){
-				initializeDashboardUnits();
-				renderUnitStatus();
-			}
-		}, 500);
-
-		// Profile data storage
+		// Initialize units on page load
+		initializeDashboardUnits();		// Profile data storage
 		let profileData = {
 			chaletName: 'Riyadh Getaways',
 			regNumber: '',
@@ -1818,7 +1761,6 @@
 	<script src="js/utils.js"></script>
 	<script src="js/components.js"></script>
 	<script src="js/components/profile.js"></script>
-	<script src="lib/supabase-client.js"></script>
 
 	<!-- Initialization Script - Runs AFTER external JS files are loaded -->
 	<script>
