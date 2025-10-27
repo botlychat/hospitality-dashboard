@@ -1746,6 +1746,12 @@
 
 	<!-- Initialization Script - Runs AFTER external JS files are loaded -->
 	<script>
+		// Load saved theme color
+		const savedColor = localStorage.getItem('websiteThemeColor');
+		if(savedColor && /^#[0-9A-F]{6}$/i.test(savedColor)) {
+			document.documentElement.style.setProperty('--accent', savedColor);
+		}
+
 		// Initial render
 		console.log('[DASHBOARD] Starting initial render...');
 		updateKPIs();

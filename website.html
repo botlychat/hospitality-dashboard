@@ -156,6 +156,66 @@
 				}
 			});
 		}
+
+		// Color picker initialization and functionality
+		const colorPicker = document.getElementById('websiteColorPicker');
+		const colorCodeInput = document.getElementById('colorCodeInput');
+		const colorDisplay = document.getElementById('colorDisplay');
+		const applyBtn = document.getElementById('applyWebsiteColorBtn');
+
+		// Load saved color on page load
+		const savedColor = localStorage.getItem('websiteThemeColor') || '#f97316';
+		if(colorPicker) colorPicker.value = savedColor;
+		if(colorCodeInput) colorCodeInput.value = savedColor;
+		if(colorDisplay) colorDisplay.style.background = savedColor;
+		
+		// Apply saved color to current page
+		document.documentElement.style.setProperty('--accent', savedColor);
+
+		// Sync color picker with text input
+		if(colorPicker) {
+			colorPicker.addEventListener('input', function() {
+				const color = this.value;
+				if(colorCodeInput) colorCodeInput.value = color;
+				if(colorDisplay) colorDisplay.style.background = color;
+			});
+		}
+
+		if(colorCodeInput) {
+			colorCodeInput.addEventListener('input', function() {
+				const color = this.value;
+				if(/^#[0-9A-F]{6}$/i.test(color)) {
+					if(colorPicker) colorPicker.value = color;
+					if(colorDisplay) colorDisplay.style.background = color;
+				}
+			});
+		}
+
+		// Apply button functionality
+		if(applyBtn) {
+			applyBtn.addEventListener('click', function() {
+				const color = colorPicker ? colorPicker.value : (colorCodeInput ? colorCodeInput.value : null);
+				
+				// Validate hex color
+				if(!color || !/^#[0-9A-F]{6}$/i.test(color)) {
+					showConfirmation('Invalid color. Use format: #f97316');
+					return;
+				}
+				
+				// Update CSS variable across all pages
+				document.documentElement.style.setProperty('--accent', color);
+				
+				// Save to localStorage
+				localStorage.setItem('websiteThemeColor', color);
+				
+				// Update displays
+				if(colorDisplay) colorDisplay.style.background = color;
+				if(colorCodeInput) colorCodeInput.value = color;
+				if(colorPicker) colorPicker.value = color;
+				
+				showConfirmation('Dashboard theme color updated to ' + color);
+			});
+		}
 	</script>
 </body>
 </html>

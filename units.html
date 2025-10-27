@@ -283,6 +283,12 @@
 	<script src="js/components/profile.js"></script>
 	
 	<script>
+		// Load saved theme color
+		const savedColor = localStorage.getItem('websiteThemeColor');
+		if(savedColor && /^#[0-9A-F]{6}$/i.test(savedColor)) {
+			document.documentElement.style.setProperty('--accent', savedColor);
+		}
+
 		// Mobile sidebar toggle functionality
 		const sidebarToggle = document.getElementById('sidebarToggle');
 		const sidebar = document.querySelector('.sidebar');
