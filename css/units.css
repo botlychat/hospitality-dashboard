@@ -124,6 +124,11 @@ html[lang="en"] .table-scroll-wrapper table {
     display: none !important;
   }
   
+  /* Hide the Add Group button on mobile since it's in the dropdown */
+  .btn.primary[onclick="openAddGroupModal()"] {
+    display: none !important;
+  }
+  
   /* Show group selector on mobile */
   #groupSelector {
     display: block !important;

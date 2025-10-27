@@ -370,6 +370,46 @@
 		
 		let currentGroupId = localStorage.getItem('currentGroupId') || 'all';
 		
+		// Update property-specific fields based on unit type selection
+		function updatePropertyFields() {
+			const unitType = document.getElementById('unitType')?.value;
+			const chaletFields = document.getElementById('chaletFields');
+			const hotelFields = document.getElementById('hotelFields');
+			const apartmentFields = document.getElementById('apartmentFields');
+			
+			// Hide all property-specific fields
+			if (chaletFields) chaletFields.style.display = 'none';
+			if (hotelFields) hotelFields.style.display = 'none';
+			if (apartmentFields) apartmentFields.style.display = 'none';
+			
+			// Show relevant fields based on type
+			if (unitType === 'Chalet') {
+				if (chaletFields) chaletFields.style.display = 'block';
+			} else if (unitType === 'Hotel Room') {
+				if (hotelFields) hotelFields.style.display = 'block';
+			} else if (unitType === 'Hotel Apartment') {
+				if (apartmentFields) apartmentFields.style.display = 'block';
+			}
+			
+			// Handle pool/garden toggles for chalets
+			const chaletPool = document.getElementById('chaletPool');
+			const chaletPoolSpecs = document.getElementById('chaletPoolSpecs');
+			const chaletGarden = document.getElementById('chaletGarden');
+			const chaletGardenSpecs = document.getElementById('chaletGardenSpecs');
+			
+			if (chaletPool) {
+				chaletPool.addEventListener('change', function() {
+					if (chaletPoolSpecs) chaletPoolSpecs.disabled = !this.checked;
+				});
+			}
+			
+			if (chaletGarden) {
+				chaletGarden.addEventListener('change', function() {
+					if (chaletGardenSpecs) chaletGardenSpecs.disabled = !this.checked;
+				});
+			}
+		}
+		
 		// Populate group tabs
 		function populateGroupTabs() {
 			const groupsTabs = document.getElementById('groupsTabs');
@@ -529,64 +569,168 @@
 			showConfirmation('Group added successfully!');
 		}
 		
+		// Open/Close sheet modal functions
+		function openAddUnitSheet() {
+			const backdrop = document.getElementById('sheetBackdrop');
+			const title = document.getElementById('sheetTitle');
+			const subtitle = document.getElementById('sheetSubtitle');
+			
+			if (backdrop) {
+				title.textContent = 'Add Unit';
+				subtitle.textContent = 'Complete the form to create a new unit.';
+				
+				// Reset form
+				document.getElementById('unitName').value = '';
+				document.getElementById('unitType').value = 'Chalet';
+				document.getElementById('unitStatus').value = 'Active';
+				document.getElementById('unitArea').value = '';
+				document.getElementById('maxGuests').value = '';
+				document.getElementById('nightlyRate').value = '';
+				document.getElementById('parkingToggle').checked = false;
+				document.getElementById('checkInHour').value = '15';
+				document.getElementById('checkOutHour').value = '11';
+				document.getElementById('shortDescription').value = '';
+				document.getElementById('longDescription').value = '';
+				
+				// Switch to first tab
+				document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+				document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
+				document.querySelector('.tab[data-tab="basic"]')?.classList.add('active');
+				document.getElementById('tab-basic')?.classList.add('active');
+				
+				// Update property fields based on default type
+				updatePropertyFields();
+				
+				backdrop.classList.add('show');
+			}
+		}
+		
+		function closeUnitSheet() {
+			const backdrop = document.getElementById('sheetBackdrop');
+			if (backdrop) backdrop.classList.remove('show');
+		}
+		
 		// Add unit button handler
-		document.getElementById('addUnitBtn')?.addEventListener('click', () => {
-			const name = prompt('Unit Name:');
-			if (!name) return;
+		document.getElementById('addUnitBtn')?.addEventListener('click', openAddUnitSheet);
+		
+		// Close sheet handlers
+		document.getElementById('closeSheet')?.addEventListener('click', closeUnitSheet);
+		document.getElementById('cancelSheet')?.addEventListener('click', closeUnitSheet);
+		
+		// Tab switching
+		document.querySelectorAll('.tab').forEach(tab => {
+			tab.addEventListener('click', () => {
+				const targetTab = tab.getAttribute('data-tab');
+				
+				// Remove active class from all tabs and panels
+				document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+				document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+				
+				// Add active class to clicked tab and corresponding panel
+				tab.classList.add('active');
+				document.getElementById(`tab-${targetTab}`)?.classList.add('active');
+			});
+		});
+		
+		// Save unit handler
+		document.getElementById('saveUnitBtn')?.addEventListener('click', () => {
+			const name = document.getElementById('unitName').value;
+			const type = document.getElementById('unitType').value;
+			const status = document.getElementById('unitStatus').value;
+			const maxGuests = parseInt(document.getElementById('maxGuests').value) || 0;
+			const nightlyRate = parseFloat(document.getElementById('nightlyRate').value) || 0;
 			
-			const type = prompt('Unit Type (e.g., Chalet, Apartment, Studio):');
-			if (!type) return;
-			
-			const maxGuests = parseInt(prompt('Max Guests:') || '0');
-			if (!maxGuests) return;
-			
-			const nightlyRate = parseFloat(prompt('Nightly Rate:') || '0');
-			if (!nightlyRate) return;
+			if (!name || !type || !maxGuests || !nightlyRate) {
+				alert('Please fill in all required fields (Name, Type, Max Guests, Nightly Rate)');
+				return;
+			}
 			
 			let groupId = currentGroupId;
 			if (currentGroupId === 'all' && unitsGroups.length > 0) {
 				groupId = unitsGroups[0].id;
 			}
 			
-			const newUnit = {
-				id: Date.now(),
-				name: name,
-				type: type,
-				maxGuests: maxGuests,
-				nightlyRate: nightlyRate,
-				status: 'Active',
-				groupId: groupId
-			};
+			if (currentEditUnitId) {
+				// Edit existing unit
+				const unit = units.find(u => u.id === currentEditUnitId);
+				if (unit) {
+					unit.name = name;
+					unit.type = type;
+					unit.status = status;
+					unit.maxGuests = maxGuests;
+					unit.nightlyRate = nightlyRate;
+					unit.area = parseFloat(document.getElementById('unitArea').value) || 0;
+					unit.parking = document.getElementById('parkingToggle').checked;
+					unit.checkInHour = parseInt(document.getElementById('checkInHour').value) || 15;
+					unit.checkOutHour = parseInt(document.getElementById('checkOutHour').value) || 11;
+					unit.shortDescription = document.getElementById('shortDescription').value;
+					unit.longDescription = document.getElementById('longDescription').value;
+				}
+				currentEditUnitId = null;
+				showConfirmation('Unit updated successfully!');
+			} else {
+				// Add new unit
+				const newUnit = {
+					id: Date.now(),
+					name: name,
+					type: type,
+					status: status,
+					maxGuests: maxGuests,
+					nightlyRate: nightlyRate,
+					groupId: groupId
+				};
+				
+				units.push(newUnit);
+				showConfirmation('Unit added successfully!');
+			}
 			
-			units.push(newUnit);
 			localStorage.setItem('units', JSON.stringify(units));
 			
+			closeUnitSheet();
 			renderUnitsTable();
 			updateStats();
-			showConfirmation('Unit added successfully!');
 		});
 		
 		// Edit unit
+		let currentEditUnitId = null;
+		
 		function editUnit(id) {
 			const unit = units.find(u => u.id === id);
 			if (!unit) return;
 			
-			const name = prompt('Unit Name:', unit.name);
-			if (name !== null) unit.name = name;
+			currentEditUnitId = id;
+			const backdrop = document.getElementById('sheetBackdrop');
+			const title = document.getElementById('sheetTitle');
+			const subtitle = document.getElementById('sheetSubtitle');
 			
-			const type = prompt('Unit Type:', unit.type);
-			if (type !== null) unit.type = type;
-			
-			const maxGuests = prompt('Max Guests:', unit.maxGuests);
-			if (maxGuests !== null) unit.maxGuests = parseInt(maxGuests);
-			
-			const nightlyRate = prompt('Nightly Rate:', unit.nightlyRate);
-			if (nightlyRate !== null) unit.nightlyRate = parseFloat(nightlyRate);
-			
-			localStorage.setItem('units', JSON.stringify(units));
-			renderUnitsTable();
-			updateStats();
-			showConfirmation('Unit updated successfully!');
+			if (backdrop) {
+				title.textContent = 'Edit Unit';
+				subtitle.textContent = 'Update the unit information.';
+				
+				// Populate form with unit data
+				document.getElementById('unitName').value = unit.name || '';
+				document.getElementById('unitType').value = unit.type || 'Chalet';
+				document.getElementById('unitStatus').value = unit.status || 'Active';
+				document.getElementById('unitArea').value = unit.area || '';
+				document.getElementById('maxGuests').value = unit.maxGuests || '';
+				document.getElementById('nightlyRate').value = unit.nightlyRate || '';
+				document.getElementById('parkingToggle').checked = unit.parking || false;
+				document.getElementById('checkInHour').value = unit.checkInHour || '15';
+				document.getElementById('checkOutHour').value = unit.checkOutHour || '11';
+				document.getElementById('shortDescription').value = unit.shortDescription || '';
+				document.getElementById('longDescription').value = unit.longDescription || '';
+				
+				// Switch to first tab
+				document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+				document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
+				document.querySelector('.tab[data-tab="basic"]')?.classList.add('active');
+				document.getElementById('tab-basic')?.classList.add('active');
+				
+				// Update property fields based on type
+				updatePropertyFields();
+				
+				backdrop.classList.add('show');
+			}
 		}
 		
 		// Delete unit
