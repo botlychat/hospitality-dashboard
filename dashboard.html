@@ -347,10 +347,9 @@
 		</div>
 	</template>
 
-	<script type="module">
-		// Import Supabase client
-		import { supabase, getCurrentUser, getUserOrganization, getUserUnits } from './lib/supabase-client.js'
-
+	<!-- Inline Dashboard JavaScript -->
+	<script>
+		// Note: External JS files are loaded after this one, so we can use their functions
 		// Error tracking
 		window.addEventListener('error', (event) => {
 			console.error('SCRIPT ERROR:', event.error);
@@ -360,9 +359,9 @@
 		// Helper function to get proper file path (works on GitHub Pages)
 		function getPagePath(filename) {
 			const currentPath = window.location.pathname;
-			// Check if we're on GitHub Pages (path contains /chaletdashboard/)
-			if(currentPath.includes('/chaletdashboard/')) {
-				return '/chaletdashboard/' + filename;
+			// Check if we're on GitHub Pages (path contains /hospitality-dashboard/)
+			if(currentPath.includes('/hospitality-dashboard/')) {
+				return '/hospitality-dashboard/' + filename;
 			}
 			// Otherwise use relative path (local development)
 			return filename;
@@ -1832,19 +1831,24 @@
 		if(langEnglish) langEnglish.addEventListener('click', () => { setLanguage('en'); });
 		if(langArabic) langArabic.addEventListener('click', () => { setLanguage('ar'); });
 		console.log('[DASHBOARD] Currency and language buttons initialized');
+	</script>
 
-		// initial render
+	<!-- Extracted JavaScript Files - Load external dependencies -->
+	<script src="js/utils.js"></script>
+	<script src="js/components.js"></script>
+	<script src="js/components/profile.js"></script>
+	<script src="lib/supabase-client.js"></script>
+
+	<!-- Initialization Script - Runs AFTER external JS files are loaded -->
+	<script>
+		// Initial render
 		console.log('[DASHBOARD] Starting initial render...');
 		updateKPIs();
 		renderRecentBookings();
 		renderUnitStatus();
 		renderWeeklyOccupancy();
 		renderWeeklyIncome();
-	<!-- Extracted JavaScript Files -->
-	<script src="js/utils.js"></script>
-	<script src="js/components.js"></script>
-	<script src="js/components/profile.js"></script>
-	<script src="lib/supabase-client.js"></script>
+	</script>
 </body>
 </html>
 
