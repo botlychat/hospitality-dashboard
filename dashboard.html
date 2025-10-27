@@ -1088,23 +1088,33 @@
 			populateUnitSelect(unitSelect);
 			openModal(frag);
 
-			// Wait for next tick to ensure DOM elements are available
-			setTimeout(() => {
-				// Calculate total when dates or rate changes
-				const startInput = document.getElementById('abStart');
-				const endInput = document.getElementById('abEnd');
-				const rateInput = document.getElementById('abRate');
-				const totalInput = document.getElementById('abTotal');
-				const paidInput = document.getElementById('abPaid');
-				const summarySpan = document.getElementById('abSummary');
-				
-				// Verify all required elements exist before proceeding
-				if(!startInput || !endInput || !rateInput || !totalInput || !summarySpan){
-					console.error('[DASHBOARD] Required booking form elements missing', {startInput, endInput, rateInput, totalInput, summarySpan});
-					showConfirmation('Error: Booking form could not be initialized. Please try again.');
-					closeModal();
-					return;
-				}
+			// Use requestAnimationFrame for better DOM synchronization
+			requestAnimationFrame(() => {
+				requestAnimationFrame(() => {
+					// Calculate total when dates or rate changes
+					const startInput = document.getElementById('abStart');
+					const endInput = document.getElementById('abEnd');
+					const rateInput = document.getElementById('abRate');
+					const totalInput = document.getElementById('abTotal');
+					const paidInput = document.getElementById('abPaid');
+					const summarySpan = document.getElementById('abSummary');
+					
+					console.log('[DASHBOARD] Looking for booking form elements:', {
+						startInput: !!startInput,
+						endInput: !!endInput,
+						rateInput: !!rateInput,
+						totalInput: !!totalInput,
+						summarySpan: !!summarySpan,
+						modalContent: document.getElementById('modalContent')?.innerHTML.substring(0, 200)
+					});
+					
+					// Verify all required elements exist before proceeding
+					if(!startInput || !endInput || !rateInput || !totalInput || !summarySpan){
+						console.error('[DASHBOARD] Required booking form elements missing', {startInput, endInput, rateInput, totalInput, summarySpan});
+						showConfirmation('Error: Booking form could not be initialized. Please try again.');
+						closeModal();
+						return;
+					}
 
 				const calculateTotal = () => {
 					const start = new Date(startInput.value);
@@ -1175,7 +1185,8 @@
 					closeModal();
 					showConfirmation(`Booking created successfully!\nBooking ID: ${id}\nClient: ${name}\nNights: ${nights}\nTotal: $${total.toFixed(2)}`);
 				};
-			}, 50); // End of setTimeout - give DOM time to render
+				}); // End of second requestAnimationFrame
+			}); // End of first requestAnimationFrame - ensures DOM is fully rendered
 		}
 
 	function openBlockDates(){
