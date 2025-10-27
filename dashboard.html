@@ -374,8 +374,8 @@
 			try {
 				const user = await getCurrentUser()
 				if (!user) {
-					console.log('❌ Not authenticated - redirecting to login...')
-					window.location.href = getPagePath('login.html')
+					console.log('❌ Not authenticated - redirecting to dashboard...')
+					window.location.href = getPagePath('dashboard.html')
 					return
 				}
 
@@ -403,7 +403,7 @@
 
 			} catch (error) {
 				console.error('❌ Error checking authentication:', error)
-				window.location.href = getPagePath('login.html')
+				window.location.href = getPagePath('dashboard.html')
 			}
 		})();
 
@@ -1336,7 +1336,7 @@
 				const { logoutUser } = await import('./lib/supabase-client.js')
 				await logoutUser()
 				console.log('✅ Logged out successfully')
-				window.location.href = getPagePath('login.html')
+				window.location.href = getPagePath('dashboard.html')
 			} catch (error) {
 				console.error('❌ Logout error:', error)
 				alert('Error logging out: ' + error.message)
