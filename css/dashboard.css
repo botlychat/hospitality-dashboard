@@ -274,6 +274,67 @@
 
 /* Mobile: Center align all table columns */
 @media (max-width: 768px) {
+  /* Scroll wrapper for tables - extend beyond panel boundaries */
+  .panel .table-scroll-wrapper {
+    width: calc(100% + 2 * var(--space-3xl)); /* Extend by panel padding */
+    margin-left: calc(-1 * var(--space-3xl)); /* Negative margin to extend left */
+    margin-right: calc(-1 * var(--space-3xl)); /* Negative margin to extend right */
+    margin-bottom: calc(-1 * var(--space-3xl)); /* Extend to bottom */
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+  .table-scroll-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+  }
+  
+  .table-scroll-wrapper table {
+    width: auto;
+    table-layout: auto;
+    white-space: nowrap;
+    border-collapse: collapse;
+  }
+  
+  .table-scroll-wrapper th,
+  .table-scroll-wrapper td {
+    padding: 12px 16px;
+    white-space: nowrap;
+    min-width: 120px;
+  }
+  
+  /* Dashboard recent bookings - specific column widths */
+  .table-scroll-wrapper th:nth-child(1),
+  .table-scroll-wrapper td:nth-child(1) {
+    min-width: 140px; /* Client */
+  }
+  
+  .table-scroll-wrapper th:nth-child(2),
+  .table-scroll-wrapper td:nth-child(2) {
+    min-width: 160px; /* Unit */
+  }
+  
+  .table-scroll-wrapper th:nth-child(3),
+  .table-scroll-wrapper td:nth-child(3) {
+    min-width: 100px; /* Status */
+  }
+  
+  .table-scroll-wrapper th:nth-child(4),
+  .table-scroll-wrapper td:nth-child(4) {
+    min-width: 120px; /* Check In */
+  }
+  
+  .table-scroll-wrapper th:nth-child(5),
+  .table-scroll-wrapper td:nth-child(5) {
+    min-width: 120px; /* Check Out */
+  }
+
   .panel th,
   .panel td {
     text-align: center;
