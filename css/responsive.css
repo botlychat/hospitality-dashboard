@@ -467,6 +467,36 @@
   }
 }
 
+@media (max-width: 768px) {
+  /* Stack header toolbar items vertically on tablets */
+  .content > div > div:first-child {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+  
+  .content > div > div:first-child > div {
+    width: 100% !important;
+    flex: none !important;
+  }
+  
+  .content > div > div:first-child select {
+    width: 100% !important;
+    min-width: 100% !important;
+  }
+  
+  /* Stack action buttons */
+  .actions {
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: var(--space-md) !important;
+  }
+  
+  .actions .btn {
+    width: 100% !important;
+    justify-content: center;
+  }
+}
+
 @media (max-width: 640px) {
   .tab-section > div {
     display: flex;
@@ -478,28 +508,66 @@
     width: 100%;
   }
   
-  .actions {
-    flex-direction: column;
+  /* Ensure panels don't overflow */
+  .panel {
     width: 100%;
+    overflow-x: auto;
+    box-sizing: border-box;
+  }
+  
+  /* Stack all toolbar elements */
+  .content > div > div:first-child {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: var(--space-md) !important;
+  }
+  
+  .content > div > div:first-child > * {
+    width: 100% !important;
+    flex: none !important;
+  }
+  
+  .content > div > div:first-child select {
+    width: 100% !important;
+    min-width: 100% !important;
+  }
+  
+  /* Make nested flex containers stack */
+  .content > div > div:first-child > div {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: var(--space-md) !important;
+  }
+  
+  .actions {
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: var(--space-md) !important;
   }
   
   .actions .btn {
-    width: 100%;
+    width: 100% !important;
+    justify-content: center;
   }
   
   /* Fix table overflow on mobile */
   table {
     font-size: var(--font-size-sm);
     width: 100%;
+    display: block;
+    overflow-x: auto;
+  }
+  
+  thead, tbody, tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
   }
   
   th, td {
-    padding: var(--space-md);
-  }
-  
-  .panel {
-    width: 100%;
-    overflow-x: auto;
+    padding: var(--space-sm) var(--space-xs);
+    font-size: 12px;
+    white-space: nowrap;
   }
   
   /* Collapse 2-column layouts to single column */
@@ -507,6 +575,37 @@
     display: grid !important;
     grid-template-columns: 1fr !important;
     gap: var(--space-md) !important;
+  }
+  
+  /* Make sure KPIs are responsive */
+  .kpis {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: var(--space-md) !important;
+  }
+  
+  .kpi {
+    padding: var(--space-md) !important;
+  }
+  
+  /* Adjust font sizes for mobile */
+  h2 {
+    font-size: 20px !important;
+  }
+  
+  h3 {
+    font-size: 16px !important;
+  }
+  
+  /* Quick actions panel */
+  aside .panel {
+    margin-bottom: var(--space-lg);
+  }
+  
+  aside .panel .btn {
+    width: 100%;
+    justify-content: flex-start;
+    text-align: left;
   }
 }
 

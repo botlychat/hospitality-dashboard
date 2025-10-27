@@ -327,12 +327,13 @@ function logout() {
  * Setup navigation links
  */
 function setupNavigation() {
-  document.querySelectorAll('.nav-item[data-link]').forEach((navItem) => {
-    navItem.addEventListener('click', (e) => {
+  // Handle both .nav-item and button elements with data-link attribute
+  document.querySelectorAll('[data-link]').forEach((element) => {
+    element.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
       
-      const link = navItem.dataset.link;
+      const link = element.dataset.link;
       if (link) {
         const fullPath = getPagePath(link);
         window.location.href = fullPath;
