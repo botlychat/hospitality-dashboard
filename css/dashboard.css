@@ -310,27 +310,27 @@
   /* Dashboard recent bookings - specific column widths */
   .table-scroll-wrapper th:nth-child(1),
   .table-scroll-wrapper td:nth-child(1) {
-    min-width: 140px; /* Client */
+    min-width: 25px; /* Client */
   }
   
   .table-scroll-wrapper th:nth-child(2),
   .table-scroll-wrapper td:nth-child(2) {
-    min-width: 160px; /* Unit */
+    min-width: 25px; /* Unit */
   }
   
   .table-scroll-wrapper th:nth-child(3),
   .table-scroll-wrapper td:nth-child(3) {
-    min-width: 100px; /* Status */
+    min-width: 25px; /* Status */
   }
   
   .table-scroll-wrapper th:nth-child(4),
   .table-scroll-wrapper td:nth-child(4) {
-    min-width: 120px; /* Check In */
+    min-width: 25px; /* Check In */
   }
   
   .table-scroll-wrapper th:nth-child(5),
   .table-scroll-wrapper td:nth-child(5) {
-    min-width: 120px; /* Check Out */
+    min-width: 25px; /* Check Out */
   }
 
   .panel th,

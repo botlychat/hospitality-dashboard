@@ -65,52 +65,52 @@ html[lang="en"] .table-scroll-wrapper table {
   
   .table-scroll-wrapper table th:nth-child(1),
   .table-scroll-wrapper table td:nth-child(1) {
-    min-width: 40px; /* Checkbox */
+    min-width: 25px; /* Checkbox */
   }
   
   .table-scroll-wrapper table th:nth-child(2),
   .table-scroll-wrapper table td:nth-child(2) {
-    min-width: 140px; /* Name */
+    min-width: 25px; /* Name */
   }
   
   .table-scroll-wrapper table th:nth-child(3),
   .table-scroll-wrapper table td:nth-child(3) {
-    min-width: 140px; /* Phone */
+    min-width: 25px; /* Phone */
   }
   
   .table-scroll-wrapper table th:nth-child(4),
   .table-scroll-wrapper table td:nth-child(4) {
-    min-width: 160px; /* Email */
+    min-width: 25px; /* Email */
   }
   
   .table-scroll-wrapper table th:nth-child(5),
   .table-scroll-wrapper table td:nth-child(5) {
-    min-width: 130px; /* Last Group */
+    min-width: 25px; /* Last Group */
   }
   
   .table-scroll-wrapper table th:nth-child(6),
   .table-scroll-wrapper table td:nth-child(6) {
-    min-width: 160px; /* Last Unit */
+    min-width: 25px; /* Last Unit */
   }
   
   .table-scroll-wrapper table th:nth-child(7),
   .table-scroll-wrapper table td:nth-child(7) {
-    min-width: 120px; /* Last Booking */
+    min-width: 25px; /* Last Booking */
   }
   
   .table-scroll-wrapper table th:nth-child(8),
   .table-scroll-wrapper table td:nth-child(8) {
-    min-width: 100px; /* Review */
+    min-width: 25px; /* Review */
   }
   
   .table-scroll-wrapper table th:nth-child(9),
   .table-scroll-wrapper table td:nth-child(9) {
-    min-width: 110px; /* Payment */
+    min-width: 25px; /* Payment */
   }
   
   .table-scroll-wrapper table th:nth-child(10),
   .table-scroll-wrapper table td:nth-child(10) {
-    min-width: 140px; /* Actions */
+    min-width: 25px; /* Actions */
   }
 }
 
