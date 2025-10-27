@@ -369,41 +369,28 @@
 
 		console.log('[DASHBOARD] Script initialized - getPagePath() ready');
 
-		// ✅ CHECK AUTHENTICATION ON PAGE LOAD
+		// ✅ LOAD USER DATA (Authentication will be added later)
 		(async () => {
 			try {
-				const user = await getCurrentUser()
-				if (!user) {
-					console.log('❌ Not authenticated - redirecting to dashboard...')
-					window.location.href = getPagePath('dashboard.html')
-					return
-				}
-
-				console.log('✅ User authenticated:', user.email)
-
-				// Load user's real data from Supabase
-				const userOrg = await getUserOrganization()
-				if (!userOrg) {
-					console.error('❌ User not linked to organization')
-					document.body.innerHTML = '<h2>Error: Your account is not linked to an organization. Please contact support.</h2>'
-					return
-				}
-
-				console.log('✅ Organization loaded:', userOrg.organization_id)
-
-				// Load real units from Supabase
-				const realUnits = await getUserUnits()
-				console.log('✅ Loaded units from Supabase:', realUnits.length)
-
-				// Store real units globally so the dashboard can use them
-				window.realUnitsFromSupabase = realUnits
-				window.userOrgId = userOrg.organization_id
-				window.currentUserId = user.id
+				console.log('[DASHBOARD] Dashboard loaded - authentication will be added later')
+				
+				// For now, use mock data
 				window.isAuthenticated = true
+				
+				// Try to load real units from Supabase if available
+				try {
+					const realUnits = await getUserUnits()
+					if (realUnits && realUnits.length > 0) {
+						console.log('✅ Loaded units from Supabase:', realUnits.length)
+						window.realUnitsFromSupabase = realUnits
+					}
+				} catch (e) {
+					console.log('ℹ️  Using mock data (Supabase not available)')
+				}
 
 			} catch (error) {
-				console.error('❌ Error checking authentication:', error)
-				window.location.href = getPagePath('dashboard.html')
+				console.error('⚠️  Error during initialization:', error)
+				// Continue anyway - use mock data
 			}
 		})();
 
@@ -1331,16 +1318,8 @@
 		
 		if(profileBtn) profileBtn.addEventListener('click',()=>{document.getElementById('profileMenu').classList.toggle('show')});
 		if(logoutBtn) logoutBtn.addEventListener('click', async ()=>{
-			try {
-				// Import logout function from Supabase client
-				const { logoutUser } = await import('./lib/supabase-client.js')
-				await logoutUser()
-				console.log('✅ Logged out successfully')
-				window.location.href = getPagePath('dashboard.html')
-			} catch (error) {
-				console.error('❌ Logout error:', error)
-				alert('Error logging out: ' + error.message)
-			}
+			console.log('Logout clicked - authentication will be added later');
+			showConfirmation('Logout functionality will be added when login system is implemented');
 		});
 		if(profileSettings) profileSettings.addEventListener('click',()=>{openCompleteProfile()});
 		if(changePassword) changePassword.addEventListener('click',()=>{openChangePassword()});
