@@ -122,19 +122,28 @@
       .search{display:none}
       .calendar-grid{grid-template-columns:repeat(2,1fr)}
       .weekdays{display:none}
+      .main{width:100vw;max-width:100vw;overflow-x:hidden}
+      .header{width:100%;max-width:100vw;box-sizing:border-box}
+      .content{width:100%;max-width:100vw;box-sizing:border-box}
     }
     @media(max-width:640px){
+      body{overflow-x:hidden;max-width:100vw}
+      .app{max-width:100vw;overflow-x:hidden}
       .sidebar{width:240px}
-      .calendar-grid{grid-template-columns:1fr}
-      .toolbar{flex-direction:column;gap:12px}
-      .toolbar-left{flex-direction:column;width:100%}
+      .calendar-grid{grid-template-columns:1fr;width:100%;max-width:100%}
+      .calendar-surface{width:100%;max-width:100%;box-sizing:border-box}
+      .toolbar{flex-direction:column;gap:12px;width:100%;max-width:100%}
+      .toolbar-left{flex-direction:column;width:100%;max-width:100%}
+      .toolbar-right{flex-direction:column;width:100%;max-width:100%}
+      .toolbar select,.filter,.month-switcher,.btn{width:100%;max-width:100%}
       .header h2{font-size:16px;font-weight:700}
       .header h1{font-size:16px;font-weight:700}
       #monthLabel{font-size:14px !important}
-      .toolbar-right{flex-direction:column;width:100%}
-      .btn{width:100%;padding:10px 12px;font-size:13px}
-      .header{padding:0 12px}
-      .content{padding:12px}
+      .header{padding:0 12px;height:auto;min-height:60px;flex-wrap:wrap;width:100vw;max-width:100vw}
+      .header .left{width:100%;padding:8px 0}
+      .header > div:last-child{width:100%}
+      .content{padding:12px;width:100%;max-width:100%}
+      .main{width:100vw;max-width:100vw}
     }
   </style>
 </head>
