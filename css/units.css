@@ -126,32 +126,32 @@ html[lang="en"] .table-scroll-wrapper table {
   /* Units table - specific column minimum widths */
   .table-scroll-wrapper table th:nth-child(1),
   .table-scroll-wrapper table td:nth-child(1) {
-    min-width: 25px; /* Unit name */
+    min-width: 50px; /* Unit name */
   }
   
   .table-scroll-wrapper table th:nth-child(2),
   .table-scroll-wrapper table td:nth-child(2) {
-    min-width: 25px; /* Type */
+    min-width: 50px; /* Type */
   }
   
   .table-scroll-wrapper table th:nth-child(3),
   .table-scroll-wrapper table td:nth-child(3) {
-    min-width: 25px; /* Max Guests */
+    min-width: 50px; /* Max Guests */
   }
   
   .table-scroll-wrapper table th:nth-child(4),
   .table-scroll-wrapper table td:nth-child(4) {
-    min-width: 25px; /* Nightly Rate */
+    min-width: 50px; /* Nightly Rate */
   }
   
   .table-scroll-wrapper table th:nth-child(5),
   .table-scroll-wrapper table td:nth-child(5) {
-    min-width: 25px; /* Status */
+    min-width: 50px; /* Status */
   }
   
   .table-scroll-wrapper table th:nth-child(6),
   .table-scroll-wrapper table td:nth-child(6) {
-    min-width: 25px; /* Actions */
+    min-width: 50px; /* Actions */
   }
   
   /* Hide group tabs container on mobile, will show select instead */
