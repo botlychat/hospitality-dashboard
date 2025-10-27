@@ -52,9 +52,28 @@
     .btn.primary:hover{filter:brightness(.93)}
     .btn.ghost{background:rgba(255,255,255,0.7);border:1px solid rgba(15,23,41,0.08)}
 
-    .calendar-surface{background:var(--card);padding:20px;border-radius:18px;box-shadow:0 14px 30px rgba(15,23,41,0.08)}
-    .calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:12px}
-    .weekdays{display:grid;grid-template-columns:repeat(7,1fr);gap:12px;margin-bottom:10px;font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px}
+    .calendar-surface{background:var(--card);padding:20px;border-radius:18px;box-shadow:0 14px 30px rgba(15,23,41,0.08);overflow-x:auto;-webkit-overflow-scrolling:touch}
+    .calendar-grid{display:grid;grid-template-columns:repeat(6,minmax(200px,1fr));grid-template-rows:repeat(5,1fr);gap:12px;min-width:1200px}
+    
+    /* Direction-aware scrolling for calendar */
+    html[lang="en"] .calendar-surface {
+      direction: ltr;
+    }
+    
+    html[lang="ar"] .calendar-surface {
+      direction: rtl;
+    }
+    
+    /* Ensure calendar grid content remains in correct direction */
+    html[lang="ar"] .calendar-grid {
+      direction: rtl;
+    }
+    
+    html[lang="en"] .calendar-grid {
+      direction: ltr;
+    }
+    
+    .weekdays{display:grid;grid-template-columns:repeat(6,minmax(200px,1fr));gap:12px;margin-bottom:10px;font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;min-width:1200px}
     .day-cell{background:#f8fafc;border-radius:16px;min-height:120px;padding:12px;border:1px solid rgba(15,23,41,0.05);position:relative;display:flex;flex-direction:column;gap:4px;overflow-y:auto;max-height:200px;cursor:pointer;transition:all 0.2s ease;pointer-events:auto}
     .day-cell:hover{background:#f0f4ff;border-color:rgba(249,115,22,0.3);box-shadow:0 4px 12px rgba(15,23,41,0.1)}
     .day-cell.outside{opacity:.45}
@@ -704,8 +723,8 @@
       });
       const weekdaysRow = document.getElementById('weekdaysRow');
       weekdaysRow.innerHTML = '';
-      // Use translated weekday labels
-      const weekDays = [0,1,2,3,4,5,6].map(i=>getWeekdayLabel(i));
+      // Use translated weekday labels - only show 6 days for 6 columns
+      const weekDays = [0,1,2,3,4,5].map(i=>getWeekdayLabel(i));
       if(filters.view==='month'){weekDays.forEach(label=>{const span=document.createElement('div');span.textContent=label;weekdaysRow.appendChild(span);});}
       calendarGrid.innerHTML='';
       if(filters.view==='month'){
@@ -723,7 +742,7 @@
       const startOffset = (startDay+6)%7; // Monday first
       const startDate = new Date(firstDay);
       startDate.setDate(firstDay.getDate()-startOffset);
-      const daysToRender = 42; // 6 weeks
+      const daysToRender = 30; // 5 rows x 6 columns
       for(let i=0;i<daysToRender;i++){
         const date = new Date(startDate);
         date.setDate(startDate.getDate()+i);

@@ -128,7 +128,10 @@
           </div>
           
           <div id="discountPreview" style="padding:12px;background:#f3f4f6;border-radius:8px;margin-top:12px;display:none;border-left:3px solid var(--accent)">
-            <div style="font-size:13px;color:#111">Current discount: <strong id="discountPreviewAmount" style="color:var(--accent)">SAR 0</strong></div>
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <div style="font-size:13px;color:#111">Current discount: <strong id="discountPreviewAmount" style="color:var(--accent)">SAR 0</strong></div>
+              <button class="btn primary" id="discountEditPenBtn" onclick="editDiscountAmount()" style="width:auto;padding:8px 12px;margin:0;display:none" title="Edit"><i class="fa-solid fa-pen"></i></button>
+            </div>
           </div>
         </div>
 
@@ -245,10 +248,21 @@
 			const checkbox = document.getElementById('discountToggle');
 			const inputGroup = document.getElementById('discountInputGroup');
 			const preview = document.getElementById('discountPreview');
+			const editPenBtn = document.getElementById('discountEditPenBtn');
 			
 			if(checkbox.checked) {
-				inputGroup.style.display = 'block';
-				preview.style.display = 'block';
+				// Check if there's already a saved amount
+				const savedAmount = localStorage.getItem('discountAmount');
+				if(savedAmount) {
+					// Show preview with saved amount and edit pen
+					preview.style.display = 'block';
+					document.getElementById('discountPreviewAmount').textContent = 'SAR ' + savedAmount;
+					editPenBtn.style.display = 'block';
+				} else {
+					// Show input to enter amount for first time
+					inputGroup.style.display = 'block';
+					preview.style.display = 'none';
+				}
 			} else {
 				inputGroup.style.display = 'none';
 				preview.style.display = 'none';
@@ -258,7 +272,9 @@
 		function saveDiscountAmount() {
 			const amount = document.getElementById('discountAmount').value;
 			const inputGroup = document.getElementById('discountInputGroup');
-			const preview = document.getElementById('discountPreviewAmount');
+			const preview = document.getElementById('discountPreview');
+			const previewAmount = document.getElementById('discountPreviewAmount');
+			const editPenBtn = document.getElementById('discountEditPenBtn');
 			
 			if(!amount || amount <= 0) {
 				alert('Please enter a valid discount amount');
@@ -267,12 +283,31 @@
 			
 			// Save amount
 			localStorage.setItem('discountAmount', amount);
-			preview.textContent = 'SAR ' + amount;
+			previewAmount.textContent = 'SAR ' + amount;
 			
-			// Hide input, keep preview visible
+			// Hide input, show preview with edit pen
 			inputGroup.style.display = 'none';
+			preview.style.display = 'block';
+			editPenBtn.style.display = 'block';
 			
 			showConfirmation('Discount amount saved: SAR ' + amount);
+		}
+
+		function editDiscountAmount() {
+			const inputGroup = document.getElementById('discountInputGroup');
+			const editPenBtn = document.getElementById('discountEditPenBtn');
+			const amountInput = document.getElementById('discountAmount');
+			
+			// Load current amount
+			const savedAmount = localStorage.getItem('discountAmount');
+			if(savedAmount) {
+				amountInput.value = savedAmount;
+			}
+			
+			// Show input, hide edit pen
+			inputGroup.style.display = 'block';
+			editPenBtn.style.display = 'none';
+			amountInput.focus();
 		}
 
 		// Booking Method Functions
@@ -310,6 +345,168 @@
 			
 			// Optional: Show brief confirmation
 			showConfirmation('Booking method updated to: ' + (fullBooking.checked ? 'AI Agent Full Booking' : 'Website Only Booking'));
+		}
+
+		// Welcome Message Functions
+		function toggleWelcomeEdit() {
+			const textarea = document.getElementById('welcomeMessage');
+			const editBtn = document.getElementById('welcomeEditBtn');
+			const saveBtn = document.getElementById('welcomeSaveBtn');
+			
+			textarea.removeAttribute('readonly');
+			textarea.focus();
+			editBtn.style.display = 'none';
+			saveBtn.style.display = 'block';
+		}
+
+		function saveWelcomeMessage() {
+			const textarea = document.getElementById('welcomeMessage');
+			const editBtn = document.getElementById('welcomeEditBtn');
+			const saveBtn = document.getElementById('welcomeSaveBtn');
+			
+			// Save to localStorage
+			localStorage.setItem('welcomeMessage', textarea.value);
+			
+			textarea.setAttribute('readonly', 'readonly');
+			editBtn.style.display = 'block';
+			saveBtn.style.display = 'none';
+			
+			showConfirmation('Welcome message saved');
+		}
+
+		// Reminder Functions
+		function toggleReminderEdit(reminderNum) {
+			const textarea = document.getElementById('reminder' + reminderNum);
+			const editBtn = document.getElementById('reminder' + reminderNum + 'EditBtn');
+			const saveBtn = document.getElementById('reminder' + reminderNum + 'SaveBtn');
+			
+			textarea.removeAttribute('readonly');
+			textarea.focus();
+			editBtn.style.display = 'none';
+			saveBtn.style.display = 'block';
+		}
+
+		function saveReminder(reminderNum) {
+			const textarea = document.getElementById('reminder' + reminderNum);
+			const editBtn = document.getElementById('reminder' + reminderNum + 'EditBtn');
+			const saveBtn = document.getElementById('reminder' + reminderNum + 'SaveBtn');
+			
+			// Save to localStorage
+			localStorage.setItem('reminder' + reminderNum, textarea.value);
+			
+			textarea.setAttribute('readonly', 'readonly');
+			editBtn.style.display = 'block';
+			saveBtn.style.display = 'none';
+			
+			showConfirmation('Reminder ' + reminderNum + ' saved');
+		}
+
+		// Custom Roles Functions
+		let customRoles = [];
+
+		function loadCustomRoles() {
+			const saved = localStorage.getItem('customRoles');
+			if(saved) {
+				customRoles = JSON.parse(saved);
+				renderRoles();
+			}
+		}
+
+		function addCustomRole() {
+			const input = document.getElementById('newRoleInput');
+			const roleText = input.value.trim();
+			
+			if(!roleText) {
+				alert('Please enter a role description');
+				return;
+			}
+			
+			if(customRoles.length >= 10) {
+				alert('Maximum 10 roles allowed');
+				return;
+			}
+			
+			customRoles.push(roleText);
+			input.value = '';
+			
+			// Save immediately
+			localStorage.setItem('customRoles', JSON.stringify(customRoles));
+			renderRoles();
+			
+			showConfirmation('Role added successfully');
+		}
+
+		function removeRole(index) {
+			if(confirm('Remove this role?')) {
+				customRoles.splice(index, 1);
+				localStorage.setItem('customRoles', JSON.stringify(customRoles));
+				renderRoles();
+			}
+		}
+
+		function renderRoles() {
+			const rolesList = document.getElementById('rolesList');
+			const roleCount = document.getElementById('roleCount');
+			
+			roleCount.textContent = customRoles.length;
+			
+			if(customRoles.length === 0) {
+				rolesList.innerHTML = '<div style="padding:12px;background:#f9fafb;border-radius:8px;font-size:13px;color:#6b7280;text-align:center">No custom roles added yet</div>';
+				return;
+			}
+			
+			rolesList.innerHTML = customRoles.map((role, index) => `
+				<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:#f9fafb;border-radius:8px;margin-bottom:8px;border-left:3px solid var(--accent)">
+					<span style="font-size:13px;color:#111">${role}</span>
+					<button onclick="removeRole(${index})" style="background:none;border:none;cursor:pointer;color:#ef4444;padding:4px 8px;font-size:14px" title="Remove">
+						<i class="fa-solid fa-trash"></i>
+					</button>
+				</div>
+			`).join('');
+		}
+
+		// Load roles on page load
+		document.addEventListener('DOMContentLoaded', function() {
+			loadCustomRoles();
+			populateUnitGroups();
+		});
+
+		// Populate unit groups selector
+		function populateUnitGroups() {
+			const selector = document.getElementById('aiAgentGroupSelector');
+			if(!selector) return;
+			
+			// Get groups from localStorage (same as units page)
+			let unitsGroups = JSON.parse(localStorage.getItem('unitsGroups')) || [
+				{ id: 'group_1', name: 'Main Hotel', type: 'Hotel Room', license: 'TRN-2024-001' },
+				{ id: 'group_2', name: 'Chalets Collection', type: 'Chalet', license: 'TRN-2024-002' }
+			];
+			
+			// Clear existing options
+			selector.innerHTML = '';
+			
+			// Add "All Groups" option
+			const allOption = document.createElement('option');
+			allOption.value = 'all';
+			allOption.textContent = 'All Groups';
+			selector.appendChild(allOption);
+			
+			// Add group options
+			unitsGroups.forEach(group => {
+				const option = document.createElement('option');
+				option.value = group.id;
+				option.textContent = `${group.name} (${group.type})`;
+				selector.appendChild(option);
+			});
+			
+			// Load saved selection
+			const savedGroup = localStorage.getItem('aiAgentSelectedGroup') || 'all';
+			selector.value = savedGroup;
+			
+			// Save on change
+			selector.addEventListener('change', function() {
+				localStorage.setItem('aiAgentSelectedGroup', this.value);
+			});
 		}
 
 		function showConfirmation(message) {
