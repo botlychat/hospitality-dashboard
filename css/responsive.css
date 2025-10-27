@@ -1,5 +1,62 @@
 /* Responsive Design - Mobile First Approach */
 
+/* === GLOBAL HEADER STANDARDIZATION === */
+/* Ensures consistent header size, text size, and profile button positioning across all pages */
+.header {
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-7xl);
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+}
+
+.header .left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3xl);
+  flex: 1;
+}
+
+.header .left h2 {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.header .left h1 {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  position: relative;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
 /* === TABLETS & MEDIUM SCREENS (1200px and below) === */
 @media (max-width: 1200px) {
   .kpis {
@@ -86,12 +143,17 @@
   
   .header {
     padding: 0 var(--space-2xl);
-    height: 60px;
-    flex-wrap: wrap;
+    height: 70px;
   }
   
   .header .left {
     gap: var(--space-lg);
+  }
+  
+  .header .left h2,
+  .header .left h1 {
+    font-size: 16px;
+    font-weight: 700;
   }
   
   .search {
@@ -165,11 +227,17 @@
   
   .header {
     padding: 0 var(--space-xl);
-    height: 56px;
+    height: 70px;
   }
   
   .header .left {
     gap: var(--space-md);
+  }
+  
+  .header .left h2,
+  .header .left h1 {
+    font-size: 16px;
+    font-weight: 700;
   }
   
   .search {
