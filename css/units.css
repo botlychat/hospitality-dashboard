@@ -90,6 +90,64 @@ html[lang="en"] .table-scroll-wrapper table {
   .stat-value {
     font-size: 20px;
   }
+  
+  /* Mobile: Make table flexible with horizontal scrolling */
+  .table-scroll-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .table-scroll-wrapper table {
+    width: auto; /* Allow table to size based on content */
+    min-width: 100%; /* Minimum full width */
+    white-space: nowrap; /* Prevent text wrapping */
+  }
+  
+  .table-scroll-wrapper table th,
+  .table-scroll-wrapper table td {
+    padding: 10px 12px;
+    white-space: nowrap;
+    width: auto; /* Column width based on content */
+  }
+  
+  /* Allow unit name column to be slightly flexible */
+  .table-scroll-wrapper table th:first-child,
+  .table-scroll-wrapper table td:first-child {
+    min-width: 120px;
+    max-width: 200px;
+    white-space: normal;
+  }
+  
+  /* Hide group tabs container on mobile, will show select instead */
+  #groupsTabs {
+    display: none !important;
+  }
+  
+  /* Show group selector on mobile */
+  #groupSelector {
+    display: block !important;
+    width: 100%;
+    margin-bottom: 12px;
+  }
+}
+
+/* Group selector - hidden on desktop, shown on mobile */
+#groupSelector {
+  display: none;
+  padding: 10px 12px;
+  border: 1px solid rgba(15, 23, 41, 0.08);
+  border-radius: var(--border-radius-xl);
+  font-size: 14px;
+  font-weight: 600;
+  background: #fff;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(15, 23, 41, 0.05);
+  appearance: none;
+  background-image: url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%2212%22 viewBox=%220 0 12 12%22%3E%3Cpath fill=%22%231f2937%22 d=%22M6 9L1 4h10z%22/%3E%3C/svg%3E');
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 35px;
 }
 
 /* Toolbar - Filters & Actions */
