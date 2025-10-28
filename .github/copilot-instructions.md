@@ -96,12 +96,50 @@ document.addEventListener('click', (e) => {
 
 ## Development Workflow
 
+### Build System & Deployment (AUTOMATED)
+
+**The project uses a build system with automatic deployment workflow:**
+
+1. **Single Source of Truth for Layout:** Header and sidebar are in `src/components/layout.html`
+2. **Build Process:** `npm run build` regenerates all HTML files in `dist/` with the layout template injected
+3. **GitHub Pages Deployment:** Files in `dist/` are automatically served by GitHub Pages
+
+**IMPORTANT: After any edits, you MUST:**
+1. Run `npm run build` to regenerate dist/
+2. Run `git add dist/` to stage the changes
+3. Run `git commit -m "your message"` to commit
+4. Run `git push` to deploy to live site
+
+**Or use the shortcut:** `npm run deploy` (if deploy script is configured)
+
+### Automatic Build & Deploy After Edits
+
+**AI Agent Instructions:** When you make ANY edit to:
+- Source HTML files (dashboard.html, units.html, etc.)
+- CSS files (css/*.css)
+- JavaScript files (js/*.js)
+- Layout template (src/components/layout.html)
+
+**AUTOMATICALLY EXECUTE:**
+```powershell
+npm run build
+git add dist/
+git commit -m "auto: rebuild after edits"
+git push
+```
+
+This ensures all changes are immediately deployed to the live site without manual intervention.
+
 ### Local Testing
 
 ```powershell
-# Start simple HTTP server
+# Start dev server with hot reload
+npm run dev
+# Open http://localhost:5173/hospitality-dashboard/dashboard.html
+
+# OR: Start simple HTTP server (for testing dist/ folder)
 python -m http.server 8000
-# Open http://localhost:8000
+# Open http://localhost:8000/hospitality-dashboard/dist/dashboard.html
 ```
 
 ### Deployment
@@ -110,6 +148,7 @@ python -m http.server 8000
 - `.nojekyll` file prevents Jekyll processing
 - Service Worker (`service-worker.js`) handles offline caching
 - `<base href="/hospitality-dashboard/">` in HTML heads for correct routing
+- **dist/ folder is what gets deployed** (not source files)
 
 ### Common Tasks
 
@@ -156,9 +195,14 @@ Build tools (webpack, Vite, Gulp, etc.) and npm scripts are **allowed and encour
 - Task automation and file processing
 - Development workflow improvements
 
-The project currently runs without build tools, but refactoring to use them is acceptable.
-6. **Accessibility** - Use semantic HTML, ARIA labels, keyboard navigation support.
+**Current build system status:** ✅ **ACTIVE**
+- Using custom Node.js build script (`build.js`)
+- Shared layout template in `src/components/layout.html`
+- All HTML pages use shared header/sidebar (no duplication)
+- NPM scripts: `npm run dev`, `npm run build`, `npm run deploy`
 
 ## Refactoring Status
 
-✅ **Complete:** All 55+ localStorage calls refactored to use `Storage` helper (REFACTORING_COMPLETE.md documents full details and git commits). Do not revert this pattern.
+✅ **Build System:** Fully implemented with template injection for header/sidebar elimination
+✅ **Storage Helper:** All 55+ localStorage calls refactored to use `Storage` helper (REFACTORING_COMPLETE.md documents full details and git commits). Do not revert this pattern.
+✅ **GitHub Pages Deployment:** dist/ folder tracked in git for immediate deployment
