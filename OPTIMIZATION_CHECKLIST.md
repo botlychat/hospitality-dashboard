@@ -7,15 +7,14 @@
 📋 CRITICAL FIXES ALREADY DONE
   ✅ [DONE] index.html → 27-line redirect (-1,764 lines, -60KB)
   ✅ [DONE] Removed duplicate page
-  ✅ [DONE] Extract calendar.html CSS (-286 lines, -40KB)
-  ✅ [DONE] Remove console.log() statements (-24 statements, -2KB)
+  ⏳ TODO: Extract calendar.html CSS (-386 lines, -40KB)
 
 🔴 DO IMMEDIATELY (1-2 days)
-  [✅] 1. Remove console.log() statements - COMPLETED
-      Files: dashboard.html (17 removed), calendar.html (7 removed)
-      Lines: 24 removed
-      Time: 1 hour ✅
-      Savings: 2KB + performance ✅
+  [ ] 1. Remove console.log() statements
+      Files: dashboard.html, units.html, contacts.html, aiagent.html, calendar.html
+      Lines: ~50
+      Time: 1 hour
+      Savings: 2KB + performance
       
   [ ] 2. Extract Modal Management
       Create: js/modals.js
@@ -24,11 +23,11 @@
       Savings: 400 lines, 10KB
       Priority: 🔥 HIGH
       
-  [✅] 3. Extract Calendar CSS - COMPLETED
-      Create: css/calendar.css ✅
-      Lines: 286 (moved from calendar.html) ✅
-      Time: 1 hour ✅
-      Savings: 40KB (biggest single win!) ✅
+  [ ] 3. Extract Calendar CSS
+      Create: css/calendar.css
+      Lines: 386 (move from calendar.html)
+      Time: 1 hour
+      Savings: 40KB (biggest single win!)
       Priority: 🔥 CRITICAL
       
   [ ] 4. Remove Dead Code

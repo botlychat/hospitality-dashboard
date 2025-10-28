@@ -14,12 +14,16 @@
  */
 function getPagePath(filename) {
   const currentPath = window.location.pathname;
-  // Check if we're on GitHub Pages (path contains /chaletdashboard/)
-  if (currentPath.includes('/chaletdashboard/')) {
-    return '/chaletdashboard/' + filename;
+  
+  // Remove .html extension for clean URLs
+  const cleanFilename = filename.replace(/\.html$/, '');
+  
+  // Check if we're on GitHub Pages (path contains /hospitality-dashboard/)
+  if (currentPath.includes('/hospitality-dashboard/')) {
+    return '/hospitality-dashboard/' + cleanFilename;
   }
   // Otherwise use relative path (local development)
-  return filename;
+  return cleanFilename;
 }
 
 /**
