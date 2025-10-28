@@ -1348,23 +1348,8 @@
 		}
 	}
 	
-	// Profile menu
-		console.log('[DASHBOARD] Attaching profile menu listeners...');
-		const profileBtn = document.getElementById('profileBtn');
-		const logoutBtn = document.getElementById('logoutBtn');
-		const profileSettings = document.getElementById('profileSettings');
-		const changePassword = document.getElementById('changePassword');
-		const changeEmail = document.getElementById('changeEmail');
-		
-		if(profileBtn) profileBtn.addEventListener('click',()=>{document.getElementById('profileMenu').classList.toggle('show')});
-		if(logoutBtn) logoutBtn.addEventListener('click', async ()=>{
-			console.log('Logout clicked - authentication will be added later');
-			showConfirmation('Logout functionality will be added when login system is implemented');
-		});
-		if(profileSettings) profileSettings.addEventListener('click',()=>{window.location.href='business-info.html'});
-		if(changePassword) changePassword.addEventListener('click',()=>{openChangePassword()});
-		if(changeEmail) changeEmail.addEventListener('click',()=>{openChangeEmail()});
-		console.log('[DASHBOARD] Profile menu listeners attached');
+	// Profile menu is now handled by profile.js component
+	// The component auto-initializes when the script loads
 
 	// New Booking button
 		console.log('[DASHBOARD] Attaching booking & refresh listeners...');

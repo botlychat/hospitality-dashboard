@@ -93,6 +93,7 @@ class ProfileComponent {
    * Setup menu action button handlers
    */
   setupMenuActions() {
+    // Handle both data-action attributes and specific IDs
     const buttons = this.profileMenu.querySelectorAll('button[data-action]');
     
     buttons.forEach(btn => {
@@ -101,6 +102,51 @@ class ProfileComponent {
         this.handleAction(btn.getAttribute('data-action'));
       });
     });
+
+    // Handle specific ID-based buttons used in the current HTML structure
+    const profileSettings = document.getElementById('profileSettings');
+    const changePassword = document.getElementById('changePassword');
+    const changeEmail = document.getElementById('changeEmail');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    if (profileSettings) {
+      profileSettings.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.close();
+        window.location.href = 'business-info.html';
+      });
+    }
+
+    if (changePassword) {
+      changePassword.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.close();
+        if (typeof openChangePassword === 'function') {
+          openChangePassword();
+        } else {
+          alert('Change password feature coming soon');
+        }
+      });
+    }
+
+    if (changeEmail) {
+      changeEmail.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.close();
+        if (typeof openChangeEmail === 'function') {
+          openChangeEmail();
+        } else {
+          alert('Change email feature coming soon');
+        }
+      });
+    }
+
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.logout();
+      });
+    }
   }
 
   /**
