@@ -3,7 +3,7 @@
  * Caches sidebar, CSS, JS, and static assets for fast loading and offline support
  */
 
-const CACHE_NAME = 'hospitality-dashboard-v1';
+const CACHE_NAME = 'hospitality-dashboard-v2';
 const ASSETS_TO_CACHE = [
   // HTML files
   '/',
