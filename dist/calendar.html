@@ -50,7 +50,29 @@
 		</div>
 		<div style="display:flex;align-items:center;gap:12px">
 			<div class="search"><i class="fa-solid fa-magnifying-glass" style="color:var(--muted)"></i> <input placeholder="Search bookings, units, clients..." data-i18n-placeholder="searchPlaceholder" style="border:none;outline:none;margin-left:8px;font-size:14px;"></div>
-			<button id="langToggle" style="display:flex;align-items:center;gap:6px;padding:8px 12px;border:1px solid #e5e7eb;background:#fff;cursor:pointer;font-size:12px;font-weight:600;color:#f97316;border-radius:6px;transition:all 0.2s ease" title="Toggle Language"><i class="fa-solid fa-globe"></i> <span id="langText">العربية</span></button>
+			
+			<!-- Profile Icon with Dropdown -->
+			<div class="profile-dropdown" id="profileDropdown">
+				<button class="profile-icon-btn" id="profileIconBtn" aria-label="Profile menu">
+					<i class="fa-solid fa-user-circle"></i>
+				</button>
+				<div class="profile-dropdown-menu" id="profileDropdownMenu">
+					<button class="profile-menu-item" id="accountSettingsBtn">
+						<i class="fa-solid fa-user-gear"></i>
+						<span data-i18n="accountSettings">Account Settings</span>
+					</button>
+					<button class="profile-menu-item" id="languageToggleBtn">
+						<i class="fa-solid fa-globe"></i>
+						<span data-i18n="language">Language</span>
+						<span class="language-badge" id="currentLangBadge">EN</span>
+					</button>
+					<div class="menu-divider"></div>
+					<button class="profile-menu-item logout-item" id="logoutBtn">
+						<i class="fa-solid fa-right-from-bracket"></i>
+						<span data-i18n="logout">Logout</span>
+					</button>
+				</div>
+			</div>
 		</div>
 	</header>
 
