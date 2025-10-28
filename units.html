@@ -3,8 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <!-- Base href for GitHub Pages - Comment out for local development -->
-  <!-- <base href="/hospitality-dashboard/"> -->
+  <base href="/hospitality-dashboard/">
   <title>Units — Hospitality Booking Admin</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 	<!-- Extracted & Organized CSS Files -->
@@ -13,9 +12,6 @@
 	<link rel="stylesheet" href="css/responsive.css">
 	<link rel="stylesheet" href="css/profile.css">
 	<link rel="stylesheet" href="css/units.css">
-	<!-- Validation & Error Handling -->
-	<script src="js/validator.js"></script>
-	<script src="js/error-handler.js"></script>
   </head>
 <body>
   <div class="app">
@@ -354,23 +350,22 @@
 	
 	<script>
 		// Load saved theme color
-		const savedColor = Storage.get('websiteThemeColor');
-		if(savedColor && Validator.isHexColor(savedColor)) {
+		const savedColor = localStorage.getItem('websiteThemeColor');
+		if(savedColor && /^#[0-9A-F]{6}$/i.test(savedColor)) {
 			document.documentElement.style.setProperty('--accent', savedColor);
 		}
 
 		// Units data and groups management
-		let unitsGroups = Storage.get('unitsGroups', [
+		let unitsGroups = JSON.parse(localStorage.getItem('unitsGroups')) || [
 			{ id: 'group_1', name: 'Main Hotel', type: 'Hotel Room', license: 'TRN-2024-001' },
 			{ id: 'group_2', name: 'Chalets Collection', type: 'Chalet', license: 'TRN-2024-002' }
-		]);
+		];
 		
-	let units = Storage.get('units', [
+	let units = JSON.parse(localStorage.getItem('units')) || [
 		{ id: 1, name: 'Luxury Ocean View Suite', type: 'Hotel Room', maxGuests: 4, nightlyRate: 1200, status: 'Active', groupId: 'group_1' },
 		{ id: 2, name: 'Garden Villa with Private Pool', type: 'Chalet', maxGuests: 8, nightlyRate: 2500, status: 'Active', groupId: 'group_2' },
 		{ id: 3, name: 'Downtown Executive Apartment', type: 'Hotel Apartment', maxGuests: 6, nightlyRate: 950, status: 'Maintenance', groupId: 'group_1' }
-	]);
-	let currentGroupId = Storage.get('currentGroupId', 'all');
+	];		let currentGroupId = localStorage.getItem('currentGroupId') || 'all';
 		
 		// Update property-specific fields based on unit type selection
 		function updatePropertyFields() {
@@ -488,7 +483,7 @@
 		// Switch active group
 		function switchGroup(groupId) {
 			currentGroupId = groupId;
-			Storage.set('currentGroupId', groupId);
+			localStorage.setItem('currentGroupId', groupId);
 			populateGroupTabs();
 			renderUnitsTable();
 			updateStats();
@@ -565,7 +560,7 @@
 			};
 			
 			unitsGroups.push(newGroup);
-			Storage.set('unitsGroups', unitsGroups);
+			localStorage.setItem('unitsGroups', JSON.stringify(unitsGroups));
 			
 			populateGroupTabs();
 			showConfirmation('Group added successfully!');
@@ -672,13 +667,8 @@
 			const maxGuests = parseInt(document.getElementById('maxGuests').value) || 0;
 			const nightlyRate = parseFloat(document.getElementById('nightlyRate').value) || 0;
 			
-			// Validate unit data
-			const validation = Validator.validateUnit({
-				name, type, maxGuests, nightlyRate
-			});
-			
-			if (!validation.valid) {
-				alert(validation.errors[0]);
+			if (!name || !type || !maxGuests || !nightlyRate) {
+				alert('Please fill in all required fields (Name, Type, Max Guests, Nightly Rate)');
 				return;
 			}
 			
@@ -734,7 +724,7 @@
 				showConfirmation('Unit added successfully!');
 			}
 			
-			Storage.set('units', units);
+			localStorage.setItem('units', JSON.stringify(units));
 			
 			closeUnitSheet();
 			renderUnitsTable();
@@ -791,7 +781,7 @@
 			if (!confirm('Are you sure you want to delete this unit?')) return;
 			
 			units = units.filter(u => u.id !== id);
-			Storage.set('units', units);
+			localStorage.setItem('units', JSON.stringify(units));
 			
 			renderUnitsTable();
 			updateStats();
@@ -799,7 +789,7 @@
 		}
 		
 		// Pricing Overrides Management
-		let pricingOverrides = Storage.get('pricingOverrides', []);
+		let pricingOverrides = JSON.parse(localStorage.getItem('pricingOverrides')) || [];
 		let currentOverrideId = null;
 		
 		function openPricingOverrideModal(overrideId = null) {
@@ -900,7 +890,7 @@
 				pricingOverrides.push(overrideData);
 			}
 			
-			Storage.set('pricingOverrides', pricingOverrides);
+			localStorage.setItem('pricingOverrides', JSON.stringify(pricingOverrides));
 			closePricingOverrideModal();
 			renderPricingOverrides();
 			showConfirmation('Pricing override saved successfully!');
@@ -910,7 +900,7 @@
 			if (!confirm('Are you sure you want to delete this pricing override?')) return;
 			
 			pricingOverrides = pricingOverrides.filter(o => o.id !== id);
-			Storage.set('pricingOverrides', pricingOverrides);
+			localStorage.setItem('pricingOverrides', JSON.stringify(pricingOverrides));
 			renderPricingOverrides();
 			showConfirmation('Pricing override deleted successfully!');
 		}

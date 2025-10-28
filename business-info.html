@@ -3,8 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <!-- Base href for GitHub Pages - Comment out for local development -->
-  <!-- <base href="/hospitality-dashboard/"> -->
+  <base href="/hospitality-dashboard/">
   <title>Business Information — Hospitality Booking Admin</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 	<!-- Extracted & Organized CSS Files -->
@@ -12,9 +11,6 @@
 	<link rel="stylesheet" href="css/global.css">
 	<link rel="stylesheet" href="css/responsive.css">
 	<link rel="stylesheet" href="css/profile.css">
-	<!-- Validation & Error Handling -->
-	<script src="js/validator.js"></script>
-	<script src="js/error-handler.js"></script>
   </head>
 <body>
   <div class="app">
@@ -175,7 +171,7 @@
 
 		// Load existing business information
 		function loadBusinessInfo() {
-			const businessInfo = Storage.get('businessInfo', {});
+			const businessInfo = JSON.parse(localStorage.getItem('businessInfo') || '{}');
 			
 			if (businessInfo.commercialName) {
 				document.getElementById('commercialName').value = businessInfo.commercialName;
@@ -202,7 +198,7 @@
 				tourismLicense: document.getElementById('tourismLicense').value
 			};
 			
-			Storage.set('businessInfo', businessInfo);
+			localStorage.setItem('businessInfo', JSON.stringify(businessInfo));
 			
 			// Show success notification
 			showNotification('Business information saved successfully!', 'success');

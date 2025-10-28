@@ -3,8 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <!-- Base href for GitHub Pages - Comment out for local development -->
-  <!-- <base href="/hospitality-dashboard/"> -->
+  <base href="/hospitality-dashboard/">
   <title>Website Settings — Hospitality Booking Admin</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 	<!-- Extracted & Organized CSS Files -->
@@ -13,9 +12,6 @@
 	<link rel="stylesheet" href="css/responsive.css">
 	<link rel="stylesheet" href="css/profile.css">
 	<link rel="stylesheet" href="css/website.css">
-	<!-- Validation & Error Handling -->
-	<script src="js/validator.js"></script>
-	<script src="js/error-handler.js"></script>
   </head>
 <body>
   <div class="app">
@@ -154,17 +150,17 @@
 		}
 
 		// Website Groups Management
-		let currentGroupId = Storage.get('currentWebsiteGroup', 'group_1');
+		let currentGroupId = localStorage.getItem('currentWebsiteGroup') || 'group_1';
 		
 		// Initialize sample groups if not already present
 		function initializeWebsiteGroups() {
-			let groups = Storage.get('websiteGroups');
+			let groups = JSON.parse(localStorage.getItem('websiteGroups') || 'null');
 			if (!groups) {
 				groups = [
 					{ id: 'group_1', name: 'Main Hotel Collection', type: 'Hotel' },
 					{ id: 'group_2', name: 'Chalets & Villas', type: 'Chalet' }
 				];
-				Storage.set('websiteGroups', groups);
+				localStorage.setItem('websiteGroups', JSON.stringify(groups));
 			}
 			return groups;
 		}
@@ -189,14 +185,14 @@
 			
 			selector.addEventListener('change', function() {
 				currentGroupId = this.value;
-				Storage.set('currentWebsiteGroup', currentGroupId);
+				localStorage.setItem('currentWebsiteGroup', currentGroupId);
 				loadGroupSettings(currentGroupId);
 			});
 		}
 
 		// Load settings for a specific group
 		function loadGroupSettings(groupId) {
-			let groupSettings = Storage.get('websiteGroupSettings', {});
+			let groupSettings = JSON.parse(localStorage.getItem('websiteGroupSettings') || '{}');
 			const settings = groupSettings[groupId] || {};
 			
 			// Load theme color
@@ -218,7 +214,7 @@
 
 		// Save settings for current group
 		function saveGroupSettings() {
-			let groupSettings = Storage.get('websiteGroupSettings', {});
+			let groupSettings = JSON.parse(localStorage.getItem('websiteGroupSettings') || '{}');
 			
 			const colorPicker = document.getElementById('websiteColorPicker');
 			
@@ -227,7 +223,7 @@
 				// Add more settings here as needed
 			};
 			
-			Storage.set('websiteGroupSettings', groupSettings);
+			localStorage.setItem('websiteGroupSettings', JSON.stringify(groupSettings));
 		}
 
 		// Initialize groups on page load
@@ -261,7 +257,7 @@
 		if(colorCodeInput) {
 			colorCodeInput.addEventListener('input', function() {
 				const color = this.value;
-				if(Validator.isHexColor(color)) {
+				if(/^#[0-9A-F]{6}$/i.test(color)) {
 					if(colorPicker) colorPicker.value = color;
 					if(colorDisplay) colorDisplay.style.background = color;
 					if(colorCodeDisplay) colorCodeDisplay.textContent = color.toUpperCase();

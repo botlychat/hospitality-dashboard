@@ -9,9 +9,6 @@
   <link rel="stylesheet" href="css/calendar.css">
   <!-- Modal Management -->
   <script src="js/modals.js"></script>
-  <!-- Validation & Error Handling -->
-  <script src="js/validator.js"></script>
-  <script src="js/error-handler.js"></script>
 </head>
 <body>
   <div class="app">
@@ -111,12 +108,18 @@
   <div class="modal-backdrop" id="modalBackdrop"><div class="modal" id="modalContent"></div></div>
 
   <script>
+    // Load saved theme color
+    const savedColor = localStorage.getItem('websiteThemeColor');
+    if(savedColor && /^#[0-9A-F]{6}$/i.test(savedColor)) {
+      document.documentElement.style.setProperty('--accent', savedColor);
+    }
+
     // Helper function to get proper file path (works on GitHub Pages)
     function getPagePath(filename) {
       const currentPath = window.location.pathname;
-      // Check if we're on GitHub Pages (path contains /hospitality-dashboard/)
-      if(currentPath.includes('/hospitality-dashboard/')) {
-        return '/hospitality-dashboard/' + filename;
+      // Check if we're on GitHub Pages (path contains /chaletdashboard/)
+      if(currentPath.includes('/chaletdashboard/')) {
+        return '/chaletdashboard/' + filename;
       }
       // Otherwise use relative path (local development)
       return filename;
@@ -407,17 +410,17 @@
     };
 
     // Current language
-    let currentLanguage = Storage.get('language', 'en');
+    let currentLanguage = localStorage.getItem('language') || 'en';
 
     // Current currency
-    let currentCurrency = Storage.get('currency', 'SAR');
+    let currentCurrency = localStorage.getItem('currency') || 'SAR';
 
     // Units Groups Management
-    let unitsGroups = Storage.get('unitsGroups', [
+    let unitsGroups = JSON.parse(localStorage.getItem('unitsGroups')) || [
       { id: 'group_1', name: 'Main Hotel', type: 'Hotel Room', license: 'TRN-2024-001' },
       { id: 'group_2', name: 'Chalets Collection', type: 'Chalet', license: 'TRN-2024-002' }
-    ]);
-    let currentGroupId = Storage.get('currentGroupId', 'group_1');
+    ];
+    let currentGroupId = localStorage.getItem('currentGroupId') || 'group_1';
 
     function populateGroupSelectors(){
       const selector = document.getElementById('calendarGroupSelector');
@@ -432,7 +435,7 @@
         });
         selector.addEventListener('change', (e) => {
           currentGroupId = e.target.value;
-          Storage.set('currentGroupId', currentGroupId);
+          localStorage.setItem('currentGroupId', currentGroupId);
         });
       }
     }
@@ -586,20 +589,10 @@
     }
 
     function renderCalendar(){
-      if(!calendarGrid) {
-        console.error('Calendar grid element not found');
-        return;
-      }
-      
       bookings.forEach(booking=>{
         booking.amount = calculateBookingAmount(booking.unit,booking.start,booking.end);
       });
       const weekdaysRow = document.getElementById('weekdaysRow');
-      if(!weekdaysRow) {
-        console.error('Weekdays row element not found');
-        return;
-      }
-      
       weekdaysRow.innerHTML = '';
       // Use translated weekday labels - show all 7 days
       const weekDays = [0,1,2,3,4,5,6].map(i=>getWeekdayLabel(i));
@@ -610,10 +603,7 @@
       } else {
         renderWeekGrid();
       }
-      const monthLabel = document.getElementById('monthLabel');
-      if(monthLabel) {
-        monthLabel.textContent = formatMonthName(currentMonth);
-      }
+      document.getElementById('monthLabel').textContent = formatMonthName(currentMonth);
     }
 
     function renderMonthGrid(){
@@ -1089,13 +1079,8 @@
         const paid=parseFloat(document.getElementById('abPaid').value)||0;
         const notes=document.getElementById('abNotes').value||'';
         
-        // Validate booking data
-        const validation = Validator.validateBooking({
-          name, phone: phoneOnly, unit, start, end, rate, email
-        });
-        
-        if (!validation.valid) {
-          showConfirmation(validation.errors[0]);
+        if(!name||!phoneOnly||!unit||!start||!end||!rate){
+          showConfirmation('Please fill in all required fields (marked with *)');
           return;
         }
         
@@ -1266,7 +1251,7 @@
           return;
         }
 
-        const savedUrls = Storage.get(`calendarUrls_${unit}`, []);
+        const savedUrls = JSON.parse(localStorage.getItem(`calendarUrls_${unit}`) || '[]');
         
         if(savedUrls.length === 0) {
           const emptyMsg = document.createElement('div');
@@ -1368,7 +1353,7 @@
               }
               urlObj.name = newName;
               urlObj.url = newUrl;
-              Storage.set(`calendarUrls_${unit}`, savedUrls);
+              localStorage.setItem(`calendarUrls_${unit}`, JSON.stringify(savedUrls));
               closeModal();
               openSyncCalendarModal();
               showConfirmation(`✅ Calendar updated to "${newName}"`);
@@ -1400,7 +1385,7 @@
             // Simulate sync
             urlObj.lastSync = new Date().toISOString();
             urlObj.status = 'valid';
-            Storage.set(`calendarUrls_${unit}`, savedUrls);
+            localStorage.setItem(`calendarUrls_${unit}`, JSON.stringify(savedUrls));
             displaySavedUrls();
             showConfirmation(`✅ Calendar "${urlObj.name}" synced successfully`);
           });
@@ -1413,7 +1398,7 @@
           deleteBtn.innerHTML = '<i class="fa-solid fa-trash"></i> Delete';
           deleteBtn.addEventListener('click', () => {
             savedUrls.splice(index, 1);
-            Storage.set(`calendarUrls_${unit}`, savedUrls);
+            localStorage.setItem(`calendarUrls_${unit}`, JSON.stringify(savedUrls));
             displaySavedUrls();
           });
           buttonsRow.appendChild(deleteBtn);
@@ -1455,7 +1440,7 @@
         }
 
         // Get existing URLs
-        const savedUrls = Storage.get(`calendarUrls_${unit}`, []);
+        const savedUrls = JSON.parse(localStorage.getItem(`calendarUrls_${unit}`) || '[]');
         
         // Add new URL with status
         const urlObj = {
@@ -1466,7 +1451,7 @@
         };
         
         savedUrls.push(urlObj);
-        Storage.set(`calendarUrls_${unit}`, savedUrls);
+        localStorage.setItem(`calendarUrls_${unit}`, JSON.stringify(savedUrls));
         
         // Reset inputs
         syncNameInput.value = '';
@@ -2016,9 +2001,7 @@
         el.textContent = t(el.dataset.i18n);
       });
       // Re-render calendar when language changes to update weekday labels and month names
-      // Only render if calendar is already initialized
-      const calendarGrid = document.getElementById('calendarGrid');
-      if(calendarGrid && calendarGrid.children.length > 0) {
+      if(document.getElementById('calendarGrid')) {
         renderCalendar();
       }
     }
@@ -2039,96 +2022,69 @@
     // Set initial language
     function setLanguage(lang){
       currentLanguage = lang;
-      Storage.set('language', lang);
+      localStorage.setItem('language', lang);
       document.documentElement.lang = lang;
       document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
       applyTranslations();
       updateLanguageButtons();
     }
 
-    // Wait for DOM to be ready before initializing
-    document.addEventListener('DOMContentLoaded', function() {
-      console.log('Calendar: DOMContentLoaded fired');
-      
-      // Check if required scripts are loaded
-      console.log('Calendar: Checking scripts - Storage:', typeof Storage, 'Validator:', typeof Validator);
-      
-      if(typeof Storage === 'undefined' || typeof Validator === 'undefined') {
-        console.error('Required scripts not loaded. Storage:', typeof Storage, 'Validator:', typeof Validator);
-        alert('Error: Calendar scripts failed to load. Please refresh the page.');
-        return;
-      }
+    // Initialize with stored language BEFORE rendering
+    setLanguage(currentLanguage);
 
-      try {
-        console.log('Calendar: Loading theme color');
-        // Load saved theme color
-        const savedColor = Storage.get('websiteThemeColor');
-        if(savedColor && Validator.isHexColor(savedColor)) {
-          document.documentElement.style.setProperty('--accent', savedColor);
-        }
+    // Now populate and render the calendar
+    populateGroupSelectors();
+    populateUnitControls();
+    initWeekdays();
+    renderLegend();
+    renderCalendar();
 
-        console.log('Calendar: Setting language');
-        // Initialize with stored language BEFORE rendering
-        setLanguage(currentLanguage);
-
-        console.log('Calendar: Populating controls');
-        // Now populate and render the calendar
-        populateGroupSelectors();
-        populateUnitControls();
-        initWeekdays();
-        
-        console.log('Calendar: Rendering legend');
-        renderLegend();
-        
-        console.log('Calendar: Rendering calendar');
-        renderCalendar();
-        
-        console.log('Calendar: Initialization complete');
-      } catch(error) {
-        console.error('Calendar initialization error:', error);
-        alert('Error initializing calendar: ' + error.message);
-      }
-
-      // Language switcher listener
-      const langToggle = document.getElementById('langToggle');
-      if(langToggle) {
-        langToggle.addEventListener('click', () => {
-          const newLang = currentLanguage === 'en' ? 'ar' : 'en';
-          setLanguage(newLang);
-        });
-      }
-
-      // Navigation handlers - redirect to pages
-      document.querySelectorAll('.nav-item').forEach(item => {
-        item.addEventListener('click', () => {
-          const section = item.dataset.link;
-          if (section && !item.classList.contains('active')) {
-            window.location.href = section;
-          }
-        });
+    // Language switcher listener
+    const langToggle = document.getElementById('langToggle');
+    if(langToggle) {
+      langToggle.addEventListener('click', () => {
+        const newLang = currentLanguage === 'en' ? 'ar' : 'en';
+        setLanguage(newLang);
       });
+    }
 
-      const params=new URLSearchParams(location.search);
-      if(params.get('openAdd')) openAddBooking(null,filters.unit!=='all'?filters.unit:null);
-      
-      // Mobile sidebar toggle functionality
-      const sidebarToggle = document.getElementById('sidebarToggle');
-      const sidebar = document.querySelector('.sidebar');
-      
-      if(sidebarToggle && sidebar) {
-        sidebarToggle.addEventListener('click', (e) => {
-          e.stopPropagation();
-          sidebar.classList.toggle('active');
-        });
-        
-        // Close sidebar when clicking outside
-        document.addEventListener('click', (e) => {
-          if(!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
-            sidebar.classList.remove('active');
-          }
-        });
-      }
+    // Navigation handlers - redirect to dashboard.html with tab parameter
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const section = item.dataset.link;
+        if (section) {
+          window.location.href = section;
+        }
+      });
     });
+
+  const params=new URLSearchParams(location.search);
+  if(params.get('openAdd')) openAddBooking(null,filters.unit!=='all'?filters.unit:null);
+  
+  // Mobile sidebar toggle functionality
+  const sidebarToggle = document.getElementById('sidebarToggle');
+  const sidebar = document.querySelector('.sidebar');
+  
+  if(sidebarToggle && sidebar) {
+    sidebarToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      sidebar.classList.toggle('active');
+    });
+    
+    // Close sidebar when clicking on nav items
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', () => {
+        sidebar.classList.remove('active');
+      });
+    });
+    
+    // Close sidebar when clicking outside
+    document.addEventListener('click', (e) => {
+      if(!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
+        sidebar.classList.remove('active');
+    }
+  });
+}
 </script>
 
 <!-- Loading Overlay -->

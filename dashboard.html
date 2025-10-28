@@ -3,8 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<!-- Base href for GitHub Pages - Comment out for local development -->
-	<!-- <base href="/hospitality-dashboard/"> -->
+	<base href="/hospitality-dashboard/">
 	<title>Admin Dashboard — Hospitality Booking</title>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 	<!-- Extracted & Organized CSS Files -->
@@ -13,9 +12,7 @@
 	<link rel="stylesheet" href="css/responsive.css">
 	<link rel="stylesheet" href="css/profile.css">
 	<link rel="stylesheet" href="css/dashboard.css">
-	<!-- Modal Management & Error Handling -->
-	<script src="js/validator.js"></script>
-	<script src="js/error-handler.js"></script>
+	<!-- Modal Management -->
 	<script src="js/modals.js"></script>
 </head>
 <body>
@@ -655,15 +652,17 @@
 		};
 
 		// Current language
-	let currentLanguage = Storage.get('language', 'en');
+		let currentLanguage = localStorage.getItem('language') || 'en';
 
-	// Units Groups Management
-	let unitsGroups = Storage.get('unitsGroups', [
-		{ id: 'group_1', name: 'Main Hotel', type: 'Hotel Room', license: 'TRN-2024-001' },
-		{ id: 'group_2', name: 'Chalets Collection', type: 'Chalet', license: 'TRN-2024-002' }
-	]);
-	let currentGroupId = Storage.get('currentGroupId', 'all');
-	let currentCurrency = Storage.get('currency', 'SAR');		function populateGroupSelectors(){
+		// Units Groups Management
+		let unitsGroups = JSON.parse(localStorage.getItem('unitsGroups')) || [
+			{ id: 'group_1', name: 'Main Hotel', type: 'Hotel Room', license: 'TRN-2024-001' },
+			{ id: 'group_2', name: 'Chalets Collection', type: 'Chalet', license: 'TRN-2024-002' }
+		];
+		let currentGroupId = localStorage.getItem('currentGroupId') || 'all';
+		let currentCurrency = localStorage.getItem('currency') || 'SAR';
+
+		function populateGroupSelectors(){
 			const selector = document.getElementById('dashboardGroupSelector');
 			if(selector){
 				selector.innerHTML = '';
@@ -684,7 +683,7 @@
 				});
 				selector.addEventListener('change', (e) => {
 					currentGroupId = e.target.value;
-					Storage.set('currentGroupId', currentGroupId);
+					localStorage.setItem('currentGroupId', currentGroupId);
 					// Refresh dashboard data based on selected group
 					updateKPIs();
 					renderRecentBookings();
@@ -698,7 +697,7 @@
 		// Set initial language
 		function setLanguage(lang){
 			currentLanguage = lang;
-			Storage.set('language', lang);
+			localStorage.setItem('language', lang);
 			document.documentElement.lang = lang;
 			document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
 			applyTranslations();
@@ -776,8 +775,8 @@
 		// Initialize language on load
 		document.addEventListener('DOMContentLoaded',()=>{
 			// Load saved theme color
-			const savedColor = Storage.get('websiteThemeColor');
-			if(savedColor && Validator.isHexColor(savedColor)) {
+			const savedColor = localStorage.getItem('websiteThemeColor');
+			if(savedColor && /^#[0-9A-F]{6}$/i.test(savedColor)) {
 				document.documentElement.style.setProperty('--accent', savedColor);
 			}
 			
@@ -1148,24 +1147,21 @@
 				const countryCode = document.getElementById('abCountryCode').value;
 				const phoneOnly = document.getElementById('abPhone').value;
 				const phone = countryCode + phoneOnly;
-			const email = document.getElementById('abEmail').value || '';
-			const unit = document.getElementById('abUnit').value;
-			const start = document.getElementById('abStart').value;
-			const end = document.getElementById('abEnd').value;
-			const rate = parseFloat(document.getElementById('abRate').value) || 0;
-			const payment = document.getElementById('abPayment').value;
-			const paid = parseFloat(document.getElementById('abPaid').value) || 0;
-			const notes = document.getElementById('abNotes').value || '';
-			
-			// Validate booking data
-			const validation = Validator.validateBooking({
-				name, phone: phoneOnly, unit, start, end, rate, email
-			});
-			
-			if (!validation.valid) {
-				showConfirmation(validation.errors[0]);
-				return;
-			}				const startDate = new Date(start);
+				const email = document.getElementById('abEmail').value || '';
+				const unit = document.getElementById('abUnit').value;
+				const start = document.getElementById('abStart').value;
+				const end = document.getElementById('abEnd').value;
+				const rate = parseFloat(document.getElementById('abRate').value) || 0;
+				const payment = document.getElementById('abPayment').value;
+				const paid = parseFloat(document.getElementById('abPaid').value) || 0;
+				const notes = document.getElementById('abNotes').value || '';
+				
+				if(!name || !phoneOnly || !unit || !start || !end || !rate){
+					showConfirmation('Please fill in all required fields (marked with *)');
+					return;
+				}
+				
+				const startDate = new Date(start);
 				const endDate = new Date(end);
 				if(endDate <= startDate){
 					showConfirmation('Check-out date must be after check-in date');
@@ -1270,15 +1266,16 @@
 		const colorInput = document.getElementById('colorCodeInput');
 		const color = colorInput.value;
 		
-	
-	// Validate hex color
-	if(!Validator.isHexColor(color)){
-		showConfirmation('Invalid color code. Use format: #f97316');
-		return;
-	}
-	
-	// Save to localStorage
-	Storage.set('websiteThemeColor', color);		// Show success message
+		// Validate hex color
+		if(!/^#[0-9A-F]{6}$/i.test(color)){
+			showConfirmation('Invalid color code. Use format: #f97316');
+			return;
+		}
+		
+		// Save to localStorage
+		localStorage.setItem('websiteThemeColor', color);
+		
+		// Show success message
 		showConfirmation('Website theme color saved: ' + color);
 	}
 	
@@ -1381,9 +1378,9 @@
 
 		// Load AI Agent configuration from localStorage
 		function loadAIAgentConfig(){
-			const saved = Storage.get('aiAgentConfig');
+			const saved = localStorage.getItem('aiAgentConfig');
 			if(saved){
-				aiAgentConfig = saved;
+				aiAgentConfig = JSON.parse(saved);
 			}
 			
 			// Update UI
@@ -1473,7 +1470,7 @@
 				return;
 			}
 			
-			Storage.set('aiAgentConfig', aiAgentConfig);
+			localStorage.setItem('aiAgentConfig', JSON.stringify(aiAgentConfig));
 			updateAIConfigSummary();
 			generateAIInstructionsPreview();
 			showConfirmation('Discount settings saved successfully');
@@ -1494,7 +1491,7 @@
 			}
 			
 			aiAgentConfig.welcomeMessage = message;
-			Storage.set('aiAgentConfig', aiAgentConfig);
+			localStorage.setItem('aiAgentConfig', JSON.stringify(aiAgentConfig));
 			generateAIInstructionsPreview();
 			showConfirmation('Welcome message saved successfully');
 		}
@@ -1579,7 +1576,7 @@
 
 		// Save and deploy AI Agent configuration
 		function saveAIAgentConfig(){
-			Storage.set('aiAgentConfig', aiAgentConfig);
+			localStorage.setItem('aiAgentConfig', JSON.stringify(aiAgentConfig));
 			
 			// Simulate deployment
 			const btn = event.target;
@@ -1618,10 +1615,11 @@
 
 		// Load AI Reminders from localStorage
 		function loadAIReminders(){
-			const savedReminders = Storage.get('aiReminders');
+			const savedReminders = localStorage.getItem('aiReminders');
 			if(savedReminders){
-				const reminder1 = savedReminders.reminder1 || '';
-				const reminder2 = savedReminders.reminder2 || '';
+				const reminders = JSON.parse(savedReminders);
+				const reminder1 = reminders.reminder1 || '';
+				const reminder2 = reminders.reminder2 || '';
 				
 				// Set textarea values
 				document.getElementById('aiReminder1').value = reminder1;
@@ -1664,7 +1662,7 @@
 			const textarea = document.getElementById(`aiReminder${num}`);
 			const editBtn = document.getElementById(`editBtn${num}`);
 			const buttonsDiv = document.getElementById(`reminderButtons${num}`);
-			const reminders = Storage.get('aiReminders', {reminder1:"", reminder2:""});
+			const reminders = JSON.parse(localStorage.getItem('aiReminders') || '{"reminder1":"","reminder2":""}');
 			const savedText = num === 1 ? (reminders.reminder1 || '') : (reminders.reminder2 || '');
 			
 			// Reset textarea to saved value
@@ -1691,9 +1689,9 @@
 				return;
 			}
 			
-			const reminders = Storage.get('aiReminders', {reminder1:"", reminder2:""});
+			const reminders = JSON.parse(localStorage.getItem('aiReminders') || '{"reminder1":"","reminder2":""}');
 			reminders.reminder1 = text;
-			Storage.set('aiReminders', reminders);
+			localStorage.setItem('aiReminders', JSON.stringify(reminders));
 			
 			// Switch back to view mode
 			document.getElementById('aiReminder1').style.display = 'none';
@@ -1712,9 +1710,9 @@
 				return;
 			}
 			
-			const reminders = Storage.get('aiReminders', {reminder1:"", reminder2:""});
+			const reminders = JSON.parse(localStorage.getItem('aiReminders') || '{"reminder1":"","reminder2":""}');
 			reminders.reminder2 = text;
-			Storage.set('aiReminders', reminders);
+			localStorage.setItem('aiReminders', JSON.stringify(reminders));
 			
 			// Switch back to view mode
 			document.getElementById('aiReminder2').style.display = 'none';
@@ -1749,7 +1747,7 @@
 
 		function setCurrency(currency){
 			currentCurrency = currency;
-			Storage.set('currency', currency);
+			localStorage.setItem('currency', currency);
 			updateCurrencyButtons();
 			updateKPIs();
 			renderRecentBookings();
@@ -1772,7 +1770,7 @@
 
 		function setLanguage(lang){
 			currentLanguage = lang;
-			Storage.set('language', lang);
+			localStorage.setItem('language', lang);
 			document.documentElement.lang = lang;
 			document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
 			updateLanguageButtons();
@@ -1793,8 +1791,8 @@
 		// Update Active Conversations display
 		function updateActiveConversations() {
 			// Get data from localStorage (synced with AI Agent page)
-			const activeCount = Storage.get('activeConvCount', 278);
-			const totalPlan = Storage.get('totalPlanConv', 500);
+			const activeCount = parseInt(localStorage.getItem('activeConvCount') || '278');
+			const totalPlan = parseInt(localStorage.getItem('totalPlanConv') || '500');
 			const percent = ((activeCount / totalPlan) * 100).toFixed(1);
 			const remaining = totalPlan - activeCount;
 			
@@ -1813,9 +1811,9 @@
 		}
 		
 		// Initialize conversation data if not exists
-		if(!Storage.get('activeConvCount')) {
-			Storage.set('activeConvCount', 278);
-			Storage.set('totalPlanConv', 500);
+		if(!localStorage.getItem('activeConvCount')) {
+			localStorage.setItem('activeConvCount', '278');
+			localStorage.setItem('totalPlanConv', '500');
 		}
 		
 		// Update on page load

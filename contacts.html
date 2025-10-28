@@ -3,8 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <!-- Base href for GitHub Pages - Comment out for local development -->
-  <!-- <base href="/hospitality-dashboard/"> -->
+  <base href="/hospitality-dashboard/">
   <title>Contacts — Hospitality Booking Admin</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 	<!-- Extracted & Organized CSS Files -->
@@ -13,10 +12,6 @@
 	<link rel="stylesheet" href="css/responsive.css">
 	<link rel="stylesheet" href="css/profile.css">
 	<link rel="stylesheet" href="css/contacts.css">
-	<!-- Validation & Error Handling -->
-	<script src="js/validator.js"></script>
-	<script src="js/error-handler.js"></script>
-	<script src="js/modals.js"></script>
   </head>
 <body>
   <div class="app">
@@ -223,8 +218,8 @@
 	
 	<script>
 		// Load saved theme color
-		const savedColor = Storage.get('websiteThemeColor');
-		if(savedColor && Validator.isHexColor(savedColor)) {
+		const savedColor = localStorage.getItem('websiteThemeColor');
+		if(savedColor && /^#[0-9A-F]{6}$/i.test(savedColor)) {
 			document.documentElement.style.setProperty('--accent', savedColor);
 		}
 
@@ -254,7 +249,7 @@
 }
 
 // Sample contacts data
-let clients = Storage.get('clients', [
+let clients = JSON.parse(localStorage.getItem('clients')) || [
 	{
 		id: 1,
 		name: 'Ahmed Al-Mansouri',
@@ -344,7 +339,7 @@ function editClient(id) {
 function deleteClient(id) {
 	if (confirm('Delete this contact?')) {
 		clients = clients.filter(c => c.id !== id);
-		Storage.set('clients', clients);
+		localStorage.setItem('clients', JSON.stringify(clients));
 		renderClientsTable();
 	}
 }
