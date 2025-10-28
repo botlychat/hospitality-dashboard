@@ -9,11 +9,12 @@
   <link rel="stylesheet" href="css/calendar.css">
 </head>
 <body>
-  <!-- Load scripts at start of body to ensure they're available before inline scripts -->
+  <!-- Modal Management -->
   <script src="js/modals.js"></script>
+  <!-- Validation & Error Handling -->
   <script src="js/validator.js"></script>
   <script src="js/error-handler.js"></script>
-  
+
   <div class="app">
     <aside class="sidebar">
       <div class="brand"><div class="logo">RG</div><h1>Riyadh Getaways</h1></div>
@@ -406,14 +407,18 @@
       }
     };
 
-    // Initialize variables - will be set in DOMContentLoaded
-    let currentLanguage = 'en';
-    let currentCurrency = 'SAR';
-    let unitsGroups = [
+    // Current language
+    let currentLanguage = Storage.get('language', 'en');
+
+    // Current currency
+    let currentCurrency = Storage.get('currency', 'SAR');
+
+    // Units Groups Management
+    let unitsGroups = Storage.get('unitsGroups', [
       { id: 'group_1', name: 'Main Hotel', type: 'Hotel Room', license: 'TRN-2024-001' },
       { id: 'group_2', name: 'Chalets Collection', type: 'Chalet', license: 'TRN-2024-002' }
-    ];
-    let currentGroupId = 'group_1';
+    ]);
+    let currentGroupId = Storage.get('currentGroupId', 'group_1');
 
     function populateGroupSelectors(){
       const selector = document.getElementById('calendarGroupSelector');
@@ -2050,12 +2055,6 @@
         alert('Error: Calendar scripts failed to load. Please refresh the page.');
         return;
       }
-
-      // Load values from Storage now that it's available
-      currentLanguage = Storage.get('language', 'en');
-      currentCurrency = Storage.get('currency', 'SAR');
-      unitsGroups = Storage.get('unitsGroups', unitsGroups); // Use default if not found
-      currentGroupId = Storage.get('currentGroupId', 'group_1');
 
       // Load saved theme color
       const savedColor = Storage.get('websiteThemeColor');
