@@ -12,6 +12,8 @@
 	<link rel="stylesheet" href="css/responsive.css">
 	<link rel="stylesheet" href="css/profile.css">
 	<link rel="stylesheet" href="css/units.css">
+	<!-- Storage helper with error handling -->
+	<script src="js/storage.js"></script>
   </head>
 <body>
   <div class="app">
@@ -349,23 +351,25 @@
 	<script src="js/components/profile.js"></script>
 	
 	<script>
-		// Load saved theme color
-		const savedColor = localStorage.getItem('websiteThemeColor');
+		// Load saved theme color (safe with fallback)
+		const savedColor = Storage.getString('websiteThemeColor', '');
 		if(savedColor && /^#[0-9A-F]{6}$/i.test(savedColor)) {
 			document.documentElement.style.setProperty('--accent', savedColor);
 		}
 
 		// Units data and groups management
-		let unitsGroups = JSON.parse(localStorage.getItem('unitsGroups')) || [
+		let unitsGroups = Storage.getJSON('unitsGroups', [
 			{ id: 'group_1', name: 'Main Hotel', type: 'Hotel Room', license: 'TRN-2024-001' },
 			{ id: 'group_2', name: 'Chalets Collection', type: 'Chalet', license: 'TRN-2024-002' }
-		];
+		]);
 		
-	let units = JSON.parse(localStorage.getItem('units')) || [
-		{ id: 1, name: 'Luxury Ocean View Suite', type: 'Hotel Room', maxGuests: 4, nightlyRate: 1200, status: 'Active', groupId: 'group_1' },
-		{ id: 2, name: 'Garden Villa with Private Pool', type: 'Chalet', maxGuests: 8, nightlyRate: 2500, status: 'Active', groupId: 'group_2' },
-		{ id: 3, name: 'Downtown Executive Apartment', type: 'Hotel Apartment', maxGuests: 6, nightlyRate: 950, status: 'Maintenance', groupId: 'group_1' }
-	];		let currentGroupId = localStorage.getItem('currentGroupId') || 'all';
+		let units = Storage.getJSON('units', [
+			{ id: 1, name: 'Luxury Ocean View Suite', type: 'Hotel Room', maxGuests: 4, nightlyRate: 1200, status: 'Active', groupId: 'group_1' },
+			{ id: 2, name: 'Garden Villa with Private Pool', type: 'Chalet', maxGuests: 8, nightlyRate: 2500, status: 'Active', groupId: 'group_2' },
+			{ id: 3, name: 'Downtown Executive Apartment', type: 'Hotel Apartment', maxGuests: 6, nightlyRate: 950, status: 'Maintenance', groupId: 'group_1' }
+		]);
+		
+		let currentGroupId = Storage.getString('currentGroupId', 'all');
 		
 		// Update property-specific fields based on unit type selection
 		function updatePropertyFields() {
@@ -483,7 +487,7 @@
 		// Switch active group
 		function switchGroup(groupId) {
 			currentGroupId = groupId;
-			localStorage.setItem('currentGroupId', groupId);
+			Storage.setString('currentGroupId', groupId);
 			populateGroupTabs();
 			renderUnitsTable();
 			updateStats();
@@ -560,7 +564,7 @@
 			};
 			
 			unitsGroups.push(newGroup);
-			localStorage.setItem('unitsGroups', JSON.stringify(unitsGroups));
+			Storage.setJSON('unitsGroups', unitsGroups);
 			
 			populateGroupTabs();
 			showConfirmation('Group added successfully!');
@@ -725,7 +729,7 @@
 				showConfirmation('Unit added successfully!');
 			}
 			
-			localStorage.setItem('units', JSON.stringify(units));
+			Storage.setJSON('units', units);
 			
 			closeUnitSheet();
 			renderUnitsTable();
@@ -782,7 +786,7 @@
 			if (!confirm('Are you sure you want to delete this unit?')) return;
 			
 			units = units.filter(u => u.id !== id);
-			localStorage.setItem('units', JSON.stringify(units));
+			Storage.setJSON('units', units);
 			
 			renderUnitsTable();
 			updateStats();
@@ -790,7 +794,7 @@
 		}
 		
 		// Pricing Overrides Management
-		let pricingOverrides = JSON.parse(localStorage.getItem('pricingOverrides')) || [];
+		let pricingOverrides = Storage.getJSON('pricingOverrides', []);
 		let currentOverrideId = null;
 		
 		function openPricingOverrideModal(overrideId = null) {
@@ -891,7 +895,7 @@
 				pricingOverrides.push(overrideData);
 			}
 			
-			localStorage.setItem('pricingOverrides', JSON.stringify(pricingOverrides));
+			Storage.setJSON('pricingOverrides', pricingOverrides);
 			closePricingOverrideModal();
 			renderPricingOverrides();
 			showConfirmation('Pricing override saved successfully!');
@@ -901,7 +905,7 @@
 			if (!confirm('Are you sure you want to delete this pricing override?')) return;
 			
 			pricingOverrides = pricingOverrides.filter(o => o.id !== id);
-			localStorage.setItem('pricingOverrides', JSON.stringify(pricingOverrides));
+			Storage.setJSON('pricingOverrides', pricingOverrides);
 			renderPricingOverrides();
 			showConfirmation('Pricing override deleted successfully!');
 		}
