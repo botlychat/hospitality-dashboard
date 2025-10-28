@@ -12,6 +12,8 @@
 	<link rel="stylesheet" href="css/responsive.css">
 	<link rel="stylesheet" href="css/profile.css">
 	<link rel="stylesheet" href="css/aiagent.css">
+	<!-- Storage helper with error handling -->
+	<script src="js/storage.js"></script>
   </head>
 <body>
   <div class="app">
@@ -212,8 +214,8 @@
 	<script src="js/components/profile.js"></script>
 	
 	<script>
-		// Load saved theme color
-		const savedColor = localStorage.getItem('websiteThemeColor');
+		// Load saved theme color (safe with fallback)
+		const savedColor = Storage.getString('websiteThemeColor', '');
 		if(savedColor && /^#[0-9A-F]{6}$/i.test(savedColor)) {
 			document.documentElement.style.setProperty('--accent', savedColor);
 		}
@@ -252,7 +254,7 @@
 			
 			if(checkbox.checked) {
 				// Check if there's already a saved amount
-				const savedAmount = localStorage.getItem('discountAmount');
+				const savedAmount = Storage.getString('discountAmount', '');
 				if(savedAmount) {
 					// Show preview with saved amount and edit pen
 					preview.style.display = 'block';
@@ -281,8 +283,8 @@
 				return;
 			}
 			
-			// Save amount
-			localStorage.setItem('discountAmount', amount);
+			// Save amount (safe)
+			Storage.setString('discountAmount', amount);
 			previewAmount.textContent = 'SAR ' + amount;
 			
 			// Hide input, show preview with edit pen
@@ -298,8 +300,8 @@
 			const editPenBtn = document.getElementById('discountEditPenBtn');
 			const amountInput = document.getElementById('discountAmount');
 			
-			// Load current amount
-			const savedAmount = localStorage.getItem('discountAmount');
+			// Load current amount (safe)
+			const savedAmount = Storage.getString('discountAmount', '');
 			if(savedAmount) {
 				amountInput.value = savedAmount;
 			}
@@ -340,8 +342,8 @@
 			// Show info box
 			methodInfo.style.display = 'block';
 			
-			// Save immediately to localStorage
-			localStorage.setItem('bookingMethod', selectedMethod);
+			// Save immediately to storage (safe)
+			Storage.setString('bookingMethod', selectedMethod);
 			
 			// Optional: Show brief confirmation
 			showConfirmation('Booking method updated to: ' + (fullBooking.checked ? 'AI Agent Full Booking' : 'Website Only Booking'));
@@ -364,8 +366,8 @@
 			const editBtn = document.getElementById('welcomeEditBtn');
 			const saveBtn = document.getElementById('welcomeSaveBtn');
 			
-			// Save to localStorage
-			localStorage.setItem('welcomeMessage', textarea.value);
+			// Save to storage (safe)
+			Storage.setString('welcomeMessage', textarea.value);
 			
 			textarea.setAttribute('readonly', 'readonly');
 			editBtn.style.display = 'block';
@@ -391,8 +393,8 @@
 			const editBtn = document.getElementById('reminder' + reminderNum + 'EditBtn');
 			const saveBtn = document.getElementById('reminder' + reminderNum + 'SaveBtn');
 			
-			// Save to localStorage
-			localStorage.setItem('reminder' + reminderNum, textarea.value);
+			// Save to storage (safe)
+			Storage.setString('reminder' + reminderNum, textarea.value);
 			
 			textarea.setAttribute('readonly', 'readonly');
 			editBtn.style.display = 'block';
@@ -405,7 +407,7 @@
 		let customRoles = [];
 
 		function loadCustomRoles() {
-			const saved = localStorage.getItem('customRoles');
+			const saved = Storage.getString('customRoles', '');
 			if(saved) {
 				customRoles = JSON.parse(saved);
 				renderRoles();
@@ -429,8 +431,8 @@
 			customRoles.push(roleText);
 			input.value = '';
 			
-			// Save immediately
-			localStorage.setItem('customRoles', JSON.stringify(customRoles));
+			// Save immediately (safe)
+			Storage.setJSON('customRoles', customRoles);
 			renderRoles();
 			
 			showConfirmation('Role added successfully');
@@ -439,7 +441,7 @@
 		function removeRole(index) {
 			if(confirm('Remove this role?')) {
 				customRoles.splice(index, 1);
-				localStorage.setItem('customRoles', JSON.stringify(customRoles));
+				Storage.setJSON('customRoles', customRoles);
 				renderRoles();
 			}
 		}
@@ -476,11 +478,11 @@
 			const selector = document.getElementById('aiAgentGroupSelector');
 			if(!selector) return;
 			
-			// Get groups from localStorage (same as units page)
-			let unitsGroups = JSON.parse(localStorage.getItem('unitsGroups')) || [
+			// Get groups from storage (same as units page) - safe
+			let unitsGroups = Storage.getJSON('unitsGroups', [
 				{ id: 'group_1', name: 'Main Hotel', type: 'Hotel Room', license: 'TRN-2024-001' },
 				{ id: 'group_2', name: 'Chalets Collection', type: 'Chalet', license: 'TRN-2024-002' }
-			];
+			]);
 			
 			// Clear existing options
 			selector.innerHTML = '';
@@ -500,12 +502,12 @@
 			});
 			
 			// Load saved selection
-			const savedGroup = localStorage.getItem('aiAgentSelectedGroup') || 'all';
+			const savedGroup = Storage.getString('aiAgentSelectedGroup', 'all');
 			selector.value = savedGroup;
 			
-			// Save on change
+			// Save on change (safe)
 			selector.addEventListener('change', function() {
-				localStorage.setItem('aiAgentSelectedGroup', this.value);
+				Storage.setString('aiAgentSelectedGroup', this.value);
 			});
 	}
 
