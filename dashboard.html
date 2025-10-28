@@ -1883,81 +1883,6 @@
 	<script src="js/utils.js"></script>
 	<script src="js/components.js"></script>
 
-	<!-- Simple Profile Button Handler - Direct and Reliable -->
-	<script>
-		// Wait for DOM to be fully loaded
-		document.addEventListener('DOMContentLoaded', function() {
-			const profileBtn = document.getElementById('profileBtn');
-			const profileMenu = document.getElementById('profileMenu');
-			const profileSettings = document.getElementById('profileSettings');
-			const changePassword = document.getElementById('changePassword');
-			const changeEmail = document.getElementById('changeEmail');
-			const logoutBtn = document.getElementById('logoutBtn');
-
-			// Toggle profile menu
-			if (profileBtn && profileMenu) {
-				profileBtn.addEventListener('click', function(e) {
-					e.stopPropagation();
-					profileMenu.classList.toggle('show');
-					console.log('Profile menu toggled:', profileMenu.classList.contains('show'));
-				});
-
-				// Close menu when clicking outside
-				document.addEventListener('click', function(e) {
-					if (!profileBtn.contains(e.target) && !profileMenu.contains(e.target)) {
-						profileMenu.classList.remove('show');
-					}
-				});
-			}
-
-			// Menu item handlers
-			if (profileSettings) {
-				profileSettings.addEventListener('click', function(e) {
-					e.preventDefault();
-					profileMenu.classList.remove('show');
-					window.location.href = 'business-info.html';
-				});
-			}
-
-			if (changePassword) {
-				changePassword.addEventListener('click', function(e) {
-					e.preventDefault();
-					profileMenu.classList.remove('show');
-					if (typeof openChangePassword === 'function') {
-						openChangePassword();
-					} else {
-						alert('Change password feature coming soon');
-					}
-				});
-			}
-
-			if (changeEmail) {
-				changeEmail.addEventListener('click', function(e) {
-					e.preventDefault();
-					profileMenu.classList.remove('show');
-					if (typeof openChangeEmail === 'function') {
-						openChangeEmail();
-					} else {
-						alert('Change email feature coming soon');
-					}
-				});
-			}
-
-			if (logoutBtn) {
-				logoutBtn.addEventListener('click', function(e) {
-					e.preventDefault();
-					profileMenu.classList.remove('show');
-					if (confirm('Are you sure you want to logout?')) {
-						alert('Logout functionality - will redirect to login page');
-						// Future: window.location.href = 'index.html';
-					}
-				});
-			}
-
-			console.log('✓ Profile button handlers initialized');
-		});
-	</script>
-
 	<!-- Initialization Script - Runs AFTER external JS files are loaded -->
 	<script>
 		// Initial render
@@ -1992,6 +1917,33 @@
 			}
 		});
 	}
+</script>
+
+<script>
+// Profile Button - Ultra Simple Handler
+(function() {
+	var btn = document.getElementById('profileBtn');
+	var menu = document.getElementById('profileMenu');
+	if (!btn || !menu) return;
+	
+	btn.onclick = function(e) {
+		e.stopPropagation();
+		menu.classList.toggle('show');
+	};
+	
+	document.onclick = function(e) {
+		if (!btn.contains(e.target) && !menu.contains(e.target)) {
+			menu.classList.remove('show');
+		}
+	};
+	
+	// Menu items
+	var settings = document.getElementById('profileSettings');
+	var logout = document.getElementById('logoutBtn');
+	
+	if (settings) settings.onclick = function() { menu.classList.remove('show'); window.location.href = 'business-info.html'; };
+	if (logout) logout.onclick = function() { menu.classList.remove('show'); if (confirm('Logout?')) alert('Logging out...'); };
+})();
 </script>
 
 </body>
