@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <base href="/hospitality-dashboard/">
-  <title>Units — Hospitality Booking Admin</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<base href="/hospitality-dashboard/">
+	<title>Units — Hospitality Booking Admin</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 	<!-- Extracted & Organized CSS Files -->
 	<link rel="stylesheet" href="css/variables.css">
 	<link rel="stylesheet" href="css/global.css">
@@ -23,7 +23,7 @@
 				.catch(err => console.log('[SW] Registration failed:', err));
 		}
 	</script>
-  
+	
 </head>
 <body>
 	<div class="app">
@@ -66,74 +66,74 @@
 
 	<section class="content">
 		
-        <div>
-          <!-- Mobile Group Selector (hidden on desktop) -->
-          <select id="groupSelector" onchange="handleGroupChange(this.value)">
-            <!-- Options will be populated by JavaScript -->
-          </select>
-          
-          <!-- Units Groups Tabs Section (hidden on mobile) -->
-          <div style="display:flex;gap:8px;margin-bottom:20px;overflow-x:auto;padding-bottom:8px;border-bottom:2px solid #e5e7eb;align-items:center">
-            <div id="groupsTabs" style="display:flex;gap:8px;flex:1">
-              <!-- Group tabs will be rendered here -->
-            </div>
-            <button class="btn primary" onclick="openAddGroupModal()" style="flex-shrink:0"><i class="fa-solid fa-plus"></i> Add Group</button>
-          </div>
+				<div>
+					<!-- Mobile Group Selector (hidden on desktop) -->
+					<select id="groupSelector" onchange="handleGroupChange(this.value)">
+						<!-- Options will be populated by JavaScript -->
+					</select>
+					
+					<!-- Units Groups Tabs Section (hidden on mobile) -->
+					<div style="display:flex;gap:8px;margin-bottom:20px;overflow-x:auto;padding-bottom:8px;border-bottom:2px solid #e5e7eb;align-items:center">
+						<div id="groupsTabs" style="display:flex;gap:8px;flex:1">
+							<!-- Group tabs will be rendered here -->
+						</div>
+						<button class="btn primary" onclick="openAddGroupModal()" style="flex-shrink:0"><i class="fa-solid fa-plus"></i> Add Group</button>
+					</div>
 
-          <div class="stat-cards">
-            <div class="stat-card">
-              <div class="stat-title">Total Units</div>
-              <div class="stat-value" id="statTotal">0</div>
-              <div class="stat-sub">All properties</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-title">Active</div>
-              <div class="stat-value" id="statActive">0</div>
-              <div class="stat-sub">Bookable</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-title">Maintenance</div>
-              <div class="stat-value" id="statMaintenance">0</div>
-              <div class="stat-sub">Unavailable</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-title">Avg. Rate</div>
-              <div class="stat-value" id="statADR">$0</div>
-              <div class="stat-sub">Per night</div>
-            </div>
-          </div>
+					<div class="stat-cards">
+						<div class="stat-card">
+							<div class="stat-title">Total Units</div>
+							<div class="stat-value" id="statTotal">0</div>
+							<div class="stat-sub">All properties</div>
+						</div>
+						<div class="stat-card">
+							<div class="stat-title">Active</div>
+							<div class="stat-value" id="statActive">0</div>
+							<div class="stat-sub">Bookable</div>
+						</div>
+						<div class="stat-card">
+							<div class="stat-title">Maintenance</div>
+							<div class="stat-value" id="statMaintenance">0</div>
+							<div class="stat-sub">Unavailable</div>
+						</div>
+						<div class="stat-card">
+							<div class="stat-title">Avg. Rate</div>
+							<div class="stat-value" id="statADR">$0</div>
+							<div class="stat-sub">Per night</div>
+						</div>
+					</div>
 
-          <div class="toolbar">
-            <div class="toolbar-left">
-              <div class="filter"><i class="fa-solid fa-filter"></i><select id="statusFilter"><option value="all">All Statuses</option><option value="Active">Active</option><option value="Maintenance">Maintenance</option><option value="Disabled">Disabled</option></select></div>
-            </div>
-            <button class="btn primary" id="addUnitBtn"><i class="fa-solid fa-plus"></i> Add New Unit</button>
-          </div>
+					<div class="toolbar">
+						<div class="toolbar-left">
+							<div class="filter"><i class="fa-solid fa-filter"></i><select id="statusFilter"><option value="all">All Statuses</option><option value="Active">Active</option><option value="Maintenance">Maintenance</option><option value="Disabled">Disabled</option></select></div>
+						</div>
+						<button class="btn primary" id="addUnitBtn"><i class="fa-solid fa-plus"></i> Add New Unit</button>
+					</div>
 
-          <div class="panel table-scroll-wrapper" style="overflow-x:auto">
-            <table aria-label="Units list">
-              <thead>
-                <tr><th>Unit</th><th>Type</th><th>Max Guests</th><th>Nightly Rate</th><th>Status</th><th style="width:120px">Actions</th></tr>
-              </thead>
-              <tbody id="unitsTableBody"></tbody>
-            </table>
-          </div>
-        </div>
+					<div class="panel table-scroll-wrapper" style="overflow-x:auto">
+						<table aria-label="Units list">
+							<thead>
+								<tr><th>Unit</th><th>Type</th><th>Max Guests</th><th>Nightly Rate</th><th>Status</th><th style="width:120px">Actions</th></tr>
+							</thead>
+							<tbody id="unitsTableBody"></tbody>
+						</table>
+					</div>
+				</div>
 
-        <aside class="side-panel">
-          <div class="panel">
-            <h3 style="margin-top:0">Amenities Overview</h3>
-            <div class="tag-list" id="amenityTagList"></div>
-          </div>
-          <div class="panel">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-              <h3 style="margin:0">Pricing Overrides</h3>
-              <button class="btn ghost" onclick="openPricingOverrideModal()" style="padding:6px 12px;font-size:12px"><i class="fa-solid fa-plus"></i> Add</button>
-            </div>
-            <ul style="padding-left:0;color:var(--muted);margin:0;display:flex;flex-direction:column;gap:8px;list-style:none" id="pricingOverridesList"></ul>
-          </div>
-        </aside>
-      
+				<aside class="side-panel">
+					<div class="panel">
+						<h3 style="margin-top:0">Amenities Overview</h3>
+						<div class="tag-list" id="amenityTagList"></div>
+					</div>
+					<div class="panel">
+						<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+							<h3 style="margin:0">Pricing Overrides</h3>
+							<button class="btn ghost" onclick="openPricingOverrideModal()" style="padding:6px 12px;font-size:12px"><i class="fa-solid fa-plus"></i> Add</button>
+						</div>
+						<ul style="padding-left:0;color:var(--muted);margin:0;display:flex;flex-direction:column;gap:8px;list-style:none" id="pricingOverridesList"></ul>
+					</div>
+				</aside>
+			
 	</section>
 </main>
 

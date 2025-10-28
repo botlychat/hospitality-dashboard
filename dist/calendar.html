@@ -2,29 +2,29 @@
 <html lang="en">
 <head>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <base href="/hospitality-dashboard/">
-  <title>Calendar — Hospitality Booking Admin</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <!-- Extracted & Organized CSS Files -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<base href="/hospitality-dashboard/">
+	<title>Calendar — Hospitality Booking Admin</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+	<!-- Extracted & Organized CSS Files -->
 	<link rel="stylesheet" href="css/variables.css">
 	<link rel="stylesheet" href="css/global.css">
 	<link rel="stylesheet" href="css/responsive.css">
 	<link rel="stylesheet" href="css/profile.css">
-  <link rel="stylesheet" href="css/calendar.css">
-  <!-- Storage helper with error handling -->
-  <script src="js/storage.js"></script>
-  <!-- Utils for getCountryCodes() and other utilities -->
-  <script src="js/utils.js"></script>
-  <!-- Service Worker registration for caching -->
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js')
-        .then(reg => console.log('[SW] Registered:', reg))
-        .catch(err => console.log('[SW] Registration failed:', err));
-    }
-  </script>
+	<link rel="stylesheet" href="css/calendar.css">
+	<!-- Storage helper with error handling -->
+	<script src="js/storage.js"></script>
+	<!-- Utils for getCountryCodes() and other utilities -->
+	<script src="js/utils.js"></script>
+	<!-- Service Worker registration for caching -->
+	<script>
+		if ('serviceWorker' in navigator) {
+			navigator.serviceWorker.register('service-worker.js')
+				.then(reg => console.log('[SW] Registered:', reg))
+				.catch(err => console.log('[SW] Registration failed:', err));
+		}
+	</script>
 
 </head>
 <body>
@@ -68,50 +68,50 @@
 
 	<section class="content">
 		
-        <div class="toolbar">
-          <div class="toolbar-left">
-            <!-- Group selector with arrow indicator -->
-            <div class="group-selector-wrapper">
-              <select id="calendarGroupSelector" style="padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:13px;font-weight:600;background:#fff;cursor:pointer;min-width:180px;appearance:none;background-image:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%2212%22 viewBox=%220 0 12 12%22%3E%3Cpath fill=%22%231f2937%22 d=%22M6 9L1 4h10z%22/%3E%3C/svg%3E');background-repeat:no-repeat;background-position:right 10px center;padding-right:32px">
-                <!-- Group options will be populated by JavaScript -->
-              </select>
-              
-              <!-- Unit filter next to group selector on desktop -->
-              <div class="filter" style="flex:1;min-width:180px"><i class="fa-solid fa-filter"></i><select id="unitFilter"><option value="all" data-i18n="allUnits">All Units</option></select></div>
-            </div>
-            
-            <!-- Month switcher centered -->
-            <div class="month-centered" style="width:100%">
-              <div class="month-switcher">
-                <button id="prevMonth" aria-label="Previous month"><i class="fa-solid fa-chevron-left"></i></button>
-                <div style="font-weight:700;font-size:14px" id="monthLabel">October 2025</div>
-                <button id="nextMonth" aria-label="Next month"><i class="fa-solid fa-chevron-right"></i></button>
-              </div>
-            </div>
-            
-            <!-- New Booking button (will be repositioned on mobile) -->
-            <button class="btn primary" id="addBookingBtn" data-i18n="newManualBooking" style="display:none"><i class="fa-solid fa-plus"></i> New Manual Booking</button>
-          </div>
-          
-          <!-- Right side buttons for desktop -->
-          <div class="toolbar-right">
-            <button class="btn primary" id="addBookingBtnDesktop" data-i18n="newManualBooking"><i class="fa-solid fa-plus"></i> New Manual Booking</button>
-            
-            <!-- Unit filter for mobile (hidden on desktop) -->
-            <div class="filter filter-mobile" style="display:none"><i class="fa-solid fa-filter"></i><select id="unitFilterMobile"><option value="all" data-i18n="allUnits">All Units</option></select></div>
-            
-            <button class="btn ghost" id="syncCalendarBtn" title="Sync external calendars to units"><i class="fa-solid fa-link"></i> Sync Calendar</button>
-            <button class="btn ghost" id="getCalendarUrlBtn" title="Get shareable calendar URL for each unit"><i class="fa-solid fa-share"></i> Get Calendar URL</button>
-          </div>
-        </div>
+				<div class="toolbar">
+					<div class="toolbar-left">
+						<!-- Group selector with arrow indicator -->
+						<div class="group-selector-wrapper">
+							<select id="calendarGroupSelector" style="padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:13px;font-weight:600;background:#fff;cursor:pointer;min-width:180px;appearance:none;background-image:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%2212%22 viewBox=%220 0 12 12%22%3E%3Cpath fill=%22%231f2937%22 d=%22M6 9L1 4h10z%22/%3E%3C/svg%3E');background-repeat:no-repeat;background-position:right 10px center;padding-right:32px">
+								<!-- Group options will be populated by JavaScript -->
+							</select>
+							
+							<!-- Unit filter next to group selector on desktop -->
+							<div class="filter" style="flex:1;min-width:180px"><i class="fa-solid fa-filter"></i><select id="unitFilter"><option value="all" data-i18n="allUnits">All Units</option></select></div>
+						</div>
+						
+						<!-- Month switcher centered -->
+						<div class="month-centered" style="width:100%">
+							<div class="month-switcher">
+								<button id="prevMonth" aria-label="Previous month"><i class="fa-solid fa-chevron-left"></i></button>
+								<div style="font-weight:700;font-size:14px" id="monthLabel">October 2025</div>
+								<button id="nextMonth" aria-label="Next month"><i class="fa-solid fa-chevron-right"></i></button>
+							</div>
+						</div>
+						
+						<!-- New Booking button (will be repositioned on mobile) -->
+						<button class="btn primary" id="addBookingBtn" data-i18n="newManualBooking" style="display:none"><i class="fa-solid fa-plus"></i> New Manual Booking</button>
+					</div>
+					
+					<!-- Right side buttons for desktop -->
+					<div class="toolbar-right">
+						<button class="btn primary" id="addBookingBtnDesktop" data-i18n="newManualBooking"><i class="fa-solid fa-plus"></i> New Manual Booking</button>
+						
+						<!-- Unit filter for mobile (hidden on desktop) -->
+						<div class="filter filter-mobile" style="display:none"><i class="fa-solid fa-filter"></i><select id="unitFilterMobile"><option value="all" data-i18n="allUnits">All Units</option></select></div>
+						
+						<button class="btn ghost" id="syncCalendarBtn" title="Sync external calendars to units"><i class="fa-solid fa-link"></i> Sync Calendar</button>
+						<button class="btn ghost" id="getCalendarUrlBtn" title="Get shareable calendar URL for each unit"><i class="fa-solid fa-share"></i> Get Calendar URL</button>
+					</div>
+				</div>
 
-        <div class="legend" id="unitLegend"></div>
+				<div class="legend" id="unitLegend"></div>
 
-        <div class="calendar-surface">
-          <div class="weekdays" id="weekdaysRow"></div>
-          <div class="calendar-grid" id="calendarGrid" aria-label="Interactive calendar"></div>
-        </div>
-      
+				<div class="calendar-surface">
+					<div class="weekdays" id="weekdaysRow"></div>
+					<div class="calendar-grid" id="calendarGrid" aria-label="Interactive calendar"></div>
+				</div>
+			
 	</section>
 </main>
 

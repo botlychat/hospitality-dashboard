@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <base href="/hospitality-dashboard/">
-  <title>Contacts — Hospitality Booking Admin</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<base href="/hospitality-dashboard/">
+	<title>Contacts — Hospitality Booking Admin</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 	<!-- Extracted & Organized CSS Files -->
 	<link rel="stylesheet" href="css/variables.css">
 	<link rel="stylesheet" href="css/global.css">
@@ -23,7 +23,7 @@
 				.catch(err => console.log('[SW] Registration failed:', err));
 		}
 	</script>
-  
+	
 </head>
 <body>
 	<div class="app">
@@ -66,70 +66,70 @@
 
 	<section class="content">
 		
-        <div class="panel">
-          <h3><i class="fa-solid fa-users"></i> Contacts Management</h3>
-          
-          <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap">
-            <button class="btn primary" onclick="openCampaignModal()"><i class="fa-solid fa-envelope"></i> WhatsApp Campaign</button>
-            <button class="btn ghost" onclick="exportClients('all')"><i class="fa-solid fa-download"></i> Export All</button>
-            <button class="btn ghost" onclick="exportClients('selected')"><i class="fa-solid fa-download"></i> Export Selected</button>
-          </div>
+				<div class="panel">
+					<h3><i class="fa-solid fa-users"></i> Contacts Management</h3>
+					
+					<div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap">
+						<button class="btn primary" onclick="openCampaignModal()"><i class="fa-solid fa-envelope"></i> WhatsApp Campaign</button>
+						<button class="btn ghost" onclick="exportClients('all')"><i class="fa-solid fa-download"></i> Export All</button>
+						<button class="btn ghost" onclick="exportClients('selected')"><i class="fa-solid fa-download"></i> Export Selected</button>
+					</div>
 
-          <!-- Filters -->
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:16px;padding:12px;background:#f9fafb;border-radius:8px">
-            <input type="text" id="filterName" placeholder="Filter by name..." style="padding:8px;border:1px solid #e5e7eb;border-radius:6px;font-size:13px">
-            <input type="text" id="filterPhone" placeholder="Filter by phone..." style="padding:8px;border:1px solid #e5e7eb;border-radius:6px;font-size:13px">
-            <input type="text" id="filterEmail" placeholder="Filter by email..." style="padding:8px;border:1px solid #e5e7eb;border-radius:6px;font-size:13px">
-            <select id="filterGroup" style="padding:8px;border:1px solid #e5e7eb;border-radius:6px;font-size:13px">
-              <option value="">All Groups</option>
-            </select>
-            <select id="filterUnit" style="padding:8px;border:1px solid #e5e7eb;border-radius:6px;font-size:13px">
-              <option value="">All Units</option>
-            </select>
-            <button class="btn ghost" onclick="clearFilters()" style="padding:8px">Clear Filters</button>
-          </div>
+					<!-- Filters -->
+					<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:16px;padding:12px;background:#f9fafb;border-radius:8px">
+						<input type="text" id="filterName" placeholder="Filter by name..." style="padding:8px;border:1px solid #e5e7eb;border-radius:6px;font-size:13px">
+						<input type="text" id="filterPhone" placeholder="Filter by phone..." style="padding:8px;border:1px solid #e5e7eb;border-radius:6px;font-size:13px">
+						<input type="text" id="filterEmail" placeholder="Filter by email..." style="padding:8px;border:1px solid #e5e7eb;border-radius:6px;font-size:13px">
+						<select id="filterGroup" style="padding:8px;border:1px solid #e5e7eb;border-radius:6px;font-size:13px">
+							<option value="">All Groups</option>
+						</select>
+						<select id="filterUnit" style="padding:8px;border:1px solid #e5e7eb;border-radius:6px;font-size:13px">
+							<option value="">All Units</option>
+						</select>
+						<button class="btn ghost" onclick="clearFilters()" style="padding:8px">Clear Filters</button>
+					</div>
 
-          <!-- Contacts Table -->
-          <div class="table-scroll-wrapper" style="overflow-x:auto;margin-bottom:16px">
-            <table>
-              <thead>
-                <tr style="background:#f3f4f6;border-bottom:1px solid #e5e7eb">
-                  <th><input type="checkbox" id="selectAllCheckbox" onchange="toggleSelectAll()"></th>
-                  <th>Name</th>
-                  <th>Phone</th>
-                  <th>Email</th>
-                  <th>Last Group</th>
-                  <th>Last Unit</th>
-                  <th>Last Booking</th>
-                  <th>Review</th>
-                  <th>Payment</th>
-                  <th style="text-align:center">Actions</th>
-                </tr>
-              </thead>
-              <tbody id="clientsTableBody">
-                <!-- Populated by JavaScript -->
-              </tbody>
-            </table>
-          </div>
+					<!-- Contacts Table -->
+					<div class="table-scroll-wrapper" style="overflow-x:auto;margin-bottom:16px">
+						<table>
+							<thead>
+								<tr style="background:#f3f4f6;border-bottom:1px solid #e5e7eb">
+									<th><input type="checkbox" id="selectAllCheckbox" onchange="toggleSelectAll()"></th>
+									<th>Name</th>
+									<th>Phone</th>
+									<th>Email</th>
+									<th>Last Group</th>
+									<th>Last Unit</th>
+									<th>Last Booking</th>
+									<th>Review</th>
+									<th>Payment</th>
+									<th style="text-align:center">Actions</th>
+								</tr>
+							</thead>
+							<tbody id="clientsTableBody">
+								<!-- Populated by JavaScript -->
+							</tbody>
+						</table>
+					</div>
 
-          <!-- Pagination -->
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:#f9fafb;border-radius:8px">
-            <div style="font-size:13px;color:#6b7280">
-              Showing <strong id="pageStart">1</strong>-<strong id="pageEnd">25</strong> of <strong id="totalClients">0</strong> contacts
-            </div>
-            <div style="display:flex;gap:8px">
-              <button class="btn ghost" onclick="previousPage()" style="padding:6px 12px;font-size:12px"><i class="fa-solid fa-chevron-left"></i></button>
-              <input type="number" id="pageInput" min="1" style="width:50px;padding:6px;border:1px solid #e5e7eb;border-radius:6px;font-size:12px;text-align:center">
-              <button class="btn ghost" onclick="goToPage()" style="padding:6px 12px;font-size:12px">Go</button>
-              <button class="btn ghost" onclick="nextPage()" style="padding:6px 12px;font-size:12px"><i class="fa-solid fa-chevron-right"></i></button>
-            </div>
-          </div>
+					<!-- Pagination -->
+					<div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:#f9fafb;border-radius:8px">
+						<div style="font-size:13px;color:#6b7280">
+							Showing <strong id="pageStart">1</strong>-<strong id="pageEnd">25</strong> of <strong id="totalClients">0</strong> contacts
+						</div>
+						<div style="display:flex;gap:8px">
+							<button class="btn ghost" onclick="previousPage()" style="padding:6px 12px;font-size:12px"><i class="fa-solid fa-chevron-left"></i></button>
+							<input type="number" id="pageInput" min="1" style="width:50px;padding:6px;border:1px solid #e5e7eb;border-radius:6px;font-size:12px;text-align:center">
+							<button class="btn ghost" onclick="goToPage()" style="padding:6px 12px;font-size:12px">Go</button>
+							<button class="btn ghost" onclick="nextPage()" style="padding:6px 12px;font-size:12px"><i class="fa-solid fa-chevron-right"></i></button>
+						</div>
+					</div>
 
-          <div style="margin-top:12px;font-size:12px;color:#6b7280">
-            Selected: <strong id="selectedCount">0</strong> contacts
-          </div>
-        </div>
-      
+					<div style="margin-top:12px;font-size:12px;color:#6b7280">
+						Selected: <strong id="selectedCount">0</strong> contacts
+					</div>
+				</div>
+			
 	</section>
 </main>
 

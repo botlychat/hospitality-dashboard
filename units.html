@@ -1,11 +1,11 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <base href="/hospitality-dashboard/">
-  <title>Units — Hospitality Booking Admin</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<base href="/hospitality-dashboard/">
+	<title>Units — Hospitality Booking Admin</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 	<!-- Extracted & Organized CSS Files -->
 	<link rel="stylesheet" href="css/variables.css">
 	<link rel="stylesheet" href="css/global.css">
@@ -22,337 +22,337 @@
 				.catch(err => console.log('[SW] Registration failed:', err));
 		}
 	</script>
-  </head>
+	</head>
 <body>
-  <div class="app">
-    <aside class="sidebar">
-      <div class="brand"><div class="logo">RG</div><h1>Riyadh Getaways</h1></div>
-      <nav>
-        <div class="nav-item" data-link="dashboard.html"><i class="fa-solid fa-gauge"></i> <span data-i18n="dashboard">Dashboard</span></div>
-        <div class="nav-item" data-link="calendar.html"><i class="fa-regular fa-calendar"></i> <span data-i18n="calendar">Calendar</span></div>
-        <div class="nav-item active" data-link="units.html"><i class="fa-solid fa-building"></i> <span data-i18n="units">Units</span></div>
-        <div class="nav-item" data-link="website.html"><i class="fa-solid fa-globe"></i> <span data-i18n="website">Website Settings</span></div>
-        <div class="nav-item" data-link="aiagent.html"><i class="fa-solid fa-robot"></i> <span data-i18n="aiagent">AI Agent</span></div>
-        <div class="nav-item" data-link="contacts.html"><i class="fa-solid fa-address-book"></i> <span data-i18n="contacts">Contacts</span></div>
-      </nav>
-      <div class="sidebar-footer">© <strong>Riyadh Getaways</strong><br>Admin Dashboard</div>
-    </aside>
+	<div class="app">
+		<aside class="sidebar">
+			<div class="brand"><div class="logo">RG</div><h1>Riyadh Getaways</h1></div>
+			<nav>
+				<div class="nav-item" data-link="dashboard.html"><i class="fa-solid fa-gauge"></i> <span data-i18n="dashboard">Dashboard</span></div>
+				<div class="nav-item" data-link="calendar.html"><i class="fa-regular fa-calendar"></i> <span data-i18n="calendar">Calendar</span></div>
+				<div class="nav-item active" data-link="units.html"><i class="fa-solid fa-building"></i> <span data-i18n="units">Units</span></div>
+				<div class="nav-item" data-link="website.html"><i class="fa-solid fa-globe"></i> <span data-i18n="website">Website Settings</span></div>
+				<div class="nav-item" data-link="aiagent.html"><i class="fa-solid fa-robot"></i> <span data-i18n="aiagent">AI Agent</span></div>
+				<div class="nav-item" data-link="contacts.html"><i class="fa-solid fa-address-book"></i> <span data-i18n="contacts">Contacts</span></div>
+			</nav>
+			<div class="sidebar-footer">© <strong>Riyadh Getaways</strong><br>Admin Dashboard</div>
+		</aside>
 
-    <main class="main">
-      <header class="header">
-        <div class="left">
-          <button id="sidebarToggle" class="sidebar-toggle" aria-label="Toggle sidebar" style="display:none;background:none;border:none;cursor:pointer;font-size:20px;color:var(--sidebar);padding:8px;margin-right:8px"><i class="fa-solid fa-bars"></i></button>
-          <h2 style="margin:0">Units</h2>
-        </div>
-        <div style="display:flex;align-items:center;gap:12px">
-          <div class="search"><i class="fa-solid fa-magnifying-glass" style="color:var(--muted)"></i><input id="searchInput" data-i18n-placeholder="search" placeholder="Search units or IDs"></div>
-          <div class="profile" id="profileBtn" tabindex="0">
-            <div style="text-align:right;margin-right:8px;font-size:13px"><div style="font-weight:700" data-i18n="admin">Admin</div><div style="font-size:12px;color:var(--muted)">riyadh@getaways</div></div>
-            <div class="avatar">A</div>
-            <div class="profile-menu" id="profileMenu">
-              <button id="profileSettings" data-i18n="businessInfo">Business Information</button>
-              <button id="changePassword" data-i18n="changePassword">Change Password</button>
-              <button id="changeEmail" data-i18n="changeEmail">Change Email</button>
-              <div style="border-top:1px solid #e5e7eb;padding:8px 0;margin:8px 0;display:flex;gap:8px;align-items:center;justify-content:center">
-                <button id="langToggle" style="display:flex;align-items:center;gap:6px;padding:8px 12px;border:1px solid #e5e7eb;background:#fff;cursor:pointer;font-size:12px;font-weight:600;color:#f97316;border-radius:6px;transition:all 0.2s ease" title="Toggle Language"><i class="fa-solid fa-globe"></i> <span id="langText">العربية</span></button>
-              </div>
-              <button id="logoutBtn" data-i18n="logout">Logout</button>
-            </div>
-          </div>
-        </div>
-      </header>
+		<main class="main">
+			<header class="header">
+				<div class="left">
+					<button id="sidebarToggle" class="sidebar-toggle" aria-label="Toggle sidebar" style="display:none;background:none;border:none;cursor:pointer;font-size:20px;color:var(--sidebar);padding:8px;margin-right:8px"><i class="fa-solid fa-bars"></i></button>
+					<h2 style="margin:0">Units</h2>
+				</div>
+				<div style="display:flex;align-items:center;gap:12px">
+					<div class="search"><i class="fa-solid fa-magnifying-glass" style="color:var(--muted)"></i><input id="searchInput" data-i18n-placeholder="search" placeholder="Search units or IDs"></div>
+					<div class="profile" id="profileBtn" tabindex="0">
+						<div style="text-align:right;margin-right:8px;font-size:13px"><div style="font-weight:700" data-i18n="admin">Admin</div><div style="font-size:12px;color:var(--muted)">riyadh@getaways</div></div>
+						<div class="avatar">A</div>
+						<div class="profile-menu" id="profileMenu">
+							<button id="profileSettings" data-i18n="businessInfo">Business Information</button>
+							<button id="changePassword" data-i18n="changePassword">Change Password</button>
+							<button id="changeEmail" data-i18n="changeEmail">Change Email</button>
+							<div style="border-top:1px solid #e5e7eb;padding:8px 0;margin:8px 0;display:flex;gap:8px;align-items:center;justify-content:center">
+								<button id="langToggle" style="display:flex;align-items:center;gap:6px;padding:8px 12px;border:1px solid #e5e7eb;background:#fff;cursor:pointer;font-size:12px;font-weight:600;color:#f97316;border-radius:6px;transition:all 0.2s ease" title="Toggle Language"><i class="fa-solid fa-globe"></i> <span id="langText">العربية</span></button>
+							</div>
+							<button id="logoutBtn" data-i18n="logout">Logout</button>
+						</div>
+					</div>
+				</div>
+			</header>
 
-      <section class="content">
-        <div>
-          <!-- Mobile Group Selector (hidden on desktop) -->
-          <select id="groupSelector" onchange="handleGroupChange(this.value)">
-            <!-- Options will be populated by JavaScript -->
-          </select>
-          
-          <!-- Units Groups Tabs Section (hidden on mobile) -->
-          <div style="display:flex;gap:8px;margin-bottom:20px;overflow-x:auto;padding-bottom:8px;border-bottom:2px solid #e5e7eb;align-items:center">
-            <div id="groupsTabs" style="display:flex;gap:8px;flex:1">
-              <!-- Group tabs will be rendered here -->
-            </div>
-            <button class="btn primary" onclick="openAddGroupModal()" style="flex-shrink:0"><i class="fa-solid fa-plus"></i> Add Group</button>
-          </div>
+			<section class="content">
+				<div>
+					<!-- Mobile Group Selector (hidden on desktop) -->
+					<select id="groupSelector" onchange="handleGroupChange(this.value)">
+						<!-- Options will be populated by JavaScript -->
+					</select>
+					
+					<!-- Units Groups Tabs Section (hidden on mobile) -->
+					<div style="display:flex;gap:8px;margin-bottom:20px;overflow-x:auto;padding-bottom:8px;border-bottom:2px solid #e5e7eb;align-items:center">
+						<div id="groupsTabs" style="display:flex;gap:8px;flex:1">
+							<!-- Group tabs will be rendered here -->
+						</div>
+						<button class="btn primary" onclick="openAddGroupModal()" style="flex-shrink:0"><i class="fa-solid fa-plus"></i> Add Group</button>
+					</div>
 
-          <div class="stat-cards">
-            <div class="stat-card">
-              <div class="stat-title">Total Units</div>
-              <div class="stat-value" id="statTotal">0</div>
-              <div class="stat-sub">All properties</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-title">Active</div>
-              <div class="stat-value" id="statActive">0</div>
-              <div class="stat-sub">Bookable</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-title">Maintenance</div>
-              <div class="stat-value" id="statMaintenance">0</div>
-              <div class="stat-sub">Unavailable</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-title">Avg. Rate</div>
-              <div class="stat-value" id="statADR">$0</div>
-              <div class="stat-sub">Per night</div>
-            </div>
-          </div>
+					<div class="stat-cards">
+						<div class="stat-card">
+							<div class="stat-title">Total Units</div>
+							<div class="stat-value" id="statTotal">0</div>
+							<div class="stat-sub">All properties</div>
+						</div>
+						<div class="stat-card">
+							<div class="stat-title">Active</div>
+							<div class="stat-value" id="statActive">0</div>
+							<div class="stat-sub">Bookable</div>
+						</div>
+						<div class="stat-card">
+							<div class="stat-title">Maintenance</div>
+							<div class="stat-value" id="statMaintenance">0</div>
+							<div class="stat-sub">Unavailable</div>
+						</div>
+						<div class="stat-card">
+							<div class="stat-title">Avg. Rate</div>
+							<div class="stat-value" id="statADR">$0</div>
+							<div class="stat-sub">Per night</div>
+						</div>
+					</div>
 
-          <div class="toolbar">
-            <div class="toolbar-left">
-              <div class="filter"><i class="fa-solid fa-filter"></i><select id="statusFilter"><option value="all">All Statuses</option><option value="Active">Active</option><option value="Maintenance">Maintenance</option><option value="Disabled">Disabled</option></select></div>
-            </div>
-            <button class="btn primary" id="addUnitBtn"><i class="fa-solid fa-plus"></i> Add New Unit</button>
-          </div>
+					<div class="toolbar">
+						<div class="toolbar-left">
+							<div class="filter"><i class="fa-solid fa-filter"></i><select id="statusFilter"><option value="all">All Statuses</option><option value="Active">Active</option><option value="Maintenance">Maintenance</option><option value="Disabled">Disabled</option></select></div>
+						</div>
+						<button class="btn primary" id="addUnitBtn"><i class="fa-solid fa-plus"></i> Add New Unit</button>
+					</div>
 
-          <div class="panel table-scroll-wrapper" style="overflow-x:auto">
-            <table aria-label="Units list">
-              <thead>
-                <tr><th>Unit</th><th>Type</th><th>Max Guests</th><th>Nightly Rate</th><th>Status</th><th style="width:120px">Actions</th></tr>
-              </thead>
-              <tbody id="unitsTableBody"></tbody>
-            </table>
-          </div>
-        </div>
+					<div class="panel table-scroll-wrapper" style="overflow-x:auto">
+						<table aria-label="Units list">
+							<thead>
+								<tr><th>Unit</th><th>Type</th><th>Max Guests</th><th>Nightly Rate</th><th>Status</th><th style="width:120px">Actions</th></tr>
+							</thead>
+							<tbody id="unitsTableBody"></tbody>
+						</table>
+					</div>
+				</div>
 
-        <aside class="side-panel">
-          <div class="panel">
-            <h3 style="margin-top:0">Amenities Overview</h3>
-            <div class="tag-list" id="amenityTagList"></div>
-          </div>
-          <div class="panel">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-              <h3 style="margin:0">Pricing Overrides</h3>
-              <button class="btn ghost" onclick="openPricingOverrideModal()" style="padding:6px 12px;font-size:12px"><i class="fa-solid fa-plus"></i> Add</button>
-            </div>
-            <ul style="padding-left:0;color:var(--muted);margin:0;display:flex;flex-direction:column;gap:8px;list-style:none" id="pricingOverridesList"></ul>
-          </div>
-        </aside>
-      </section>
-    </main>
-  </div>
+				<aside class="side-panel">
+					<div class="panel">
+						<h3 style="margin-top:0">Amenities Overview</h3>
+						<div class="tag-list" id="amenityTagList"></div>
+					</div>
+					<div class="panel">
+						<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+							<h3 style="margin:0">Pricing Overrides</h3>
+							<button class="btn ghost" onclick="openPricingOverrideModal()" style="padding:6px 12px;font-size:12px"><i class="fa-solid fa-plus"></i> Add</button>
+						</div>
+						<ul style="padding-left:0;color:var(--muted);margin:0;display:flex;flex-direction:column;gap:8px;list-style:none" id="pricingOverridesList"></ul>
+					</div>
+				</aside>
+			</section>
+		</main>
+	</div>
 
-  <!-- Sheet -->
-  <div class="sheet-backdrop" id="sheetBackdrop">
-    <div class="sheet" role="dialog" aria-modal="true">
-      <div class="sheet-header">
-        <div>
-          <h3 class="sheet-title" id="sheetTitle">Add Unit</h3>
-          <div style="font-size:12px;color:var(--muted)" id="sheetSubtitle">Complete the form to create a new unit.</div>
-        </div>
-        <button class="close-btn" id="closeSheet" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
-      </div>
+	<!-- Sheet -->
+	<div class="sheet-backdrop" id="sheetBackdrop">
+		<div class="sheet" role="dialog" aria-modal="true">
+			<div class="sheet-header">
+				<div>
+					<h3 class="sheet-title" id="sheetTitle">Add Unit</h3>
+					<div style="font-size:12px;color:var(--muted)" id="sheetSubtitle">Complete the form to create a new unit.</div>
+				</div>
+				<button class="close-btn" id="closeSheet" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+			</div>
 
-      <div class="tabs">
-        <button class="tab active" data-tab="basic">Basic Info</button>
-        <button class="tab" data-tab="pricing">Pricing</button>
-        <button class="tab" data-tab="amenities">Amenities & Features</button>
-        <button class="tab" data-tab="media">Media</button>
-        <button class="tab" data-tab="policy">Cancellation & Refund</button>
-      </div>
+			<div class="tabs">
+				<button class="tab active" data-tab="basic">Basic Info</button>
+				<button class="tab" data-tab="pricing">Pricing</button>
+				<button class="tab" data-tab="amenities">Amenities & Features</button>
+				<button class="tab" data-tab="media">Media</button>
+				<button class="tab" data-tab="policy">Cancellation & Refund</button>
+			</div>
 
-      <div class="tab-panel active" id="tab-basic">
-        <div class="field"><label for="unitName">Unit Name</label><input id="unitName" type="text" placeholder="e.g. Palm Oasis Chalet"></div>
-        <div class="grid-2">
-          <div class="field"><label for="unitType">Unit Type</label><select id="unitType" onchange="updatePropertyFields()"><option value="Chalet">Chalet</option><option value="Hotel Room">Hotel Room</option><option value="Hotel Apartment">Hotel Apartment</option></select></div>
-          <div class="field"><label for="unitStatus">Status</label><select id="unitStatus"><option value="Active">Active</option><option value="Maintenance">Maintenance</option><option value="Disabled">Disabled</option></select></div>
-        </div>
+			<div class="tab-panel active" id="tab-basic">
+				<div class="field"><label for="unitName">Unit Name</label><input id="unitName" type="text" placeholder="e.g. Palm Oasis Chalet"></div>
+				<div class="grid-2">
+					<div class="field"><label for="unitType">Unit Type</label><select id="unitType" onchange="updatePropertyFields()"><option value="Chalet">Chalet</option><option value="Hotel Room">Hotel Room</option><option value="Hotel Apartment">Hotel Apartment</option></select></div>
+					<div class="field"><label for="unitStatus">Status</label><select id="unitStatus"><option value="Active">Active</option><option value="Maintenance">Maintenance</option><option value="Disabled">Disabled</option></select></div>
+				</div>
 
-        <!-- Saudi Arabia Property-Specific Fields -->
-        <!-- Chalet Fields -->
-        <div id="chaletFields" style="display:none">
-          <div class="grid-2">
-            <div class="field">
-              <div class="toggle-row"><input id="chaletPool" type="checkbox"><label for="chaletPool" style="margin:0">Has Pool</label></div>
-              <input id="chaletPoolSpecs" type="text" placeholder="Pool specifications" disabled style="margin-top:6px">
-            </div>
-            <div class="field">
-              <div class="toggle-row"><input id="chaletGarden" type="checkbox"><label for="chaletGarden" style="margin:0">Has Garden</label></div>
-              <input id="chaletGardenSpecs" type="text" placeholder="Garden specifications" disabled style="margin-top:6px">
-            </div>
-          </div>
-          <div class="field">
-            <label for="chaletAreas">Entertainment Areas</label>
-            <input id="chaletAreas" type="text" placeholder="e.g. BBQ area, lounge, game room">
-          </div>
-        </div>
+				<!-- Saudi Arabia Property-Specific Fields -->
+				<!-- Chalet Fields -->
+				<div id="chaletFields" style="display:none">
+					<div class="grid-2">
+						<div class="field">
+							<div class="toggle-row"><input id="chaletPool" type="checkbox"><label for="chaletPool" style="margin:0">Has Pool</label></div>
+							<input id="chaletPoolSpecs" type="text" placeholder="Pool specifications" disabled style="margin-top:6px">
+						</div>
+						<div class="field">
+							<div class="toggle-row"><input id="chaletGarden" type="checkbox"><label for="chaletGarden" style="margin:0">Has Garden</label></div>
+							<input id="chaletGardenSpecs" type="text" placeholder="Garden specifications" disabled style="margin-top:6px">
+						</div>
+					</div>
+					<div class="field">
+						<label for="chaletAreas">Entertainment Areas</label>
+						<input id="chaletAreas" type="text" placeholder="e.g. BBQ area, lounge, game room">
+					</div>
+				</div>
 
-        <!-- Hotel Fields -->
-        <div id="hotelFields" style="display:none">
-          <div class="grid-2">
-            <div class="field"><label for="floorNumber">Floor Number</label><input id="floorNumber" type="number" min="1" placeholder="e.g. 5"></div>
-            <div class="field"><label for="roomView">Room View</label><select id="roomView"><option value="">Select View Type</option><option value="City View">City View</option><option value="Garden View">Garden View</option><option value="Pool View">Pool View</option><option value="Partial View">Partial View</option></select></div>
-          </div>
-          <div class="grid-2">
-            <div class="field"><label for="starRating">Star Rating</label><select id="starRating"><option value="">Select Rating</option><option value="3">3 Stars</option><option value="4">4 Stars</option><option value="5">5 Stars</option></select></div>
-            <div class="field"><label for="amenitiesHotel">Key Amenities</label><input id="amenitiesHotel" type="text" placeholder="e.g. WiFi, AC, Mini Bar"></div>
-          </div>
-        </div>
+				<!-- Hotel Fields -->
+				<div id="hotelFields" style="display:none">
+					<div class="grid-2">
+						<div class="field"><label for="floorNumber">Floor Number</label><input id="floorNumber" type="number" min="1" placeholder="e.g. 5"></div>
+						<div class="field"><label for="roomView">Room View</label><select id="roomView"><option value="">Select View Type</option><option value="City View">City View</option><option value="Garden View">Garden View</option><option value="Pool View">Pool View</option><option value="Partial View">Partial View</option></select></div>
+					</div>
+					<div class="grid-2">
+						<div class="field"><label for="starRating">Star Rating</label><select id="starRating"><option value="">Select Rating</option><option value="3">3 Stars</option><option value="4">4 Stars</option><option value="5">5 Stars</option></select></div>
+						<div class="field"><label for="amenitiesHotel">Key Amenities</label><input id="amenitiesHotel" type="text" placeholder="e.g. WiFi, AC, Mini Bar"></div>
+					</div>
+				</div>
 
-        <!-- Apartment Fields -->
-        <div id="apartmentFields" style="display:none">
-          <div class="grid-2">
-            <div class="field"><label for="apartmentFloor">Floor Number</label><input id="apartmentFloor" type="number" min="1" placeholder="e.g. 3"></div>
-            <div class="field"><label for="apartmentView">View Type</label><select id="apartmentView"><option value="">Select View Type</option><option value="City View">City View</option><option value="Garden View">Garden View</option><option value="Courtyard View">Courtyard View</option></select></div>
-          </div>
-          <div class="field"><label for="roomSize">Room Size Category</label><select id="roomSize"><option value="">Select Size</option><option value="Studio">Studio</option><option value="1BR">1 Bedroom</option><option value="2BR">2 Bedrooms</option><option value="3BR">3 Bedrooms</option></select></div>
-        </div>
-        <div class="grid-2">
-          <div class="field"><label for="unitArea">Unit Area (m²)</label><input id="unitArea" type="number" min="0" placeholder="e.g. 240"></div>
-          <div class="field"><label for="maxGuests">Max Guests</label><input id="maxGuests" type="number" min="1" placeholder="e.g. 8"></div>
-        </div>
-        <div class="grid-2">
-          <div class="field"><label for="nightlyRate">Nightly Rate (USD)</label><input id="nightlyRate" type="number" min="0" placeholder="e.g. 650"></div>
-          <div class="field toggle-row" style="align-items:center"><input id="parkingToggle" type="checkbox"><label for="parkingToggle" style="margin:0">Parking available</label></div>
-        </div>
-        <div class="grid-2">
-          <div class="field"><label for="checkInHour">Check-In Hour (24h)</label><input id="checkInHour" type="number" min="0" max="23" placeholder="e.g. 15"></div>
-          <div class="field"><label for="checkOutHour">Check-Out Hour (24h)</label><input id="checkOutHour" type="number" min="0" max="23" placeholder="e.g. 11"></div>
-        </div>
-        <div class="field"><label for="shortDescription">Short Description</label><input id="shortDescription" type="text" placeholder="One-line summary"></div>
-        <div class="field"><label for="longDescription">Long Description</label><textarea id="longDescription" placeholder="Describe the experience, layout, amenities..."></textarea></div>
-      </div>
+				<!-- Apartment Fields -->
+				<div id="apartmentFields" style="display:none">
+					<div class="grid-2">
+						<div class="field"><label for="apartmentFloor">Floor Number</label><input id="apartmentFloor" type="number" min="1" placeholder="e.g. 3"></div>
+						<div class="field"><label for="apartmentView">View Type</label><select id="apartmentView"><option value="">Select View Type</option><option value="City View">City View</option><option value="Garden View">Garden View</option><option value="Courtyard View">Courtyard View</option></select></div>
+					</div>
+					<div class="field"><label for="roomSize">Room Size Category</label><select id="roomSize"><option value="">Select Size</option><option value="Studio">Studio</option><option value="1BR">1 Bedroom</option><option value="2BR">2 Bedrooms</option><option value="3BR">3 Bedrooms</option></select></div>
+				</div>
+				<div class="grid-2">
+					<div class="field"><label for="unitArea">Unit Area (m²)</label><input id="unitArea" type="number" min="0" placeholder="e.g. 240"></div>
+					<div class="field"><label for="maxGuests">Max Guests</label><input id="maxGuests" type="number" min="1" placeholder="e.g. 8"></div>
+				</div>
+				<div class="grid-2">
+					<div class="field"><label for="nightlyRate">Nightly Rate (USD)</label><input id="nightlyRate" type="number" min="0" placeholder="e.g. 650"></div>
+					<div class="field toggle-row" style="align-items:center"><input id="parkingToggle" type="checkbox"><label for="parkingToggle" style="margin:0">Parking available</label></div>
+				</div>
+				<div class="grid-2">
+					<div class="field"><label for="checkInHour">Check-In Hour (24h)</label><input id="checkInHour" type="number" min="0" max="23" placeholder="e.g. 15"></div>
+					<div class="field"><label for="checkOutHour">Check-Out Hour (24h)</label><input id="checkOutHour" type="number" min="0" max="23" placeholder="e.g. 11"></div>
+				</div>
+				<div class="field"><label for="shortDescription">Short Description</label><input id="shortDescription" type="text" placeholder="One-line summary"></div>
+				<div class="field"><label for="longDescription">Long Description</label><textarea id="longDescription" placeholder="Describe the experience, layout, amenities..."></textarea></div>
+			</div>
 
-      <div class="tab-panel" id="tab-pricing">
-        <div class="field">
-          <label>Weekday Pricing (per night)</label>
-          <div class="weekday-grid" id="weekdayPricingGrid"></div>
-        </div>
-        <div class="field">
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <label>Special Date Overrides</label>
-            <button class="btn ghost" type="button" id="addOverrideBtn"><i class="fa-solid fa-plus"></i> Add Override</button>
-          </div>
-          <div class="override-list" id="overrideContainer"></div>
-        </div>
-      </div>
+			<div class="tab-panel" id="tab-pricing">
+				<div class="field">
+					<label>Weekday Pricing (per night)</label>
+					<div class="weekday-grid" id="weekdayPricingGrid"></div>
+				</div>
+				<div class="field">
+					<div style="display:flex;justify-content:space-between;align-items:center">
+						<label>Special Date Overrides</label>
+						<button class="btn ghost" type="button" id="addOverrideBtn"><i class="fa-solid fa-plus"></i> Add Override</button>
+					</div>
+					<div class="override-list" id="overrideContainer"></div>
+				</div>
+			</div>
 
-      <div class="tab-panel" id="tab-amenities">
-        <div class="field"><label>Amenities</label>
-          <div style="display:flex;flex-wrap:wrap;gap:10px" id="featureCheckboxes"></div>
-        </div>
-        <div class="grid-2">
-          <div class="field">
-            <div class="toggle-row"><input id="poolToggle" type="checkbox"><label for="poolToggle" style="margin:0">Has Pool</label></div>
-            <input id="poolSpecs" type="text" placeholder="Pool specifications" disabled>
-          </div>
-          <div class="field">
-            <div class="toggle-row"><input id="gardenToggle" type="checkbox"><label for="gardenToggle" style="margin:0">Has Garden</label></div>
-            <input id="gardenSpecs" type="text" placeholder="Garden specifications" disabled>
-          </div>
-        </div>
-        <div class="field">
-          <div class="toggle-row"><input id="kitchenToggle" type="checkbox"><label for="kitchenToggle" style="margin:0">Has Kitchen</label></div>
-          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px" id="kitchenOptions"></div>
-        </div>
-        <div class="field">
-          <div style="display:flex;justify-content:space-between;align-items:center"><label>Bedrooms</label><button class="btn ghost" type="button" id="addBedroomBtn"><i class="fa-solid fa-plus"></i> Add Bedroom</button></div>
-          <div style="display:grid;gap:12px" id="bedroomsContainer"></div>
-        </div>
-        <div class="field">
-          <div style="display:flex;justify-content:space-between;align-items:center"><label>Bathrooms</label><button class="btn ghost" type="button" id="addToiletBtn"><i class="fa-solid fa-plus"></i> Add Bathroom</button></div>
-          <div style="display:grid;gap:12px" id="toiletsContainer"></div>
-        </div>
-      </div>
+			<div class="tab-panel" id="tab-amenities">
+				<div class="field"><label>Amenities</label>
+					<div style="display:flex;flex-wrap:wrap;gap:10px" id="featureCheckboxes"></div>
+				</div>
+				<div class="grid-2">
+					<div class="field">
+						<div class="toggle-row"><input id="poolToggle" type="checkbox"><label for="poolToggle" style="margin:0">Has Pool</label></div>
+						<input id="poolSpecs" type="text" placeholder="Pool specifications" disabled>
+					</div>
+					<div class="field">
+						<div class="toggle-row"><input id="gardenToggle" type="checkbox"><label for="gardenToggle" style="margin:0">Has Garden</label></div>
+						<input id="gardenSpecs" type="text" placeholder="Garden specifications" disabled>
+					</div>
+				</div>
+				<div class="field">
+					<div class="toggle-row"><input id="kitchenToggle" type="checkbox"><label for="kitchenToggle" style="margin:0">Has Kitchen</label></div>
+					<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px" id="kitchenOptions"></div>
+				</div>
+				<div class="field">
+					<div style="display:flex;justify-content:space-between;align-items:center"><label>Bedrooms</label><button class="btn ghost" type="button" id="addBedroomBtn"><i class="fa-solid fa-plus"></i> Add Bedroom</button></div>
+					<div style="display:grid;gap:12px" id="bedroomsContainer"></div>
+				</div>
+				<div class="field">
+					<div style="display:flex;justify-content:space-between;align-items:center"><label>Bathrooms</label><button class="btn ghost" type="button" id="addToiletBtn"><i class="fa-solid fa-plus"></i> Add Bathroom</button></div>
+					<div style="display:grid;gap:12px" id="toiletsContainer"></div>
+				</div>
+			</div>
 
-      <div class="tab-panel" id="tab-media">
-        <div class="field">
-          <label>Featured Image</label>
-          <input id="featuredImageUpload" type="file" accept="image/*" style="padding:8px;border:2px dashed var(--accent);border-radius:8px">
-          <div id="featuredImagePreview" style="margin-top:12px"></div>
-        </div>
+			<div class="tab-panel" id="tab-media">
+				<div class="field">
+					<label>Featured Image</label>
+					<input id="featuredImageUpload" type="file" accept="image/*" style="padding:8px;border:2px dashed var(--accent);border-radius:8px">
+					<div id="featuredImagePreview" style="margin-top:12px"></div>
+				</div>
 
-        <div class="field">
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <label>Gallery Images</label>
-            <button class="btn ghost" type="button" id="addGalleryImageBtn" style="padding:6px 12px;font-size:12px"><i class="fa-solid fa-plus"></i> Add Image</button>
-          </div>
-          <div id="galleryImagesContainer" style="display:grid;gap:12px;margin-top:12px"></div>
-        </div>
+				<div class="field">
+					<div style="display:flex;justify-content:space-between;align-items:center">
+						<label>Gallery Images</label>
+						<button class="btn ghost" type="button" id="addGalleryImageBtn" style="padding:6px 12px;font-size:12px"><i class="fa-solid fa-plus"></i> Add Image</button>
+					</div>
+					<div id="galleryImagesContainer" style="display:grid;gap:12px;margin-top:12px"></div>
+				</div>
 
-        <div class="field">
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <label>Unit Videos</label>
-            <button class="btn ghost" type="button" id="addVideoBtn" style="padding:6px 12px;font-size:12px"><i class="fa-solid fa-plus"></i> Add Video</button>
-          </div>
-          <div id="videosContainer" style="display:grid;gap:12px;margin-top:12px"></div>
-        </div>
-      </div>
+				<div class="field">
+					<div style="display:flex;justify-content:space-between;align-items:center">
+						<label>Unit Videos</label>
+						<button class="btn ghost" type="button" id="addVideoBtn" style="padding:6px 12px;font-size:12px"><i class="fa-solid fa-plus"></i> Add Video</button>
+					</div>
+					<div id="videosContainer" style="display:grid;gap:12px;margin-top:12px"></div>
+				</div>
+			</div>
 
-      <div class="tab-panel" id="tab-policy">
-        <div class="field">
-          <label>Cancellation & Refund Policy</label>
-          <textarea id="policyText" placeholder="Enter your cancellation and refund policy here. Example: Free cancellation up to 7 days before check-in. After 7 days, full charge applies." style="min-height:250px"></textarea>
-          <small style="color:var(--muted);margin-top:8px">Provide clear details about your cancellation terms, refund conditions, and any special policies.</small>
-        </div>
-      </div>
+			<div class="tab-panel" id="tab-policy">
+				<div class="field">
+					<label>Cancellation & Refund Policy</label>
+					<textarea id="policyText" placeholder="Enter your cancellation and refund policy here. Example: Free cancellation up to 7 days before check-in. After 7 days, full charge applies." style="min-height:250px"></textarea>
+					<small style="color:var(--muted);margin-top:8px">Provide clear details about your cancellation terms, refund conditions, and any special policies.</small>
+				</div>
+			</div>
 
-      <div class="sheet-actions">
-        <button class="btn ghost" id="cancelSheet">Cancel</button>
-        <button class="btn primary" id="saveUnitBtn">Save Unit</button>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Pricing Override Modal -->
-  <div class="sheet-backdrop" id="pricingOverrideBackdrop">
-    <div class="sheet" role="dialog" aria-modal="true" style="max-width:600px">
-      <div class="sheet-header">
-        <div>
-          <h3 class="sheet-title" id="pricingOverrideTitle">Add Pricing Override</h3>
-          <div style="font-size:12px;color:var(--muted)">Set special pricing for specific periods</div>
-        </div>
-        <button class="close-btn" id="closePricingOverride" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      
-      <div style="padding:24px;display:flex;flex-direction:column;gap:16px;overflow-y:auto;max-height:calc(100vh - 200px)">
-        <div class="field">
-          <label for="overrideUnit">Unit</label>
-          <select id="overrideUnit">
-            <option value="">Select Unit</option>
-            <!-- Options will be populated by JavaScript -->
-          </select>
-        </div>
-        
-        <div class="field">
-          <label for="overrideGroup">Group</label>
-          <select id="overrideGroup">
-            <option value="">Select Group (Optional)</option>
-            <!-- Options will be populated by JavaScript -->
-          </select>
-        </div>
-        
-        <div class="grid-2">
-          <div class="field">
-            <label for="overrideStartDate">Start Date</label>
-            <input id="overrideStartDate" type="date" required>
-          </div>
-          <div class="field">
-            <label for="overrideEndDate">End Date</label>
-            <input id="overrideEndDate" type="date" required>
-          </div>
-        </div>
-        
-        <div class="field">
-          <label for="overridePrice">Price (USD)</label>
-          <input id="overridePrice" type="number" min="0" placeholder="e.g. 750" required>
-        </div>
-        
-        <div class="field">
-          <label for="overrideNotes">Notes</label>
-          <textarea id="overrideNotes" placeholder="Optional notes about this override (e.g., Holiday pricing, Special event)" rows="3"></textarea>
-        </div>
-      </div>
-      
-      <div class="sheet-actions">
-        <button class="btn ghost" id="cancelPricingOverride">Cancel</button>
-        <button class="btn primary" id="savePricingOverride">Save Override</button>
-      </div>
-    </div>
-  </div>
-  
+			<div class="sheet-actions">
+				<button class="btn ghost" id="cancelSheet">Cancel</button>
+				<button class="btn primary" id="saveUnitBtn">Save Unit</button>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Pricing Override Modal -->
+	<div class="sheet-backdrop" id="pricingOverrideBackdrop">
+		<div class="sheet" role="dialog" aria-modal="true" style="max-width:600px">
+			<div class="sheet-header">
+				<div>
+					<h3 class="sheet-title" id="pricingOverrideTitle">Add Pricing Override</h3>
+					<div style="font-size:12px;color:var(--muted)">Set special pricing for specific periods</div>
+				</div>
+				<button class="close-btn" id="closePricingOverride" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+			</div>
+			
+			<div style="padding:24px;display:flex;flex-direction:column;gap:16px;overflow-y:auto;max-height:calc(100vh - 200px)">
+				<div class="field">
+					<label for="overrideUnit">Unit</label>
+					<select id="overrideUnit">
+						<option value="">Select Unit</option>
+						<!-- Options will be populated by JavaScript -->
+					</select>
+				</div>
+				
+				<div class="field">
+					<label for="overrideGroup">Group</label>
+					<select id="overrideGroup">
+						<option value="">Select Group (Optional)</option>
+						<!-- Options will be populated by JavaScript -->
+					</select>
+				</div>
+				
+				<div class="grid-2">
+					<div class="field">
+						<label for="overrideStartDate">Start Date</label>
+						<input id="overrideStartDate" type="date" required>
+					</div>
+					<div class="field">
+						<label for="overrideEndDate">End Date</label>
+						<input id="overrideEndDate" type="date" required>
+					</div>
+				</div>
+				
+				<div class="field">
+					<label for="overridePrice">Price (USD)</label>
+					<input id="overridePrice" type="number" min="0" placeholder="e.g. 750" required>
+				</div>
+				
+				<div class="field">
+					<label for="overrideNotes">Notes</label>
+					<textarea id="overrideNotes" placeholder="Optional notes about this override (e.g., Holiday pricing, Special event)" rows="3"></textarea>
+				</div>
+			</div>
+			
+			<div class="sheet-actions">
+				<button class="btn ghost" id="cancelPricingOverride">Cancel</button>
+				<button class="btn primary" id="savePricingOverride">Save Override</button>
+			</div>
+		</div>
+	</div>
+	
 	<!-- Extracted JavaScript Files -->
 	<script src="js/utils.js"></script>
 	<script src="js/components.js"></script>
