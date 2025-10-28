@@ -12,8 +12,6 @@
 	<link rel="stylesheet" href="css/responsive.css">
 	<link rel="stylesheet" href="css/profile.css">
 	<link rel="stylesheet" href="css/dashboard.css">
-	<!-- Modal Management -->
-	<script src="js/modals.js"></script>
 </head>
 <body>
 	<div class="app">
@@ -359,6 +357,13 @@
 
 	<!-- Inline Dashboard JavaScript -->
 	<script>
+		// Note: External JS files are loaded after this one, so we can use their functions
+		// Error tracking
+		window.addEventListener('error', (event) => {
+			console.error('SCRIPT ERROR:', event.error);
+			alert('JavaScript Error: ' + event.error.message + '\n\nCheck browser console for details.');
+		});
+
 		// Helper function to get proper file path (works on GitHub Pages)
 		function getPagePath(filename) {
 			const currentPath = window.location.pathname;
@@ -983,6 +988,37 @@
 			});
 		}
 
+		function openModal(html){
+			const backdrop=document.getElementById('modalBackdrop');const content=document.getElementById('modalContent');content.innerHTML='';content.appendChild(html);backdrop.classList.add('show');document.body.style.overflow='hidden';
+			// Apply translations to newly added modal
+			applyTranslations();
+			// attach cancel booking action if present
+			const cancelBtn=document.getElementById('cancelBookingBtn');if(cancelBtn){cancelBtn.onclick=()=>{if(confirm('Cancel this booking?')){showConfirmation('Booking cancelled (simulated)');closeModal();}}}
+		}
+
+		function closeModal(){document.getElementById('modalBackdrop').classList.remove('show');document.getElementById('modalContent').innerHTML='';document.body.style.overflow='';}
+
+		function showConfirmation(message){
+			const confBackdrop=document.createElement('div');
+			confBackdrop.style.cssText='position:fixed;inset:0;background:rgba(15,23,42,0.36);display:flex;align-items:center;justify-content:center;padding:20px;z-index:3000';
+			const confModal=document.createElement('div');
+			confModal.style.cssText='background:#fff;border-radius:16px;max-width:440px;width:100%;padding:30px;box-shadow:0 24px 48px rgba(15,23,41,0.18);text-align:center;animation:slideUp 0.3s ease';
+			const msgDiv=document.createElement('div');
+			msgDiv.style.cssText='white-space:pre-wrap;color:#1f2937;font-size:14px;line-height:1.6;margin-bottom:20px';
+			msgDiv.textContent=message;
+			const closeBtn=document.createElement('button');
+			closeBtn.style.cssText='padding:10px 20px;border-radius:10px;border:none;background:var(--accent);color:#fff;cursor:pointer;font-weight:600;transition:filter 0.2s';
+			closeBtn.textContent='OK';
+			closeBtn.onmouseover=()=>closeBtn.style.filter='brightness(0.92)';
+			closeBtn.onmouseout=()=>closeBtn.style.filter='brightness(1)';
+			confModal.appendChild(msgDiv);
+			confModal.appendChild(closeBtn);
+			confBackdrop.appendChild(confModal);
+			document.body.appendChild(confBackdrop);
+			closeBtn.addEventListener('click',()=>confBackdrop.remove());
+			document.addEventListener('keydown',(e)=>{if(e.key==='Escape') confBackdrop.remove();},{once:true});
+		}
+
 		function openBookingDetails(id){
 			const booking = sampleBookings.find(b=>b.id===id);
 			const tpl = document.getElementById('bookingDetailsTpl');
@@ -991,6 +1027,7 @@
 			openModal(frag);
 		}
 
+		// Get units from unitDataset (imported from units.html data)
 		function getUnitsForBooking(){
 			// Try to get from unitDataset if available, otherwise use fallback
 			try {
@@ -1001,6 +1038,7 @@
 			return units;
 		}
 
+		// Populate unit select with grouped units
 		function populateUnitSelect(selectElement){
 			selectElement.innerHTML = '';
 			const unitsToDisplay = getUnitsForBooking();
@@ -1120,6 +1158,7 @@
 			const totalInput = document.getElementById('abTotal');
 			const summarySpan = document.getElementById('abSummary');
 
+			// Calculate total function
 			const calculateTotal = () => {
 				const start = new Date(startInput.value);
 				const end = new Date(endInput.value);
@@ -1368,6 +1407,8 @@
 			});
 		});
 
+		// ===== AI AGENT CONFIGURATION FUNCTIONS =====
+		// AI Agent configuration storage object
 		let aiAgentConfig = {
 			discountEnabled: false,
 			discountAmount: 0,

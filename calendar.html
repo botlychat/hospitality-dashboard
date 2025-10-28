@@ -7,8 +7,6 @@
   <title>Calendar — Hospitality Booking Admin</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="css/calendar.css">
-  <!-- Modal Management -->
-  <script src="js/modals.js"></script>
 </head>
 <body>
   <div class="app">
@@ -864,9 +862,70 @@
       }
     }
 
+    // Modals
     const modalBackdrop=document.getElementById('modalBackdrop');
     const modalContent=document.getElementById('modalContent');
+
+    function openModal(content){
+      // Remove previous modal if still present
+      if(activeModalCloseHandler){
+        document.removeEventListener('click', activeModalCloseHandler);
+        activeModalCloseHandler = null;
+      }
+      
+      // Clear old content
+      modalContent.innerHTML='';
+      
+      // Append content directly
+      modalContent.appendChild(content);
+      
+      modalBackdrop.classList.add('show');
+      document.body.style.overflow='hidden';
+      
+      // Attach new click handler for backdrop
+      activeModalCloseHandler = (e) => {
+        if(e.target === modalBackdrop) {
+          closeModal();
+        }
+      };
+      document.addEventListener('click', activeModalCloseHandler);
+    }
     
+    function closeModal(){
+      // Remove active event listeners
+      if(activeModalCloseHandler){
+        document.removeEventListener('click', activeModalCloseHandler);
+        activeModalCloseHandler = null;
+      }
+      
+      // Clear all content and reset
+      modalContent.innerHTML = '';
+      
+      modalBackdrop.classList.remove('show');
+      document.body.style.overflow='';
+    }
+    
+    function showConfirmation(message){
+      const confBackdrop=document.createElement('div');
+      confBackdrop.style.cssText='position:fixed;inset:0;background:rgba(15,23,42,0.36);display:flex;align-items:center;justify-content:center;padding:20px;z-index:3000';
+      const confModal=document.createElement('div');
+      confModal.style.cssText='background:#fff;border-radius:16px;max-width:440px;width:100%;padding:30px;box-shadow:0 24px 48px rgba(15,23,41,0.18);text-align:center;animation:slideUp 0.3s ease';
+      const msgDiv=document.createElement('div');
+      msgDiv.style.cssText='white-space:pre-wrap;color:#1f2937;font-size:14px;line-height:1.6;margin-bottom:20px';
+      msgDiv.textContent=message;
+      const closeBtn=document.createElement('button');
+      closeBtn.style.cssText='padding:10px 20px;border-radius:10px;border:none;background:var(--accent);color:#fff;cursor:pointer;font-weight:600;transition:filter 0.2s';
+      closeBtn.textContent='OK';
+      closeBtn.onmouseover=()=>closeBtn.style.filter='brightness(0.92)';
+      closeBtn.onmouseout=()=>closeBtn.style.filter='brightness(1)';
+      confModal.appendChild(msgDiv);
+      confModal.appendChild(closeBtn);
+      confBackdrop.appendChild(confModal);
+      document.body.appendChild(confBackdrop);
+      closeBtn.addEventListener('click',()=>confBackdrop.remove());
+      document.addEventListener('keydown',(e)=>{if(e.key==='Escape') confBackdrop.remove();},{once:true});
+    }
+
     function openBookingDetails(id){
       const booking = bookings.find(b=>b.id===id);
       if(!booking) return;
@@ -1238,6 +1297,7 @@
       savedDiv.appendChild(savedListDiv);
       wrapper.appendChild(savedDiv);
 
+      // Function to display saved URLs
       function displaySavedUrls() {
         const unit = syncUnitSelect.value;
         const listDiv = document.getElementById('savedUrlsList');
@@ -1477,6 +1537,7 @@
       document.head.appendChild(style);
     }
 
+    // Helper function to get units for grouped display
     function getUnitsForCalendar(){
       // Try to get unitDataset from window scope (loaded from units.html)
       if(typeof window.unitDataset !== 'undefined' && window.unitDataset && window.unitDataset.length > 0){
@@ -1486,6 +1547,7 @@
       return unitPalette || [];
     }
 
+    // Helper function to populate unit select with grouped display
     function populateUnitSelectCalendar(urlList, baseUrl){
       try {
         const units = getUnitsForCalendar();
