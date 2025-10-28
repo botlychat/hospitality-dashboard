@@ -1,44 +1,25 @@
 /* Contacts Management Page - Specific Styles */
 
-/* Table scroll wrapper - mobile direction based on language */
+/* Table scroll wrapper - keep natural flow */
 .table-scroll-wrapper {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   border: 1px solid #e5e7eb;
   border-radius: 12px;
-}
-
-/* For English (LTR), scroll starts from left */
-html[lang="en"] .table-scroll-wrapper {
-  direction: ltr;
-}
-
-/* For Arabic (RTL), scroll starts from right */
-html[lang="ar"] .table-scroll-wrapper {
-  direction: rtl;
-}
-
-/* Ensure table content remains in correct direction */
-html[lang="ar"] .table-scroll-wrapper table {
-  direction: rtl;
-}
-
-html[lang="en"] .table-scroll-wrapper table {
-  direction: ltr;
+  width: 100%;
+  max-width: 100%;
 }
 
 /* Contacts table styling */
 .contacts-table {
-  width: auto;
+  width: 100%;
   border-collapse: collapse;
-  overflow-x: auto;
   table-layout: auto;
-  min-width: 100%;
 }
 
-/* Make all tables in contacts page auto-width */
+/* Make all tables in contacts page full width */
 .table-scroll-wrapper table {
-  width: auto;
+  width: 100%;
   table-layout: auto;
 }
 
@@ -62,9 +43,9 @@ html[lang="en"] .table-scroll-wrapper table {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     border: 1px solid #e5e7eb;
-    border-radius: 0;
-    border-bottom: 1px solid #e5e7eb;
-    padding: 0;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 100%;
   }
   
   .table-scroll-wrapper table th:nth-child(1),
