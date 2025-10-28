@@ -12,6 +12,8 @@
 	<link rel="stylesheet" href="css/responsive.css">
 	<link rel="stylesheet" href="css/profile.css">
 	<link rel="stylesheet" href="css/website.css">
+	<!-- Storage helper with error handling -->
+	<script src="js/storage.js"></script>
   </head>
 <body>
   <div class="app">
@@ -150,17 +152,18 @@
 		}
 
 		// Website Groups Management
-		let currentGroupId = localStorage.getItem('currentWebsiteGroup') || 'group_1';
+		let currentGroupId = Storage.getString('currentWebsiteGroup', 'group_1');
 		
 		// Initialize sample groups if not already present
 		function initializeWebsiteGroups() {
-			let groups = JSON.parse(localStorage.getItem('websiteGroups') || 'null');
-			if (!groups) {
-				groups = [
-					{ id: 'group_1', name: 'Main Hotel Collection', type: 'Hotel' },
-					{ id: 'group_2', name: 'Chalets & Villas', type: 'Chalet' }
-				];
-				localStorage.setItem('websiteGroups', JSON.stringify(groups));
+			const defaultGroups = [
+				{ id: 'group_1', name: 'Main Hotel Collection', type: 'Hotel' },
+				{ id: 'group_2', name: 'Chalets & Villas', type: 'Chalet' }
+			];
+			let groups = Storage.getJSON('websiteGroups', defaultGroups);
+			if (!groups || groups.length === 0) {
+				groups = defaultGroups;
+				Storage.setJSON('websiteGroups', groups);
 			}
 			return groups;
 		}
@@ -185,14 +188,14 @@
 			
 			selector.addEventListener('change', function() {
 				currentGroupId = this.value;
-				localStorage.setItem('currentWebsiteGroup', currentGroupId);
+				Storage.setString('currentWebsiteGroup', currentGroupId);
 				loadGroupSettings(currentGroupId);
 			});
 		}
 
 		// Load settings for a specific group
 		function loadGroupSettings(groupId) {
-			let groupSettings = JSON.parse(localStorage.getItem('websiteGroupSettings') || '{}');
+			let groupSettings = Storage.getJSON('websiteGroupSettings', {});
 			const settings = groupSettings[groupId] || {};
 			
 			// Load theme color
@@ -214,7 +217,7 @@
 
 		// Save settings for current group
 		function saveGroupSettings() {
-			let groupSettings = JSON.parse(localStorage.getItem('websiteGroupSettings') || '{}');
+			let groupSettings = Storage.getJSON('websiteGroupSettings', {});
 			
 			const colorPicker = document.getElementById('websiteColorPicker');
 			
@@ -223,7 +226,7 @@
 				// Add more settings here as needed
 			};
 			
-			localStorage.setItem('websiteGroupSettings', JSON.stringify(groupSettings));
+			Storage.setJSON('websiteGroupSettings', groupSettings);
 		}
 
 		// Initialize groups on page load
