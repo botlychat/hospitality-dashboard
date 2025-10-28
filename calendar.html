@@ -47,2085 +47,2085 @@
 					<h2 style="margin:0">Calendar</h2>
 				</div>
 				<div style="display:flex;align-items:center;gap:12px">
-					<div class="search"><i class="fa-solid fa-magnifying-glass" style="color:var(--muted)"></i><input id="searchInput" placeholder="Search bookings..." style="border:none;outline:none;margin-left:8px;font-size:14px;" disabled></div>
-					<div class="profile" id="profileBtn" tabindex="0">
-						<div style="text-align:right;margin-right:8px;font-size:13px"><div style="font-weight:700" data-i18n="admin">Admin</div><div style="font-size:12px;color:var(--muted)">riyadh@getaways</div></div>
-						<div class="avatar"><i class="fa-solid fa-user"></i></div>
-						<div class="profile-menu" id="profileMenu">
-							<button id="profileSettings" data-i18n="businessInfo">Business Information</button>
-							<button id="changePassword" data-i18n="changePassword">Change Password</button>
-							<button id="changeEmail" data-i18n="changeEmail">Change Email</button>
-							<div style="border-top:1px solid #e5e7eb;padding:8px 0;margin:8px 0;display:flex;gap:8px;align-items:center;justify-content:center">
-								<button id="langToggle" style="display:flex;align-items:center;gap:6px;padding:8px 12px;border:1px solid #e5e7eb;background:#fff;cursor:pointer;font-size:12px;font-weight:600;color:#f97316;border-radius:6px;transition:all 0.2s ease" title="Toggle Language">
-									<i class="fa-solid fa-globe"></i> <span id="langText">العربية</span>
-								</button>
-							</div>
-							<button id="logoutBtn" data-i18n="logout">Logout</button>
-						</div>
-					</div>
-				</div>
-			</header>
+					<div class="search"><i class="fa-solid fa-magnifying-glass" style="color:var(--muted)"></i><input id="searchInput" placeholder="Search bookings..." disabled></div>
+          <div class="profile" id="profileBtn" tabindex="0">
+            <div style="text-align:right;margin-right:8px;font-size:13px"><div style="font-weight:700" data-i18n="admin">Admin</div><div style="font-size:12px;color:var(--muted)">riyadh@getaways</div></div>
+            <div class="avatar"><i class="fa-solid fa-user"></i></div>
+            <div class="profile-menu" id="profileMenu">
+              <button id="profileSettings" data-i18n="businessInfo">Business Information</button>
+              <button id="changePassword" data-i18n="changePassword">Change Password</button>
+              <button id="changeEmail" data-i18n="changeEmail">Change Email</button>
+              <div style="border-top:1px solid #e5e7eb;padding:8px 0;margin:8px 0;display:flex;gap:8px;align-items:center;justify-content:center">
+                <button id="langToggle" style="display:flex;align-items:center;gap:6px;padding:8px 12px;border:1px solid #e5e7eb;background:#fff;cursor:pointer;font-size:12px;font-weight:600;color:#f97316;border-radius:6px;transition:all 0.2s ease" title="Toggle Language">
+                  <i class="fa-solid fa-globe"></i> <span id="langText">العربية</span>
+                </button>
+              </div>
+              <button id="logoutBtn" data-i18n="logout">Logout</button>
+            </div>
+          </div>
+        </div>
+      </header>
 
-			<section class="content">
-				<div class="toolbar">
-					<div class="toolbar-left">
-						<!-- Group selector with arrow indicator -->
-						<div class="group-selector-wrapper">
-							<select id="calendarGroupSelector" style="padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:13px;font-weight:600;background:#fff;cursor:pointer;min-width:180px;appearance:none;background-image:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%2212%22 viewBox=%220 0 12 12%22%3E%3Cpath fill=%22%231f2937%22 d=%22M6 9L1 4h10z%22/%3E%3C/svg%3E');background-repeat:no-repeat;background-position:right 10px center;padding-right:32px">
-								<!-- Group options will be populated by JavaScript -->
-							</select>
-							
-							<!-- Unit filter next to group selector on desktop -->
-							<div class="filter" style="flex:1;min-width:180px"><i class="fa-solid fa-filter"></i><select id="unitFilter"><option value="all" data-i18n="allUnits">All Units</option></select></div>
-						</div>
-						
-						<!-- Month switcher centered -->
-						<div class="month-centered" style="width:100%">
-							<div class="month-switcher">
-								<button id="prevMonth" aria-label="Previous month"><i class="fa-solid fa-chevron-left"></i></button>
-								<div style="font-weight:700;font-size:14px" id="monthLabel">October 2025</div>
-								<button id="nextMonth" aria-label="Next month"><i class="fa-solid fa-chevron-right"></i></button>
-							</div>
-						</div>
-						
-						<!-- New Booking button (will be repositioned on mobile) -->
-						<button class="btn primary" id="addBookingBtn" data-i18n="newManualBooking" style="display:none"><i class="fa-solid fa-plus"></i> New Manual Booking</button>
-					</div>
-					
-					<!-- Right side buttons for desktop -->
-					<div class="toolbar-right">
-						<button class="btn primary" id="addBookingBtnDesktop" data-i18n="newManualBooking"><i class="fa-solid fa-plus"></i> New Manual Booking</button>
-						
-						<!-- Unit filter for mobile (hidden on desktop) -->
-						<div class="filter filter-mobile" style="display:none"><i class="fa-solid fa-filter"></i><select id="unitFilterMobile"><option value="all" data-i18n="allUnits">All Units</option></select></div>
-						
-						<button class="btn ghost" id="syncCalendarBtn" title="Sync external calendars to units"><i class="fa-solid fa-link"></i> Sync Calendar</button>
-						<button class="btn ghost" id="getCalendarUrlBtn" title="Get shareable calendar URL for each unit"><i class="fa-solid fa-share"></i> Get Calendar URL</button>
-					</div>
-				</div>
+      <section class="content">
+        <div class="toolbar">
+          <div class="toolbar-left">
+            <!-- Group selector with arrow indicator -->
+            <div class="group-selector-wrapper">
+              <select id="calendarGroupSelector" style="padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:13px;font-weight:600;background:#fff;cursor:pointer;min-width:180px;appearance:none;background-image:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%2212%22 viewBox=%220 0 12 12%22%3E%3Cpath fill=%22%231f2937%22 d=%22M6 9L1 4h10z%22/%3E%3C/svg%3E');background-repeat:no-repeat;background-position:right 10px center;padding-right:32px">
+                <!-- Group options will be populated by JavaScript -->
+              </select>
+              
+              <!-- Unit filter next to group selector on desktop -->
+              <div class="filter" style="flex:1;min-width:180px"><i class="fa-solid fa-filter"></i><select id="unitFilter"><option value="all" data-i18n="allUnits">All Units</option></select></div>
+            </div>
+            
+            <!-- Month switcher centered -->
+            <div class="month-centered" style="width:100%">
+              <div class="month-switcher">
+                <button id="prevMonth" aria-label="Previous month"><i class="fa-solid fa-chevron-left"></i></button>
+                <div style="font-weight:700;font-size:14px" id="monthLabel">October 2025</div>
+                <button id="nextMonth" aria-label="Next month"><i class="fa-solid fa-chevron-right"></i></button>
+              </div>
+            </div>
+            
+            <!-- New Booking button (will be repositioned on mobile) -->
+            <button class="btn primary" id="addBookingBtn" data-i18n="newManualBooking" style="display:none"><i class="fa-solid fa-plus"></i> New Manual Booking</button>
+          </div>
+          
+          <!-- Right side buttons for desktop -->
+          <div class="toolbar-right">
+            <button class="btn primary" id="addBookingBtnDesktop" data-i18n="newManualBooking"><i class="fa-solid fa-plus"></i> New Manual Booking</button>
+            
+            <!-- Unit filter for mobile (hidden on desktop) -->
+            <div class="filter filter-mobile" style="display:none"><i class="fa-solid fa-filter"></i><select id="unitFilterMobile"><option value="all" data-i18n="allUnits">All Units</option></select></div>
+            
+            <button class="btn ghost" id="syncCalendarBtn" title="Sync external calendars to units"><i class="fa-solid fa-link"></i> Sync Calendar</button>
+            <button class="btn ghost" id="getCalendarUrlBtn" title="Get shareable calendar URL for each unit"><i class="fa-solid fa-share"></i> Get Calendar URL</button>
+          </div>
+        </div>
 
-				<div class="legend" id="unitLegend"></div>
+        <div class="legend" id="unitLegend"></div>
 
-				<div class="calendar-surface">
-					<div class="weekdays" id="weekdaysRow"></div>
-					<div class="calendar-grid" id="calendarGrid" aria-label="Interactive calendar"></div>
-				</div>
-			</section>
-		</main>
-	</div>
+        <div class="calendar-surface">
+          <div class="weekdays" id="weekdaysRow"></div>
+          <div class="calendar-grid" id="calendarGrid" aria-label="Interactive calendar"></div>
+        </div>
+      </section>
+    </main>
+  </div>
 
-	<div class="context-menu" id="contextMenu">
-		<button data-action="add" data-i18n="addNewBooking">Add New Booking</button>
-		<button data-action="block" data-i18n="blockDates">Block Dates</button>
-		<button data-action="price" data-i18n="adjustDayPricing">Adjust Day Pricing</button>
-	</div>
+  <div class="context-menu" id="contextMenu">
+    <button data-action="add" data-i18n="addNewBooking">Add New Booking</button>
+    <button data-action="block" data-i18n="blockDates">Block Dates</button>
+    <button data-action="price" data-i18n="adjustDayPricing">Adjust Day Pricing</button>
+  </div>
 
-	<div class="modal-backdrop" id="modalBackdrop"><div class="modal" id="modalContent"></div></div>
+  <div class="modal-backdrop" id="modalBackdrop"><div class="modal" id="modalContent"></div></div>
 
-	<script>
-		// Load saved theme color (safe with fallback)
-		const savedColor = Storage.getString('websiteThemeColor', '');
-		if(savedColor && /^#[0-9A-F]{6}$/i.test(savedColor)) {
-			document.documentElement.style.setProperty('--accent', savedColor);
-		}
+  <script>
+    // Load saved theme color (safe with fallback)
+    const savedColor = Storage.getString('websiteThemeColor', '');
+    if(savedColor && /^#[0-9A-F]{6}$/i.test(savedColor)) {
+      document.documentElement.style.setProperty('--accent', savedColor);
+    }
 
-		// Helper function to get proper file path (works on GitHub Pages)
-		function getPagePath(filename) {
-			const currentPath = window.location.pathname;
-			// Check if we're on GitHub Pages (path contains /chaletdashboard/)
-			if(currentPath.includes('/chaletdashboard/')) {
-				return '/chaletdashboard/' + filename;
-			}
-			// Otherwise use relative path (local development)
-			return filename;
-		}
+    // Helper function to get proper file path (works on GitHub Pages)
+    function getPagePath(filename) {
+      const currentPath = window.location.pathname;
+      // Check if we're on GitHub Pages (path contains /chaletdashboard/)
+      if(currentPath.includes('/chaletdashboard/')) {
+        return '/chaletdashboard/' + filename;
+      }
+      // Otherwise use relative path (local development)
+      return filename;
+    }
 
-		// Global variables for modal and context menu management
-		let activeModalCloseHandler = null;
-		let contextMenuCloseHandler = null;
-		
-		// Initialize unit palette from unitDataset if available, otherwise use fallback
-		let unitPalette = [];
-		const initializeUnitPalette = () => {
-			if(typeof window.unitDataset !== 'undefined' && window.unitDataset && window.unitDataset.length > 0){
-				unitPalette = window.unitDataset.map(unit => ({
-					id: unit.id,
-					name: unit.name,
-					type: unit.type,
-					groupId: unit.groupId,
-					color: ['#f97316','#fb923c','#fbbf24','#38bdf8','#0ea5e9','#a855f7'][Math.floor(Math.random()*6)],
-					statusColor: '#f97316'
-				}));
-			} else {
-				// Fallback to new palette if unitDataset is not available
-				unitPalette = [
-					{name:'Deluxe King Room',id:'HR-101',type:'Hotel Room',groupId:'group_1',color:'#f97316',statusColor:'#f97316'},
-					{name:'Twin Bedroom Suite',id:'HR-102',type:'Hotel Room',groupId:'group_1',color:'#fb923c',statusColor:'#fb923c'},
-					{name:'Executive Suite',id:'HR-103',type:'Hotel Room',groupId:'group_1',color:'#fbbf24',statusColor:'#fbbf24'},
-					{name:'Family Room',id:'HR-104',type:'Hotel Room',groupId:'group_1',color:'#38bdf8',statusColor:'#38bdf8'},
-					{name:'Desert Escape Chalet',id:'CH-201',type:'Chalet',groupId:'group_2',color:'#0ea5e9',statusColor:'#0ea5e9'},
-					{name:'Luxury Mountain Villa',id:'CH-202',type:'Chalet',groupId:'group_2',color:'#a855f7',statusColor:'#a855f7'},
-					{name:'Garden Oasis Resort',id:'CH-203',type:'Chalet',groupId:'group_2',color:'#ec4899',statusColor:'#ec4899'},
-					{name:'Romantic Starlight Chalet',id:'CH-204',type:'Chalet',groupId:'group_2',color:'#f43f5e',statusColor:'#f43f5e'}
-				];
-			}
-		};
-		
-		// Call initialization after a short delay to allow unitDataset to load
-		setTimeout(() => initializeUnitPalette(), 100);
+    // Global variables for modal and context menu management
+    let activeModalCloseHandler = null;
+    let contextMenuCloseHandler = null;
+    
+    // Initialize unit palette from unitDataset if available, otherwise use fallback
+    let unitPalette = [];
+    const initializeUnitPalette = () => {
+      if(typeof window.unitDataset !== 'undefined' && window.unitDataset && window.unitDataset.length > 0){
+        unitPalette = window.unitDataset.map(unit => ({
+          id: unit.id,
+          name: unit.name,
+          type: unit.type,
+          groupId: unit.groupId,
+          color: ['#f97316','#fb923c','#fbbf24','#38bdf8','#0ea5e9','#a855f7'][Math.floor(Math.random()*6)],
+          statusColor: '#f97316'
+        }));
+      } else {
+        // Fallback to new palette if unitDataset is not available
+        unitPalette = [
+          {name:'Deluxe King Room',id:'HR-101',type:'Hotel Room',groupId:'group_1',color:'#f97316',statusColor:'#f97316'},
+          {name:'Twin Bedroom Suite',id:'HR-102',type:'Hotel Room',groupId:'group_1',color:'#fb923c',statusColor:'#fb923c'},
+          {name:'Executive Suite',id:'HR-103',type:'Hotel Room',groupId:'group_1',color:'#fbbf24',statusColor:'#fbbf24'},
+          {name:'Family Room',id:'HR-104',type:'Hotel Room',groupId:'group_1',color:'#38bdf8',statusColor:'#38bdf8'},
+          {name:'Desert Escape Chalet',id:'CH-201',type:'Chalet',groupId:'group_2',color:'#0ea5e9',statusColor:'#0ea5e9'},
+          {name:'Luxury Mountain Villa',id:'CH-202',type:'Chalet',groupId:'group_2',color:'#a855f7',statusColor:'#a855f7'},
+          {name:'Garden Oasis Resort',id:'CH-203',type:'Chalet',groupId:'group_2',color:'#ec4899',statusColor:'#ec4899'},
+          {name:'Romantic Starlight Chalet',id:'CH-204',type:'Chalet',groupId:'group_2',color:'#f43f5e',statusColor:'#f43f5e'}
+        ];
+      }
+    };
+    
+    // Call initialization after a short delay to allow unitDataset to load
+    setTimeout(() => initializeUnitPalette(), 100);
 
-		// Country codes with flags - using utility function from utils.js
-		const countryCodes = getCountryCodes();
+    // Country codes with flags - using utility function from utils.js
+    const countryCodes = getCountryCodes();
 
-		const weekdayOrder = ['mon','tue','wed','thu','fri','sat','sun'];
-	const weekdayLabelMap = {mon:'Monday',tue:'Tuesday',wed:'Wednesday',thu:'Thursday',fri:'Friday',sat:'Saturday',sun:'Sunday'};
-		const dayKeyFromIndex = ['sun','mon','tue','wed','thu','fri','sat'];
+    const weekdayOrder = ['mon','tue','wed','thu','fri','sat','sun'];
+  const weekdayLabelMap = {mon:'Monday',tue:'Tuesday',wed:'Wednesday',thu:'Thursday',fri:'Friday',sat:'Saturday',sun:'Sunday'};
+    const dayKeyFromIndex = ['sun','mon','tue','wed','thu','fri','sat'];
 
-		const baseRates = {
-			'HR-101': {mon:250,tue:250,wed:260,thu:280,fri:300,sat:300,sun:280},
-			'HR-102': {mon:280,tue:280,wed:290,thu:310,fri:330,sat:330,sun:310},
-			'HR-103': {mon:350,tue:350,wed:370,thu:390,fri:420,sat:420,sun:400},
-			'HR-104': {mon:310,tue:310,wed:330,thu:350,fri:370,sat:370,sun:350},
-			'CH-201': {mon:650,tue:650,wed:680,thu:720,fri:800,sat:800,sun:700},
-			'CH-202': {mon:900,tue:900,wed:950,thu:1000,fri:1100,sat:1100,sun:1000},
-			'CH-203': {mon:1000,tue:1000,wed:1050,thu:1100,fri:1200,sat:1200,sun:1100},
-			'CH-204': {mon:700,tue:700,wed:750,thu:800,fri:900,sat:900,sun:800},
-			// Legacy names for backward compatibility
-			'Chalet 1': {mon:760,tue:760,wed:780,thu:840,fri:980,sat:980,sun:780},
-			'Chalet 2': {mon:690,tue:710,wed:720,thu:780,fri:900,sat:900,sun:720},
-			'Chalet 3': {mon:700,tue:700,wed:720,thu:760,fri:860,sat:860,sun:720},
-			'Apartment 1': {mon:480,tue:480,wed:500,thu:520,fri:560,sat:560,sun:500},
-			'Apartment 2': {mon:450,tue:450,wed:470,thu:490,fri:540,sat:540,sun:480},
-			'Hotel Room 5': {mon:260,tue:260,wed:270,thu:280,fri:320,sat:320,sun:280}
-		};
+    const baseRates = {
+      'HR-101': {mon:250,tue:250,wed:260,thu:280,fri:300,sat:300,sun:280},
+      'HR-102': {mon:280,tue:280,wed:290,thu:310,fri:330,sat:330,sun:310},
+      'HR-103': {mon:350,tue:350,wed:370,thu:390,fri:420,sat:420,sun:400},
+      'HR-104': {mon:310,tue:310,wed:330,thu:350,fri:370,sat:370,sun:350},
+      'CH-201': {mon:650,tue:650,wed:680,thu:720,fri:800,sat:800,sun:700},
+      'CH-202': {mon:900,tue:900,wed:950,thu:1000,fri:1100,sat:1100,sun:1000},
+      'CH-203': {mon:1000,tue:1000,wed:1050,thu:1100,fri:1200,sat:1200,sun:1100},
+      'CH-204': {mon:700,tue:700,wed:750,thu:800,fri:900,sat:900,sun:800},
+      // Legacy names for backward compatibility
+      'Chalet 1': {mon:760,tue:760,wed:780,thu:840,fri:980,sat:980,sun:780},
+      'Chalet 2': {mon:690,tue:710,wed:720,thu:780,fri:900,sat:900,sun:720},
+      'Chalet 3': {mon:700,tue:700,wed:720,thu:760,fri:860,sat:860,sun:720},
+      'Apartment 1': {mon:480,tue:480,wed:500,thu:520,fri:560,sat:560,sun:500},
+      'Apartment 2': {mon:450,tue:450,wed:470,thu:490,fri:540,sat:540,sun:480},
+      'Hotel Room 5': {mon:260,tue:260,wed:270,thu:280,fri:320,sat:320,sun:280}
+    };
 
-		const priceOverrides = {};
-		const initialOverrides = [
-			{unit:'HR-101',date:'2025-11-15',price:350,note:'Weekend surge'},
-			{unit:'HR-102',date:'2025-12-31',price:450,note:'New Year peak'},
-			{unit:'HR-103',date:'2025-11-05',price:500,note:'Conference demand'},
-			{unit:'HR-104',date:'2025-10-30',price:400,note:'Holiday promo'},
-			{unit:'CH-201',date:'2025-11-01',price:800,note:'Opening promo'},
-			{unit:'CH-202',date:'2025-11-23',price:1250,note:'Thanksgiving'},
-			{unit:'CH-203',date:'2025-11-18',price:1400,note:'Group events'},
-			{unit:'CH-204',date:'2025-02-14',price:950,note:'Valentines premium'},
-			{unit:'HR-101',date:'2025-10-26',price:320,note:'Weekend surge'},
-			{unit:'CH-201',date:'2025-12-31',price:900,note:'New Year peak'}
-		];
+    const priceOverrides = {};
+    const initialOverrides = [
+      {unit:'HR-101',date:'2025-11-15',price:350,note:'Weekend surge'},
+      {unit:'HR-102',date:'2025-12-31',price:450,note:'New Year peak'},
+      {unit:'HR-103',date:'2025-11-05',price:500,note:'Conference demand'},
+      {unit:'HR-104',date:'2025-10-30',price:400,note:'Holiday promo'},
+      {unit:'CH-201',date:'2025-11-01',price:800,note:'Opening promo'},
+      {unit:'CH-202',date:'2025-11-23',price:1250,note:'Thanksgiving'},
+      {unit:'CH-203',date:'2025-11-18',price:1400,note:'Group events'},
+      {unit:'CH-204',date:'2025-02-14',price:950,note:'Valentines premium'},
+      {unit:'HR-101',date:'2025-10-26',price:320,note:'Weekend surge'},
+      {unit:'CH-201',date:'2025-12-31',price:900,note:'New Year peak'}
+    ];
 
-		// Blocked dates storage
-		const blockedDates = {};
+    // Blocked dates storage
+    const blockedDates = {};
 
-		// Language translations - MUST BE EARLY for functions to use
-		const translations = {
-			en: {
-				dashboard: 'Dashboard',
-				calendar: 'Calendar',
-				units: 'Units',
-				website: 'Website Settings',
-				aiagent: 'AI Agent',
-				completeProfile: 'Complete Profile',
-				changePassword: 'Change Password',
-				changeEmail: 'Change Email',
-				logout: 'Logout',
-				addNewReservation: 'Add New Reservation',
-				newManualBooking: 'New Manual Booking',
-				addNewBooking: 'Add New Booking',
-				blockDates: 'Block Dates',
-				adjustDayPricing: 'Adjust Day Pricing',
-				clientName: 'Client Name',
-				fullName: 'Full name',
-				phoneNumber: 'Phone Number',
-				plus966: '+966...',
-				emailAddress: 'Email Address',
-				guestExample: 'guest@example.com',
-				selectUnit: 'Select a unit',
-				checkinDate: 'Check-in Date',
-				checkoutDate: 'Check-out Date',
-				nightlyRate: 'Nightly Rate ($)',
-				rate000: '0.00',
-				totalAmount: 'Total Amount ($)',
-				paymentStatus: 'Payment Status',
-				paid: 'Paid',
-				pending: 'Pending',
-				partialPayment: 'Partial Payment',
-				paidAmount: 'Paid Amount ($)',
-				specialRequests: 'Special Requests / Notes',
-				anySpecialRequests: 'Any special requests or additional notes...',
-				createReservation: 'Create Reservation',
-				start: 'Start',
-				end: 'End',
-				reason: 'Reason',
-				blockUnit: 'Block Unit',
-				cancel: 'Cancel',
-				close: 'Close',
-				allUnits: 'All Units',
-				monthView: 'Month view',
-				weekView: 'Week view',
-				maintenance: 'Maintenance',
-				ownerStay: 'Owner Stay',
-				cleaning: 'Cleaning',
-				blocked: 'Blocked',
-				previousMonth: 'Previous month',
-				nextMonth: 'Next month',
-				monday: 'Monday',
-				tuesday: 'Tuesday',
-				wednesday: 'Wednesday',
-				thursday: 'Thursday',
-				friday: 'Friday',
-				saturday: 'Saturday',
-				sunday: 'Sunday',
-				mon: 'Mon',
-				tue: 'Tue',
-				wed: 'Wed',
-				thu: 'Thu',
-				fri: 'Fri',
-				sat: 'Sat',
-				sun: 'Sun',
-				syncCalendar: 'Sync Calendar',
-				getCalendarUrl: 'Get Calendar URL',
-				selectUnitForSync: 'Select Unit *',
-				calendarName: 'Calendar Name *',
-				externalCalendarUrl: 'External Calendar URL (iCal/Google Calendar) *',
-				howToGetUrl: 'How to get the URL:',
-				googleCalendarInstruction: 'Google Calendar: Right-click calendar → Settings → Integration → Copy iCal link',
-				outlookInstruction: 'Outlook: Right-click calendar → Copy link',
-				otherInstruction: 'Other: Export as iCal format',
-				savedCalendarUrls: 'Saved Calendar URLs',
-				noSavedCalendars: 'No saved calendars yet',
-				selectUnitToSeeSaved: 'Select a unit to see saved calendars',
-				addCalendar: 'Add Calendar',
-				countryCode: 'Country Code',
-				phoneNumberOnly: 'Phone Number Only'
-			},
-			ar: {
-				dashboard: 'لوحة التحكم',
-				calendar: 'التقويم',
-				units: 'الوحدات',
-				website: 'إعدادات الموقع',
-				aiagent: 'وكيل الذكاء الاصطناعي',
-				completeProfile: 'إكمال الملف الشخصي',
-				changePassword: 'تغيير كلمة المرور',
-				changeEmail: 'تغيير عنوان البريد الإلكتروني',
-				logout: 'تسجيل الخروج',
-				addNewReservation: 'إضافة حجز جديد',
-				newManualBooking: 'حجز يدوي جديد',
-				addNewBooking: 'إضافة حجز جديد',
-				blockDates: 'حجب التواريخ',
-				adjustDayPricing: 'ضبط سعر اليوم',
-				clientName: 'اسم العميل',
-				fullName: 'الاسم الكامل',
-				phoneNumber: 'رقم الهاتف',
-				plus966: '+966...',
-				emailAddress: 'عنوان البريد الإلكتروني',
-				guestExample: 'guest@example.com',
-				selectUnit: 'اختر وحدة',
-				checkinDate: 'تاريخ الوصول',
-				checkoutDate: 'تاريخ المغادرة',
-				nightlyRate: 'السعر الليلي ($)',
-				rate000: '0.00',
-				totalAmount: 'المبلغ الإجمالي ($)',
-				paymentStatus: 'حالة الدفع',
-				paid: 'مدفوع',
-				pending: 'قيد الانتظار',
-				partialPayment: 'دفعة جزئية',
-				paidAmount: 'المبلغ المدفوع ($)',
-				specialRequests: 'طلبات خاصة / ملاحظات',
-				anySpecialRequests: 'أي طلبات خاصة أو ملاحظات إضافية...',
-				createReservation: 'إنشاء حجز',
-				start: 'البداية',
-				end: 'النهاية',
-				reason: 'السبب',
-				blockUnit: 'حجب الوحدة',
-				cancel: 'إلغاء',
-				close: 'إغلاق',
-				allUnits: 'جميع الوحدات',
-				monthView: 'عرض شهري',
-				weekView: 'عرض أسبوعي',
-				maintenance: 'صيانة',
-				ownerStay: 'إقامة المالك',
-				cleaning: 'تنظيف',
-				blocked: 'محجوزة',
-				previousMonth: 'الشهر السابق',
-				nextMonth: 'الشهر التالي',
-				monday: 'الاثنين',
-				tuesday: 'الثلاثاء',
-				wednesday: 'الأربعاء',
-				thursday: 'الخميس',
-				friday: 'الجمعة',
-				saturday: 'السبت',
-				sunday: 'الأحد',
-				mon: 'اثن',
-				tue: 'ثلا',
-				wed: 'أرب',
-				thu: 'خمي',
-				fri: 'جمع',
-				sat: 'سبت',
-				sun: 'أحد',
-				syncCalendar: 'مزامنة التقويم',
-				getCalendarUrl: 'الحصول على رابط التقويم',
-				selectUnitForSync: 'اختر وحدة *',
-				calendarName: 'اسم التقويم *',
-				externalCalendarUrl: 'رابط التقويم الخارجي (iCal/Google Calendar) *',
-				howToGetUrl: 'كيفية الحصول على الرابط:',
-				googleCalendarInstruction: 'Google Calendar: انقر بزر الماوس الأيمن على التقويم → الإعدادات → الدمج → انسخ رابط iCal',
-				outlookInstruction: 'Outlook: انقر بزر الماوس الأيمن على التقويم → انسخ الرابط',
-				otherInstruction: 'خدمات أخرى: قم بالتصدير بصيغة iCal',
-				savedCalendarUrls: 'روابط التقويم المحفوظة',
-				noSavedCalendars: 'لا توجد تقاويم محفوظة بعد',
-				selectUnitToSeeSaved: 'اختر وحدة لعرض التقاويم المحفوظة',
-				addCalendar: 'إضافة تقويم',
-				countryCode: 'رمز الدولة',
-				phoneNumberOnly: 'رقم الهاتف فقط'
-			}
-		};
+    // Language translations - MUST BE EARLY for functions to use
+    const translations = {
+      en: {
+        dashboard: 'Dashboard',
+        calendar: 'Calendar',
+        units: 'Units',
+        website: 'Website Settings',
+        aiagent: 'AI Agent',
+        completeProfile: 'Complete Profile',
+        changePassword: 'Change Password',
+        changeEmail: 'Change Email',
+        logout: 'Logout',
+        addNewReservation: 'Add New Reservation',
+        newManualBooking: 'New Manual Booking',
+        addNewBooking: 'Add New Booking',
+        blockDates: 'Block Dates',
+        adjustDayPricing: 'Adjust Day Pricing',
+        clientName: 'Client Name',
+        fullName: 'Full name',
+        phoneNumber: 'Phone Number',
+        plus966: '+966...',
+        emailAddress: 'Email Address',
+        guestExample: 'guest@example.com',
+        selectUnit: 'Select a unit',
+        checkinDate: 'Check-in Date',
+        checkoutDate: 'Check-out Date',
+        nightlyRate: 'Nightly Rate ($)',
+        rate000: '0.00',
+        totalAmount: 'Total Amount ($)',
+        paymentStatus: 'Payment Status',
+        paid: 'Paid',
+        pending: 'Pending',
+        partialPayment: 'Partial Payment',
+        paidAmount: 'Paid Amount ($)',
+        specialRequests: 'Special Requests / Notes',
+        anySpecialRequests: 'Any special requests or additional notes...',
+        createReservation: 'Create Reservation',
+        start: 'Start',
+        end: 'End',
+        reason: 'Reason',
+        blockUnit: 'Block Unit',
+        cancel: 'Cancel',
+        close: 'Close',
+        allUnits: 'All Units',
+        monthView: 'Month view',
+        weekView: 'Week view',
+        maintenance: 'Maintenance',
+        ownerStay: 'Owner Stay',
+        cleaning: 'Cleaning',
+        blocked: 'Blocked',
+        previousMonth: 'Previous month',
+        nextMonth: 'Next month',
+        monday: 'Monday',
+        tuesday: 'Tuesday',
+        wednesday: 'Wednesday',
+        thursday: 'Thursday',
+        friday: 'Friday',
+        saturday: 'Saturday',
+        sunday: 'Sunday',
+        mon: 'Mon',
+        tue: 'Tue',
+        wed: 'Wed',
+        thu: 'Thu',
+        fri: 'Fri',
+        sat: 'Sat',
+        sun: 'Sun',
+        syncCalendar: 'Sync Calendar',
+        getCalendarUrl: 'Get Calendar URL',
+        selectUnitForSync: 'Select Unit *',
+        calendarName: 'Calendar Name *',
+        externalCalendarUrl: 'External Calendar URL (iCal/Google Calendar) *',
+        howToGetUrl: 'How to get the URL:',
+        googleCalendarInstruction: 'Google Calendar: Right-click calendar → Settings → Integration → Copy iCal link',
+        outlookInstruction: 'Outlook: Right-click calendar → Copy link',
+        otherInstruction: 'Other: Export as iCal format',
+        savedCalendarUrls: 'Saved Calendar URLs',
+        noSavedCalendars: 'No saved calendars yet',
+        selectUnitToSeeSaved: 'Select a unit to see saved calendars',
+        addCalendar: 'Add Calendar',
+        countryCode: 'Country Code',
+        phoneNumberOnly: 'Phone Number Only'
+      },
+      ar: {
+        dashboard: 'لوحة التحكم',
+        calendar: 'التقويم',
+        units: 'الوحدات',
+        website: 'إعدادات الموقع',
+        aiagent: 'وكيل الذكاء الاصطناعي',
+        completeProfile: 'إكمال الملف الشخصي',
+        changePassword: 'تغيير كلمة المرور',
+        changeEmail: 'تغيير عنوان البريد الإلكتروني',
+        logout: 'تسجيل الخروج',
+        addNewReservation: 'إضافة حجز جديد',
+        newManualBooking: 'حجز يدوي جديد',
+        addNewBooking: 'إضافة حجز جديد',
+        blockDates: 'حجب التواريخ',
+        adjustDayPricing: 'ضبط سعر اليوم',
+        clientName: 'اسم العميل',
+        fullName: 'الاسم الكامل',
+        phoneNumber: 'رقم الهاتف',
+        plus966: '+966...',
+        emailAddress: 'عنوان البريد الإلكتروني',
+        guestExample: 'guest@example.com',
+        selectUnit: 'اختر وحدة',
+        checkinDate: 'تاريخ الوصول',
+        checkoutDate: 'تاريخ المغادرة',
+        nightlyRate: 'السعر الليلي ($)',
+        rate000: '0.00',
+        totalAmount: 'المبلغ الإجمالي ($)',
+        paymentStatus: 'حالة الدفع',
+        paid: 'مدفوع',
+        pending: 'قيد الانتظار',
+        partialPayment: 'دفعة جزئية',
+        paidAmount: 'المبلغ المدفوع ($)',
+        specialRequests: 'طلبات خاصة / ملاحظات',
+        anySpecialRequests: 'أي طلبات خاصة أو ملاحظات إضافية...',
+        createReservation: 'إنشاء حجز',
+        start: 'البداية',
+        end: 'النهاية',
+        reason: 'السبب',
+        blockUnit: 'حجب الوحدة',
+        cancel: 'إلغاء',
+        close: 'إغلاق',
+        allUnits: 'جميع الوحدات',
+        monthView: 'عرض شهري',
+        weekView: 'عرض أسبوعي',
+        maintenance: 'صيانة',
+        ownerStay: 'إقامة المالك',
+        cleaning: 'تنظيف',
+        blocked: 'محجوزة',
+        previousMonth: 'الشهر السابق',
+        nextMonth: 'الشهر التالي',
+        monday: 'الاثنين',
+        tuesday: 'الثلاثاء',
+        wednesday: 'الأربعاء',
+        thursday: 'الخميس',
+        friday: 'الجمعة',
+        saturday: 'السبت',
+        sunday: 'الأحد',
+        mon: 'اثن',
+        tue: 'ثلا',
+        wed: 'أرب',
+        thu: 'خمي',
+        fri: 'جمع',
+        sat: 'سبت',
+        sun: 'أحد',
+        syncCalendar: 'مزامنة التقويم',
+        getCalendarUrl: 'الحصول على رابط التقويم',
+        selectUnitForSync: 'اختر وحدة *',
+        calendarName: 'اسم التقويم *',
+        externalCalendarUrl: 'رابط التقويم الخارجي (iCal/Google Calendar) *',
+        howToGetUrl: 'كيفية الحصول على الرابط:',
+        googleCalendarInstruction: 'Google Calendar: انقر بزر الماوس الأيمن على التقويم → الإعدادات → الدمج → انسخ رابط iCal',
+        outlookInstruction: 'Outlook: انقر بزر الماوس الأيمن على التقويم → انسخ الرابط',
+        otherInstruction: 'خدمات أخرى: قم بالتصدير بصيغة iCal',
+        savedCalendarUrls: 'روابط التقويم المحفوظة',
+        noSavedCalendars: 'لا توجد تقاويم محفوظة بعد',
+        selectUnitToSeeSaved: 'اختر وحدة لعرض التقاويم المحفوظة',
+        addCalendar: 'إضافة تقويم',
+        countryCode: 'رمز الدولة',
+        phoneNumberOnly: 'رقم الهاتف فقط'
+      }
+    };
 
-		// Current language (safe with fallback)
-		let currentLanguage = Storage.getString('language', 'en');
+    // Current language (safe with fallback)
+    let currentLanguage = Storage.getString('language', 'en');
 
-		// Current currency
-		let currentCurrency = Storage.getString('currency', 'SAR');
+    // Current currency
+    let currentCurrency = Storage.getString('currency', 'SAR');
 
-		// Units Groups Management (safe with fallback)
-		let unitsGroups = Storage.getJSON('unitsGroups', [
-			{ id: 'group_1', name: 'Main Hotel', type: 'Hotel Room', license: 'TRN-2024-001' },
-			{ id: 'group_2', name: 'Chalets Collection', type: 'Chalet', license: 'TRN-2024-002' }
-		]);
-		let currentGroupId = Storage.getString('currentGroupId', 'group_1');
+    // Units Groups Management (safe with fallback)
+    let unitsGroups = Storage.getJSON('unitsGroups', [
+      { id: 'group_1', name: 'Main Hotel', type: 'Hotel Room', license: 'TRN-2024-001' },
+      { id: 'group_2', name: 'Chalets Collection', type: 'Chalet', license: 'TRN-2024-002' }
+    ]);
+    let currentGroupId = Storage.getString('currentGroupId', 'group_1');
 
-		function populateGroupSelectors(){
-			const selector = document.getElementById('calendarGroupSelector');
-			if(selector){
-				selector.innerHTML = '';
-				unitsGroups.forEach(group => {
-					const option = document.createElement('option');
-					option.value = group.id;
-					option.textContent = `${group.name} (${group.type})`;
-					option.selected = group.id === currentGroupId;
-					selector.appendChild(option);
-				});
-				selector.addEventListener('change', (e) => {
-					currentGroupId = e.target.value;
-					Storage.setString('currentGroupId', currentGroupId);
-				});
-			}
-		}
+    function populateGroupSelectors(){
+      const selector = document.getElementById('calendarGroupSelector');
+      if(selector){
+        selector.innerHTML = '';
+        unitsGroups.forEach(group => {
+          const option = document.createElement('option');
+          option.value = group.id;
+          option.textContent = `${group.name} (${group.type})`;
+          option.selected = group.id === currentGroupId;
+          selector.appendChild(option);
+        });
+        selector.addEventListener('change', (e) => {
+          currentGroupId = e.target.value;
+          Storage.setString('currentGroupId', currentGroupId);
+        });
+      }
+    }
 
-		// Get translated text
-		function t(key){
-			return translations[currentLanguage]?.[key] || translations.en[key] || key;
-		}
+    // Get translated text
+    function t(key){
+      return translations[currentLanguage]?.[key] || translations.en[key] || key;
+    }
 
-		function blockDateKey(unit,date){return `${unit}|${date}`;}
-		function getBlockedDates(unit,date){if(!unit||!date) return null;return blockedDates[blockDateKey(unit,date)]||null;}
-		function setBlockedDates(unit,startDate,endDate,reason){
-			if(!unit||!startDate) return;
-			const dates = enumerateDates(startDate,endDate||startDate);
-			dates.forEach(d=>{blockedDates[blockDateKey(unit,d)]={unit,date:d,reason,startDate,endDate}});
-		}
-		function removeBlockedDates(unit,startDate,endDate){
-			if(!unit||!startDate) return;
-			const dates = enumerateDates(startDate,endDate||startDate);
-			dates.forEach(d=>{delete blockedDates[blockDateKey(unit,d)];});
-		}
+    function blockDateKey(unit,date){return `${unit}|${date}`;}
+    function getBlockedDates(unit,date){if(!unit||!date) return null;return blockedDates[blockDateKey(unit,date)]||null;}
+    function setBlockedDates(unit,startDate,endDate,reason){
+      if(!unit||!startDate) return;
+      const dates = enumerateDates(startDate,endDate||startDate);
+      dates.forEach(d=>{blockedDates[blockDateKey(unit,d)]={unit,date:d,reason,startDate,endDate}});
+    }
+    function removeBlockedDates(unit,startDate,endDate){
+      if(!unit||!startDate) return;
+      const dates = enumerateDates(startDate,endDate||startDate);
+      dates.forEach(d=>{delete blockedDates[blockDateKey(unit,d)];});
+    }
 
-		function overrideKey(unit,date){return `${unit}|${date}`;}
-		function getOverride(unit,date){if(!unit||!date) return null;return priceOverrides[overrideKey(unit,date)]||null;}
-		function setOverride(unit,date,details){if(!unit||!date) return;priceOverrides[overrideKey(unit,date)]={unit,date,...details};}
-		function removeOverride(unit,date){if(!unit||!date) return;delete priceOverrides[overrideKey(unit,date)];}
+    function overrideKey(unit,date){return `${unit}|${date}`;}
+    function getOverride(unit,date){if(!unit||!date) return null;return priceOverrides[overrideKey(unit,date)]||null;}
+    function setOverride(unit,date,details){if(!unit||!date) return;priceOverrides[overrideKey(unit,date)]={unit,date,...details};}
+    function removeOverride(unit,date){if(!unit||!date) return;delete priceOverrides[overrideKey(unit,date)];}
 
-		function getWeekdayKey(dateISO){
-			if(!dateISO) return null;
-			const date = new Date(dateISO);
-			if(Number.isNaN(date.getTime())) return null;
-			return dayKeyFromIndex[date.getDay()];
-		}
+    function getWeekdayKey(dateISO){
+      if(!dateISO) return null;
+      const date = new Date(dateISO);
+      if(Number.isNaN(date.getTime())) return null;
+      return dayKeyFromIndex[date.getDay()];
+    }
 
-		function getBaseRateFor(unit,dateISO){
-			const base = baseRates[unit];
-			if(!base) return null;
-			const key = getWeekdayKey(dateISO);
-			if(!key) return null;
-			return Number(base[key]||0);
-		}
+    function getBaseRateFor(unit,dateISO){
+      const base = baseRates[unit];
+      if(!base) return null;
+      const key = getWeekdayKey(dateISO);
+      if(!key) return null;
+      return Number(base[key]||0);
+    }
 
-		function getRateFor(unit,dateISO){
-			const override = getOverride(unit,dateISO);
-			if(override && typeof override.price==='number') return override.price;
-			return getBaseRateFor(unit,dateISO);
-		}
+    function getRateFor(unit,dateISO){
+      const override = getOverride(unit,dateISO);
+      if(override && typeof override.price==='number') return override.price;
+      return getBaseRateFor(unit,dateISO);
+    }
 
-		function formatCurrency(value){
-			const amount = Number(value||0);
-			const currencySymbols = {
-				'USD': '$',
-				'SAR': 'ر.س',
-				'EUR': '€'
-			};
-			const symbol = currencySymbols[currentCurrency] || '$';
-			return `${symbol}${amount.toLocaleString()}`;
-		}
+    function formatCurrency(value){
+      const amount = Number(value||0);
+      const currencySymbols = {
+        'USD': '$',
+        'SAR': 'ر.س',
+        'EUR': '€'
+      };
+      const symbol = currencySymbols[currentCurrency] || '$';
+      return `${symbol}${amount.toLocaleString()}`;
+    }
 
-		function formatDisplayDate(dateISO){
-			const date = new Date(dateISO);
-			if(Number.isNaN(date.getTime())) return dateISO || '';
-			return date.toLocaleDateString('en',{month:'short',day:'numeric',weekday:'short'});
-		}
+    function formatDisplayDate(dateISO){
+      const date = new Date(dateISO);
+      if(Number.isNaN(date.getTime())) return dateISO || '';
+      return date.toLocaleDateString('en',{month:'short',day:'numeric',weekday:'short'});
+    }
 
-		function enumerateDates(startISO,endISO){
-			if(!startISO) return [];
-			const result=[];
-			const startDate=new Date(startISO);
-			const endDate=endISO? new Date(endISO):new Date(startISO);
-			if(Number.isNaN(startDate.getTime())||Number.isNaN(endDate.getTime())) return result;
-			const cursor=new Date(startDate);
-			while(cursor<=endDate){
-				result.push(formatISO(cursor));
-				cursor.setDate(cursor.getDate()+1);
-			}
-			return result;
-		}
+    function enumerateDates(startISO,endISO){
+      if(!startISO) return [];
+      const result=[];
+      const startDate=new Date(startISO);
+      const endDate=endISO? new Date(endISO):new Date(startISO);
+      if(Number.isNaN(startDate.getTime())||Number.isNaN(endDate.getTime())) return result;
+      const cursor=new Date(startDate);
+      while(cursor<=endDate){
+        result.push(formatISO(cursor));
+        cursor.setDate(cursor.getDate()+1);
+      }
+      return result;
+    }
 
-		function calculateBookingAmount(unit,startISO,endISO){
-			return enumerateDates(startISO,endISO).reduce((sum,date)=>sum+(getRateFor(unit,date)||0),0);
-		}
+    function calculateBookingAmount(unit,startISO,endISO){
+      return enumerateDates(startISO,endISO).reduce((sum,date)=>sum+(getRateFor(unit,date)||0),0);
+    }
 
-		function formatRateRange(rates){
-			if(!rates) return '';
-			const values = weekdayOrder.map(key=>Number(rates[key]||0));
-			const min = Math.min(...values);
-			const max = Math.max(...values);
-			if(min===max) return formatCurrency(min);
-			return `${formatCurrency(min)}–${formatCurrency(max)}`;
-		}
+    function formatRateRange(rates){
+      if(!rates) return '';
+      const values = weekdayOrder.map(key=>Number(rates[key]||0));
+      const min = Math.min(...values);
+      const max = Math.max(...values);
+      if(min===max) return formatCurrency(min);
+      return `${formatCurrency(min)}–${formatCurrency(max)}`;
+    }
 
-		const bookings = [
-			{id:'BKG-001',client:'Ahmed Ali',unit:'Palm Oasis Chalet',start:'2025-10-24',end:'2025-10-27',status:'Active',phone:'+966512345678',email:'ahmed@example.com',source:'Website',amount:3770,method:'Card'},
-			{id:'BKG-002',client:'Sara Khan',unit:'Skyline Executive Apartment',start:'2025-10-24',end:'2025-10-25',status:'Pending',phone:'+966598765432',email:'sara@example.com',source:'Manual Entry',amount:1560,method:'Wire'},
-			{id:'BKG-003',client:'John Doe',unit:'Desert Bloom Retreat',start:'2025-10-20',end:'2025-10-22',status:'Past',phone:'+966500111222',email:'john@example.com',source:'Website',amount:1460,method:'Card'},
-			{id:'BKG-004',client:'Fatima Al',unit:'City Studio Deluxe',start:'2025-10-28',end:'2025-10-29',status:'Active',phone:'+966599000111',email:'fatima@example.com',source:'Manual Entry',amount:1430,method:'Cash'},
-			{id:'BKG-005',client:'Omar N',unit:'Palm Oasis Chalet',start:'2025-10-26',end:'2025-10-27',status:'Pending',phone:'+966511223344',email:'omar@example.com',source:'Website',amount:540,method:'Card'}
-		];
+    const bookings = [
+      {id:'BKG-001',client:'Ahmed Ali',unit:'Palm Oasis Chalet',start:'2025-10-24',end:'2025-10-27',status:'Active',phone:'+966512345678',email:'ahmed@example.com',source:'Website',amount:3770,method:'Card'},
+      {id:'BKG-002',client:'Sara Khan',unit:'Skyline Executive Apartment',start:'2025-10-24',end:'2025-10-25',status:'Pending',phone:'+966598765432',email:'sara@example.com',source:'Manual Entry',amount:1560,method:'Wire'},
+      {id:'BKG-003',client:'John Doe',unit:'Desert Bloom Retreat',start:'2025-10-20',end:'2025-10-22',status:'Past',phone:'+966500111222',email:'john@example.com',source:'Website',amount:1460,method:'Card'},
+      {id:'BKG-004',client:'Fatima Al',unit:'City Studio Deluxe',start:'2025-10-28',end:'2025-10-29',status:'Active',phone:'+966599000111',email:'fatima@example.com',source:'Manual Entry',amount:1430,method:'Cash'},
+      {id:'BKG-005',client:'Omar N',unit:'Palm Oasis Chalet',start:'2025-10-26',end:'2025-10-27',status:'Pending',phone:'+966511223344',email:'omar@example.com',source:'Website',amount:540,method:'Card'}
+    ];
 
-		const seedDate=new Date().toISOString().split('T')[0];
-		initialOverrides.forEach(entry=>{
-			setOverride(entry.unit,entry.date,{price:entry.price,note:entry.note,updatedBy:'Revenue Team',updatedAt:seedDate});
-		});
+    const seedDate=new Date().toISOString().split('T')[0];
+    initialOverrides.forEach(entry=>{
+      setOverride(entry.unit,entry.date,{price:entry.price,note:entry.note,updatedBy:'Revenue Team',updatedAt:seedDate});
+    });
 
-		const filters = {unit:'all',view:'month'};
-		let currentMonth = new Date(2025,9,1); // October 2025
-	let contextDate = null;
-	let contextUnit = null;
+    const filters = {unit:'all',view:'month'};
+    let currentMonth = new Date(2025,9,1); // October 2025
+  let contextDate = null;
+  let contextUnit = null;
 
-		const calendarGrid = document.getElementById('calendarGrid');
+    const calendarGrid = document.getElementById('calendarGrid');
 
-		// Get weekday label in current language
-		function getWeekdayLabel(dayIndex) {
-			const dayKeys = ['sun','mon','tue','wed','thu','fri','sat'];
-			const dayKey = dayKeys[dayIndex];
-			return t(dayKey);
-		}
+    // Get weekday label in current language
+    function getWeekdayLabel(dayIndex) {
+      const dayKeys = ['sun','mon','tue','wed','thu','fri','sat'];
+      const dayKey = dayKeys[dayIndex];
+      return t(dayKey);
+    }
 
-		// Format month name in current language
-		function formatMonthName(date) {
-			const locale = currentLanguage === 'ar' ? 'ar' : 'en';
-			return date.toLocaleString(locale, {month:'long', year:'numeric'});
-		}
+    // Format month name in current language
+    function formatMonthName(date) {
+      const locale = currentLanguage === 'ar' ? 'ar' : 'en';
+      return date.toLocaleString(locale, {month:'long', year:'numeric'});
+    }
 
-		function renderLegend(){
-			const legend = document.getElementById('unitLegend');
-			if(!legend) return;
-			
-			const legendHTML = `
-				<div style="display:flex;gap:16px;flex-wrap:wrap;font-size:13px">
-					<div style="display:flex;align-items:center;gap:8px">
-						<div style="width:12px;height:12px;background:#0f172a;border-radius:50%"></div>
-						<span style="color:#111;font-weight:600">Under Booking</span>
-					</div>
-					<div style="display:flex;align-items:center;gap:8px">
-						<div style="width:12px;height:12px;background:#22c55e;border-radius:50%"></div>
-						<span style="color:#111;font-weight:600">Active</span>
-					</div>
-					<div style="display:flex;align-items:center;gap:8px">
-						<div style="width:12px;height:12px;background:#eab308;border-radius:50%"></div>
-						<span style="color:#111;font-weight:600">Waiting Approval</span>
-					</div>
-					<div style="display:flex;align-items:center;gap:8px">
-						<div style="width:12px;height:12px;background:#ef4444;border-radius:50%"></div>
-						<span style="color:#111;font-weight:600">Canceled</span>
-					</div>
-				</div>
-			`;
-			legend.innerHTML = legendHTML;
-		}
+    function renderLegend(){
+      const legend = document.getElementById('unitLegend');
+      if(!legend) return;
+      
+      const legendHTML = `
+        <div style="display:flex;gap:16px;flex-wrap:wrap;font-size:13px">
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="width:12px;height:12px;background:#0f172a;border-radius:50%"></div>
+            <span style="color:#111;font-weight:600">Under Booking</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="width:12px;height:12px;background:#22c55e;border-radius:50%"></div>
+            <span style="color:#111;font-weight:600">Active</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="width:12px;height:12px;background:#eab308;border-radius:50%"></div>
+            <span style="color:#111;font-weight:600">Waiting Approval</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="width:12px;height:12px;background:#ef4444;border-radius:50%"></div>
+            <span style="color:#111;font-weight:600">Canceled</span>
+          </div>
+        </div>
+      `;
+      legend.innerHTML = legendHTML;
+    }
 
-		function renderCalendar(){
-			bookings.forEach(booking=>{
-				booking.amount = calculateBookingAmount(booking.unit,booking.start,booking.end);
-			});
-			const weekdaysRow = document.getElementById('weekdaysRow');
-			weekdaysRow.innerHTML = '';
-			// Use translated weekday labels - show all 7 days
-			const weekDays = [0,1,2,3,4,5,6].map(i=>getWeekdayLabel(i));
-			if(filters.view==='month'){weekDays.forEach(label=>{const span=document.createElement('div');span.textContent=label;weekdaysRow.appendChild(span);});}
-			calendarGrid.innerHTML='';
-			if(filters.view==='month'){
-				renderMonthGrid();
-			} else {
-				renderWeekGrid();
-			}
-			document.getElementById('monthLabel').textContent = formatMonthName(currentMonth);
-		}
+    function renderCalendar(){
+      bookings.forEach(booking=>{
+        booking.amount = calculateBookingAmount(booking.unit,booking.start,booking.end);
+      });
+      const weekdaysRow = document.getElementById('weekdaysRow');
+      weekdaysRow.innerHTML = '';
+      // Use translated weekday labels - show all 7 days
+      const weekDays = [0,1,2,3,4,5,6].map(i=>getWeekdayLabel(i));
+      if(filters.view==='month'){weekDays.forEach(label=>{const span=document.createElement('div');span.textContent=label;weekdaysRow.appendChild(span);});}
+      calendarGrid.innerHTML='';
+      if(filters.view==='month'){
+        renderMonthGrid();
+      } else {
+        renderWeekGrid();
+      }
+      document.getElementById('monthLabel').textContent = formatMonthName(currentMonth);
+    }
 
-		function renderMonthGrid(){
-			calendarGrid.classList.remove('week-view');
-			const firstDay = new Date(currentMonth.getFullYear(),currentMonth.getMonth(),1);
-			const startDay = firstDay.getDay();
-			const startOffset = startDay; // Start from Sunday
-			const startDate = new Date(firstDay);
-			startDate.setDate(firstDay.getDate()-startOffset);
-			const daysToRender = 35; // 5 rows x 7 columns
-			for(let i=0;i<daysToRender;i++){
-				const date = new Date(startDate);
-				date.setDate(startDate.getDate()+i);
-				const cell=document.createElement('div');
-				cell.className='day-cell';
-				if(date.getMonth()!==currentMonth.getMonth()){cell.classList.add('outside');}
-				const iso = formatISO(date);
-				cell.dataset.date = iso;
-				const header=document.createElement('div');
-				header.className='day-header';
-				header.innerHTML=`<span class="date">${date.getDate()}</span><span style="font-size:11px;color:var(--muted)">${date.toLocaleDateString('en',{weekday:'short'})}</span>`;
-				cell.appendChild(header);
+    function renderMonthGrid(){
+      calendarGrid.classList.remove('week-view');
+      const firstDay = new Date(currentMonth.getFullYear(),currentMonth.getMonth(),1);
+      const startDay = firstDay.getDay();
+      const startOffset = startDay; // Start from Sunday
+      const startDate = new Date(firstDay);
+      startDate.setDate(firstDay.getDate()-startOffset);
+      const daysToRender = 35; // 5 rows x 7 columns
+      for(let i=0;i<daysToRender;i++){
+        const date = new Date(startDate);
+        date.setDate(startDate.getDate()+i);
+        const cell=document.createElement('div');
+        cell.className='day-cell';
+        if(date.getMonth()!==currentMonth.getMonth()){cell.classList.add('outside');}
+        const iso = formatISO(date);
+        cell.dataset.date = iso;
+        const header=document.createElement('div');
+        header.className='day-header';
+        header.innerHTML=`<span class="date">${date.getDate()}</span><span style="font-size:11px;color:var(--muted)">${date.toLocaleDateString('en',{weekday:'short'})}</span>`;
+        cell.appendChild(header);
 
-				if(filters.unit!=='all'){
-					const overrideDetails = getOverride(filters.unit,iso);
-					const rate = getRateFor(filters.unit,iso);
-					if(rate!==null){
-						const chip=document.createElement('div');
-						chip.className='price-chip';
-						const weekdayKey=getWeekdayKey(iso);
-						chip.title = overrideDetails?
-							`Override: ${overrideDetails.note||'Custom rate'}`:
-							`Base ${weekdayLabelMap[weekdayKey]||''} rate`;
-						if(overrideDetails){
-							chip.classList.add('override');
-							cell.classList.add('override-day');
-							chip.innerHTML = `<i class="fa-solid fa-flag"></i> ${formatCurrency(rate)}`;
-						} else {
-							chip.textContent = formatCurrency(rate);
-						}
-						cell.appendChild(chip);
-					}
-				}
+        if(filters.unit!=='all'){
+          const overrideDetails = getOverride(filters.unit,iso);
+          const rate = getRateFor(filters.unit,iso);
+          if(rate!==null){
+            const chip=document.createElement('div');
+            chip.className='price-chip';
+            const weekdayKey=getWeekdayKey(iso);
+            chip.title = overrideDetails?
+              `Override: ${overrideDetails.note||'Custom rate'}`:
+              `Base ${weekdayLabelMap[weekdayKey]||''} rate`;
+            if(overrideDetails){
+              chip.classList.add('override');
+              cell.classList.add('override-day');
+              chip.innerHTML = `<i class="fa-solid fa-flag"></i> ${formatCurrency(rate)}`;
+            } else {
+              chip.textContent = formatCurrency(rate);
+            }
+            cell.appendChild(chip);
+          }
+        }
 
-				const dayBookings = getBookingsForDate(iso);
-				dayBookings.forEach(event=>{
-					const el=createEventElement(event);
-					cell.appendChild(el);
-				});
-				
-				// Check for blocked dates and show lock icon
-				const currentUnit = filters.unit!=='all' ? filters.unit : null;
-				if(currentUnit){
-					const blockedInfo = getBlockedDates(currentUnit,iso);
-					if(blockedInfo){
-						const lockDiv = document.createElement('div');
-						lockDiv.className = 'lock-indicator';
-						lockDiv.innerHTML = `<i class="fa-solid fa-lock"></i><span class="lock-text">${blockedInfo.reason||'Blocked'}</span>`;
-						lockDiv.title = `Blocked: ${blockedInfo.reason} (${blockedInfo.startDate} to ${blockedInfo.endDate})`;
-						lockDiv.addEventListener('click',(e)=>{
-							e.stopPropagation();
-							if(confirm(`Unlock this date (${iso})?\n\nReason: ${blockedInfo.reason}`)){
-								removeBlockedDates(currentUnit,blockedInfo.startDate,blockedInfo.endDate);
-								renderCalendar();
-								showConfirmation('Date range unlocked successfully.');
-							}
-						});
-						cell.appendChild(lockDiv);
-						cell.style.borderColor = '#fecaca';
-						cell.style.backgroundColor = '#fef2f2';
-					}
-				}
-				
-				cell.addEventListener('click',e=>{
-					e.stopPropagation();
-					if(e.target.closest('.event')) return;
-					if(e.target.closest('.lock-indicator')) return;
-					console.log('Cell clicked - showing context menu for date:', iso);
-					showContextMenu(cell,iso,e);
-				});
-				calendarGrid.appendChild(cell);
-			}
-		}
+        const dayBookings = getBookingsForDate(iso);
+        dayBookings.forEach(event=>{
+          const el=createEventElement(event);
+          cell.appendChild(el);
+        });
+        
+        // Check for blocked dates and show lock icon
+        const currentUnit = filters.unit!=='all' ? filters.unit : null;
+        if(currentUnit){
+          const blockedInfo = getBlockedDates(currentUnit,iso);
+          if(blockedInfo){
+            const lockDiv = document.createElement('div');
+            lockDiv.className = 'lock-indicator';
+            lockDiv.innerHTML = `<i class="fa-solid fa-lock"></i><span class="lock-text">${blockedInfo.reason||'Blocked'}</span>`;
+            lockDiv.title = `Blocked: ${blockedInfo.reason} (${blockedInfo.startDate} to ${blockedInfo.endDate})`;
+            lockDiv.addEventListener('click',(e)=>{
+              e.stopPropagation();
+              if(confirm(`Unlock this date (${iso})?\n\nReason: ${blockedInfo.reason}`)){
+                removeBlockedDates(currentUnit,blockedInfo.startDate,blockedInfo.endDate);
+                renderCalendar();
+                showConfirmation('Date range unlocked successfully.');
+              }
+            });
+            cell.appendChild(lockDiv);
+            cell.style.borderColor = '#fecaca';
+            cell.style.backgroundColor = '#fef2f2';
+          }
+        }
+        
+        cell.addEventListener('click',e=>{
+          e.stopPropagation();
+          if(e.target.closest('.event')) return;
+          if(e.target.closest('.lock-indicator')) return;
+          console.log('Cell clicked - showing context menu for date:', iso);
+          showContextMenu(cell,iso,e);
+        });
+        calendarGrid.appendChild(cell);
+      }
+    }
 
-		function renderWeekGrid(){
-			calendarGrid.innerHTML='';
-			const weekdaysRow = document.getElementById('weekdaysRow');
-			weekdaysRow.innerHTML='';
-			const start = new Date(currentMonth);
-			const dayOfWeek = (start.getDay()+6)%7;
-			start.setDate(start.getDate()-dayOfWeek);
-			for(let i=0;i<7;i++){
-				const date = new Date(start);
-				date.setDate(start.getDate()+i);
-				const header=document.createElement('div');
-				header.textContent = date.toLocaleDateString('en',{weekday:'short'});
-				weekdaysRow.appendChild(header);
-			}
-			for(let i=0;i<7;i++){
-				const date = new Date(start);
-				date.setDate(start.getDate()+i);
-				const cell=document.createElement('div');
-				cell.className='day-cell';
-				const iso = formatISO(date);
-				cell.dataset.date = iso;
-				const header=document.createElement('div');
-				header.className='day-header';
-				header.innerHTML=`<span class="date">${date.getDate()}</span><span style="font-size:11px;color:var(--muted)">${date.toLocaleDateString('en',{month:'short'})}</span>`;
-				cell.appendChild(header);
+    function renderWeekGrid(){
+      calendarGrid.innerHTML='';
+      const weekdaysRow = document.getElementById('weekdaysRow');
+      weekdaysRow.innerHTML='';
+      const start = new Date(currentMonth);
+      const dayOfWeek = (start.getDay()+6)%7;
+      start.setDate(start.getDate()-dayOfWeek);
+      for(let i=0;i<7;i++){
+        const date = new Date(start);
+        date.setDate(start.getDate()+i);
+        const header=document.createElement('div');
+        header.textContent = date.toLocaleDateString('en',{weekday:'short'});
+        weekdaysRow.appendChild(header);
+      }
+      for(let i=0;i<7;i++){
+        const date = new Date(start);
+        date.setDate(start.getDate()+i);
+        const cell=document.createElement('div');
+        cell.className='day-cell';
+        const iso = formatISO(date);
+        cell.dataset.date = iso;
+        const header=document.createElement('div');
+        header.className='day-header';
+        header.innerHTML=`<span class="date">${date.getDate()}</span><span style="font-size:11px;color:var(--muted)">${date.toLocaleDateString('en',{month:'short'})}</span>`;
+        cell.appendChild(header);
 
-				if(filters.unit!=='all'){
-					const overrideDetails = getOverride(filters.unit,iso);
-					const rate = getRateFor(filters.unit,iso);
-					if(rate!==null){
-						const chip=document.createElement('div');
-						chip.className='price-chip';
-						const weekdayKey=getWeekdayKey(iso);
-						chip.title = overrideDetails?`Override: ${overrideDetails.note||'Custom rate'}`:`Base ${weekdayLabelMap[weekdayKey]||''} rate`;
-						if(overrideDetails){
-							chip.classList.add('override');
-							cell.classList.add('override-day');
-							chip.innerHTML = `<i class="fa-solid fa-flag"></i> ${formatCurrency(rate)}`;
-						} else {
-							chip.textContent = formatCurrency(rate);
-						}
-						cell.appendChild(chip);
-					}
-				}
+        if(filters.unit!=='all'){
+          const overrideDetails = getOverride(filters.unit,iso);
+          const rate = getRateFor(filters.unit,iso);
+          if(rate!==null){
+            const chip=document.createElement('div');
+            chip.className='price-chip';
+            const weekdayKey=getWeekdayKey(iso);
+            chip.title = overrideDetails?`Override: ${overrideDetails.note||'Custom rate'}`:`Base ${weekdayLabelMap[weekdayKey]||''} rate`;
+            if(overrideDetails){
+              chip.classList.add('override');
+              cell.classList.add('override-day');
+              chip.innerHTML = `<i class="fa-solid fa-flag"></i> ${formatCurrency(rate)}`;
+            } else {
+              chip.textContent = formatCurrency(rate);
+            }
+            cell.appendChild(chip);
+          }
+        }
 
-				getBookingsForDate(iso).forEach(ev=>cell.appendChild(createEventElement(ev)));
-				cell.addEventListener('click',e=>{
-					if(e.target.closest('.event')) return;
-					showContextMenu(cell,iso,e);
-				});
-				calendarGrid.appendChild(cell);
-			}
-		}
+        getBookingsForDate(iso).forEach(ev=>cell.appendChild(createEventElement(ev)));
+        cell.addEventListener('click',e=>{
+          if(e.target.closest('.event')) return;
+          showContextMenu(cell,iso,e);
+        });
+        calendarGrid.appendChild(cell);
+      }
+    }
 
-		function createEventElement(event){
-			const el=document.createElement('div');
-			el.className='event';
-			
-			// Determine color based on status
-			let statusColor = '#0f172a'; // default black for Under Booking
-			let statusLabel = 'Under Booking';
-			if(event.status === 'Active'){
-				statusColor = '#22c55e'; // green for confirmed
-				statusLabel = 'Active';
-			} else if(event.status === 'Canceled'){
-				statusColor = '#ef4444'; // red for canceled
-				statusLabel = 'Canceled';
-			} else if(event.status === 'Pending'){
-				statusColor = '#eab308'; // yellow for waiting approval
-				statusLabel = 'Waiting Approval';
-			}
-			
-			const unitInfo = unitPalette.find(u=>u.name===event.unit);
-			const color = unitInfo? unitInfo.color:'#0f172a';
-			el.innerHTML=`<span class="swatch" style="background:${statusColor}"></span><div><div class="event-client">${event.client}</div><div class="event-meta">${event.unit}</div></div>`;
-			el.addEventListener('click',e=>{e.stopPropagation();openBookingDetails(event.id);});
-			el.style.borderColor = statusColor+'33';
-			el.title = `${event.client} - ${event.unit}\n${event.start} to ${event.end}\n${statusLabel}`;
-			return el;
-		}
+    function createEventElement(event){
+      const el=document.createElement('div');
+      el.className='event';
+      
+      // Determine color based on status
+      let statusColor = '#0f172a'; // default black for Under Booking
+      let statusLabel = 'Under Booking';
+      if(event.status === 'Active'){
+        statusColor = '#22c55e'; // green for confirmed
+        statusLabel = 'Active';
+      } else if(event.status === 'Canceled'){
+        statusColor = '#ef4444'; // red for canceled
+        statusLabel = 'Canceled';
+      } else if(event.status === 'Pending'){
+        statusColor = '#eab308'; // yellow for waiting approval
+        statusLabel = 'Waiting Approval';
+      }
+      
+      const unitInfo = unitPalette.find(u=>u.name===event.unit);
+      const color = unitInfo? unitInfo.color:'#0f172a';
+      el.innerHTML=`<span class="swatch" style="background:${statusColor}"></span><div><div class="event-client">${event.client}</div><div class="event-meta">${event.unit}</div></div>`;
+      el.addEventListener('click',e=>{e.stopPropagation();openBookingDetails(event.id);});
+      el.style.borderColor = statusColor+'33';
+      el.title = `${event.client} - ${event.unit}\n${event.start} to ${event.end}\n${statusLabel}`;
+      return el;
+    }
 
-		function getBookingsForDate(dateISO){
-			return bookings.filter(b=>{
-				if(filters.unit!=='all' && b.unit!==filters.unit) return false;
-				return dateISO>=b.start && dateISO<=b.end;
-			});
-		}
+    function getBookingsForDate(dateISO){
+      return bookings.filter(b=>{
+        if(filters.unit!=='all' && b.unit!==filters.unit) return false;
+        return dateISO>=b.start && dateISO<=b.end;
+      });
+    }
 
-		function formatISO(date){
-			return date.toISOString().split('T')[0];
-		}
+    function formatISO(date){
+      return date.toISOString().split('T')[0];
+    }
 
-		// Context menu
-		let contextMenu=document.getElementById('contextMenu');
-		
-		function attachContextMenuHandlers(){
-			console.log('attachContextMenuHandlers called, contextMenu:', contextMenu);
-			// Get buttons directly from current contextMenu
-			const buttons = contextMenu.querySelectorAll('button');
-			console.log('Found buttons:', buttons.length);
-			buttons.forEach((btn, idx)=>{
-				// Remove any existing listeners by cloning
-				const newBtn = btn.cloneNode(true);
-				btn.parentNode.replaceChild(newBtn, btn);
-				
-				newBtn.addEventListener('click',(e)=>{
-					e.stopPropagation();
-					console.log('Context menu button clicked:', e.target.dataset.action);
-					hideContextMenu();
-					const action=newBtn.dataset.action;
-					if(action==='add'){
-						openAddBooking(contextDate,contextUnit);
-					} else if(action==='block'){
-						openBlockDates(contextDate,contextUnit);
-					} else {
-						openEditPricing(contextUnit,contextDate);
-					}
-				});
-			});
-		}
-		
-		attachContextMenuHandlers();
+    // Context menu
+    let contextMenu=document.getElementById('contextMenu');
+    
+    function attachContextMenuHandlers(){
+      console.log('attachContextMenuHandlers called, contextMenu:', contextMenu);
+      // Get buttons directly from current contextMenu
+      const buttons = contextMenu.querySelectorAll('button');
+      console.log('Found buttons:', buttons.length);
+      buttons.forEach((btn, idx)=>{
+        // Remove any existing listeners by cloning
+        const newBtn = btn.cloneNode(true);
+        btn.parentNode.replaceChild(newBtn, btn);
+        
+        newBtn.addEventListener('click',(e)=>{
+          e.stopPropagation();
+          console.log('Context menu button clicked:', e.target.dataset.action);
+          hideContextMenu();
+          const action=newBtn.dataset.action;
+          if(action==='add'){
+            openAddBooking(contextDate,contextUnit);
+          } else if(action==='block'){
+            openBlockDates(contextDate,contextUnit);
+          } else {
+            openEditPricing(contextUnit,contextDate);
+          }
+        });
+      });
+    }
+    
+    attachContextMenuHandlers();
 
-		function showContextMenu(cell,iso,event){
-			console.log('showContextMenu called for:', iso, 'event:', event);
-			contextDate = iso;
-			contextUnit = filters.unit!=='all'? filters.unit : null;
-			if(!contextUnit){
-				const sameDayBookings = getBookingsForDate(iso);
-				if(sameDayBookings.length===1){
-					contextUnit = sameDayBookings[0].unit;
-				}
-			}
-			
-			// Remove previous close handler if exists
-			if(contextMenuCloseHandler){
-				document.removeEventListener('click',contextMenuCloseHandler);
-			}
-			
-			// Make sure menu is visible first to get correct dimensions
-			contextMenu.style.display='block';
-			contextMenu.style.visibility='visible';
-			contextMenu.style.opacity='1';
-			
-			// Calculate position
-			const rect = cell.getBoundingClientRect();
-			const menuWidth = contextMenu.offsetWidth || 200;
-			const menuHeight = contextMenu.offsetHeight || 120;
-			
-			let x = event?.clientX || rect.left;
-			let y = (event?.clientY || rect.top) + 10;
-			
-			// Keep menu within viewport
-			if(x + menuWidth > window.innerWidth){
-				x = window.innerWidth - menuWidth - 10;
-			}
-			if(y + menuHeight > window.innerHeight){
-				y = window.innerHeight - menuHeight - 10;
-			}
-			
-			contextMenu.style.left = `${x}px`;
-			contextMenu.style.top = `${y}px`;
-			
-			console.log('Context menu positioned at:', x, y, 'menu size:', menuWidth, 'x', menuHeight);
-			
-			// Create new close handler
-			contextMenuCloseHandler = (e) => {
-				if(!contextMenu.contains(e.target)){hideContextMenu();}
-			};
-			
-			// Use capture phase to catch clicks immediately
-			document.addEventListener('click',contextMenuCloseHandler, true);
-		}
+    function showContextMenu(cell,iso,event){
+      console.log('showContextMenu called for:', iso, 'event:', event);
+      contextDate = iso;
+      contextUnit = filters.unit!=='all'? filters.unit : null;
+      if(!contextUnit){
+        const sameDayBookings = getBookingsForDate(iso);
+        if(sameDayBookings.length===1){
+          contextUnit = sameDayBookings[0].unit;
+        }
+      }
+      
+      // Remove previous close handler if exists
+      if(contextMenuCloseHandler){
+        document.removeEventListener('click',contextMenuCloseHandler);
+      }
+      
+      // Make sure menu is visible first to get correct dimensions
+      contextMenu.style.display='block';
+      contextMenu.style.visibility='visible';
+      contextMenu.style.opacity='1';
+      
+      // Calculate position
+      const rect = cell.getBoundingClientRect();
+      const menuWidth = contextMenu.offsetWidth || 200;
+      const menuHeight = contextMenu.offsetHeight || 120;
+      
+      let x = event?.clientX || rect.left;
+      let y = (event?.clientY || rect.top) + 10;
+      
+      // Keep menu within viewport
+      if(x + menuWidth > window.innerWidth){
+        x = window.innerWidth - menuWidth - 10;
+      }
+      if(y + menuHeight > window.innerHeight){
+        y = window.innerHeight - menuHeight - 10;
+      }
+      
+      contextMenu.style.left = `${x}px`;
+      contextMenu.style.top = `${y}px`;
+      
+      console.log('Context menu positioned at:', x, y, 'menu size:', menuWidth, 'x', menuHeight);
+      
+      // Create new close handler
+      contextMenuCloseHandler = (e) => {
+        if(!contextMenu.contains(e.target)){hideContextMenu();}
+      };
+      
+      // Use capture phase to catch clicks immediately
+      document.addEventListener('click',contextMenuCloseHandler, true);
+    }
 
-		function hideContextMenu(){
-			contextMenu.style.display='none';
-			if(contextMenuCloseHandler){
-				document.removeEventListener('click',contextMenuCloseHandler, true);
-				contextMenuCloseHandler = null;
-			}
-		}
+    function hideContextMenu(){
+      contextMenu.style.display='none';
+      if(contextMenuCloseHandler){
+        document.removeEventListener('click',contextMenuCloseHandler, true);
+        contextMenuCloseHandler = null;
+      }
+    }
 
-		// Modals
-		const modalBackdrop=document.getElementById('modalBackdrop');
-		const modalContent=document.getElementById('modalContent');
+    // Modals
+    const modalBackdrop=document.getElementById('modalBackdrop');
+    const modalContent=document.getElementById('modalContent');
 
-		function openModal(content){
-			// Remove previous modal if still present
-			if(activeModalCloseHandler){
-				document.removeEventListener('click', activeModalCloseHandler);
-				activeModalCloseHandler = null;
-			}
-			
-			// Clear old content
-			modalContent.innerHTML='';
-			
-			// Append content directly
-			modalContent.appendChild(content);
-			
-			modalBackdrop.classList.add('show');
-			document.body.style.overflow='hidden';
-			
-			// Attach new click handler for backdrop
-			activeModalCloseHandler = (e) => {
-				if(e.target === modalBackdrop) {
-					closeModal();
-				}
-			};
-			document.addEventListener('click', activeModalCloseHandler);
-		}
-		
-		function closeModal(){
-			// Remove active event listeners
-			if(activeModalCloseHandler){
-				document.removeEventListener('click', activeModalCloseHandler);
-				activeModalCloseHandler = null;
-			}
-			
-			// Clear all content and reset
-			modalContent.innerHTML = '';
-			
-			modalBackdrop.classList.remove('show');
-			document.body.style.overflow='';
-		}
-		
-		function showConfirmation(message){
-			const confBackdrop=document.createElement('div');
-			confBackdrop.style.cssText='position:fixed;inset:0;background:rgba(15,23,42,0.36);display:flex;align-items:center;justify-content:center;padding:20px;z-index:3000';
-			const confModal=document.createElement('div');
-			confModal.style.cssText='background:#fff;border-radius:16px;max-width:440px;width:100%;padding:30px;box-shadow:0 24px 48px rgba(15,23,41,0.18);text-align:center;animation:slideUp 0.3s ease';
-			const msgDiv=document.createElement('div');
-			msgDiv.style.cssText='white-space:pre-wrap;color:#1f2937;font-size:14px;line-height:1.6;margin-bottom:20px';
-			msgDiv.textContent=message;
-			const closeBtn=document.createElement('button');
-			closeBtn.style.cssText='padding:10px 20px;border-radius:10px;border:none;background:var(--accent);color:#fff;cursor:pointer;font-weight:600;transition:filter 0.2s';
-			closeBtn.textContent='OK';
-			closeBtn.onmouseover=()=>closeBtn.style.filter='brightness(0.92)';
-			closeBtn.onmouseout=()=>closeBtn.style.filter='brightness(1)';
-			confModal.appendChild(msgDiv);
-			confModal.appendChild(closeBtn);
-			confBackdrop.appendChild(confModal);
-			document.body.appendChild(confBackdrop);
-			closeBtn.addEventListener('click',()=>confBackdrop.remove());
-			document.addEventListener('keydown',(e)=>{if(e.key==='Escape') confBackdrop.remove();},{once:true});
-		}
+    function openModal(content){
+      // Remove previous modal if still present
+      if(activeModalCloseHandler){
+        document.removeEventListener('click', activeModalCloseHandler);
+        activeModalCloseHandler = null;
+      }
+      
+      // Clear old content
+      modalContent.innerHTML='';
+      
+      // Append content directly
+      modalContent.appendChild(content);
+      
+      modalBackdrop.classList.add('show');
+      document.body.style.overflow='hidden';
+      
+      // Attach new click handler for backdrop
+      activeModalCloseHandler = (e) => {
+        if(e.target === modalBackdrop) {
+          closeModal();
+        }
+      };
+      document.addEventListener('click', activeModalCloseHandler);
+    }
+    
+    function closeModal(){
+      // Remove active event listeners
+      if(activeModalCloseHandler){
+        document.removeEventListener('click', activeModalCloseHandler);
+        activeModalCloseHandler = null;
+      }
+      
+      // Clear all content and reset
+      modalContent.innerHTML = '';
+      
+      modalBackdrop.classList.remove('show');
+      document.body.style.overflow='';
+    }
+    
+    function showConfirmation(message){
+      const confBackdrop=document.createElement('div');
+      confBackdrop.style.cssText='position:fixed;inset:0;background:rgba(15,23,42,0.36);display:flex;align-items:center;justify-content:center;padding:20px;z-index:3000';
+      const confModal=document.createElement('div');
+      confModal.style.cssText='background:#fff;border-radius:16px;max-width:440px;width:100%;padding:30px;box-shadow:0 24px 48px rgba(15,23,41,0.18);text-align:center;animation:slideUp 0.3s ease';
+      const msgDiv=document.createElement('div');
+      msgDiv.style.cssText='white-space:pre-wrap;color:#1f2937;font-size:14px;line-height:1.6;margin-bottom:20px';
+      msgDiv.textContent=message;
+      const closeBtn=document.createElement('button');
+      closeBtn.style.cssText='padding:10px 20px;border-radius:10px;border:none;background:var(--accent);color:#fff;cursor:pointer;font-weight:600;transition:filter 0.2s';
+      closeBtn.textContent='OK';
+      closeBtn.onmouseover=()=>closeBtn.style.filter='brightness(0.92)';
+      closeBtn.onmouseout=()=>closeBtn.style.filter='brightness(1)';
+      confModal.appendChild(msgDiv);
+      confModal.appendChild(closeBtn);
+      confBackdrop.appendChild(confModal);
+      document.body.appendChild(confBackdrop);
+      closeBtn.addEventListener('click',()=>confBackdrop.remove());
+      document.addEventListener('keydown',(e)=>{if(e.key==='Escape') confBackdrop.remove();},{once:true});
+    }
 
-		function openBookingDetails(id){
-			const booking = bookings.find(b=>b.id===id);
-			if(!booking) return;
-			const computedAmount = calculateBookingAmount(booking.unit,booking.start,booking.end);
-			const nights = enumerateDates(booking.start,booking.end).length;
-			const storedAmount = Number(booking.amount||computedAmount||0);
-			const container=document.createElement('div');
-			container.innerHTML=`
-				<h3>Booking ${booking.id}</h3>
-				<div class="form-grid">
-					<div><strong>Client</strong><div>${booking.client}</div></div>
-					<div><strong>Unit</strong><div>${booking.unit}</div></div>
-					<div><strong>Dates</strong><div>${booking.start} → ${booking.end}</div></div>
-					<div><strong>Status</strong><div>${booking.status}</div></div>
-					<div><strong>Phone</strong><div>${booking.phone}</div></div>
-					<div><strong>Email</strong><div>${booking.email}</div></div>
-					<div><strong>Amount</strong><div>${formatCurrency(storedAmount)}<div class="rate-sub">${nights} ${nights===1?'night':'nights'} · Auto calc ${formatCurrency(computedAmount)}</div></div></div>
-					<div><strong>Payment</strong><div>${booking.method}</div></div>
-					<div><strong>Source</strong><div>${booking.source}</div></div>
-				</div>
-			`;
-			container.appendChild(buildRateBreakdown(booking));
-			const footer=document.createElement('div');
-			footer.className='modal-footer';
-			const cancelBtn=document.createElement('button');
-			cancelBtn.className='btn ghost';cancelBtn.textContent='Close';
-			cancelBtn.addEventListener('click',closeModal);
-			const destructive=document.createElement('button');
-			destructive.className='btn primary';
-			destructive.style.background='#ef4444';
-			destructive.style.boxShadow='0 10px 24px rgba(239,68,68,0.2)';
-			destructive.textContent='Cancel Booking';
-			destructive.addEventListener('click',()=>{
-				if(confirm('Cancel this booking?')){
-					booking.status='Cancelled';
-					closeModal();
-					renderCalendar();
-					showConfirmation('Booking cancelled (simulation).');
-				}
-			});
-			footer.appendChild(cancelBtn);
-			footer.appendChild(destructive);
-			container.appendChild(footer);
-			openModal(container);
-		}
+    function openBookingDetails(id){
+      const booking = bookings.find(b=>b.id===id);
+      if(!booking) return;
+      const computedAmount = calculateBookingAmount(booking.unit,booking.start,booking.end);
+      const nights = enumerateDates(booking.start,booking.end).length;
+      const storedAmount = Number(booking.amount||computedAmount||0);
+      const container=document.createElement('div');
+      container.innerHTML=`
+        <h3>Booking ${booking.id}</h3>
+        <div class="form-grid">
+          <div><strong>Client</strong><div>${booking.client}</div></div>
+          <div><strong>Unit</strong><div>${booking.unit}</div></div>
+          <div><strong>Dates</strong><div>${booking.start} → ${booking.end}</div></div>
+          <div><strong>Status</strong><div>${booking.status}</div></div>
+          <div><strong>Phone</strong><div>${booking.phone}</div></div>
+          <div><strong>Email</strong><div>${booking.email}</div></div>
+          <div><strong>Amount</strong><div>${formatCurrency(storedAmount)}<div class="rate-sub">${nights} ${nights===1?'night':'nights'} · Auto calc ${formatCurrency(computedAmount)}</div></div></div>
+          <div><strong>Payment</strong><div>${booking.method}</div></div>
+          <div><strong>Source</strong><div>${booking.source}</div></div>
+        </div>
+      `;
+      container.appendChild(buildRateBreakdown(booking));
+      const footer=document.createElement('div');
+      footer.className='modal-footer';
+      const cancelBtn=document.createElement('button');
+      cancelBtn.className='btn ghost';cancelBtn.textContent='Close';
+      cancelBtn.addEventListener('click',closeModal);
+      const destructive=document.createElement('button');
+      destructive.className='btn primary';
+      destructive.style.background='#ef4444';
+      destructive.style.boxShadow='0 10px 24px rgba(239,68,68,0.2)';
+      destructive.textContent='Cancel Booking';
+      destructive.addEventListener('click',()=>{
+        if(confirm('Cancel this booking?')){
+          booking.status='Cancelled';
+          closeModal();
+          renderCalendar();
+          showConfirmation('Booking cancelled (simulation).');
+        }
+      });
+      footer.appendChild(cancelBtn);
+      footer.appendChild(destructive);
+      container.appendChild(footer);
+      openModal(container);
+    }
 
-		function buildRateBreakdown(booking){
-			const wrapper=document.createElement('div');
-			wrapper.style.marginTop='16px';
-			const title=document.createElement('div');
-			title.style.fontWeight='700';
-			title.style.marginBottom='6px';
-			title.textContent='Nightly pricing';
-			wrapper.appendChild(title);
-			const list=document.createElement('div');
-			enumerateDates(booking.start,booking.end).forEach(date=>{
-				const row=document.createElement('div');
-				row.className='rate-row';
-				const info=document.createElement('div');
-				info.className='rate-info';
-				const weekdayKey=getWeekdayKey(date);
-				info.innerHTML=`<span>${formatDisplayDate(date)}</span><span class="rate-sub">${weekdayLabelMap[weekdayKey]||''}</span>`;
-				const actionWrap=document.createElement('div');
-				actionWrap.style.display='flex';
-				actionWrap.style.alignItems='center';
-				actionWrap.style.gap='8px';
-				const overrideDetails=getOverride(booking.unit,date);
-				const chip=document.createElement('span');
-				chip.className=`rate-chip ${overrideDetails?'override':'base'}`;
-				chip.textContent=formatCurrency(getRateFor(booking.unit,date)||0);
-				chip.title = overrideDetails? (overrideDetails.note||'Override rate'): 'Base rate';
-				const editBtn=document.createElement('button');
-				editBtn.className='mini-btn';
-				editBtn.textContent='Edit';
-				editBtn.addEventListener('click',()=>{
-					openEditPricing(booking.unit,date,()=>openBookingDetails(booking.id));
-				});
-				actionWrap.appendChild(chip);
-				actionWrap.appendChild(editBtn);
-				row.appendChild(info);
-				row.appendChild(actionWrap);
-				list.appendChild(row);
-			});
-			wrapper.appendChild(list);
-			return wrapper;
-		}
+    function buildRateBreakdown(booking){
+      const wrapper=document.createElement('div');
+      wrapper.style.marginTop='16px';
+      const title=document.createElement('div');
+      title.style.fontWeight='700';
+      title.style.marginBottom='6px';
+      title.textContent='Nightly pricing';
+      wrapper.appendChild(title);
+      const list=document.createElement('div');
+      enumerateDates(booking.start,booking.end).forEach(date=>{
+        const row=document.createElement('div');
+        row.className='rate-row';
+        const info=document.createElement('div');
+        info.className='rate-info';
+        const weekdayKey=getWeekdayKey(date);
+        info.innerHTML=`<span>${formatDisplayDate(date)}</span><span class="rate-sub">${weekdayLabelMap[weekdayKey]||''}</span>`;
+        const actionWrap=document.createElement('div');
+        actionWrap.style.display='flex';
+        actionWrap.style.alignItems='center';
+        actionWrap.style.gap='8px';
+        const overrideDetails=getOverride(booking.unit,date);
+        const chip=document.createElement('span');
+        chip.className=`rate-chip ${overrideDetails?'override':'base'}`;
+        chip.textContent=formatCurrency(getRateFor(booking.unit,date)||0);
+        chip.title = overrideDetails? (overrideDetails.note||'Override rate'): 'Base rate';
+        const editBtn=document.createElement('button');
+        editBtn.className='mini-btn';
+        editBtn.textContent='Edit';
+        editBtn.addEventListener('click',()=>{
+          openEditPricing(booking.unit,date,()=>openBookingDetails(booking.id));
+        });
+        actionWrap.appendChild(chip);
+        actionWrap.appendChild(editBtn);
+        row.appendChild(info);
+        row.appendChild(actionWrap);
+        list.appendChild(row);
+      });
+      wrapper.appendChild(list);
+      return wrapper;
+    }
 
-		function openAddBooking(prefillDate,prefillUnit){
-			const wrapper=document.createElement('div');
-			const dateVal=prefillDate||'';
-			wrapper.innerHTML=`<h3 style="margin-bottom:20px;font-size:18px;color:#0f1729" data-i18n="addNewReservation">Add New Reservation</h3>
+    function openAddBooking(prefillDate,prefillUnit){
+      const wrapper=document.createElement('div');
+      const dateVal=prefillDate||'';
+      wrapper.innerHTML=`<h3 style="margin-bottom:20px;font-size:18px;color:#0f1729" data-i18n="addNewReservation">Add New Reservation</h3>
 <div style="display:grid;gap:16px;margin-top:8px">
-	<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-		<div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px" data-i18n="clientName">Client Name *</label><input id="abName" data-i18n-placeholder="fullName" placeholder="Full name" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit"></div>
-		<div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px" data-i18n="phoneNumber">Phone Number *</label><div style="display:grid;grid-template-columns:60px 1fr;gap:8px"><select id="abCountryCode" style="padding:10px 8px;border:1px solid #e5e7eb;border-radius:10px;font-size:16px;font-family:inherit;appearance:none;background-image:url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2712%27 height=%2712%27 viewBox=%270 0 12 12%27%3E%3Cpath fill=%27%231f2937%27 d=%27M6 9L1 4h10z%27/%3E%3C/svg%3E');background-repeat:no-repeat;background-position:right 6px center;padding-right:24px;background-color:#fff;text-align:center"><option value="+966" data-i18n="saudi">🇸🇦</option></select><input id="abPhone" data-i18n-placeholder="phoneNumberOnly" placeholder="501234567" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit;min-width:0"></div></div>
-	</div>
-	<div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px" data-i18n="emailAddress">Email Address</label><input id="abEmail" type="email" data-i18n-placeholder="guestExample" placeholder="guest@example.com" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit"></div>
-	<div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px" data-i18n="selectUnit">Unit *</label><select id="abUnit" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit"><option value="" data-i18n="selectUnit">Select a unit</option></select></div>
-	<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-		<div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px" data-i18n="checkinDate">Check-in Date *</label><input id="abStart" type="date" value="${dateVal}" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit"></div>
-		<div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px" data-i18n="checkoutDate">Check-out Date *</label><input id="abEnd" type="date" value="${dateVal}" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit"></div>
-	</div>
-	<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-		<div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px" data-i18n="nightlyRate">Nightly Rate ($) *</label><input id="abRate" type="number" data-i18n-placeholder="rate000" placeholder="0.00" min="0" step="0.01" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit"></div>
-		<div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px" data-i18n="totalAmount">Total Amount ($)</label><input id="abTotal" type="text" data-i18n-placeholder="rate000" placeholder="0.00" disabled style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit;background:#f3f4f6;color:#6b7280"></div>
-	</div>
-	<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-		<div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px" data-i18n="paymentStatus">Payment Status *</label><select id="abPayment" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit"><option value="Paid" data-i18n="paid">Paid</option><option value="Pending" data-i18n="pending">Pending</option><option value="Partial" data-i18n="partialPayment">Partial Payment</option></select></div>
-		<div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px" data-i18n="paidAmount">Paid Amount ($)</label><input id="abPaid" type="number" data-i18n-placeholder="rate000" placeholder="0.00" min="0" step="0.01" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit"></div>
-	</div>
-	<div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px" data-i18n="specialRequests">Special Requests / Notes</label><textarea id="abNotes" data-i18n-placeholder="anySpecialRequests" placeholder="Any special requests or additional notes..." style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit;resize:vertical;min-height:80px"></textarea></div>
-	<div style="background:#f0f9ff;border:1px solid #bfdbfe;border-radius:10px;padding:12px;margin-top:8px"><div style="display:flex;justify-content:space-between;align-items:center;font-size:14px;font-weight:600;color:#0f1729"><span data-i18n="summary">Summary:</span><span><strong id="abSummary">0 nights × $0.00 = $0.00</strong></span></div></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px" data-i18n="clientName">Client Name *</label><input id="abName" data-i18n-placeholder="fullName" placeholder="Full name" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit"></div>
+    <div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px" data-i18n="phoneNumber">Phone Number *</label><div style="display:grid;grid-template-columns:60px 1fr;gap:8px"><select id="abCountryCode" style="padding:10px 8px;border:1px solid #e5e7eb;border-radius:10px;font-size:16px;font-family:inherit;appearance:none;background-image:url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2712%27 height=%2712%27 viewBox=%270 0 12 12%27%3E%3Cpath fill=%27%231f2937%27 d=%27M6 9L1 4h10z%27/%3E%3C/svg%3E');background-repeat:no-repeat;background-position:right 6px center;padding-right:24px;background-color:#fff;text-align:center"><option value="+966" data-i18n="saudi">🇸🇦</option></select><input id="abPhone" data-i18n-placeholder="phoneNumberOnly" placeholder="501234567" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit;min-width:0"></div></div>
+  </div>
+  <div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px" data-i18n="emailAddress">Email Address</label><input id="abEmail" type="email" data-i18n-placeholder="guestExample" placeholder="guest@example.com" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit"></div>
+  <div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px" data-i18n="selectUnit">Unit *</label><select id="abUnit" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit"><option value="" data-i18n="selectUnit">Select a unit</option></select></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px" data-i18n="checkinDate">Check-in Date *</label><input id="abStart" type="date" value="${dateVal}" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit"></div>
+    <div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px" data-i18n="checkoutDate">Check-out Date *</label><input id="abEnd" type="date" value="${dateVal}" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit"></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px" data-i18n="nightlyRate">Nightly Rate ($) *</label><input id="abRate" type="number" data-i18n-placeholder="rate000" placeholder="0.00" min="0" step="0.01" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit"></div>
+    <div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px" data-i18n="totalAmount">Total Amount ($)</label><input id="abTotal" type="text" data-i18n-placeholder="rate000" placeholder="0.00" disabled style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit;background:#f3f4f6;color:#6b7280"></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px" data-i18n="paymentStatus">Payment Status *</label><select id="abPayment" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit"><option value="Paid" data-i18n="paid">Paid</option><option value="Pending" data-i18n="pending">Pending</option><option value="Partial" data-i18n="partialPayment">Partial Payment</option></select></div>
+    <div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px" data-i18n="paidAmount">Paid Amount ($)</label><input id="abPaid" type="number" data-i18n-placeholder="rate000" placeholder="0.00" min="0" step="0.01" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit"></div>
+  </div>
+  <div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px" data-i18n="specialRequests">Special Requests / Notes</label><textarea id="abNotes" data-i18n-placeholder="anySpecialRequests" placeholder="Any special requests or additional notes..." style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit;resize:vertical;min-height:80px"></textarea></div>
+  <div style="background:#f0f9ff;border:1px solid #bfdbfe;border-radius:10px;padding:12px;margin-top:8px"><div style="display:flex;justify-content:space-between;align-items:center;font-size:14px;font-weight:600;color:#0f1729"><span data-i18n="summary">Summary:</span><span><strong id="abSummary">0 nights × $0.00 = $0.00</strong></span></div></div>
 </div>`;
-			
-			const footer=document.createElement('div');
-			footer.className='modal-footer';
-			footer.style.marginTop='20px';
-			const cancelBtn=document.createElement('button');
-			cancelBtn.className='btn ghost';cancelBtn.textContent=t('cancel');cancelBtn.addEventListener('click',closeModal);
-			const saveBtn=document.createElement('button');
-			saveBtn.className='btn primary';saveBtn.textContent=t('createReservation');
-			footer.appendChild(cancelBtn);footer.appendChild(saveBtn);
-			wrapper.appendChild(footer);
+      
+      const footer=document.createElement('div');
+      footer.className='modal-footer';
+      footer.style.marginTop='20px';
+      const cancelBtn=document.createElement('button');
+      cancelBtn.className='btn ghost';cancelBtn.textContent=t('cancel');cancelBtn.addEventListener('click',closeModal);
+      const saveBtn=document.createElement('button');
+      saveBtn.className='btn primary';saveBtn.textContent=t('createReservation');
+      footer.appendChild(cancelBtn);footer.appendChild(saveBtn);
+      wrapper.appendChild(footer);
 
-			openModal(wrapper);
-			
-			// Populate country code selector
-			const countryCodeSelect = document.getElementById('abCountryCode');
-			if(countryCodeSelect) {
-				countryCodeSelect.innerHTML = '';
-				countryCodes.forEach(c => {
-					const option = document.createElement('option');
-					option.value = c.code;
-					option.textContent = `${c.flag} ${c.code} - ${c.country}`;
-					if(c.code === '+966') option.selected = true; // Default to Saudi Arabia
-					countryCodeSelect.appendChild(option);
-				});
-			}
-			
-			// Translate modal content
-			applyTranslations();
-			// Also apply placeholder translations
-			document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{
-				el.placeholder = t(el.dataset.i18nPlaceholder);
-			});
-			
-			const unitSelect = document.getElementById('abUnit');
-			unitSelect.innerHTML = '<option value="">Select a unit</option>';
-			
-			// Populate with grouped units by property type
-			if(window.unitsGroups && Array.isArray(window.unitsGroups) && window.unitsGroups.length > 0){
-				window.unitsGroups.forEach(group => {
-					const optgroup = document.createElement('optgroup');
-					optgroup.label = group.name;
-					
-					const unitsInGroup = unitPalette.filter(u => u.groupId === group.id);
-					unitsInGroup.forEach(u => {
-						const option = document.createElement('option');
-						option.value = u.name;
-						option.textContent = u.name;
-						optgroup.appendChild(option);
-					});
-					
-					unitSelect.appendChild(optgroup);
-				});
-			} else {
-				// Fallback to flat list
-				unitPalette.forEach(u=>{const o=document.createElement('option');o.value=u.name;o.textContent=u.name;unitSelect.appendChild(o)});
-			}
-			
-			if(prefillUnit && unitPalette.find(u=>u.name===prefillUnit)){unitSelect.value=prefillUnit;}
+      openModal(wrapper);
+      
+      // Populate country code selector
+      const countryCodeSelect = document.getElementById('abCountryCode');
+      if(countryCodeSelect) {
+        countryCodeSelect.innerHTML = '';
+        countryCodes.forEach(c => {
+          const option = document.createElement('option');
+          option.value = c.code;
+          option.textContent = `${c.flag} ${c.code} - ${c.country}`;
+          if(c.code === '+966') option.selected = true; // Default to Saudi Arabia
+          countryCodeSelect.appendChild(option);
+        });
+      }
+      
+      // Translate modal content
+      applyTranslations();
+      // Also apply placeholder translations
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{
+        el.placeholder = t(el.dataset.i18nPlaceholder);
+      });
+      
+      const unitSelect = document.getElementById('abUnit');
+      unitSelect.innerHTML = '<option value="">Select a unit</option>';
+      
+      // Populate with grouped units by property type
+      if(window.unitsGroups && Array.isArray(window.unitsGroups) && window.unitsGroups.length > 0){
+        window.unitsGroups.forEach(group => {
+          const optgroup = document.createElement('optgroup');
+          optgroup.label = group.name;
+          
+          const unitsInGroup = unitPalette.filter(u => u.groupId === group.id);
+          unitsInGroup.forEach(u => {
+            const option = document.createElement('option');
+            option.value = u.name;
+            option.textContent = u.name;
+            optgroup.appendChild(option);
+          });
+          
+          unitSelect.appendChild(optgroup);
+        });
+      } else {
+        // Fallback to flat list
+        unitPalette.forEach(u=>{const o=document.createElement('option');o.value=u.name;o.textContent=u.name;unitSelect.appendChild(o)});
+      }
+      
+      if(prefillUnit && unitPalette.find(u=>u.name===prefillUnit)){unitSelect.value=prefillUnit;}
 
-			const startInput = document.getElementById('abStart');
-			const endInput = document.getElementById('abEnd');
-			const rateInput = document.getElementById('abRate');
-			const totalInput = document.getElementById('abTotal');
-			const summarySpan = document.getElementById('abSummary');
+      const startInput = document.getElementById('abStart');
+      const endInput = document.getElementById('abEnd');
+      const rateInput = document.getElementById('abRate');
+      const totalInput = document.getElementById('abTotal');
+      const summarySpan = document.getElementById('abSummary');
 
-			const calculateTotal = () => {
-				const start = new Date(startInput.value);
-				const end = new Date(endInput.value);
-				const rate = parseFloat(rateInput.value) || 0;
-				
-				if(startInput.value && endInput.value && end > start){
-					const nights = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
-					const total = nights * rate;
-					totalInput.value = total.toFixed(2);
-					summarySpan.textContent = `${nights} nights × $${rate.toFixed(2)} = $${total.toFixed(2)}`;
-				} else {
-					totalInput.value = '0.00';
-					summarySpan.textContent = '0 nights × $0.00 = $0.00';
-				}
-			};
+      const calculateTotal = () => {
+        const start = new Date(startInput.value);
+        const end = new Date(endInput.value);
+        const rate = parseFloat(rateInput.value) || 0;
+        
+        if(startInput.value && endInput.value && end > start){
+          const nights = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+          const total = nights * rate;
+          totalInput.value = total.toFixed(2);
+          summarySpan.textContent = `${nights} nights × $${rate.toFixed(2)} = $${total.toFixed(2)}`;
+        } else {
+          totalInput.value = '0.00';
+          summarySpan.textContent = '0 nights × $0.00 = $0.00';
+        }
+      };
 
-			startInput.addEventListener('change', calculateTotal);
-			endInput.addEventListener('change', calculateTotal);
-			rateInput.addEventListener('input', calculateTotal);
+      startInput.addEventListener('change', calculateTotal);
+      endInput.addEventListener('change', calculateTotal);
+      rateInput.addEventListener('input', calculateTotal);
 
-			saveBtn.addEventListener('click',function(){
-				const name=document.getElementById('abName').value;
-				const countryCode=document.getElementById('abCountryCode').value;
-				const phoneOnly=document.getElementById('abPhone').value;
-				const phone=countryCode + phoneOnly;
-				const email=document.getElementById('abEmail').value||'';
-				const unit=document.getElementById('abUnit').value;
-				const start=document.getElementById('abStart').value;
-				const end=document.getElementById('abEnd').value;
-				const rate=parseFloat(document.getElementById('abRate').value)||0;
-				const payment=document.getElementById('abPayment').value;
-				const paid=parseFloat(document.getElementById('abPaid').value)||0;
-				const notes=document.getElementById('abNotes').value||'';
-				
-				if(!name||!phoneOnly||!unit||!start||!end||!rate){
-					showConfirmation('Please fill in all required fields (marked with *)');
-					return;
-				}
-				
-				const startDate = new Date(start);
-				const endDate = new Date(end);
-				if(endDate <= startDate){
-					showConfirmation('Check-out date must be after check-in date');
-					return;
-				}
+      saveBtn.addEventListener('click',function(){
+        const name=document.getElementById('abName').value;
+        const countryCode=document.getElementById('abCountryCode').value;
+        const phoneOnly=document.getElementById('abPhone').value;
+        const phone=countryCode + phoneOnly;
+        const email=document.getElementById('abEmail').value||'';
+        const unit=document.getElementById('abUnit').value;
+        const start=document.getElementById('abStart').value;
+        const end=document.getElementById('abEnd').value;
+        const rate=parseFloat(document.getElementById('abRate').value)||0;
+        const payment=document.getElementById('abPayment').value;
+        const paid=parseFloat(document.getElementById('abPaid').value)||0;
+        const notes=document.getElementById('abNotes').value||'';
+        
+        if(!name||!phoneOnly||!unit||!start||!end||!rate){
+          showConfirmation('Please fill in all required fields (marked with *)');
+          return;
+        }
+        
+        const startDate = new Date(start);
+        const endDate = new Date(end);
+        if(endDate <= startDate){
+          showConfirmation('Check-out date must be after check-in date');
+          return;
+        }
 
-				const nights = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
-				const total = nights * rate;
-				
-				const id='BKG-'+String(Math.floor(Math.random()*9000+1000));
-				bookings.unshift({
-					id,
-					client:name,
-					unit,
-					start,
-					end,
-					status:'Active',
-					phone,
-					email,
-					payment,
-					source:'Manual',
-					rate,
-					nights,
-					total,
-					paid,
-					notes,
-					amount:total
-				});
-				renderCalendar();
-				closeModal();
-				showConfirmation(`Booking created successfully!\nBooking ID: ${id}\nClient: ${name}\nNights: ${nights}\nTotal: $${total.toFixed(2)}`);
-			});
-		}
+        const nights = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+        const total = nights * rate;
+        
+        const id='BKG-'+String(Math.floor(Math.random()*9000+1000));
+        bookings.unshift({
+          id,
+          client:name,
+          unit,
+          start,
+          end,
+          status:'Active',
+          phone,
+          email,
+          payment,
+          source:'Manual',
+          rate,
+          nights,
+          total,
+          paid,
+          notes,
+          amount:total
+        });
+        renderCalendar();
+        closeModal();
+        showConfirmation(`Booking created successfully!\nBooking ID: ${id}\nClient: ${name}\nNights: ${nights}\nTotal: $${total.toFixed(2)}`);
+      });
+    }
 
-		function openSyncCalendarModal(){
-			const wrapper=document.createElement('div');
-			wrapper.style.cssText = 'display:flex;flex-direction:column;gap:16px;max-height:65vh;overflow:auto';
-			
-			const title = document.createElement('h3');
-			title.textContent = 'Sync External Calendar';
-			title.style.cssText = 'margin:0 0 10px 0;font-size:18px;color:#0f1729;flex-shrink:0';
-			wrapper.appendChild(title);
-			
-			const modal = document.getElementById('modalBackdrop');
-			const modalContent = document.getElementById('modalContent');
-			modalContent.innerHTML = '';
-			modalContent.appendChild(wrapper);
-			modal.classList.add('show');
+    function openSyncCalendarModal(){
+      const wrapper=document.createElement('div');
+      wrapper.style.cssText = 'display:flex;flex-direction:column;gap:16px;max-height:65vh;overflow:auto';
+      
+      const title = document.createElement('h3');
+      title.textContent = 'Sync External Calendar';
+      title.style.cssText = 'margin:0 0 10px 0;font-size:18px;color:#0f1729;flex-shrink:0';
+      wrapper.appendChild(title);
+      
+      const modal = document.getElementById('modalBackdrop');
+      const modalContent = document.getElementById('modalContent');
+      modalContent.innerHTML = '';
+      modalContent.appendChild(wrapper);
+      modal.classList.add('show');
 
-			// Unit select
-			const unitSelectDiv = document.createElement('div');
-			const unitLabel = document.createElement('label');
-			unitLabel.textContent = 'Select Unit *';
-			unitLabel.style.cssText = 'font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px';
-			const syncUnitSelect = document.createElement('select');
-			syncUnitSelect.id = 'syncUnit';
-			syncUnitSelect.style.cssText = 'width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit';
-			syncUnitSelect.innerHTML = '<option value="">Select a unit</option>';
-			
-			// Group units by groupId
-			const groupedUnits = {};
-			let unitsGroups = [];
-			if(typeof window.unitsGroups !== 'undefined' && window.unitsGroups){
-				unitsGroups = window.unitsGroups;
-			}
-			
-			unitPalette.forEach(unit => {
-				const groupId = unit.groupId || 'Ungrouped';
-				if(!groupedUnits[groupId]) groupedUnits[groupId] = [];
-				groupedUnits[groupId].push(unit);
-			});
-			
-			// Add options with group headers
-			const sortedGroups = Object.keys(groupedUnits).sort();
-			sortedGroups.forEach(groupId => {
-				const group = unitsGroups.find(g => g.id === groupId);
-				const groupName = group ? group.name : groupId;
-				
-				if(groupId !== 'Ungrouped'){
-					const optgroup = document.createElement('optgroup');
-					optgroup.label = groupName;
-					groupedUnits[groupId].forEach(unit => {
-						const option = document.createElement('option');
-						option.value = unit.name;
-						option.textContent = unit.name;
-						optgroup.appendChild(option);
-					});
-					syncUnitSelect.appendChild(optgroup);
-				}
-			});
-			
-			// Add ungrouped units if any
-			if(groupedUnits['Ungrouped']){
-				groupedUnits['Ungrouped'].forEach(unit => {
-					const option = document.createElement('option');
-					option.value = unit.name;
-					option.textContent = unit.name;
-					syncUnitSelect.appendChild(option);
-				});
-			}
-			
-			unitSelectDiv.appendChild(unitLabel);
-			unitSelectDiv.appendChild(syncUnitSelect);
-			wrapper.appendChild(unitSelectDiv);
+      // Unit select
+      const unitSelectDiv = document.createElement('div');
+      const unitLabel = document.createElement('label');
+      unitLabel.textContent = 'Select Unit *';
+      unitLabel.style.cssText = 'font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px';
+      const syncUnitSelect = document.createElement('select');
+      syncUnitSelect.id = 'syncUnit';
+      syncUnitSelect.style.cssText = 'width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit';
+      syncUnitSelect.innerHTML = '<option value="">Select a unit</option>';
+      
+      // Group units by groupId
+      const groupedUnits = {};
+      let unitsGroups = [];
+      if(typeof window.unitsGroups !== 'undefined' && window.unitsGroups){
+        unitsGroups = window.unitsGroups;
+      }
+      
+      unitPalette.forEach(unit => {
+        const groupId = unit.groupId || 'Ungrouped';
+        if(!groupedUnits[groupId]) groupedUnits[groupId] = [];
+        groupedUnits[groupId].push(unit);
+      });
+      
+      // Add options with group headers
+      const sortedGroups = Object.keys(groupedUnits).sort();
+      sortedGroups.forEach(groupId => {
+        const group = unitsGroups.find(g => g.id === groupId);
+        const groupName = group ? group.name : groupId;
+        
+        if(groupId !== 'Ungrouped'){
+          const optgroup = document.createElement('optgroup');
+          optgroup.label = groupName;
+          groupedUnits[groupId].forEach(unit => {
+            const option = document.createElement('option');
+            option.value = unit.name;
+            option.textContent = unit.name;
+            optgroup.appendChild(option);
+          });
+          syncUnitSelect.appendChild(optgroup);
+        }
+      });
+      
+      // Add ungrouped units if any
+      if(groupedUnits['Ungrouped']){
+        groupedUnits['Ungrouped'].forEach(unit => {
+          const option = document.createElement('option');
+          option.value = unit.name;
+          option.textContent = unit.name;
+          syncUnitSelect.appendChild(option);
+        });
+      }
+      
+      unitSelectDiv.appendChild(unitLabel);
+      unitSelectDiv.appendChild(syncUnitSelect);
+      wrapper.appendChild(unitSelectDiv);
 
-			// Name input
-			const nameDiv = document.createElement('div');
-			const nameLabel = document.createElement('label');
-			nameLabel.textContent = 'Calendar Name *';
-			nameLabel.style.cssText = 'font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px';
-			const syncNameInput = document.createElement('input');
-			syncNameInput.id = 'syncName';
-			syncNameInput.type = 'text';
-			syncNameInput.placeholder = 'e.g., Main Google Calendar, Outlook Work';
-			syncNameInput.style.cssText = 'width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit';
-			nameDiv.appendChild(nameLabel);
-			nameDiv.appendChild(syncNameInput);
-			wrapper.appendChild(nameDiv);
+      // Name input
+      const nameDiv = document.createElement('div');
+      const nameLabel = document.createElement('label');
+      nameLabel.textContent = 'Calendar Name *';
+      nameLabel.style.cssText = 'font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px';
+      const syncNameInput = document.createElement('input');
+      syncNameInput.id = 'syncName';
+      syncNameInput.type = 'text';
+      syncNameInput.placeholder = 'e.g., Main Google Calendar, Outlook Work';
+      syncNameInput.style.cssText = 'width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit';
+      nameDiv.appendChild(nameLabel);
+      nameDiv.appendChild(syncNameInput);
+      wrapper.appendChild(nameDiv);
 
-			// URL input
-			const urlDiv = document.createElement('div');
-			const urlLabel = document.createElement('label');
-			urlLabel.textContent = 'External Calendar URL (iCal/Google Calendar) *';
-			urlLabel.style.cssText = 'font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px';
-			const syncUrlInput = document.createElement('input');
-			syncUrlInput.id = 'syncUrl';
-			syncUrlInput.type = 'text';
-			syncUrlInput.placeholder = 'https://calendar.google.com/calendar/ical/...';
-			syncUrlInput.style.cssText = 'width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit';
-			urlDiv.appendChild(urlLabel);
-			urlDiv.appendChild(syncUrlInput);
-			wrapper.appendChild(urlDiv);
+      // URL input
+      const urlDiv = document.createElement('div');
+      const urlLabel = document.createElement('label');
+      urlLabel.textContent = 'External Calendar URL (iCal/Google Calendar) *';
+      urlLabel.style.cssText = 'font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px';
+      const syncUrlInput = document.createElement('input');
+      syncUrlInput.id = 'syncUrl';
+      syncUrlInput.type = 'text';
+      syncUrlInput.placeholder = 'https://calendar.google.com/calendar/ical/...';
+      syncUrlInput.style.cssText = 'width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit';
+      urlDiv.appendChild(urlLabel);
+      urlDiv.appendChild(syncUrlInput);
+      wrapper.appendChild(urlDiv);
 
-			// Help box
-			const helpDiv = document.createElement('div');
-			helpDiv.style.cssText = 'background:#f0f9ff;border:1px solid #bfdbfe;border-radius:10px;padding:12px;font-size:12px;color:#0c4a6e;flex-shrink:0';
-			helpDiv.innerHTML = '<strong>ℹ️ How to get the URL:</strong><br>• Google Calendar: Right-click calendar → Settings → Integration → Copy iCal link<br>• Outlook: Right-click calendar → Copy link<br>• Other: Export as iCal format<br><br><strong>🔄 Automatic Sync:</strong> Calendars sync automatically every 1 hour. Use the manual sync button to sync immediately.';
-			wrapper.appendChild(helpDiv);
+      // Help box
+      const helpDiv = document.createElement('div');
+      helpDiv.style.cssText = 'background:#f0f9ff;border:1px solid #bfdbfe;border-radius:10px;padding:12px;font-size:12px;color:#0c4a6e;flex-shrink:0';
+      helpDiv.innerHTML = '<strong>ℹ️ How to get the URL:</strong><br>• Google Calendar: Right-click calendar → Settings → Integration → Copy iCal link<br>• Outlook: Right-click calendar → Copy link<br>• Other: Export as iCal format<br><br><strong>🔄 Automatic Sync:</strong> Calendars sync automatically every 1 hour. Use the manual sync button to sync immediately.';
+      wrapper.appendChild(helpDiv);
 
-			// Saved URLs section
-			const savedDiv = document.createElement('div');
-			savedDiv.style.cssText = 'border-top:1px solid #e5e7eb;padding-top:16px;flex-shrink:0';
-			const savedTitle = document.createElement('h4');
-			savedTitle.textContent = 'Saved Calendar URLs';
-			savedTitle.style.cssText = 'margin:0 0 12px 0;font-size:14px;color:#1f2937';
-			savedDiv.appendChild(savedTitle);
-			
-			const savedListDiv = document.createElement('div');
-			savedListDiv.id = 'savedUrlsList';
-			savedListDiv.style.cssText = 'display:grid;gap:10px';
-			savedDiv.appendChild(savedListDiv);
-			wrapper.appendChild(savedDiv);
+      // Saved URLs section
+      const savedDiv = document.createElement('div');
+      savedDiv.style.cssText = 'border-top:1px solid #e5e7eb;padding-top:16px;flex-shrink:0';
+      const savedTitle = document.createElement('h4');
+      savedTitle.textContent = 'Saved Calendar URLs';
+      savedTitle.style.cssText = 'margin:0 0 12px 0;font-size:14px;color:#1f2937';
+      savedDiv.appendChild(savedTitle);
+      
+      const savedListDiv = document.createElement('div');
+      savedListDiv.id = 'savedUrlsList';
+      savedListDiv.style.cssText = 'display:grid;gap:10px';
+      savedDiv.appendChild(savedListDiv);
+      wrapper.appendChild(savedDiv);
 
-			// Function to display saved URLs
-			function displaySavedUrls() {
-				const unit = syncUnitSelect.value;
-				const listDiv = document.getElementById('savedUrlsList');
-				listDiv.innerHTML = '';
-				
-				if(!unit) {
-					const emptyMsg = document.createElement('div');
-					emptyMsg.textContent = 'Select a unit to see saved calendars';
-					emptyMsg.style.cssText = 'color:#9ca3af;font-size:12px;padding:8px';
-					listDiv.appendChild(emptyMsg);
-					return;
-				}
+      // Function to display saved URLs
+      function displaySavedUrls() {
+        const unit = syncUnitSelect.value;
+        const listDiv = document.getElementById('savedUrlsList');
+        listDiv.innerHTML = '';
+        
+        if(!unit) {
+          const emptyMsg = document.createElement('div');
+          emptyMsg.textContent = 'Select a unit to see saved calendars';
+          emptyMsg.style.cssText = 'color:#9ca3af;font-size:12px;padding:8px';
+          listDiv.appendChild(emptyMsg);
+          return;
+        }
 
-				const savedUrls = Storage.getJSON(`calendarUrls_${unit}`, []);
-				
-				if(savedUrls.length === 0) {
-					const emptyMsg = document.createElement('div');
-					emptyMsg.textContent = 'No saved calendars yet';
-					emptyMsg.style.cssText = 'color:#9ca3af;font-size:12px;padding:8px';
-					listDiv.appendChild(emptyMsg);
-					return;
-				}
+        const savedUrls = Storage.getJSON(`calendarUrls_${unit}`, []);
+        
+        if(savedUrls.length === 0) {
+          const emptyMsg = document.createElement('div');
+          emptyMsg.textContent = 'No saved calendars yet';
+          emptyMsg.style.cssText = 'color:#9ca3af;font-size:12px;padding:8px';
+          listDiv.appendChild(emptyMsg);
+          return;
+        }
 
-				savedUrls.forEach((urlObj, index) => {
-					const item = document.createElement('div');
-					item.style.cssText = 'border:1px solid #e5e7eb;border-radius:8px;padding:10px;display:flex;flex-direction:column;gap:8px';
-					
-					const infoDiv = document.createElement('div');
-					infoDiv.style.cssText = 'flex:1;min-width:0';
-					
-					const nameSpan = document.createElement('div');
-					nameSpan.textContent = urlObj.name;
-					nameSpan.style.cssText = 'font-weight:600;font-size:12px;color:#1f2937;word-break:break-word';
-					
-					const statusSpan = document.createElement('div');
-					statusSpan.style.cssText = 'font-size:11px;margin-top:4px;display:flex;align-items:center;gap:4px';
-					
-					// Check URL status
-					if(urlObj.status === 'valid') {
-						statusSpan.innerHTML = '<i class="fa-solid fa-check" style="color:#22c55e"></i> <span style="color:#22c55e">Active</span>';
-					} else if(urlObj.status === 'invalid') {
-						statusSpan.innerHTML = '<i class="fa-solid fa-exclamation" style="color:#ef4444"></i> <span style="color:#ef4444">Error</span>';
-					} else {
-						statusSpan.innerHTML = '<i class="fa-solid fa-circle-notch" style="color:#f59e0b;animation:spin 1s linear infinite"></i> <span style="color:#f59e0b">Checking...</span>';
-					}
-					
-					// Last sync time
-					const lastSyncSpan = document.createElement('div');
-					lastSyncSpan.style.cssText = 'font-size:11px;margin-top:4px;color:#6b7280;display:flex;align-items:center;gap:4px';
-					const lastSync = urlObj.lastSync ? new Date(urlObj.lastSync).toLocaleString() : 'Never synced';
-					lastSyncSpan.innerHTML = `<i class="fa-solid fa-history"></i> <span>Last sync: ${lastSync}</span>`;
-					
-					infoDiv.appendChild(nameSpan);
-					infoDiv.appendChild(statusSpan);
-					infoDiv.appendChild(lastSyncSpan);
-					item.appendChild(infoDiv);
-					
-					// Action buttons row
-					const buttonsRow = document.createElement('div');
-					buttonsRow.style.cssText = 'display:flex;gap:6px;flex-wrap:wrap';
-					
-					// Edit button
-					const editBtn = document.createElement('button');
-					editBtn.className = 'btn ghost';
-					editBtn.style.cssText = 'padding:6px 10px;font-size:11px;flex-shrink:0';
-					editBtn.innerHTML = '<i class="fa-solid fa-pen"></i> Edit';
-					editBtn.addEventListener('click', () => {
-						// Show edit modal
-						const editWrapper = document.createElement('div');
-						editWrapper.style.cssText = 'display:flex;flex-direction:column;gap:16px';
-						
-						const editTitle = document.createElement('h3');
-						editTitle.textContent = 'Edit Calendar';
-						editTitle.style.cssText = 'margin:0 0 10px 0;font-size:16px;color:#0f1729';
-						editWrapper.appendChild(editTitle);
-						
-						const nameDiv = document.createElement('div');
-						const nameLabel = document.createElement('label');
-						nameLabel.textContent = 'Calendar Name *';
-						nameLabel.style.cssText = 'font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px';
-						const nameInput = document.createElement('input');
-						nameInput.type = 'text';
-						nameInput.value = urlObj.name;
-						nameInput.style.cssText = 'width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit';
-						nameDiv.appendChild(nameLabel);
-						nameDiv.appendChild(nameInput);
-						editWrapper.appendChild(nameDiv);
-						
-						const urlDiv = document.createElement('div');
-						const urlLabel = document.createElement('label');
-						urlLabel.textContent = 'Calendar URL *';
-						urlLabel.style.cssText = 'font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px';
-						const urlInput = document.createElement('input');
-						urlInput.type = 'text';
-						urlInput.value = urlObj.url;
-						urlInput.style.cssText = 'width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit';
-						urlDiv.appendChild(urlLabel);
-						urlDiv.appendChild(urlInput);
-						editWrapper.appendChild(urlDiv);
-						
-						const actionsDiv = document.createElement('div');
-						actionsDiv.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px';
-						
-						const saveBtn = document.createElement('button');
-						saveBtn.className = 'btn primary';
-						saveBtn.textContent = 'Save';
-						saveBtn.addEventListener('click', () => {
-							const newName = nameInput.value.trim();
-							const newUrl = urlInput.value.trim();
-							if(!newName || !newUrl) {
-								showConfirmation('Please fill in all fields');
-								return;
-							}
-							urlObj.name = newName;
-							urlObj.url = newUrl;
-							Storage.setJSON(`calendarUrls_${unit}`, savedUrls);
-							closeModal();
-							openSyncCalendarModal();
-							showConfirmation(`✅ Calendar updated to "${newName}"`);
-						});
-						
-						const cancelBtn = document.createElement('button');
-						cancelBtn.className = 'btn ghost';
-						cancelBtn.textContent = 'Cancel';
-						cancelBtn.addEventListener('click', closeModal);
-						
-						actionsDiv.appendChild(saveBtn);
-						actionsDiv.appendChild(cancelBtn);
-						editWrapper.appendChild(actionsDiv);
-						
-						const editModal = document.getElementById('modalBackdrop');
-						const editContent = document.getElementById('modalContent');
-						editContent.innerHTML = '';
-						editContent.appendChild(editWrapper);
-						editModal.classList.add('show');
-					});
-					buttonsRow.appendChild(editBtn);
-					
-					// Manual sync button
-					const syncBtn = document.createElement('button');
-					syncBtn.className = 'btn ghost';
-					syncBtn.style.cssText = 'padding:6px 10px;font-size:11px;flex-shrink:0';
-					syncBtn.innerHTML = '<i class="fa-solid fa-arrows-rotate"></i> Sync Now';
-					syncBtn.addEventListener('click', () => {
-						// Simulate sync
-						urlObj.lastSync = new Date().toISOString();
-						urlObj.status = 'valid';
-						Storage.setJSON(`calendarUrls_${unit}`, savedUrls);
-						displaySavedUrls();
-						showConfirmation(`✅ Calendar "${urlObj.name}" synced successfully`);
-					});
-					buttonsRow.appendChild(syncBtn);
-					
-					// Delete button
-					const deleteBtn = document.createElement('button');
-					deleteBtn.className = 'btn ghost';
-					deleteBtn.style.cssText = 'padding:6px 10px;font-size:11px;flex-shrink:0';
-					deleteBtn.innerHTML = '<i class="fa-solid fa-trash"></i> Delete';
-					deleteBtn.addEventListener('click', () => {
-						savedUrls.splice(index, 1);
-						Storage.setJSON(`calendarUrls_${unit}`, savedUrls);
-						displaySavedUrls();
-					});
-					buttonsRow.appendChild(deleteBtn);
-					
-					item.appendChild(buttonsRow);
-					listDiv.appendChild(item);
-				});
-			}
+        savedUrls.forEach((urlObj, index) => {
+          const item = document.createElement('div');
+          item.style.cssText = 'border:1px solid #e5e7eb;border-radius:8px;padding:10px;display:flex;flex-direction:column;gap:8px';
+          
+          const infoDiv = document.createElement('div');
+          infoDiv.style.cssText = 'flex:1;min-width:0';
+          
+          const nameSpan = document.createElement('div');
+          nameSpan.textContent = urlObj.name;
+          nameSpan.style.cssText = 'font-weight:600;font-size:12px;color:#1f2937;word-break:break-word';
+          
+          const statusSpan = document.createElement('div');
+          statusSpan.style.cssText = 'font-size:11px;margin-top:4px;display:flex;align-items:center;gap:4px';
+          
+          // Check URL status
+          if(urlObj.status === 'valid') {
+            statusSpan.innerHTML = '<i class="fa-solid fa-check" style="color:#22c55e"></i> <span style="color:#22c55e">Active</span>';
+          } else if(urlObj.status === 'invalid') {
+            statusSpan.innerHTML = '<i class="fa-solid fa-exclamation" style="color:#ef4444"></i> <span style="color:#ef4444">Error</span>';
+          } else {
+            statusSpan.innerHTML = '<i class="fa-solid fa-circle-notch" style="color:#f59e0b;animation:spin 1s linear infinite"></i> <span style="color:#f59e0b">Checking...</span>';
+          }
+          
+          // Last sync time
+          const lastSyncSpan = document.createElement('div');
+          lastSyncSpan.style.cssText = 'font-size:11px;margin-top:4px;color:#6b7280;display:flex;align-items:center;gap:4px';
+          const lastSync = urlObj.lastSync ? new Date(urlObj.lastSync).toLocaleString() : 'Never synced';
+          lastSyncSpan.innerHTML = `<i class="fa-solid fa-history"></i> <span>Last sync: ${lastSync}</span>`;
+          
+          infoDiv.appendChild(nameSpan);
+          infoDiv.appendChild(statusSpan);
+          infoDiv.appendChild(lastSyncSpan);
+          item.appendChild(infoDiv);
+          
+          // Action buttons row
+          const buttonsRow = document.createElement('div');
+          buttonsRow.style.cssText = 'display:flex;gap:6px;flex-wrap:wrap';
+          
+          // Edit button
+          const editBtn = document.createElement('button');
+          editBtn.className = 'btn ghost';
+          editBtn.style.cssText = 'padding:6px 10px;font-size:11px;flex-shrink:0';
+          editBtn.innerHTML = '<i class="fa-solid fa-pen"></i> Edit';
+          editBtn.addEventListener('click', () => {
+            // Show edit modal
+            const editWrapper = document.createElement('div');
+            editWrapper.style.cssText = 'display:flex;flex-direction:column;gap:16px';
+            
+            const editTitle = document.createElement('h3');
+            editTitle.textContent = 'Edit Calendar';
+            editTitle.style.cssText = 'margin:0 0 10px 0;font-size:16px;color:#0f1729';
+            editWrapper.appendChild(editTitle);
+            
+            const nameDiv = document.createElement('div');
+            const nameLabel = document.createElement('label');
+            nameLabel.textContent = 'Calendar Name *';
+            nameLabel.style.cssText = 'font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px';
+            const nameInput = document.createElement('input');
+            nameInput.type = 'text';
+            nameInput.value = urlObj.name;
+            nameInput.style.cssText = 'width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit';
+            nameDiv.appendChild(nameLabel);
+            nameDiv.appendChild(nameInput);
+            editWrapper.appendChild(nameDiv);
+            
+            const urlDiv = document.createElement('div');
+            const urlLabel = document.createElement('label');
+            urlLabel.textContent = 'Calendar URL *';
+            urlLabel.style.cssText = 'font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px';
+            const urlInput = document.createElement('input');
+            urlInput.type = 'text';
+            urlInput.value = urlObj.url;
+            urlInput.style.cssText = 'width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit';
+            urlDiv.appendChild(urlLabel);
+            urlDiv.appendChild(urlInput);
+            editWrapper.appendChild(urlDiv);
+            
+            const actionsDiv = document.createElement('div');
+            actionsDiv.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px';
+            
+            const saveBtn = document.createElement('button');
+            saveBtn.className = 'btn primary';
+            saveBtn.textContent = 'Save';
+            saveBtn.addEventListener('click', () => {
+              const newName = nameInput.value.trim();
+              const newUrl = urlInput.value.trim();
+              if(!newName || !newUrl) {
+                showConfirmation('Please fill in all fields');
+                return;
+              }
+              urlObj.name = newName;
+              urlObj.url = newUrl;
+              Storage.setJSON(`calendarUrls_${unit}`, savedUrls);
+              closeModal();
+              openSyncCalendarModal();
+              showConfirmation(`✅ Calendar updated to "${newName}"`);
+            });
+            
+            const cancelBtn = document.createElement('button');
+            cancelBtn.className = 'btn ghost';
+            cancelBtn.textContent = 'Cancel';
+            cancelBtn.addEventListener('click', closeModal);
+            
+            actionsDiv.appendChild(saveBtn);
+            actionsDiv.appendChild(cancelBtn);
+            editWrapper.appendChild(actionsDiv);
+            
+            const editModal = document.getElementById('modalBackdrop');
+            const editContent = document.getElementById('modalContent');
+            editContent.innerHTML = '';
+            editContent.appendChild(editWrapper);
+            editModal.classList.add('show');
+          });
+          buttonsRow.appendChild(editBtn);
+          
+          // Manual sync button
+          const syncBtn = document.createElement('button');
+          syncBtn.className = 'btn ghost';
+          syncBtn.style.cssText = 'padding:6px 10px;font-size:11px;flex-shrink:0';
+          syncBtn.innerHTML = '<i class="fa-solid fa-arrows-rotate"></i> Sync Now';
+          syncBtn.addEventListener('click', () => {
+            // Simulate sync
+            urlObj.lastSync = new Date().toISOString();
+            urlObj.status = 'valid';
+            Storage.setJSON(`calendarUrls_${unit}`, savedUrls);
+            displaySavedUrls();
+            showConfirmation(`✅ Calendar "${urlObj.name}" synced successfully`);
+          });
+          buttonsRow.appendChild(syncBtn);
+          
+          // Delete button
+          const deleteBtn = document.createElement('button');
+          deleteBtn.className = 'btn ghost';
+          deleteBtn.style.cssText = 'padding:6px 10px;font-size:11px;flex-shrink:0';
+          deleteBtn.innerHTML = '<i class="fa-solid fa-trash"></i> Delete';
+          deleteBtn.addEventListener('click', () => {
+            savedUrls.splice(index, 1);
+            Storage.setJSON(`calendarUrls_${unit}`, savedUrls);
+            displaySavedUrls();
+          });
+          buttonsRow.appendChild(deleteBtn);
+          
+          item.appendChild(buttonsRow);
+          listDiv.appendChild(item);
+        });
+      }
 
-			syncUnitSelect.addEventListener('change', displaySavedUrls);
+      syncUnitSelect.addEventListener('change', displaySavedUrls);
 
-			// Buttons row
-			const buttonsDiv = document.createElement('div');
-			buttonsDiv.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px;flex-shrink:0';
-			
-			const syncBtn = document.createElement('button');
-			syncBtn.className = 'btn primary';
-			syncBtn.textContent = 'Add Calendar';
-			syncBtn.addEventListener('click', () => {
-				const unit = syncUnitSelect.value;
-				const name = syncNameInput.value.trim();
-				const url = syncUrlInput.value.trim();
-				
-				if(!unit) {
-					showConfirmation('Please select a unit');
-					return;
-				}
-				if(!name) {
-					showConfirmation('Please enter a name for this calendar');
-					return;
-				}
-				if(!url) {
-					showConfirmation('Please enter a calendar URL');
-					return;
-				}
-				if(!url.includes('http')) {
-					showConfirmation('Please enter a valid URL starting with http:// or https://');
-					return;
-				}
+      // Buttons row
+      const buttonsDiv = document.createElement('div');
+      buttonsDiv.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px;flex-shrink:0';
+      
+      const syncBtn = document.createElement('button');
+      syncBtn.className = 'btn primary';
+      syncBtn.textContent = 'Add Calendar';
+      syncBtn.addEventListener('click', () => {
+        const unit = syncUnitSelect.value;
+        const name = syncNameInput.value.trim();
+        const url = syncUrlInput.value.trim();
+        
+        if(!unit) {
+          showConfirmation('Please select a unit');
+          return;
+        }
+        if(!name) {
+          showConfirmation('Please enter a name for this calendar');
+          return;
+        }
+        if(!url) {
+          showConfirmation('Please enter a calendar URL');
+          return;
+        }
+        if(!url.includes('http')) {
+          showConfirmation('Please enter a valid URL starting with http:// or https://');
+          return;
+        }
 
-				// Get existing URLs (safe with fallback)
-				const savedUrls = Storage.getJSON(`calendarUrls_${unit}`, []);
-				
-				// Add new URL with status
-				const urlObj = {
-					name: name,
-					url: url,
-					status: 'valid',
-					addedDate: new Date().toISOString()
-				};
-				
-				savedUrls.push(urlObj);
-				Storage.setJSON(`calendarUrls_${unit}`, savedUrls);
-				
-				// Reset inputs
-				syncNameInput.value = '';
-				syncUrlInput.value = '';
-				
-				// Refresh display
-				displaySavedUrls();
-				showConfirmation(`✅ Calendar "${name}" added to ${unit}`);
-			});
-			buttonsDiv.appendChild(syncBtn);
+        // Get existing URLs (safe with fallback)
+        const savedUrls = Storage.getJSON(`calendarUrls_${unit}`, []);
+        
+        // Add new URL with status
+        const urlObj = {
+          name: name,
+          url: url,
+          status: 'valid',
+          addedDate: new Date().toISOString()
+        };
+        
+        savedUrls.push(urlObj);
+        Storage.setJSON(`calendarUrls_${unit}`, savedUrls);
+        
+        // Reset inputs
+        syncNameInput.value = '';
+        syncUrlInput.value = '';
+        
+        // Refresh display
+        displaySavedUrls();
+        showConfirmation(`✅ Calendar "${name}" added to ${unit}`);
+      });
+      buttonsDiv.appendChild(syncBtn);
 
-			const cancelBtn = document.createElement('button');
-			cancelBtn.className = 'btn ghost';
-			cancelBtn.textContent = 'Close';
-			cancelBtn.addEventListener('click', closeModal);
-			buttonsDiv.appendChild(cancelBtn);
-			
-			wrapper.appendChild(buttonsDiv);
+      const cancelBtn = document.createElement('button');
+      cancelBtn.className = 'btn ghost';
+      cancelBtn.textContent = 'Close';
+      cancelBtn.addEventListener('click', closeModal);
+      buttonsDiv.appendChild(cancelBtn);
+      
+      wrapper.appendChild(buttonsDiv);
 
-			// Add animation for loading status
-			const style = document.createElement('style');
-			style.textContent = `@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`;
-			document.head.appendChild(style);
-		}
+      // Add animation for loading status
+      const style = document.createElement('style');
+      style.textContent = `@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`;
+      document.head.appendChild(style);
+    }
 
-		// Helper function to get units for grouped display
-		function getUnitsForCalendar(){
-			// Try to get unitDataset from window scope (loaded from units.html)
-			if(typeof window.unitDataset !== 'undefined' && window.unitDataset && window.unitDataset.length > 0){
-				return window.unitDataset;
-			}
-			// Fallback to unitPalette
-			return unitPalette || [];
-		}
+    // Helper function to get units for grouped display
+    function getUnitsForCalendar(){
+      // Try to get unitDataset from window scope (loaded from units.html)
+      if(typeof window.unitDataset !== 'undefined' && window.unitDataset && window.unitDataset.length > 0){
+        return window.unitDataset;
+      }
+      // Fallback to unitPalette
+      return unitPalette || [];
+    }
 
-		// Helper function to populate unit select with grouped display
-		function populateUnitSelectCalendar(urlList, baseUrl){
-			try {
-				const units = getUnitsForCalendar();
-				let unitsGroups = [];
-				
-				// Try to get unitsGroups from window scope
-				if(typeof window.unitsGroups !== 'undefined' && window.unitsGroups && window.unitsGroups.length > 0){
-					unitsGroups = window.unitsGroups;
-				}
-				
-				if(unitsGroups.length > 0){
-					// Group units by their groupId
-					const groupedUnits = {};
-					units.forEach(unit => {
-						const groupId = unit.groupId || 'Ungrouped';
-						if(!groupedUnits[groupId]) groupedUnits[groupId] = [];
-						groupedUnits[groupId].push(unit);
-					});
-					
-					// Sort groups and display with headers
-					const sortedGroups = Object.keys(groupedUnits).sort();
-					sortedGroups.forEach(groupId => {
-						// Find group name
-						const group = unitsGroups.find(g => g.id === groupId);
-						const groupName = group ? group.name : groupId;
-						
-						// Create group header
-						const groupHeader = document.createElement('div');
-						groupHeader.style.cssText = 'padding:12px;background:#f3f4f6;font-weight:700;color:#374151;font-size:13px;margin-top:12px;border-radius:8px 8px 0 0;border-bottom:1px solid #e5e7eb';
-						groupHeader.textContent = groupName;
-						urlList.appendChild(groupHeader);
-						
-						// Add units under this group
-						groupedUnits[groupId].forEach(unit => {
-							const unitUrlDiv = document.createElement('div');
-							unitUrlDiv.style.cssText = 'border:1px solid #e5e7eb;border-top:none;padding:12px;display:flex;flex-direction:column;gap:8px';
-							
-							const unitNameAndCopy = document.createElement('div');
-							unitNameAndCopy.style.cssText = 'display:flex;align-items:center;justify-content:space-between;gap:8px';
-							
-							const unitLabel = document.createElement('div');
-							unitLabel.style.cssText = 'display:flex;align-items:center;gap:8px;flex:1;min-width:0';
-							const unitPaletteItem = unitPalette.find(u => u.name === unit.name);
-							// Removed colored circle, just showing unit name
-							unitLabel.innerHTML = `<span style="font-weight:600;color:#1f2937;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${unit.name}</span>`;
-							unitNameAndCopy.appendChild(unitLabel);
-							
-							const copyBtn = document.createElement('button');
-							copyBtn.className = 'btn primary';
-							copyBtn.style.cssText = 'padding:8px 10px;font-size:14px;flex-shrink:0;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer;width:auto;min-width:auto';
-							copyBtn.title = 'Copy URL';
-							copyBtn.innerHTML = '<i class="fa-solid fa-copy"></i>';
-							const currentUrl = `${baseUrl}?unit=${unit.name}&calendar=true`;
-							copyBtn.addEventListener('click', () => {
-								navigator.clipboard.writeText(currentUrl);
-								const originalHTML = copyBtn.innerHTML;
-								copyBtn.innerHTML = '✓';
-								setTimeout(() => { copyBtn.innerHTML = originalHTML; }, 2000);
-							});
-							unitNameAndCopy.appendChild(copyBtn);
-							unitUrlDiv.appendChild(unitNameAndCopy);
-							
-							const urlInput = document.createElement('input');
-							urlInput.type = 'text';
-							urlInput.value = currentUrl;
-							urlInput.style.cssText = 'width:100%;padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:11px;font-family:monospace;color:#475569;overflow:hidden;text-overflow:ellipsis';
-							urlInput.readOnly = true;
-							unitUrlDiv.appendChild(urlInput);
-							urlList.appendChild(unitUrlDiv);
-						});
-					});
-				} else {
-					// No groups, show flat list
-					units.forEach(unit => {
-						const unitUrlDiv = document.createElement('div');
-						unitUrlDiv.style.cssText = 'border:1px solid #e5e7eb;border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px';
-						
-						const unitNameAndCopy = document.createElement('div');
-						unitNameAndCopy.style.cssText = 'display:flex;align-items:center;justify-content:space-between;gap:8px';
-						
-						const unitLabel = document.createElement('div');
-						unitLabel.style.cssText = 'display:flex;align-items:center;gap:8px;flex:1;min-width:0';
-						// Removed colored circle, just showing unit name
-						unitLabel.innerHTML = `<span style="font-weight:600;color:#1f2937;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${unit.name}</span>`;
-						unitNameAndCopy.appendChild(unitLabel);
-						
-						const copyBtn = document.createElement('button');
-						copyBtn.className = 'btn primary';
-						copyBtn.style.cssText = 'padding:8px 10px;font-size:14px;flex-shrink:0;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer;width:auto;min-width:auto';
-						copyBtn.title = 'Copy URL';
-						copyBtn.innerHTML = '<i class="fa-solid fa-copy"></i>';
-						const currentUrl = `${baseUrl}?unit=${unit.name}&calendar=true`;
-						copyBtn.addEventListener('click', () => {
-							navigator.clipboard.writeText(currentUrl);
-							const originalHTML = copyBtn.innerHTML;
-							copyBtn.innerHTML = '✓';
-							setTimeout(() => { copyBtn.innerHTML = originalHTML; }, 2000);
-						});
-						unitNameAndCopy.appendChild(copyBtn);
-						unitUrlDiv.appendChild(unitNameAndCopy);
-						
-						const urlInput = document.createElement('input');
-						urlInput.type = 'text';
-						urlInput.value = currentUrl;
-						urlInput.style.cssText = 'width:100%;padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:11px;font-family:monospace;color:#475569;overflow:hidden;text-overflow:ellipsis';
-						urlInput.readOnly = true;
-						unitUrlDiv.appendChild(urlInput);
-						urlList.appendChild(unitUrlDiv);
-					});
-				}
-			} catch(err) {
-				console.error('Error populating unit select:', err);
-			}
-		}
+    // Helper function to populate unit select with grouped display
+    function populateUnitSelectCalendar(urlList, baseUrl){
+      try {
+        const units = getUnitsForCalendar();
+        let unitsGroups = [];
+        
+        // Try to get unitsGroups from window scope
+        if(typeof window.unitsGroups !== 'undefined' && window.unitsGroups && window.unitsGroups.length > 0){
+          unitsGroups = window.unitsGroups;
+        }
+        
+        if(unitsGroups.length > 0){
+          // Group units by their groupId
+          const groupedUnits = {};
+          units.forEach(unit => {
+            const groupId = unit.groupId || 'Ungrouped';
+            if(!groupedUnits[groupId]) groupedUnits[groupId] = [];
+            groupedUnits[groupId].push(unit);
+          });
+          
+          // Sort groups and display with headers
+          const sortedGroups = Object.keys(groupedUnits).sort();
+          sortedGroups.forEach(groupId => {
+            // Find group name
+            const group = unitsGroups.find(g => g.id === groupId);
+            const groupName = group ? group.name : groupId;
+            
+            // Create group header
+            const groupHeader = document.createElement('div');
+            groupHeader.style.cssText = 'padding:12px;background:#f3f4f6;font-weight:700;color:#374151;font-size:13px;margin-top:12px;border-radius:8px 8px 0 0;border-bottom:1px solid #e5e7eb';
+            groupHeader.textContent = groupName;
+            urlList.appendChild(groupHeader);
+            
+            // Add units under this group
+            groupedUnits[groupId].forEach(unit => {
+              const unitUrlDiv = document.createElement('div');
+              unitUrlDiv.style.cssText = 'border:1px solid #e5e7eb;border-top:none;padding:12px;display:flex;flex-direction:column;gap:8px';
+              
+              const unitNameAndCopy = document.createElement('div');
+              unitNameAndCopy.style.cssText = 'display:flex;align-items:center;justify-content:space-between;gap:8px';
+              
+              const unitLabel = document.createElement('div');
+              unitLabel.style.cssText = 'display:flex;align-items:center;gap:8px;flex:1;min-width:0';
+              const unitPaletteItem = unitPalette.find(u => u.name === unit.name);
+              // Removed colored circle, just showing unit name
+              unitLabel.innerHTML = `<span style="font-weight:600;color:#1f2937;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${unit.name}</span>`;
+              unitNameAndCopy.appendChild(unitLabel);
+              
+              const copyBtn = document.createElement('button');
+              copyBtn.className = 'btn primary';
+              copyBtn.style.cssText = 'padding:8px 10px;font-size:14px;flex-shrink:0;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer;width:auto;min-width:auto';
+              copyBtn.title = 'Copy URL';
+              copyBtn.innerHTML = '<i class="fa-solid fa-copy"></i>';
+              const currentUrl = `${baseUrl}?unit=${unit.name}&calendar=true`;
+              copyBtn.addEventListener('click', () => {
+                navigator.clipboard.writeText(currentUrl);
+                const originalHTML = copyBtn.innerHTML;
+                copyBtn.innerHTML = '✓';
+                setTimeout(() => { copyBtn.innerHTML = originalHTML; }, 2000);
+              });
+              unitNameAndCopy.appendChild(copyBtn);
+              unitUrlDiv.appendChild(unitNameAndCopy);
+              
+              const urlInput = document.createElement('input');
+              urlInput.type = 'text';
+              urlInput.value = currentUrl;
+              urlInput.style.cssText = 'width:100%;padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:11px;font-family:monospace;color:#475569;overflow:hidden;text-overflow:ellipsis';
+              urlInput.readOnly = true;
+              unitUrlDiv.appendChild(urlInput);
+              urlList.appendChild(unitUrlDiv);
+            });
+          });
+        } else {
+          // No groups, show flat list
+          units.forEach(unit => {
+            const unitUrlDiv = document.createElement('div');
+            unitUrlDiv.style.cssText = 'border:1px solid #e5e7eb;border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px';
+            
+            const unitNameAndCopy = document.createElement('div');
+            unitNameAndCopy.style.cssText = 'display:flex;align-items:center;justify-content:space-between;gap:8px';
+            
+            const unitLabel = document.createElement('div');
+            unitLabel.style.cssText = 'display:flex;align-items:center;gap:8px;flex:1;min-width:0';
+            // Removed colored circle, just showing unit name
+            unitLabel.innerHTML = `<span style="font-weight:600;color:#1f2937;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${unit.name}</span>`;
+            unitNameAndCopy.appendChild(unitLabel);
+            
+            const copyBtn = document.createElement('button');
+            copyBtn.className = 'btn primary';
+            copyBtn.style.cssText = 'padding:8px 10px;font-size:14px;flex-shrink:0;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer;width:auto;min-width:auto';
+            copyBtn.title = 'Copy URL';
+            copyBtn.innerHTML = '<i class="fa-solid fa-copy"></i>';
+            const currentUrl = `${baseUrl}?unit=${unit.name}&calendar=true`;
+            copyBtn.addEventListener('click', () => {
+              navigator.clipboard.writeText(currentUrl);
+              const originalHTML = copyBtn.innerHTML;
+              copyBtn.innerHTML = '✓';
+              setTimeout(() => { copyBtn.innerHTML = originalHTML; }, 2000);
+            });
+            unitNameAndCopy.appendChild(copyBtn);
+            unitUrlDiv.appendChild(unitNameAndCopy);
+            
+            const urlInput = document.createElement('input');
+            urlInput.type = 'text';
+            urlInput.value = currentUrl;
+            urlInput.style.cssText = 'width:100%;padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:11px;font-family:monospace;color:#475569;overflow:hidden;text-overflow:ellipsis';
+            urlInput.readOnly = true;
+            unitUrlDiv.appendChild(urlInput);
+            urlList.appendChild(unitUrlDiv);
+          });
+        }
+      } catch(err) {
+        console.error('Error populating unit select:', err);
+      }
+    }
 
-		function openGetCalendarUrlModal(){
-			const wrapper=document.createElement('div');
-			wrapper.innerHTML=`<h3 style="margin-bottom:20px;font-size:18px;color:#0f1729">Get Calendar URL for Each Unit</h3>
+    function openGetCalendarUrlModal(){
+      const wrapper=document.createElement('div');
+      wrapper.innerHTML=`<h3 style="margin-bottom:20px;font-size:18px;color:#0f1729">Get Calendar URL for Each Unit</h3>
 <div style="display:grid;gap:12px;margin-top:8px" id="calendarUrlList"></div>
 <div style="background:#f0f9ff;border:1px solid #bfdbfe;border-radius:10px;padding:12px;margin-top:16px"><div style="font-size:12px;color:#0c4a6e"><strong>💡 How to use:</strong><br>1. Click 'Copy URL' for any unit<br>2. Share the URL with other calendar applications<br>3. They can import/subscribe to this unit's calendar</div></div>`;
-			
-			const modal = document.getElementById('modalBackdrop');
-			const modalContent = document.getElementById('modalContent');
-			modalContent.innerHTML = '';
-			modalContent.appendChild(wrapper);
-			modal.classList.add('show');
+      
+      const modal = document.getElementById('modalBackdrop');
+      const modalContent = document.getElementById('modalContent');
+      modalContent.innerHTML = '';
+      modalContent.appendChild(wrapper);
+      modal.classList.add('show');
 
-			const urlList = document.getElementById('calendarUrlList');
-			const baseUrl = window.location.origin + window.location.pathname.replace(/\/[^/]*$/, '');
-			
-			// Use grouped display helper
-			populateUnitSelectCalendar(urlList, baseUrl);
+      const urlList = document.getElementById('calendarUrlList');
+      const baseUrl = window.location.origin + window.location.pathname.replace(/\/[^/]*$/, '');
+      
+      // Use grouped display helper
+      populateUnitSelectCalendar(urlList, baseUrl);
 
-			const closeBtn = document.createElement('button');
-			closeBtn.className = 'btn ghost';
-			closeBtn.textContent = 'Close';
-			closeBtn.style.cssText = 'margin-top:20px;width:100%';
-			closeBtn.addEventListener('click', closeModal);
-			wrapper.appendChild(closeBtn);
-		}
+      const closeBtn = document.createElement('button');
+      closeBtn.className = 'btn ghost';
+      closeBtn.textContent = 'Close';
+      closeBtn.style.cssText = 'margin-top:20px;width:100%';
+      closeBtn.addEventListener('click', closeModal);
+      wrapper.appendChild(closeBtn);
+    }
 
-		function openBlockDates(prefillDate,prefillUnit){
-			const wrapper=document.createElement('div');
-			wrapper.innerHTML='<h3 data-i18n="blockDates">Block Dates</h3>';
-			
-			const form=document.createElement('div');
-			form.className='form-grid';
-			
-			// Create unit select label
-			const unitLabel = document.createElement('label');
-			unitLabel.setAttribute('data-i18n', 'selectUnit');
-			unitLabel.textContent = 'Unit';
-			const unitSelect = document.createElement('select');
-			unitSelect.id = 'blockUnit';
-			unitLabel.appendChild(unitSelect);
-			form.appendChild(unitLabel);
-			
-			// Create date range row
-			const dateRow = document.createElement('div');
-			dateRow.className = 'form-grid two';
-			
-			const startLabel = document.createElement('label');
-			startLabel.setAttribute('data-i18n', 'start');
-			startLabel.textContent = 'Start';
-			const startInput = document.createElement('input');
-			startInput.type = 'date';
-			startInput.id = 'blockStart';
-			startInput.value = prefillDate || '';
-			startLabel.appendChild(startInput);
-			dateRow.appendChild(startLabel);
-			
-			const endLabel = document.createElement('label');
-			endLabel.setAttribute('data-i18n', 'end');
-			endLabel.textContent = 'End';
-			const endInput = document.createElement('input');
-			endInput.type = 'date';
-			endInput.id = 'blockEnd';
-			endInput.value = prefillDate || '';
-			endLabel.appendChild(endInput);
-			dateRow.appendChild(endLabel);
-			
-			form.appendChild(dateRow);
-			
-			// Create reason select label
-			const reasonLabel = document.createElement('label');
-			reasonLabel.setAttribute('data-i18n', 'reason');
-			reasonLabel.textContent = 'Reason';
-			const reasonSelect = document.createElement('select');
-			reasonSelect.id = 'blockReason';
-			const reasons = ['Maintenance', 'Owner Stay', 'Cleaning', 'Other'];
-			reasons.forEach(reason => {
-				const option = document.createElement('option');
-				option.value = reason;
-				option.textContent = reason;
-				reasonSelect.appendChild(option);
-			});
-			reasonLabel.appendChild(reasonSelect);
-			form.appendChild(reasonLabel);
-			
-			wrapper.appendChild(form);
-			
-			// Create footer with buttons
-			const footer = document.createElement('div');
-			footer.className = 'modal-footer';
-			
-			const cancelBtn = document.createElement('button');
-			cancelBtn.className = 'btn ghost';
-			cancelBtn.textContent = 'Cancel';
-			cancelBtn.addEventListener('click', closeModal);
-			footer.appendChild(cancelBtn);
-			
-			const blockBtn = document.createElement('button');
-			blockBtn.className = 'btn primary';
-			blockBtn.textContent = 'Block Unit';
-			footer.appendChild(blockBtn);
-			
-			wrapper.appendChild(footer);
-			
-			// Open modal with the wrapper
-			openModal(wrapper);
-			
-			// Populate units
-			unitPalette.forEach(unit => {
-				const option = document.createElement('option');
-				option.value = unit.name;
-				option.textContent = unit.name;
-				unitSelect.appendChild(option);
-			});
-			
-			if(prefillUnit && unitPalette.find(u => u.name === prefillUnit)) {
-				unitSelect.value = prefillUnit;
-			}
-			
-			// Add click handler for block button
-			blockBtn.addEventListener('click', () => {
-				const unit = unitSelect.value;
-				const start = startInput.value;
-				const end = endInput.value || start;
-				const reason = reasonSelect.value;
-				
-				if(!start) {
-					showConfirmation('Select a start date');
-					return;
-				}
-				if(!unit) {
-					showConfirmation('Select a unit');
-					return;
-				}
-				
-				setBlockedDates(unit, start, end, reason);
-				closeModal();
-				renderCalendar();
-				showConfirmation(`Successfully blocked ${unit} from ${start} to ${end} for ${reason}`);
-			});
-		}
+    function openBlockDates(prefillDate,prefillUnit){
+      const wrapper=document.createElement('div');
+      wrapper.innerHTML='<h3 data-i18n="blockDates">Block Dates</h3>';
+      
+      const form=document.createElement('div');
+      form.className='form-grid';
+      
+      // Create unit select label
+      const unitLabel = document.createElement('label');
+      unitLabel.setAttribute('data-i18n', 'selectUnit');
+      unitLabel.textContent = 'Unit';
+      const unitSelect = document.createElement('select');
+      unitSelect.id = 'blockUnit';
+      unitLabel.appendChild(unitSelect);
+      form.appendChild(unitLabel);
+      
+      // Create date range row
+      const dateRow = document.createElement('div');
+      dateRow.className = 'form-grid two';
+      
+      const startLabel = document.createElement('label');
+      startLabel.setAttribute('data-i18n', 'start');
+      startLabel.textContent = 'Start';
+      const startInput = document.createElement('input');
+      startInput.type = 'date';
+      startInput.id = 'blockStart';
+      startInput.value = prefillDate || '';
+      startLabel.appendChild(startInput);
+      dateRow.appendChild(startLabel);
+      
+      const endLabel = document.createElement('label');
+      endLabel.setAttribute('data-i18n', 'end');
+      endLabel.textContent = 'End';
+      const endInput = document.createElement('input');
+      endInput.type = 'date';
+      endInput.id = 'blockEnd';
+      endInput.value = prefillDate || '';
+      endLabel.appendChild(endInput);
+      dateRow.appendChild(endLabel);
+      
+      form.appendChild(dateRow);
+      
+      // Create reason select label
+      const reasonLabel = document.createElement('label');
+      reasonLabel.setAttribute('data-i18n', 'reason');
+      reasonLabel.textContent = 'Reason';
+      const reasonSelect = document.createElement('select');
+      reasonSelect.id = 'blockReason';
+      const reasons = ['Maintenance', 'Owner Stay', 'Cleaning', 'Other'];
+      reasons.forEach(reason => {
+        const option = document.createElement('option');
+        option.value = reason;
+        option.textContent = reason;
+        reasonSelect.appendChild(option);
+      });
+      reasonLabel.appendChild(reasonSelect);
+      form.appendChild(reasonLabel);
+      
+      wrapper.appendChild(form);
+      
+      // Create footer with buttons
+      const footer = document.createElement('div');
+      footer.className = 'modal-footer';
+      
+      const cancelBtn = document.createElement('button');
+      cancelBtn.className = 'btn ghost';
+      cancelBtn.textContent = 'Cancel';
+      cancelBtn.addEventListener('click', closeModal);
+      footer.appendChild(cancelBtn);
+      
+      const blockBtn = document.createElement('button');
+      blockBtn.className = 'btn primary';
+      blockBtn.textContent = 'Block Unit';
+      footer.appendChild(blockBtn);
+      
+      wrapper.appendChild(footer);
+      
+      // Open modal with the wrapper
+      openModal(wrapper);
+      
+      // Populate units
+      unitPalette.forEach(unit => {
+        const option = document.createElement('option');
+        option.value = unit.name;
+        option.textContent = unit.name;
+        unitSelect.appendChild(option);
+      });
+      
+      if(prefillUnit && unitPalette.find(u => u.name === prefillUnit)) {
+        unitSelect.value = prefillUnit;
+      }
+      
+      // Add click handler for block button
+      blockBtn.addEventListener('click', () => {
+        const unit = unitSelect.value;
+        const start = startInput.value;
+        const end = endInput.value || start;
+        const reason = reasonSelect.value;
+        
+        if(!start) {
+          showConfirmation('Select a start date');
+          return;
+        }
+        if(!unit) {
+          showConfirmation('Select a unit');
+          return;
+        }
+        
+        setBlockedDates(unit, start, end, reason);
+        closeModal();
+        renderCalendar();
+        showConfirmation(`Successfully blocked ${unit} from ${start} to ${end} for ${reason}`);
+      });
+    }
 
-		function openEditPricing(prefillUnit,prefillDate,onComplete){
-			const wrapper=document.createElement('div');
-			
-			const title = document.createElement('h3');
-			title.textContent = 'Adjust Pricing';
-			title.style.marginBottom = '8px';
-			wrapper.appendChild(title);
-			
-			const form=document.createElement('div');
-			form.className='form-grid';
-			
-			// Create unit select
-			const unitLabel = document.createElement('label');
-			unitLabel.textContent = 'Unit';
-			const unitSelect = document.createElement('select');
-			unitSelect.id = 'rateUnit';
-			unitLabel.appendChild(unitSelect);
-			form.appendChild(unitLabel);
-			
-			// Create date input
-			const dateLabel = document.createElement('label');
-			dateLabel.textContent = 'Date';
-			const dateInput = document.createElement('input');
-			dateInput.type = 'date';
-			dateInput.id = 'rateDate';
-			dateInput.value = prefillDate || '';
-			dateLabel.appendChild(dateInput);
-			form.appendChild(dateLabel);
-			
-			// Create price input
-			const priceLabel = document.createElement('label');
-			priceLabel.textContent = 'New Price';
-			const priceInput = document.createElement('input');
-			priceInput.type = 'number';
-			priceInput.id = 'rateValue';
-			priceInput.min = '0';
-			priceLabel.appendChild(priceInput);
-			form.appendChild(priceLabel);
-			
-			// Create notes input
-			const noteLabel = document.createElement('label');
-			noteLabel.textContent = 'Notes';
-			const noteInput = document.createElement('input');
-			noteInput.type = 'text';
-			noteInput.id = 'rateNote';
-			noteInput.placeholder = 'Optional note';
-			noteLabel.appendChild(noteInput);
-			form.appendChild(noteLabel);
-			
-			wrapper.appendChild(form);
-			
-			const meta=document.createElement('div');
-			meta.className='rate-sub';
-			meta.style.marginTop='12px';
-			meta.id='rateMeta';
-			wrapper.appendChild(meta);
+    function openEditPricing(prefillUnit,prefillDate,onComplete){
+      const wrapper=document.createElement('div');
+      
+      const title = document.createElement('h3');
+      title.textContent = 'Adjust Pricing';
+      title.style.marginBottom = '8px';
+      wrapper.appendChild(title);
+      
+      const form=document.createElement('div');
+      form.className='form-grid';
+      
+      // Create unit select
+      const unitLabel = document.createElement('label');
+      unitLabel.textContent = 'Unit';
+      const unitSelect = document.createElement('select');
+      unitSelect.id = 'rateUnit';
+      unitLabel.appendChild(unitSelect);
+      form.appendChild(unitLabel);
+      
+      // Create date input
+      const dateLabel = document.createElement('label');
+      dateLabel.textContent = 'Date';
+      const dateInput = document.createElement('input');
+      dateInput.type = 'date';
+      dateInput.id = 'rateDate';
+      dateInput.value = prefillDate || '';
+      dateLabel.appendChild(dateInput);
+      form.appendChild(dateLabel);
+      
+      // Create price input
+      const priceLabel = document.createElement('label');
+      priceLabel.textContent = 'New Price';
+      const priceInput = document.createElement('input');
+      priceInput.type = 'number';
+      priceInput.id = 'rateValue';
+      priceInput.min = '0';
+      priceLabel.appendChild(priceInput);
+      form.appendChild(priceLabel);
+      
+      // Create notes input
+      const noteLabel = document.createElement('label');
+      noteLabel.textContent = 'Notes';
+      const noteInput = document.createElement('input');
+      noteInput.type = 'text';
+      noteInput.id = 'rateNote';
+      noteInput.placeholder = 'Optional note';
+      noteLabel.appendChild(noteInput);
+      form.appendChild(noteLabel);
+      
+      wrapper.appendChild(form);
+      
+      const meta=document.createElement('div');
+      meta.className='rate-sub';
+      meta.style.marginTop='12px';
+      meta.id='rateMeta';
+      wrapper.appendChild(meta);
 
-			const footer=document.createElement('div');
-			footer.className='modal-footer';
-			
-			const cancelBtn=document.createElement('button');
-			cancelBtn.className='btn ghost';
-			cancelBtn.textContent='Cancel';
-			cancelBtn.addEventListener('click',()=>{closeModal();if(onComplete) onComplete();});
-			
-			const deleteBtn=document.createElement('button');
-			deleteBtn.className='btn ghost';
-			deleteBtn.style.display='none';
-			deleteBtn.textContent='Remove Override';
-			
-			const saveBtn=document.createElement('button');
-			saveBtn.className='btn primary';
-			saveBtn.textContent='Save Pricing';
-			
-			footer.appendChild(cancelBtn);
-			footer.appendChild(deleteBtn);
-			footer.appendChild(saveBtn);
-			wrapper.appendChild(footer);
+      const footer=document.createElement('div');
+      footer.className='modal-footer';
+      
+      const cancelBtn=document.createElement('button');
+      cancelBtn.className='btn ghost';
+      cancelBtn.textContent='Cancel';
+      cancelBtn.addEventListener('click',()=>{closeModal();if(onComplete) onComplete();});
+      
+      const deleteBtn=document.createElement('button');
+      deleteBtn.className='btn ghost';
+      deleteBtn.style.display='none';
+      deleteBtn.textContent='Remove Override';
+      
+      const saveBtn=document.createElement('button');
+      saveBtn.className='btn primary';
+      saveBtn.textContent='Save Pricing';
+      
+      footer.appendChild(cancelBtn);
+      footer.appendChild(deleteBtn);
+      footer.appendChild(saveBtn);
+      wrapper.appendChild(footer);
 
-			openModal(wrapper);
+      openModal(wrapper);
 
-			// Populate units
-			unitPalette.forEach(unit=>{
-				const option=document.createElement('option');
-				option.value=unit.name;
-				option.textContent=unit.name;
-				unitSelect.appendChild(option);
-			});
-			if(prefillUnit && unitPalette.find(u=>u.name===prefillUnit)){
-				unitSelect.value=prefillUnit;
-			}
+      // Populate units
+      unitPalette.forEach(unit=>{
+        const option=document.createElement('option');
+        option.value=unit.name;
+        option.textContent=unit.name;
+        unitSelect.appendChild(option);
+      });
+      if(prefillUnit && unitPalette.find(u=>u.name===prefillUnit)){
+        unitSelect.value=prefillUnit;
+      }
 
-			function refreshSummary(){
-				const unit=unitSelect.value;
-				const date=dateInput.value;
-				if(!date){
-					priceInput.value='';
-					noteInput.value='';
-					meta.textContent='Select a date to view or override pricing.';
-					deleteBtn.style.display='none';
-					return;
-				}
-				const base=getBaseRateFor(unit,date);
-				const overrideDetails=getOverride(unit,date);
-				if(overrideDetails){
-					priceInput.value = overrideDetails.price ?? '';
-					noteInput.value = overrideDetails.note || '';
-					const weekdayLabel = weekdayLabelMap[getWeekdayKey(date)]||'selected';
-					if(base!=null){
-						meta.textContent = `Override in effect: ${formatCurrency(overrideDetails.price)} (set ${overrideDetails.updatedAt||'previously'}). Base ${weekdayLabel} rate is ${formatCurrency(base)}.`;
-					} else {
-						meta.textContent = `Override in effect: ${formatCurrency(overrideDetails.price)} (set ${overrideDetails.updatedAt||'previously'}). No base pricing stored for ${weekdayLabel}.`;
-					}
-					deleteBtn.style.display='inline-flex';
-				} else {
-					priceInput.value = base ?? '';
-					noteInput.value = '';
-					if(base!=null){
-						meta.textContent = `${weekdayLabelMap[getWeekdayKey(date)]||'Selected'} base rate is ${formatCurrency(base)}.`;
-					} else {
-						meta.textContent = 'No base pricing recorded. Enter a custom amount to create an override.';
-					}
-					deleteBtn.style.display='none';
-				}
-			}
+      function refreshSummary(){
+        const unit=unitSelect.value;
+        const date=dateInput.value;
+        if(!date){
+          priceInput.value='';
+          noteInput.value='';
+          meta.textContent='Select a date to view or override pricing.';
+          deleteBtn.style.display='none';
+          return;
+        }
+        const base=getBaseRateFor(unit,date);
+        const overrideDetails=getOverride(unit,date);
+        if(overrideDetails){
+          priceInput.value = overrideDetails.price ?? '';
+          noteInput.value = overrideDetails.note || '';
+          const weekdayLabel = weekdayLabelMap[getWeekdayKey(date)]||'selected';
+          if(base!=null){
+            meta.textContent = `Override in effect: ${formatCurrency(overrideDetails.price)} (set ${overrideDetails.updatedAt||'previously'}). Base ${weekdayLabel} rate is ${formatCurrency(base)}.`;
+          } else {
+            meta.textContent = `Override in effect: ${formatCurrency(overrideDetails.price)} (set ${overrideDetails.updatedAt||'previously'}). No base pricing stored for ${weekdayLabel}.`;
+          }
+          deleteBtn.style.display='inline-flex';
+        } else {
+          priceInput.value = base ?? '';
+          noteInput.value = '';
+          if(base!=null){
+            meta.textContent = `${weekdayLabelMap[getWeekdayKey(date)]||'Selected'} base rate is ${formatCurrency(base)}.`;
+          } else {
+            meta.textContent = 'No base pricing recorded. Enter a custom amount to create an override.';
+          }
+          deleteBtn.style.display='none';
+        }
+      }
 
-			unitSelect.addEventListener('change',refreshSummary);
-			dateInput.addEventListener('change',refreshSummary);
+      unitSelect.addEventListener('change',refreshSummary);
+      dateInput.addEventListener('change',refreshSummary);
 
-			deleteBtn.addEventListener('click',()=>{
-				const unit=unitSelect.value;
-				const date=dateInput.value;
-				if(!date){showConfirmation('Select a date to remove overrides.');return;}
-				removeOverride(unit,date);
-				closeModal();
-				renderCalendar();
-				showConfirmation('Override removed (simulation).');
-				if(onComplete) onComplete();
-			});
+      deleteBtn.addEventListener('click',()=>{
+        const unit=unitSelect.value;
+        const date=dateInput.value;
+        if(!date){showConfirmation('Select a date to remove overrides.');return;}
+        removeOverride(unit,date);
+        closeModal();
+        renderCalendar();
+        showConfirmation('Override removed (simulation).');
+        if(onComplete) onComplete();
+      });
 
-			saveBtn.addEventListener('click',()=>{
-				const unit=unitSelect.value;
-				const date=dateInput.value;
-				if(!date){showConfirmation('Choose a date to update pricing.');return;}
-				if(priceInput.value===''){showConfirmation('Set a nightly price.');return;}
-				const price=Number(priceInput.value);
-				if(Number.isNaN(price)||price<0){showConfirmation('Enter a valid price.');return;}
-				setOverride(unit,date,{price,note:noteInput.value.trim(),updatedBy:'Admin',updatedAt:new Date().toISOString().split('T')[0]});
-				closeModal();
-				renderCalendar();
-				showConfirmation('Pricing updated (simulation).');
-				if(onComplete) onComplete();
-			});
+      saveBtn.addEventListener('click',()=>{
+        const unit=unitSelect.value;
+        const date=dateInput.value;
+        if(!date){showConfirmation('Choose a date to update pricing.');return;}
+        if(priceInput.value===''){showConfirmation('Set a nightly price.');return;}
+        const price=Number(priceInput.value);
+        if(Number.isNaN(price)||price<0){showConfirmation('Enter a valid price.');return;}
+        setOverride(unit,date,{price,note:noteInput.value.trim(),updatedBy:'Admin',updatedAt:new Date().toISOString().split('T')[0]});
+        closeModal();
+        renderCalendar();
+        showConfirmation('Pricing updated (simulation).');
+        if(onComplete) onComplete();
+      });
 
-			refreshSummary();
-		}
+      refreshSummary();
+    }
 
-		document.getElementById('prevMonth').addEventListener('click',()=>{currentMonth.setMonth(currentMonth.getMonth()-1);renderCalendar();});
-		document.getElementById('nextMonth').addEventListener('click',()=>{currentMonth.setMonth(currentMonth.getMonth()+1);renderCalendar();});
-		document.getElementById('unitFilter').addEventListener('change',e=>{filters.unit=e.target.value;renderCalendar();});
-		
-		// Sync mobile filter with desktop filter
-		document.getElementById('unitFilterMobile')?.addEventListener('change',e=>{
-			filters.unit=e.target.value;
-			document.getElementById('unitFilter').value=e.target.value;
-			renderCalendar();
-		});
-		
-		const viewSelectElement = document.getElementById('viewSelect');
-		if(viewSelectElement) {
-			viewSelectElement.addEventListener('change',e=>{filters.view=e.target.value;renderCalendar();});
-		}
-		
-		// Add event listeners with safety checks
-		const addBookingBtnElement = document.getElementById('addBookingBtn');
-		const syncCalendarBtnElement = document.getElementById('syncCalendarBtn');
-		const getCalendarUrlBtnElement = document.getElementById('getCalendarUrlBtn');
-		const profileBtnElement = document.getElementById('profileBtn');
-		const profileSettingsElement = document.getElementById('profileSettings');
-		const logoutBtnElement = document.getElementById('logoutBtn');
-		const addBookingBtnDesktopElement = document.getElementById('addBookingBtnDesktop');
-		
-		if(addBookingBtnElement) addBookingBtnElement.addEventListener('click',()=>openAddBooking(null,filters.unit!=='all'?filters.unit:null));
-		if(addBookingBtnDesktopElement) addBookingBtnDesktopElement.addEventListener('click',()=>openAddBooking(null,filters.unit!=='all'?filters.unit:null));
-		if(syncCalendarBtnElement) syncCalendarBtnElement.addEventListener('click',()=>openSyncCalendarModal());
-		if(getCalendarUrlBtnElement) getCalendarUrlBtnElement.addEventListener('click',()=>openGetCalendarUrlModal());
+    document.getElementById('prevMonth').addEventListener('click',()=>{currentMonth.setMonth(currentMonth.getMonth()-1);renderCalendar();});
+    document.getElementById('nextMonth').addEventListener('click',()=>{currentMonth.setMonth(currentMonth.getMonth()+1);renderCalendar();});
+    document.getElementById('unitFilter').addEventListener('change',e=>{filters.unit=e.target.value;renderCalendar();});
+    
+    // Sync mobile filter with desktop filter
+    document.getElementById('unitFilterMobile')?.addEventListener('change',e=>{
+      filters.unit=e.target.value;
+      document.getElementById('unitFilter').value=e.target.value;
+      renderCalendar();
+    });
+    
+    const viewSelectElement = document.getElementById('viewSelect');
+    if(viewSelectElement) {
+      viewSelectElement.addEventListener('change',e=>{filters.view=e.target.value;renderCalendar();});
+    }
+    
+    // Add event listeners with safety checks
+    const addBookingBtnElement = document.getElementById('addBookingBtn');
+    const syncCalendarBtnElement = document.getElementById('syncCalendarBtn');
+    const getCalendarUrlBtnElement = document.getElementById('getCalendarUrlBtn');
+    const profileBtnElement = document.getElementById('profileBtn');
+    const profileSettingsElement = document.getElementById('profileSettings');
+    const logoutBtnElement = document.getElementById('logoutBtn');
+    const addBookingBtnDesktopElement = document.getElementById('addBookingBtnDesktop');
+    
+    if(addBookingBtnElement) addBookingBtnElement.addEventListener('click',()=>openAddBooking(null,filters.unit!=='all'?filters.unit:null));
+    if(addBookingBtnDesktopElement) addBookingBtnDesktopElement.addEventListener('click',()=>openAddBooking(null,filters.unit!=='all'?filters.unit:null));
+    if(syncCalendarBtnElement) syncCalendarBtnElement.addEventListener('click',()=>openSyncCalendarModal());
+    if(getCalendarUrlBtnElement) getCalendarUrlBtnElement.addEventListener('click',()=>openGetCalendarUrlModal());
 
-		// Profile handlers
-		if(profileBtnElement) profileBtnElement.addEventListener('click',()=>{document.getElementById('profileMenu').classList.toggle('show');});
-		if(profileSettingsElement) profileSettingsElement.addEventListener('click',()=>{window.location.href='business-info.html'});
-		if(logoutBtnElement) logoutBtnElement.addEventListener('click',()=>{
-			document.body.innerHTML='<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:Inter"><div style="text-align:center"><h2>You are logged out</h2><p>Simulation only. Reload to return.</p></div></div>';
-		});
+    // Profile handlers
+    if(profileBtnElement) profileBtnElement.addEventListener('click',()=>{document.getElementById('profileMenu').classList.toggle('show');});
+    if(profileSettingsElement) profileSettingsElement.addEventListener('click',()=>{window.location.href='business-info.html'});
+    if(logoutBtnElement) logoutBtnElement.addEventListener('click',()=>{
+      document.body.innerHTML='<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:Inter"><div style="text-align:center"><h2>You are logged out</h2><p>Simulation only. Reload to return.</p></div></div>';
+    });
 
-		// Nav linking
-		document.querySelectorAll('.nav-item').forEach(item=>{
-			item.addEventListener('click',(e)=>{
-				e.preventDefault();
-				e.stopPropagation();
-				// Get the closest nav-item (in case user clicked child element)
-				const navItem = e.target.closest('.nav-item');
-				if(!navItem) return;
-				
-				const link = navItem.dataset.link;
-				if(link){
-					// Redirect to target page
-					const fullPath = getPagePath(link);
-					console.log('Navigating to:', fullPath);
-					location.href = fullPath;
-					return;
-				}
-				showConfirmation('This section is not part of the current prototype.');
-			});
-		});
+    // Nav linking
+    document.querySelectorAll('.nav-item').forEach(item=>{
+      item.addEventListener('click',(e)=>{
+        e.preventDefault();
+        e.stopPropagation();
+        // Get the closest nav-item (in case user clicked child element)
+        const navItem = e.target.closest('.nav-item');
+        if(!navItem) return;
+        
+        const link = navItem.dataset.link;
+        if(link){
+          // Redirect to target page
+          const fullPath = getPagePath(link);
+          console.log('Navigating to:', fullPath);
+          location.href = fullPath;
+          return;
+        }
+        showConfirmation('This section is not part of the current prototype.');
+      });
+    });
 
-		function populateUnitControls(){
-			const unitFilterSelect=document.getElementById('unitFilter');
-			const unitFilterMobile=document.getElementById('unitFilterMobile');
-			
-			unitPalette.forEach(unit=>{
-				const option=document.createElement('option');
-				option.value=unit.name;
-				option.textContent=unit.name;
-				const range = formatRateRange(baseRates[unit.name]);
-				if(range) option.title=`Base range ${range}`;
-				unitFilterSelect.appendChild(option);
-				
-				// Add to mobile filter too
-				const optionMobile=document.createElement('option');
-				optionMobile.value=unit.name;
-				optionMobile.textContent=unit.name;
-				if(range) optionMobile.title=`Base range ${range}`;
-				unitFilterMobile.appendChild(optionMobile);
-			});
-			
-			const legend=document.getElementById('unitLegend');
-			legend.innerHTML='';
-			unitPalette.forEach(unit=>{
-				const span=document.createElement('span');
-				span.innerHTML=`<span class="dot" style="background:${unit.color}"></span>${unit.name}`;
-				legend.appendChild(span);
-			});
-		}
+    function populateUnitControls(){
+      const unitFilterSelect=document.getElementById('unitFilter');
+      const unitFilterMobile=document.getElementById('unitFilterMobile');
+      
+      unitPalette.forEach(unit=>{
+        const option=document.createElement('option');
+        option.value=unit.name;
+        option.textContent=unit.name;
+        const range = formatRateRange(baseRates[unit.name]);
+        if(range) option.title=`Base range ${range}`;
+        unitFilterSelect.appendChild(option);
+        
+        // Add to mobile filter too
+        const optionMobile=document.createElement('option');
+        optionMobile.value=unit.name;
+        optionMobile.textContent=unit.name;
+        if(range) optionMobile.title=`Base range ${range}`;
+        unitFilterMobile.appendChild(optionMobile);
+      });
+      
+      const legend=document.getElementById('unitLegend');
+      legend.innerHTML='';
+      unitPalette.forEach(unit=>{
+        const span=document.createElement('span');
+        span.innerHTML=`<span class="dot" style="background:${unit.color}"></span>${unit.name}`;
+        legend.appendChild(span);
+      });
+    }
 
-		function initWeekdays(){
-			const weekdaysRow=document.getElementById('weekdaysRow');
-			weekdaysRow.innerHTML='';
-		}
+    function initWeekdays(){
+      const weekdaysRow=document.getElementById('weekdaysRow');
+      weekdaysRow.innerHTML='';
+    }
 
-		// Apply translations to all elements with data-i18n attribute
-		function applyTranslations(){
-			document.querySelectorAll('[data-i18n]').forEach(el=>{
-				const key = el.dataset.i18n;
-				el.textContent = t(key);
-			});
-			// Also translate select options
-			document.querySelectorAll('option[data-i18n]').forEach(el=>{
-				el.textContent = t(el.dataset.i18n);
-			});
-			// Re-render calendar when language changes to update weekday labels and month names
-			if(document.getElementById('calendarGrid')) {
-				renderCalendar();
-			}
-		}
+    // Apply translations to all elements with data-i18n attribute
+    function applyTranslations(){
+      document.querySelectorAll('[data-i18n]').forEach(el=>{
+        const key = el.dataset.i18n;
+        el.textContent = t(key);
+      });
+      // Also translate select options
+      document.querySelectorAll('option[data-i18n]').forEach(el=>{
+        el.textContent = t(el.dataset.i18n);
+      });
+      // Re-render calendar when language changes to update weekday labels and month names
+      if(document.getElementById('calendarGrid')) {
+        renderCalendar();
+      }
+    }
 
-		// Update language button styles
-		function updateLanguageButtons(){
-			const langToggle = document.getElementById('langToggle');
-			const langText = document.getElementById('langText');
-			if(langToggle && langText){
-				if(currentLanguage === 'en'){
-					langText.textContent = 'العربية';
-				} else {
-					langText.textContent = 'English';
-				}
-			}
-		}
+    // Update language button styles
+    function updateLanguageButtons(){
+      const langToggle = document.getElementById('langToggle');
+      const langText = document.getElementById('langText');
+      if(langToggle && langText){
+        if(currentLanguage === 'en'){
+          langText.textContent = 'العربية';
+        } else {
+          langText.textContent = 'English';
+        }
+      }
+    }
 
-		// Set initial language
-		function setLanguage(lang){
-			currentLanguage = lang;
-			Storage.setString('language', lang);
-			document.documentElement.lang = lang;
-			document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-			applyTranslations();
-			updateLanguageButtons();
-		}
+    // Set initial language
+    function setLanguage(lang){
+      currentLanguage = lang;
+      Storage.setString('language', lang);
+      document.documentElement.lang = lang;
+      document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+      applyTranslations();
+      updateLanguageButtons();
+    }
 
-		// Initialize with stored language BEFORE rendering
-		setLanguage(currentLanguage);
+    // Initialize with stored language BEFORE rendering
+    setLanguage(currentLanguage);
 
-		// Now populate and render the calendar
-		populateGroupSelectors();
-		populateUnitControls();
-		initWeekdays();
-		renderLegend();
-		renderCalendar();
+    // Now populate and render the calendar
+    populateGroupSelectors();
+    populateUnitControls();
+    initWeekdays();
+    renderLegend();
+    renderCalendar();
 
-		// Language switcher listener
-		const langToggle = document.getElementById('langToggle');
-		if(langToggle) {
-			langToggle.addEventListener('click', () => {
-				const newLang = currentLanguage === 'en' ? 'ar' : 'en';
-				setLanguage(newLang);
-			});
-		}
+    // Language switcher listener
+    const langToggle = document.getElementById('langToggle');
+    if(langToggle) {
+      langToggle.addEventListener('click', () => {
+        const newLang = currentLanguage === 'en' ? 'ar' : 'en';
+        setLanguage(newLang);
+      });
+    }
 
-		// Navigation handlers - redirect to dashboard.html with tab parameter
-		document.querySelectorAll('.nav-item').forEach(item => {
-			item.addEventListener('click', () => {
-				const section = item.dataset.link;
-				if (section) {
-					window.location.href = section;
-				}
-			});
-		});
+    // Navigation handlers - redirect to dashboard.html with tab parameter
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const section = item.dataset.link;
+        if (section) {
+          window.location.href = section;
+        }
+      });
+    });
 
-	const params=new URLSearchParams(location.search);
-	if(params.get('openAdd')) openAddBooking(null,filters.unit!=='all'?filters.unit:null);
-	
-	// Mobile sidebar toggle functionality
-	const sidebarToggle = document.getElementById('sidebarToggle');
-	const sidebar = document.querySelector('.sidebar');
-	
-	if(sidebarToggle && sidebar) {
-		sidebarToggle.addEventListener('click', (e) => {
-			e.stopPropagation();
-			sidebar.classList.toggle('active');
-		});
-		
-		// Close sidebar when clicking on nav items
-		document.querySelectorAll('.nav-item').forEach(item => {
-			item.addEventListener('click', () => {
-				sidebar.classList.remove('active');
-			});
-		});
-		
-		// Close sidebar when clicking outside
-		document.addEventListener('click', (e) => {
-			if(!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
-				sidebar.classList.remove('active');
-		}
-	});
+  const params=new URLSearchParams(location.search);
+  if(params.get('openAdd')) openAddBooking(null,filters.unit!=='all'?filters.unit:null);
+  
+  // Mobile sidebar toggle functionality
+  const sidebarToggle = document.getElementById('sidebarToggle');
+  const sidebar = document.querySelector('.sidebar');
+  
+  if(sidebarToggle && sidebar) {
+    sidebarToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      sidebar.classList.toggle('active');
+    });
+    
+    // Close sidebar when clicking on nav items
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', () => {
+        sidebar.classList.remove('active');
+      });
+    });
+    
+    // Close sidebar when clicking outside
+    document.addEventListener('click', (e) => {
+      if(!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
+        sidebar.classList.remove('active');
+    }
+  });
 }
 </script>
 
