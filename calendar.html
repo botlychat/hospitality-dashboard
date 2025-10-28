@@ -7,14 +7,13 @@
   <title>Calendar — Hospitality Booking Admin</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="css/calendar.css">
-</head>
-<body>
   <!-- Modal Management -->
   <script src="js/modals.js"></script>
   <!-- Validation & Error Handling -->
   <script src="js/validator.js"></script>
   <script src="js/error-handler.js"></script>
-
+</head>
+<body>
   <div class="app">
     <aside class="sidebar">
       <div class="brand"><div class="logo">RG</div><h1>Riyadh Getaways</h1></div>
@@ -2049,28 +2048,46 @@
 
     // Wait for DOM to be ready before initializing
     document.addEventListener('DOMContentLoaded', function() {
+      console.log('Calendar: DOMContentLoaded fired');
+      
       // Check if required scripts are loaded
+      console.log('Calendar: Checking scripts - Storage:', typeof Storage, 'Validator:', typeof Validator);
+      
       if(typeof Storage === 'undefined' || typeof Validator === 'undefined') {
         console.error('Required scripts not loaded. Storage:', typeof Storage, 'Validator:', typeof Validator);
         alert('Error: Calendar scripts failed to load. Please refresh the page.');
         return;
       }
 
-      // Load saved theme color
-      const savedColor = Storage.get('websiteThemeColor');
-      if(savedColor && Validator.isHexColor(savedColor)) {
-        document.documentElement.style.setProperty('--accent', savedColor);
+      try {
+        console.log('Calendar: Loading theme color');
+        // Load saved theme color
+        const savedColor = Storage.get('websiteThemeColor');
+        if(savedColor && Validator.isHexColor(savedColor)) {
+          document.documentElement.style.setProperty('--accent', savedColor);
+        }
+
+        console.log('Calendar: Setting language');
+        // Initialize with stored language BEFORE rendering
+        setLanguage(currentLanguage);
+
+        console.log('Calendar: Populating controls');
+        // Now populate and render the calendar
+        populateGroupSelectors();
+        populateUnitControls();
+        initWeekdays();
+        
+        console.log('Calendar: Rendering legend');
+        renderLegend();
+        
+        console.log('Calendar: Rendering calendar');
+        renderCalendar();
+        
+        console.log('Calendar: Initialization complete');
+      } catch(error) {
+        console.error('Calendar initialization error:', error);
+        alert('Error initializing calendar: ' + error.message);
       }
-
-      // Initialize with stored language BEFORE rendering
-      setLanguage(currentLanguage);
-
-      // Now populate and render the calendar
-      populateGroupSelectors();
-      populateUnitControls();
-      initWeekdays();
-      renderLegend();
-      renderCalendar();
 
       // Language switcher listener
       const langToggle = document.getElementById('langToggle');
