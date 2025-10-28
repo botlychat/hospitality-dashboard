@@ -679,6 +679,7 @@
           e.stopPropagation();
           if(e.target.closest('.event')) return;
           if(e.target.closest('.lock-indicator')) return;
+          console.log('Cell clicked - showing context menu for date:', iso);
           showContextMenu(cell,iso,e);
         });
         calendarGrid.appendChild(cell);
@@ -784,6 +785,7 @@
       console.log('attachContextMenuHandlers called, contextMenu:', contextMenu);
       // Get buttons directly from current contextMenu
       const buttons = contextMenu.querySelectorAll('button');
+      console.log('Found buttons:', buttons.length);
       buttons.forEach((btn, idx)=>{
         // Remove any existing listeners by cloning
         const newBtn = btn.cloneNode(true);
@@ -791,6 +793,7 @@
         
         newBtn.addEventListener('click',(e)=>{
           e.stopPropagation();
+          console.log('Context menu button clicked:', e.target.dataset.action);
           hideContextMenu();
           const action=newBtn.dataset.action;
           if(action==='add'){
@@ -807,6 +810,7 @@
     attachContextMenuHandlers();
 
     function showContextMenu(cell,iso,event){
+      console.log('showContextMenu called for:', iso, 'event:', event);
       contextDate = iso;
       contextUnit = filters.unit!=='all'? filters.unit : null;
       if(!contextUnit){
@@ -844,6 +848,8 @@
       
       contextMenu.style.left = `${x}px`;
       contextMenu.style.top = `${y}px`;
+      
+      console.log('Context menu positioned at:', x, y, 'menu size:', menuWidth, 'x', menuHeight);
       
       // Create new close handler
       contextMenuCloseHandler = (e) => {
@@ -2011,6 +2017,7 @@
         if(link){
           // Redirect to target page
           const fullPath = getPagePath(link);
+          console.log('Navigating to:', fullPath);
           location.href = fullPath;
           return;
         }
