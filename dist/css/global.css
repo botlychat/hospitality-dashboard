@@ -129,6 +129,9 @@ nav {
   position: sticky;
   top: 0;
   z-index: var(--z-sticky);
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .header .left {
@@ -142,9 +145,11 @@ nav {
   padding: var(--space-md) var(--space-xl);
   border-radius: var(--border-radius-xl);
   box-shadow: var(--shadow-lg);
-  min-width: 320px;
+  min-width: 280px;
+  max-width: 320px;
   display: flex;
   align-items: center;
+  flex-shrink: 1;
 }
 
 .search input {
@@ -607,3 +612,27 @@ html[dir="rtl"] .modal-actions {
 .transition { transition: all 0.2s ease-out; }
 .transition-colors { transition: color 0.2s, background-color 0.2s; }
 
+/* === TABLE SCROLL WRAPPER SCROLLBAR STYLING === */
+/* Visible scrollbar for horizontal table scrolling */
+.table-scroll-wrapper {
+  scrollbar-width: thin;
+  scrollbar-color: #d1d5db #f3f4f6;
+}
+
+.table-scroll-wrapper::-webkit-scrollbar {
+  height: 10px;
+}
+
+.table-scroll-wrapper::-webkit-scrollbar-track {
+  background: #f3f4f6;
+  border-radius: 5px;
+}
+
+.table-scroll-wrapper::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 5px;
+}
+
+.table-scroll-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
