@@ -7,6 +7,8 @@
   <title>Calendar — Hospitality Booking Admin</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="css/calendar.css">
+  <!-- Storage helper with error handling -->
+  <script src="js/storage.js"></script>
 </head>
 <body>
   <div class="app">
@@ -407,18 +409,18 @@
       }
     };
 
-    // Current language
-    let currentLanguage = localStorage.getItem('language') || 'en';
+    // Current language (safe with fallback)
+    let currentLanguage = Storage.getString('language', 'en');
 
     // Current currency
-    let currentCurrency = localStorage.getItem('currency') || 'SAR';
+    let currentCurrency = Storage.getString('currency', 'SAR');
 
-    // Units Groups Management
-    let unitsGroups = JSON.parse(localStorage.getItem('unitsGroups')) || [
+    // Units Groups Management (safe with fallback)
+    let unitsGroups = Storage.getJSON('unitsGroups', [
       { id: 'group_1', name: 'Main Hotel', type: 'Hotel Room', license: 'TRN-2024-001' },
       { id: 'group_2', name: 'Chalets Collection', type: 'Chalet', license: 'TRN-2024-002' }
-    ];
-    let currentGroupId = localStorage.getItem('currentGroupId') || 'group_1';
+    ]);
+    let currentGroupId = Storage.getString('currentGroupId', 'group_1');
 
     function populateGroupSelectors(){
       const selector = document.getElementById('calendarGroupSelector');
@@ -433,7 +435,7 @@
         });
         selector.addEventListener('change', (e) => {
           currentGroupId = e.target.value;
-          localStorage.setItem('currentGroupId', currentGroupId);
+          Storage.setString('currentGroupId', currentGroupId);
         });
       }
     }
@@ -1317,7 +1319,7 @@
           return;
         }
 
-        const savedUrls = JSON.parse(localStorage.getItem(`calendarUrls_${unit}`) || '[]');
+        const savedUrls = Storage.getJSON(`calendarUrls_${unit}`, []);
         
         if(savedUrls.length === 0) {
           const emptyMsg = document.createElement('div');
@@ -1419,7 +1421,7 @@
               }
               urlObj.name = newName;
               urlObj.url = newUrl;
-              localStorage.setItem(`calendarUrls_${unit}`, JSON.stringify(savedUrls));
+              Storage.setJSON(`calendarUrls_${unit}`, savedUrls);
               closeModal();
               openSyncCalendarModal();
               showConfirmation(`✅ Calendar updated to "${newName}"`);
@@ -1451,7 +1453,7 @@
             // Simulate sync
             urlObj.lastSync = new Date().toISOString();
             urlObj.status = 'valid';
-            localStorage.setItem(`calendarUrls_${unit}`, JSON.stringify(savedUrls));
+            Storage.setJSON(`calendarUrls_${unit}`, savedUrls);
             displaySavedUrls();
             showConfirmation(`✅ Calendar "${urlObj.name}" synced successfully`);
           });
@@ -1464,7 +1466,7 @@
           deleteBtn.innerHTML = '<i class="fa-solid fa-trash"></i> Delete';
           deleteBtn.addEventListener('click', () => {
             savedUrls.splice(index, 1);
-            localStorage.setItem(`calendarUrls_${unit}`, JSON.stringify(savedUrls));
+            Storage.setJSON(`calendarUrls_${unit}`, savedUrls);
             displaySavedUrls();
           });
           buttonsRow.appendChild(deleteBtn);
@@ -1517,7 +1519,7 @@
         };
         
         savedUrls.push(urlObj);
-        localStorage.setItem(`calendarUrls_${unit}`, JSON.stringify(savedUrls));
+        Storage.setJSON(`calendarUrls_${unit}`, savedUrls);
         
         // Reset inputs
         syncNameInput.value = '';
@@ -2091,7 +2093,7 @@
     // Set initial language
     function setLanguage(lang){
       currentLanguage = lang;
-      localStorage.setItem('language', lang);
+      Storage.setString('language', lang);
       document.documentElement.lang = lang;
       document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
       applyTranslations();
