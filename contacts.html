@@ -12,6 +12,8 @@
 	<link rel="stylesheet" href="css/responsive.css">
 	<link rel="stylesheet" href="css/profile.css">
 	<link rel="stylesheet" href="css/contacts.css">
+	<!-- Storage helper with error handling -->
+	<script src="js/storage.js"></script>
   </head>
 <body>
   <div class="app">
@@ -217,8 +219,8 @@
 	<script src="js/components/profile.js"></script>
 	
 	<script>
-		// Load saved theme color
-		const savedColor = localStorage.getItem('websiteThemeColor');
+		// Load saved theme color (safe with fallback)
+		const savedColor = Storage.getString('websiteThemeColor', '');
 		if(savedColor && /^#[0-9A-F]{6}$/i.test(savedColor)) {
 			document.documentElement.style.setProperty('--accent', savedColor);
 		}
@@ -249,7 +251,7 @@
 }
 
 // Sample contacts data
-let clients = JSON.parse(localStorage.getItem('clients')) || [
+let clients = Storage.getJSON('clients', [
 	{
 		id: 1,
 		name: 'Ahmed Al-Mansouri',
@@ -283,7 +285,7 @@ let clients = JSON.parse(localStorage.getItem('clients')) || [
 		review: 4.5,
 		payment: 'Pending'
 	}
-];
+]);
 
 // Render contacts table
 function renderClientsTable() {
@@ -340,7 +342,7 @@ function editClient(id) {
 function deleteClient(id) {
 	if (confirm('Delete this contact?')) {
 		clients = clients.filter(c => c.id !== id);
-		localStorage.setItem('clients', JSON.stringify(clients));
+		Storage.setJSON('clients', clients);
 		renderClientsTable();
 	}
 }
