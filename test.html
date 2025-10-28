@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <base href="/hospitality-dashboard/">
+  <title>Test Page — Hospitality Booking Admin</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+	<!-- Extracted & Organized CSS Files -->
+	<link rel="stylesheet" href="css/variables.css">
+	<link rel="stylesheet" href="css/global.css">
+	<link rel="stylesheet" href="css/responsive.css">
+	<link rel="stylesheet" href="css/profile.css">
+	<!-- Storage helper with error handling -->
+	<script src="js/storage.js"></script>
+	<!-- Service Worker registration for caching -->
+	<script>
+		if ('serviceWorker' in navigator) {
+			navigator.serviceWorker.register('service-worker.js')
+				.then(reg => console.log('[SW] Registered:', reg))
+				.catch(err => console.log('[SW] Registration failed:', err));
+		}
+	</script>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand"><div class="logo">RG</div><h1>Riyadh Getaways</h1></div>
+      <nav>
+        <div class="nav-item" data-link="dashboard.html"><i class="fa-solid fa-gauge"></i> <span>Dashboard</span></div>
+        <div class="nav-item" data-link="calendar.html"><i class="fa-regular fa-calendar"></i> <span>Calendar</span></div>
+        <div class="nav-item" data-link="units.html"><i class="fa-solid fa-building"></i> <span>Units</span></div>
+        <div class="nav-item" data-link="website.html"><i class="fa-solid fa-globe"></i> <span>Website Settings</span></div>
+        <div class="nav-item" data-link="aiagent.html"><i class="fa-solid fa-robot"></i> <span>AI Agent</span></div>
+        <div class="nav-item" data-link="contacts.html"><i class="fa-solid fa-address-book"></i> <span>Contacts</span></div>
+      </nav>
+      <div class="sidebar-footer">© <strong>Riyadh Getaways</strong><br>Admin Dashboard</div>
+    </aside>
+
+    <main class="main">
+      <header class="header">
+        <div class="left">
+          <h2 style="margin:0">Test Page</h2>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <div class="profile" id="profileBtn" tabindex="0">
+            <div style="text-align:right;margin-right:8px;font-size:13px"><div style="font-weight:700">Admin</div><div style="font-size:12px;color:var(--muted)">test@test.com</div></div>
+            <div class="avatar">T</div>
+          </div>
+        </div>
+      </header>
+
+      <section class="content">
+        <div class="panel">
+          <h3><i class="fa-solid fa-flask"></i> Layout Test</h3>
+          <p>This is a test page to verify the layout fixes:</p>
+          <ul>
+            <li>✅ Sidebar should be on the left (260px wide)</li>
+            <li>✅ Header should be fixed at top (70px height)</li>
+            <li>✅ Content should fill remaining space</li>
+            <li>✅ No page loader/spinner visible</li>
+            <li>✅ Content should NOT appear inside the sidebar</li>
+          </ul>
+          
+          <h4>Layout Structure:</h4>
+          <pre style="background:#f3f4f6;padding:16px;border-radius:8px;overflow-x:auto">
+.app {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 260px;
+  /* ... */
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  height: 70px;
+  position: sticky;
+  top: 0;
+}
+
+.content {
+  min-height: calc(100vh - 94px);
+  flex: 1;
+}
+          </pre>
+
+          <h4>Changes Made:</h4>
+          <ol>
+            <li>✅ Removed page loader from index.html</li>
+            <li>✅ Removed loading overlay from all pages (dashboard, contacts, calendar, units, website, business-info, aiagent)</li>
+            <li>✅ Removed loading spinner CSS from global.css</li>
+            <li>✅ Fixed contacts.css layout by removing conflicting flex overrides</li>
+            <li>✅ Added min-height to .content in global.css for proper desktop layout</li>
+          </ol>
+
+          <h4>Test Navigation:</h4>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:12px">
+            <button class="btn primary" data-link="dashboard.html"><i class="fa-solid fa-gauge"></i> Dashboard</button>
+            <button class="btn primary" data-link="contacts.html"><i class="fa-solid fa-address-book"></i> Contacts</button>
+            <button class="btn primary" data-link="calendar.html"><i class="fa-regular fa-calendar"></i> Calendar</button>
+            <button class="btn primary" data-link="units.html"><i class="fa-solid fa-building"></i> Units</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="js/utils.js"></script>
+</body>
+</html>
