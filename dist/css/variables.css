@@ -1,0 +1,87 @@
+/* Design System - CSS Custom Properties */
+:root {
+  --bg: #f5f7fa;
+  --bg-gradient: linear-gradient(130deg, #f5f7fa 0%, #f0f4ff 35%, #fff8f2 100%);
+  --sidebar: #0f1729;
+  --accent: #f97316;
+  --accent-soft: rgba(249, 115, 22, 0.12);
+  --accent-soft-14: rgba(249, 115, 22, 0.14);
+  --muted: #6b7280;
+  --muted-2: #64748b;
+  --card: #fff;
+  --stroke: #e5e7eb;
+  --text-primary: #111;
+  --text-secondary: #475569;
+  --text-muted: rgba(255, 255, 255, 0.55);
+  --border-radius-sm: 6px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 10px;
+  --border-radius-xl: 12px;
+  --border-radius-2xl: 14px;
+  --border-radius-3xl: 16px;
+  --border-radius-full: 999px;
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+  --shadow-lg: 0 6px 20px rgba(15, 23, 41, 0.06);
+  --shadow-xl: 0 14px 30px rgba(15, 23, 41, 0.08);
+  --shadow-2xl: 0 24px 48px rgba(15, 23, 41, 0.18);
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.2s ease;
+  --transition-slow: 0.3s ease;
+}
+
+/* Color palette extended */
+:root {
+  --color-red-light: rgba(239, 68, 68, 0.4);
+  --color-red-dark: #b91c1c;
+  --color-green: #16a34a;
+  --color-green-light: rgba(22, 163, 74, 0.14);
+  --color-green-dark: #15803d;
+  --color-blue: #1d4ed8;
+  --color-blue-light: rgba(59, 130, 246, 0.15);
+  --color-amber: #f59e0b;
+  --color-slate-light: rgba(148, 163, 184, 0.2);
+  --color-slate-medium: #94a3b8;
+  --color-slate-dark: #475569;
+}
+
+/* Font family */
+:root {
+  --font-family: Inter, Segoe UI, Arial, sans-serif;
+  --font-size-xs: 11px;
+  --font-size-sm: 12px;
+  --font-size-base: 13px;
+  --font-size-md: 14px;
+  --font-size-lg: 15px;
+  --font-size-xl: 16px;
+  --font-size-2xl: 17px;
+  --font-size-3xl: 20px;
+  --font-size-4xl: 24px;
+  --font-size-5xl: 28px;
+  --font-size-6xl: 32px;
+}
+
+/* Spacing scale */
+:root {
+  --space-xs: 6px;
+  --space-sm: 8px;
+  --space-md: 10px;
+  --space-lg: 12px;
+  --space-xl: 14px;
+  --space-2xl: 16px;
+  --space-3xl: 18px;
+  --space-4xl: 20px;
+  --space-5xl: 22px;
+  --space-6xl: 24px;
+  --space-7xl: 26px;
+  --space-8xl: 28px;
+}
+
+/* Z-index scale */
+:root {
+  --z-base: 1;
+  --z-sticky: 5;
+  --z-menu: 10;
+  --z-modal: 1000;
+  --z-dropdown: 1000;
+}

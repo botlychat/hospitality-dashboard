@@ -1,0 +1,425 @@
+/* Dashboard Page - Specific Styles */
+
+/* Content grid layout for dashboard */
+.content {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: var(--space-5xl);
+  overflow-y: auto;
+  min-height: calc(100vh - 94px);
+}
+
+/* Tab sections */
+.tab-section {
+  display: none;
+}
+
+.tab-section.active {
+  display: contents;
+}
+
+.tab-section > div {
+  grid-column: 1;
+  overflow-y: auto;
+  max-height: calc(100vh - 94px);
+}
+
+.tab-section > aside {
+  grid-column: 2;
+  overflow-y: auto;
+  max-height: calc(100vh - 94px);
+}
+
+/* Mobile: override display: contents for flex layout */
+@media (max-width: 980px) {
+  .tab-section.active {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
+/* KPI grid - Key Performance Indicators */
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-2xl);
+}
+
+.kpi {
+  background: var(--card);
+  padding: var(--space-3xl);
+  border-radius: var(--border-radius-2xl);
+  box-shadow: 0 14px 30px rgba(15, 23, 41, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  position: relative;
+  overflow: hidden;
+}
+
+.kpi::after {
+  content: "";
+  position: absolute;
+  inset: auto -20% -40px 50%;
+  height: 120px;
+  background: var(--accent-soft);
+  transform: skew(-25deg);
+  opacity: 0.65;
+}
+
+.kpi .icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--border-radius-lg);
+  background: var(--accent-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  font-size: var(--font-size-xl);
+}
+
+.kpi .label {
+  font-size: var(--font-size-base);
+  color: var(--muted);
+}
+
+.kpi .value {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.kpi .meta {
+  font-size: var(--font-size-sm);
+  color: var(--muted);
+}
+
+/* Actions bar */
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  margin-top: var(--space-md);
+  user-select: none;
+}
+
+/* Status badges */
+.status {
+  padding: var(--space-xs) var(--space-lg);
+  border-radius: var(--border-radius-full);
+  font-size: var(--font-size-sm);
+  color: #fff;
+  display: inline-block;
+  font-weight: 600;
+}
+
+.status.active {
+  background: #16a34a;
+}
+
+.status.pending {
+  background: var(--color-amber);
+}
+
+.status.past {
+  background: var(--muted);
+}
+
+/* Unit status list */
+.unit-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.unit-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-md) var(--space-xl);
+  border-radius: var(--border-radius-xl);
+  background: #f9fafb;
+  border: 1px solid rgba(15, 23, 41, 0.04);
+}
+
+.unit-item .name {
+  font-weight: 600;
+}
+
+/* Header title styling */
+#headerTitle {
+  font-weight: 700;
+  font-size: var(--font-size-xl);
+}
+
+/* Page section headers */
+.page-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-lg);
+  margin-bottom: var(--space-2xl);
+}
+
+.page-section-header h2 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.page-section-header .subtitle {
+  color: var(--muted);
+  font-size: var(--font-size-base);
+}
+
+/* Group selector */
+#dashboardGroupSelector,
+#websiteGroupSelector,
+#aiAgentGroupSelector {
+  padding: var(--space-lg) var(--space-xl);
+  border: 1px solid var(--stroke);
+  border-radius: var(--border-radius-lg);
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  background: #fff;
+  cursor: pointer;
+  min-width: 220px;
+  box-shadow: 0 2px 6px rgba(15, 23, 41, 0.06);
+  transition: all var(--transition-base);
+}
+
+#dashboardGroupSelector:hover,
+#websiteGroupSelector:hover,
+#aiAgentGroupSelector:hover {
+  border-color: var(--accent);
+}
+
+/* Overview section */
+.overview-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-lg);
+  margin-bottom: var(--space-2xl);
+}
+
+.overview-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.overview-text h2 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.overview-text .subtitle {
+  color: var(--muted);
+  font-size: var(--font-size-base);
+}
+
+/* Quick actions panel */
+.quick-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  margin-top: var(--space-lg);
+}
+
+.quick-actions .btn {
+  width: 100%;
+  justify-content: center;
+}
+
+/* Data grid for two-column layouts */
+.data-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2xl);
+  margin-top: var(--space-2xl);
+}
+
+@media (max-width: 1200px) {
+  .data-grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Table styling within panels */
+.panel table {
+  width: auto;
+  min-width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+.panel th,
+.panel td {
+  padding: var(--space-md) var(--space-xl);
+  text-align: center;
+  border-bottom: 1px solid var(--stroke);
+  font-size: var(--font-size-base);
+}
+
+.panel th {
+  font-weight: 600;
+  color: var(--muted);
+  background: rgba(15, 23, 41, 0.02);
+  white-space: normal;
+  overflow: visible;
+}
+
+.panel tbody tr:hover {
+  background: rgba(249, 115, 22, 0.04);
+}
+
+/* Mobile: Center align all table columns */
+@media (max-width: 768px) {
+  /* Scroll wrapper for tables - full width with no constraints */
+  .panel .table-scroll-wrapper {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 0 16px;
+  }
+  
+  .table-scroll-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+  }
+  
+  .table-scroll-wrapper table {
+    width: auto;
+    table-layout: auto;
+    border-collapse: collapse;
+  }
+  
+  .table-scroll-wrapper th {
+    padding: 12px 16px;
+    white-space: normal;
+    overflow: visible;
+  }
+
+  .table-scroll-wrapper td {
+    padding: 12px 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  /* Dashboard recent bookings - specific column widths */
+  .table-scroll-wrapper th:nth-child(1),
+  .table-scroll-wrapper td:nth-child(1) {
+    min-width: 50px; /* Client */
+  }
+  
+  .table-scroll-wrapper th:nth-child(2),
+  .table-scroll-wrapper td:nth-child(2) {
+    min-width: 50px; /* Unit */
+  }
+  
+  .table-scroll-wrapper th:nth-child(3),
+  .table-scroll-wrapper td:nth-child(3) {
+    min-width: 50px; /* Status */
+  }
+  
+  .table-scroll-wrapper th:nth-child(4),
+  .table-scroll-wrapper td:nth-child(4) {
+    min-width: 50px; /* Check In */
+  }
+  
+  .table-scroll-wrapper th:nth-child(5),
+  .table-scroll-wrapper td:nth-child(5) {
+    min-width: 50px; /* Check Out */
+  }
+
+  .panel th,
+  .panel td {
+    text-align: center;
+  }
+}
+
+/* Table container for horizontal scrolling */
+.panel {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
+
+.panel::-webkit-scrollbar {
+  height: 8px;
+}
+
+.panel::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.panel::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.panel::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Empty state messaging */
+.empty-state {
+  padding: var(--space-6xl);
+  border-radius: var(--border-radius-2xl);
+  border: 1px dashed rgba(148, 163, 184, 0.5);
+  text-align: center;
+  color: #94a3b8;
+}
+
+/* Color picker group */
+.color-picker-group {
+  display: flex;
+  gap: var(--space-2xl);
+  flex-wrap: wrap;
+}
+
+.color-option {
+  width: 50px;
+  height: 50px;
+  border-radius: var(--border-radius-lg);
+  cursor: pointer;
+  border: 3px solid transparent;
+  transition: all var(--transition-base);
+}
+
+.color-option:hover,
+.color-option.selected {
+  border-color: var(--accent);
+  transform: scale(1.1);
+}
+
+/* Image preview */
+.image-preview {
+  margin-top: var(--space-lg);
+  max-width: 200px;
+  border-radius: var(--border-radius-lg);
+}
+
+/* Animations */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.kpi {
+  animation: slideUp 0.3s ease;
+}

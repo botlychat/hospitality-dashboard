@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <base href="/hospitality-dashboard/">
+  <title>AI Agent — Hospitality Booking Admin</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+	<!-- Extracted & Organized CSS Files -->
+	<link rel="stylesheet" href="css/variables.css">
+	<link rel="stylesheet" href="css/global.css">
+	<link rel="stylesheet" href="css/responsive.css">
+	<link rel="stylesheet" href="css/profile.css">
+	<link rel="stylesheet" href="css/aiagent.css">
+	<!-- Storage helper with error handling -->
+	<script src="js/storage.js"></script>
+	<!-- Service Worker registration for caching -->
+	<script>
+		if ('serviceWorker' in navigator) {
+			navigator.serviceWorker.register('service-worker.js')
+				.then(reg => console.log('[SW] Registered:', reg))
+				.catch(err => console.log('[SW] Registration failed:', err));
+		}
+	</script>
+  
+</head>
+<body>
+	<div class="app">
+<aside class="sidebar">
+	<div class="brand"><div class="logo">RG</div><h1>Riyadh Getaways</h1></div>
+	<nav>
+		<div class="nav-item active" data-link="dashboard.html"><i class="fa-solid fa-gauge"></i> <span data-i18n="dashboard">Dashboard</span></div>
+		<div class="nav-item" data-link="calendar.html"><i class="fa-regular fa-calendar"></i> <span data-i18n="calendar">Calendar</span></div>
+		<div class="nav-item" data-link="units.html"><i class="fa-solid fa-building"></i> <span data-i18n="units">Units</span></div>
+		<div class="nav-item" data-link="website.html"><i class="fa-solid fa-globe"></i> <span data-i18n="website">Website Settings</span></div>
+		<div class="nav-item" data-link="aiagent.html"><i class="fa-solid fa-robot"></i> <span data-i18n="aiagent">AI Agent</span></div>
+		<div class="nav-item" data-link="contacts.html"><i class="fa-solid fa-address-book"></i> <span data-i18n="contacts">Contacts</span></div>
+	</nav>
+	<div class="sidebar-footer">© <strong>Riyadh Getaways</strong><br>Admin Dashboard</div>
+</aside>
+
+<main class="main">
+	<header class="header">
+		<div class="left">
+			<button id="sidebarToggle" class="sidebar-toggle" aria-label="Toggle sidebar" style="display:none;background:none;border:none;cursor:pointer;font-size:20px;color:var(--sidebar);padding:8px;margin-right:8px"><i class="fa-solid fa-bars"></i></button>
+			<h2 style="margin:0" id="headerTitle" data-i18n="dashboard">Dashboard</h2>
+		</div>
+		<div style="display:flex;align-items:center;gap:12px">
+			<div class="search"><i class="fa-solid fa-magnifying-glass" style="color:var(--muted)"></i> <input placeholder="Search bookings, units, clients..." data-i18n-placeholder="searchPlaceholder" style="border:none;outline:none;margin-left:8px;font-size:14px;width:250px"></div>
+			<div class="profile" id="profileBtn" tabindex="0">
+				<div style="text-align:right;margin-right:8px;font-size:13px"><div style="font-weight:700" data-i18n="admin">Admin</div><div style="font-size:12px;color:var(--muted)">riyadh@getaways</div></div>
+				<div class="avatar"><i class="fa-solid fa-user"></i></div>
+				<div class="profile-menu" id="profileMenu">
+					<button id="profileSettings" data-i18n="businessInfo">Business Information</button>
+					<button id="changePassword" data-i18n="changePassword">Change Password</button>
+					<button id="changeEmail" data-i18n="changeEmail">Change Email</button>
+					<div style="border-top:1px solid #e5e7eb;padding:8px 0;margin:8px 0;display:flex;gap:8px;align-items:center;justify-content:center">
+						<button id="langToggle" style="display:flex;align-items:center;gap:6px;padding:8px 12px;border:1px solid #e5e7eb;background:#fff;cursor:pointer;font-size:12px;font-weight:600;color:#f97316;border-radius:6px;transition:all 0.2s ease" title="Toggle Language"><i class="fa-solid fa-globe"></i> <span id="langText">العربية</span></button>
+					</div>
+					<button id="logoutBtn" data-i18n="logout">Logout</button>
+				</div>
+			</div>
+		</div>
+	</header>
+
+	<section class="content">
+		
+        <div style="margin-bottom:16px;display:flex;justify-content:flex-end;position:relative;z-index:1">
+          <select id="aiAgentGroupSelector" style="padding:10px 14px;border:1px solid #e5e7eb;border-radius:8px;font-size:13px;font-weight:600;background:#fff;cursor:pointer;min-width:240px;box-shadow:0 2px 6px rgba(15,23,41,0.06);transition:all 0.2s ease;z-index:2">
+            <!-- Group options will be populated by JavaScript -->
+          </select>
+        </div>
+
+        <!-- Active Conversations Section -->
+        <div class="panel">
+          <h3><i class="fa-solid fa-comments"></i> Active Conversations</h3>
+          <div class="stat-card">
+            <div class="stat-label">Current Active Conversations</div>
+            <div style="display:flex;gap:8px;align-items:baseline">
+              <div class="stat-value" id="activeConvCount" style="font-size:32px">278</div>
+              <div style="font-size:16px;color:var(--muted)">/</div>
+              <div class="stat-value" id="totalPlanConv" style="font-size:24px;color:var(--muted)">500</div>
+            </div>
+            <div class="stat-meta">conversations in your plan</div>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="convProgressBar" style="width:55.6%"></div>
+          </div>
+          <div class="progress-label">
+            <span><span id="convPercent">55.6</span>% Used</span>
+            <span id="convRemaining">222 remaining</span>
+          </div>
+        </div>
+
+        <!-- Booking Method Selection -->
+        <div class="panel">
+          <h3><i class="fa-solid fa-credit-card"></i> Booking Method</h3>
+          <p style="font-size:13px;color:var(--muted);margin:0 0 16px 0">Choose how the AI Agent handles bookings and payments</p>
+          
+          <div class="form-group">
+            <label style="display:flex;align-items:center;gap:12px;cursor:pointer;font-weight:normal;margin-bottom:12px;padding:12px;border:2px solid #e5e7eb;border-radius:8px;transition:all .2s" id="bookingMethodLabel1">
+              <input type="radio" id="bookingFull" name="bookingMethod" value="full" style="width:18px;height:18px;cursor:pointer" onchange="updateBookingMethodDisplay()">
+              <div style="flex:1">
+                <div style="font-weight:600;color:#111">AI Agent Full Booking</div>
+                <div style="font-size:12px;color:var(--muted);margin-top:4px">AI Agent can answer questions, make suggestions, AND process payments & reservations</div>
+              </div>
+            </label>
+          </div>
+
+          <div class="form-group">
+            <label style="display:flex;align-items:center;gap:12px;cursor:pointer;font-weight:normal;margin-bottom:12px;padding:12px;border:2px solid #e5e7eb;border-radius:8px;transition:all .2s" id="bookingMethodLabel2">
+              <input type="radio" id="bookingWebsiteOnly" name="bookingMethod" value="website_only" style="width:18px;height:18px;cursor:pointer" onchange="updateBookingMethodDisplay()">
+              <div style="flex:1">
+                <div style="font-weight:600;color:#111">Website Only Booking</div>
+                <div style="font-size:12px;color:var(--muted);margin-top:4px">AI Agent provides information & suggestions only, redirects to website for payments & reservations</div>
+              </div>
+            </label>
+          </div>
+
+          <div id="bookingMethodInfo" style="padding:12px;background:#f0f9ff;border:1px solid #bfdbfe;border-radius:8px;border-left:3px solid #3b82f6;font-size:12px;color:#0c4a6e;display:none;margin-bottom:12px">
+            <strong>ℹ️ Selected Mode:</strong> <span id="bookingMethodText">-</span>
+          </div>
+        </div>
+
+        <!-- Discount Settings -->
+        <div class="panel">
+          <h3><i class="fa-solid fa-tag"></i> Discount Settings</h3>
+          <div class="form-group" style="margin-bottom:16px">
+            <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-weight:normal;margin:0">
+              <input type="checkbox" id="discountToggle" onclick="toggleDiscountInput()" style="width:18px;height:18px;cursor:pointer">
+              <span>Enable AI Agent Discount</span>
+            </label>
+          </div>
+          
+          <div id="discountInputGroup" style="display:none;margin-top:12px">
+            <div style="display:flex;align-items:center;gap:8px">
+              <input type="number" id="discountAmount" placeholder="Enter amount (SAR)" min="0" step="1" style="flex:1;padding:10px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:13px">
+              <button class="btn primary" onclick="saveDiscountAmount()" style="width:auto;padding:8px 12px;margin:0;background:var(--accent)" title="Save"><i class="fa-solid fa-check"></i></button>
+            </div>
+            <small style="display:block;margin-top:4px;font-size:12px;color:#666">Enter fixed amount that will be applied by AI Agent</small>
+          </div>
+          
+          <div id="discountPreview" style="padding:12px;background:#f3f4f6;border-radius:8px;margin-top:12px;display:none;border-left:3px solid var(--accent)">
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <div style="font-size:13px;color:#111">Current discount: <strong id="discountPreviewAmount" style="color:var(--accent)">SAR 0</strong></div>
+              <button class="btn primary" id="discountEditPenBtn" onclick="editDiscountAmount()" style="width:auto;padding:8px 12px;margin:0;display:none" title="Edit"><i class="fa-solid fa-pen"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Welcome Message -->
+        <div class="panel">
+          <h3><i class="fa-solid fa-comment-dots"></i> Welcome Message</h3>
+          <div class="form-group">
+            <div style="display:flex;align-items:start;gap:8px">
+              <textarea id="welcomeMessage" placeholder="Enter the welcome message that AI Agent will show to guests..." readonly style="flex:1">Hello! Welcome to Riyadh Getaways. How can I help you today?</textarea>
+              <button class="btn primary" id="welcomeEditBtn" onclick="toggleWelcomeEdit()" style="width:auto;padding:8px 12px;margin:0" title="Edit"><i class="fa-solid fa-pen"></i></button>
+              <button class="btn primary" id="welcomeSaveBtn" onclick="saveWelcomeMessage()" style="display:none;width:auto;padding:8px 12px;margin:0;background:var(--accent)" title="Save"><i class="fa-solid fa-check"></i></button>
+            </div>
+            <small>Character count: <span id="welcomeCharCount">0</span>/500</small>
+          </div>
+          <div id="welcomeModified" style="display:none;margin-top:8px;font-size:13px;color:var(--accent)"><i class="fa-solid fa-circle-info"></i> Changes not saved</div>
+        </div>
+
+        <!-- Reminders Section -->
+        <div class="panel">
+          <h3><i class="fa-solid fa-bell"></i> Reminders</h3>
+          
+          <div style="margin-bottom:16px">
+            <h4 style="margin:0 0 8px 0;font-size:13px;font-weight:600">Reminder 1</h4>
+            <div class="form-group">
+              <div style="display:flex;align-items:start;gap:8px">
+                <textarea id="reminder1" placeholder="Enter first reminder message..." readonly style="flex:1"></textarea>
+                <button class="btn primary" id="reminder1EditBtn" onclick="toggleReminderEdit(1)" style="width:auto;padding:8px 12px;margin:0" title="Edit"><i class="fa-solid fa-pen"></i></button>
+                <button class="btn primary" id="reminder1SaveBtn" onclick="saveReminder(1)" style="display:none;width:auto;padding:8px 12px;margin:0;background:var(--accent)" title="Save"><i class="fa-solid fa-check"></i></button>
+              </div>
+            </div>
+            <div id="reminder1Modified" style="display:none;margin-top:8px;font-size:13px;color:var(--accent)"><i class="fa-solid fa-circle-info"></i> Changes not saved</div>
+          </div>
+
+          <div>
+            <h4 style="margin:0 0 8px 0;font-size:13px;font-weight:600">Reminder 2</h4>
+            <div class="form-group">
+              <div style="display:flex;align-items:start;gap:8px">
+                <textarea id="reminder2" placeholder="Enter second reminder message..." readonly style="flex:1"></textarea>
+                <button class="btn primary" id="reminder2EditBtn" onclick="toggleReminderEdit(2)" style="width:auto;padding:8px 12px;margin:0" title="Edit"><i class="fa-solid fa-pen"></i></button>
+                <button class="btn primary" id="reminder2SaveBtn" onclick="saveReminder(2)" style="display:none;width:auto;padding:8px 12px;margin:0;background:var(--accent)" title="Save"><i class="fa-solid fa-check"></i></button>
+              </div>
+            </div>
+            <div id="reminder2Modified" style="display:none;margin-top:8px;font-size:13px;color:var(--accent)"><i class="fa-solid fa-circle-info"></i> Changes not saved</div>
+          </div>
+        </div>
+
+        <!-- Custom Roles Section -->
+        <div class="panel">
+          <h3><i class="fa-solid fa-mask"></i> Custom Roles</h3>
+          <p style="font-size:13px;color:var(--muted);margin:0 0 12px 0">Add up to 10 custom roles for your AI Agent (e.g., Booking Assistant, Support Specialist, Manager)</p>
+          
+          <div class="form-group" style="display:flex;gap:8px;margin-bottom:16px;flex-direction:row">
+            <input type="text" id="newRoleInput" placeholder="Enter role description..." style="flex:1;margin-bottom:0">
+            <button class="btn primary" onclick="addCustomRole()" style="width:auto"><i class="fa-solid fa-plus"></i> Add</button>
+          </div>
+
+          <div id="rolesList" style="margin-bottom:16px;min-height:10px">
+            <!-- Roles will be added here -->
+          </div>
+
+          <div style="padding:12px;background:#f3f4f6;border-radius:8px;font-size:13px;border-left:3px solid var(--accent)">
+            <div style="color:#111">Total Roles: <strong id="roleCount">0</strong>/10</div>
+          </div>
+
+          <div class="button-group">
+            <button class="btn primary" id="rolesEditBtn" onclick="enableRolesEdit()" style="display:none"><i class="fa-solid fa-pen"></i> Edit</button>
+            <button class="btn primary" id="rolesSaveBtn" onclick="saveCustomRoles()" style="display:none"><i class="fa-solid fa-floppy-disk"></i> Save Roles</button>
+          </div>
+          <div id="rolesModified" style="display:none;margin-top:8px;font-size:13px;color:var(--accent)"><i class="fa-solid fa-circle-info"></i> Changes not saved</div>
+        </div>
+
+      
+	</section>
+</main>
+
+	</div>
+</body>
+</html>

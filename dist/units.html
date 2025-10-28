@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <base href="/hospitality-dashboard/">
+  <title>Units — Hospitality Booking Admin</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+	<!-- Extracted & Organized CSS Files -->
+	<link rel="stylesheet" href="css/variables.css">
+	<link rel="stylesheet" href="css/global.css">
+	<link rel="stylesheet" href="css/responsive.css">
+	<link rel="stylesheet" href="css/profile.css">
+	<link rel="stylesheet" href="css/units.css">
+	<!-- Storage helper with error handling -->
+	<script src="js/storage.js"></script>
+	<!-- Service Worker registration for caching -->
+	<script>
+		if ('serviceWorker' in navigator) {
+			navigator.serviceWorker.register('service-worker.js')
+				.then(reg => console.log('[SW] Registered:', reg))
+				.catch(err => console.log('[SW] Registration failed:', err));
+		}
+	</script>
+  
+</head>
+<body>
+	<div class="app">
+<aside class="sidebar">
+	<div class="brand"><div class="logo">RG</div><h1>Riyadh Getaways</h1></div>
+	<nav>
+		<div class="nav-item active" data-link="dashboard.html"><i class="fa-solid fa-gauge"></i> <span data-i18n="dashboard">Dashboard</span></div>
+		<div class="nav-item" data-link="calendar.html"><i class="fa-regular fa-calendar"></i> <span data-i18n="calendar">Calendar</span></div>
+		<div class="nav-item" data-link="units.html"><i class="fa-solid fa-building"></i> <span data-i18n="units">Units</span></div>
+		<div class="nav-item" data-link="website.html"><i class="fa-solid fa-globe"></i> <span data-i18n="website">Website Settings</span></div>
+		<div class="nav-item" data-link="aiagent.html"><i class="fa-solid fa-robot"></i> <span data-i18n="aiagent">AI Agent</span></div>
+		<div class="nav-item" data-link="contacts.html"><i class="fa-solid fa-address-book"></i> <span data-i18n="contacts">Contacts</span></div>
+	</nav>
+	<div class="sidebar-footer">© <strong>Riyadh Getaways</strong><br>Admin Dashboard</div>
+</aside>
+
+<main class="main">
+	<header class="header">
+		<div class="left">
+			<button id="sidebarToggle" class="sidebar-toggle" aria-label="Toggle sidebar" style="display:none;background:none;border:none;cursor:pointer;font-size:20px;color:var(--sidebar);padding:8px;margin-right:8px"><i class="fa-solid fa-bars"></i></button>
+			<h2 style="margin:0" id="headerTitle" data-i18n="dashboard">Dashboard</h2>
+		</div>
+		<div style="display:flex;align-items:center;gap:12px">
+			<div class="search"><i class="fa-solid fa-magnifying-glass" style="color:var(--muted)"></i> <input placeholder="Search bookings, units, clients..." data-i18n-placeholder="searchPlaceholder" style="border:none;outline:none;margin-left:8px;font-size:14px;width:250px"></div>
+			<div class="profile" id="profileBtn" tabindex="0">
+				<div style="text-align:right;margin-right:8px;font-size:13px"><div style="font-weight:700" data-i18n="admin">Admin</div><div style="font-size:12px;color:var(--muted)">riyadh@getaways</div></div>
+				<div class="avatar"><i class="fa-solid fa-user"></i></div>
+				<div class="profile-menu" id="profileMenu">
+					<button id="profileSettings" data-i18n="businessInfo">Business Information</button>
+					<button id="changePassword" data-i18n="changePassword">Change Password</button>
+					<button id="changeEmail" data-i18n="changeEmail">Change Email</button>
+					<div style="border-top:1px solid #e5e7eb;padding:8px 0;margin:8px 0;display:flex;gap:8px;align-items:center;justify-content:center">
+						<button id="langToggle" style="display:flex;align-items:center;gap:6px;padding:8px 12px;border:1px solid #e5e7eb;background:#fff;cursor:pointer;font-size:12px;font-weight:600;color:#f97316;border-radius:6px;transition:all 0.2s ease" title="Toggle Language"><i class="fa-solid fa-globe"></i> <span id="langText">العربية</span></button>
+					</div>
+					<button id="logoutBtn" data-i18n="logout">Logout</button>
+				</div>
+			</div>
+		</div>
+	</header>
+
+	<section class="content">
+		
+        <div>
+          <!-- Mobile Group Selector (hidden on desktop) -->
+          <select id="groupSelector" onchange="handleGroupChange(this.value)">
+            <!-- Options will be populated by JavaScript -->
+          </select>
+          
+          <!-- Units Groups Tabs Section (hidden on mobile) -->
+          <div style="display:flex;gap:8px;margin-bottom:20px;overflow-x:auto;padding-bottom:8px;border-bottom:2px solid #e5e7eb;align-items:center">
+            <div id="groupsTabs" style="display:flex;gap:8px;flex:1">
+              <!-- Group tabs will be rendered here -->
+            </div>
+            <button class="btn primary" onclick="openAddGroupModal()" style="flex-shrink:0"><i class="fa-solid fa-plus"></i> Add Group</button>
+          </div>
+
+          <div class="stat-cards">
+            <div class="stat-card">
+              <div class="stat-title">Total Units</div>
+              <div class="stat-value" id="statTotal">0</div>
+              <div class="stat-sub">All properties</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-title">Active</div>
+              <div class="stat-value" id="statActive">0</div>
+              <div class="stat-sub">Bookable</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-title">Maintenance</div>
+              <div class="stat-value" id="statMaintenance">0</div>
+              <div class="stat-sub">Unavailable</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-title">Avg. Rate</div>
+              <div class="stat-value" id="statADR">$0</div>
+              <div class="stat-sub">Per night</div>
+            </div>
+          </div>
+
+          <div class="toolbar">
+            <div class="toolbar-left">
+              <div class="filter"><i class="fa-solid fa-filter"></i><select id="statusFilter"><option value="all">All Statuses</option><option value="Active">Active</option><option value="Maintenance">Maintenance</option><option value="Disabled">Disabled</option></select></div>
+            </div>
+            <button class="btn primary" id="addUnitBtn"><i class="fa-solid fa-plus"></i> Add New Unit</button>
+          </div>
+
+          <div class="panel table-scroll-wrapper" style="overflow-x:auto">
+            <table aria-label="Units list">
+              <thead>
+                <tr><th>Unit</th><th>Type</th><th>Max Guests</th><th>Nightly Rate</th><th>Status</th><th style="width:120px">Actions</th></tr>
+              </thead>
+              <tbody id="unitsTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <aside class="side-panel">
+          <div class="panel">
+            <h3 style="margin-top:0">Amenities Overview</h3>
+            <div class="tag-list" id="amenityTagList"></div>
+          </div>
+          <div class="panel">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+              <h3 style="margin:0">Pricing Overrides</h3>
+              <button class="btn ghost" onclick="openPricingOverrideModal()" style="padding:6px 12px;font-size:12px"><i class="fa-solid fa-plus"></i> Add</button>
+            </div>
+            <ul style="padding-left:0;color:var(--muted);margin:0;display:flex;flex-direction:column;gap:8px;list-style:none" id="pricingOverridesList"></ul>
+          </div>
+        </aside>
+      
+	</section>
+</main>
+
+	</div>
+</body>
+</html>

@@ -3,8 +3,8 @@ node_modules/
 package-lock.json
 yarn.lock
 
-# Build output
-dist/
+# Build output (tracked for GitHub Pages)
+# dist/ - UNCOMMENT THIS LINE IF NOT DEPLOYING TO GITHUB PAGES
 
 # IDE
 .vscode/
@@ -19,3 +19,4 @@ Thumbs.db
 # Environment
 .env
 .env.local
+
