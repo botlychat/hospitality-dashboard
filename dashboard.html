@@ -1130,19 +1130,10 @@
 			// Open modal with the wrapper
 			openModal(wrapper);
 
-			// Populate country code selector
+			// Populate country code selector using utility function
 			const countryCodeSelect = document.getElementById('abCountryCode');
 			if(countryCodeSelect) {
-				const countryCodes = [
-					{code: '+966', country: 'Saudi Arabia', flag: '🇸🇦'},
-					{code: '+971', country: 'UAE', flag: '🇦🇪'},
-					{code: '+974', country: 'Qatar', flag: '🇶🇦'},
-					{code: '+965', country: 'Kuwait', flag: '🇰🇼'},
-					{code: '+973', country: 'Bahrain', flag: '🇧🇭'},
-					{code: '+968', country: 'Oman', flag: '🇴🇲'},
-					{code: '+1', country: 'USA/Canada', flag: '🇺🇸'},
-					{code: '+44', country: 'UK', flag: '🇬🇧'}
-				];
+				const countryCodes = getCountryCodes();
 				countryCodeSelect.innerHTML = '';
 				countryCodes.forEach(c => {
 					const option = document.createElement('option');

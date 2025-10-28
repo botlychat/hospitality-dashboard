@@ -445,6 +445,62 @@ function initializeSharedUtilities() {
   if (currencyEUR) currencyEUR.addEventListener('click', () => setCurrency('EUR'));
 }
 
+// ============================================
+// COUNTRY CODES UTILITY
+// ============================================
+
+/**
+ * Get list of country codes with flags and country names
+ * Used for international phone number selection
+ * @returns {Array} Array of {code, country, flag} objects
+ */
+function getCountryCodes() {
+  return [
+    {code: '+966', country: 'Saudi Arabia', flag: '🇸🇦'},
+    {code: '+971', country: 'UAE', flag: '🇦🇪'},
+    {code: '+974', country: 'Qatar', flag: '🇶🇦'},
+    {code: '+965', country: 'Kuwait', flag: '🇰🇼'},
+    {code: '+973', country: 'Bahrain', flag: '🇧🇭'},
+    {code: '+968', country: 'Oman', flag: '🇴🇲'},
+    {code: '+212', country: 'Morocco', flag: '🇲🇦'},
+    {code: '+213', country: 'Algeria', flag: '🇩🇿'},
+    {code: '+216', country: 'Tunisia', flag: '🇹🇳'},
+    {code: '+1', country: 'USA/Canada', flag: '🇺🇸'},
+    {code: '+44', country: 'UK', flag: '🇬🇧'},
+    {code: '+33', country: 'France', flag: '🇫🇷'},
+    {code: '+49', country: 'Germany', flag: '🇩🇪'},
+    {code: '+39', country: 'Italy', flag: '🇮🇹'},
+    {code: '+34', country: 'Spain', flag: '🇪🇸'},
+    {code: '+31', country: 'Netherlands', flag: '🇳🇱'},
+    {code: '+32', country: 'Belgium', flag: '🇧🇪'},
+    {code: '+43', country: 'Austria', flag: '🇦🇹'},
+    {code: '+41', country: 'Switzerland', flag: '🇨🇭'},
+    {code: '+46', country: 'Sweden', flag: '🇸🇪'},
+    {code: '+47', country: 'Norway', flag: '🇳🇴'},
+    {code: '+45', country: 'Denmark', flag: '🇩🇰'},
+    {code: '+358', country: 'Finland', flag: '🇫🇮'},
+    {code: '+48', country: 'Poland', flag: '🇵🇱'},
+    {code: '+420', country: 'Czech Republic', flag: '🇨🇿'},
+    {code: '+36', country: 'Hungary', flag: '🇭🇺'},
+    {code: '+40', country: 'Romania', flag: '🇷🇴'},
+    {code: '+355', country: 'Albania', flag: '🇦🇱'},
+    {code: '+359', country: 'Bulgaria', flag: '🇧🇬'},
+    {code: '+385', country: 'Croatia', flag: '🇭🇷'},
+    {code: '+30', country: 'Greece', flag: '🇬🇷'},
+    {code: '+91', country: 'India', flag: '🇮🇳'},
+    {code: '+81', country: 'Japan', flag: '🇯🇵'},
+    {code: '+86', country: 'China', flag: '🇨🇳'},
+    {code: '+82', country: 'South Korea', flag: '🇰🇷'},
+    {code: '+66', country: 'Thailand', flag: '🇹🇭'},
+    {code: '+60', country: 'Malaysia', flag: '🇲🇾'},
+    {code: '+65', country: 'Singapore', flag: '🇸🇬'},
+    {code: '+62', country: 'Indonesia', flag: '🇮🇩'},
+    {code: '+63', country: 'Philippines', flag: '🇵🇭'},
+    {code: '+64', country: 'New Zealand', flag: '🇳🇿'},
+    {code: '+61', country: 'Australia', flag: '🇦🇺'},
+  ];
+}
+
 // Auto-initialize when DOM is ready
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initializeSharedUtilities);
