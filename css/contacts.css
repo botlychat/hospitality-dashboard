@@ -1,25 +1,5 @@
 /* Contacts Management Page - Specific Styles */
 
-/* Ensure proper layout - sidebar should always be visible on desktop */
-.app {
-  display: flex;
-}
-
-.sidebar {
-  flex-shrink: 0;
-  width: 260px;
-}
-
-.main {
-  flex: 1;
-  min-width: 0;
-}
-
-.content {
-  display: flex;
-  flex-direction: column;
-}
-
 /* Table scroll wrapper - mobile direction based on language */
 .table-scroll-wrapper {
   overflow-x: auto;
