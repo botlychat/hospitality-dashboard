@@ -11,6 +11,8 @@
 	<link rel="stylesheet" href="css/global.css">
 	<link rel="stylesheet" href="css/responsive.css">
 	<link rel="stylesheet" href="css/profile.css">
+	<!-- Storage helper with error handling -->
+	<script src="js/storage.js"></script>
   </head>
 <body>
   <div class="app">
@@ -169,9 +171,10 @@
 			});
 		}
 
-		// Load existing business information
+		// Load existing business information (safe)
 		function loadBusinessInfo() {
-			const businessInfo = JSON.parse(localStorage.getItem('businessInfo') || '{}');
+			const defaultInfo = { commercialName: '', contactNumber: '', email: '', tourismLicense: '' };
+			const businessInfo = Storage.getJSON('businessInfo', defaultInfo);
 			
 			if (businessInfo.commercialName) {
 				document.getElementById('commercialName').value = businessInfo.commercialName;
@@ -198,7 +201,7 @@
 				tourismLicense: document.getElementById('tourismLicense').value
 			};
 			
-			localStorage.setItem('businessInfo', JSON.stringify(businessInfo));
+			Storage.setJSON('businessInfo', businessInfo);
 			
 			// Show success notification
 			showNotification('Business information saved successfully!', 'success');

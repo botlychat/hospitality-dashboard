@@ -108,8 +108,8 @@
   <div class="modal-backdrop" id="modalBackdrop"><div class="modal" id="modalContent"></div></div>
 
   <script>
-    // Load saved theme color
-    const savedColor = localStorage.getItem('websiteThemeColor');
+    // Load saved theme color (safe with fallback)
+    const savedColor = Storage.getString('websiteThemeColor', '');
     if(savedColor && /^#[0-9A-F]{6}$/i.test(savedColor)) {
       document.documentElement.style.setProperty('--accent', savedColor);
     }
@@ -1507,8 +1507,8 @@
           return;
         }
 
-        // Get existing URLs
-        const savedUrls = JSON.parse(localStorage.getItem(`calendarUrls_${unit}`) || '[]');
+        // Get existing URLs (safe with fallback)
+        const savedUrls = Storage.getJSON(`calendarUrls_${unit}`, []);
         
         // Add new URL with status
         const urlObj = {
