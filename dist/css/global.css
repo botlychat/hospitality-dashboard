@@ -161,59 +161,6 @@ nav {
   background: transparent;
 }
 
-.profile {
-  display: flex;
-  align-items: center;
-  gap: var(--space-md);
-  cursor: pointer;
-  position: relative;
-}
-
-.avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: var(--accent);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-}
-
-.profile-menu {
-  position: absolute;
-  right: 0;
-  top: 48px;
-  background: #fff;
-  border-radius: var(--border-radius-lg);
-  box-shadow: 0 8px 24px rgba(16, 24, 40, 0.12);
-  min-width: 180px;
-  overflow: hidden;
-  display: none;
-  z-index: var(--z-dropdown);
-}
-
-.profile-menu.show {
-  display: block;
-}
-
-.profile-menu button {
-  width: 100%;
-  padding: var(--space-md) var(--space-xl);
-  border: none;
-  background: transparent;
-  text-align: left;
-  cursor: pointer;
-  transition: background var(--transition-base);
-  user-select: none;
-  font-size: var(--font-size-base);
-}
-
-.profile-menu button:hover {
-  background: #f3f4f6;
-}
-
 .content {
   padding: var(--space-6xl);
   display: flex;
@@ -416,21 +363,8 @@ html[dir="rtl"] .sheet {
   box-shadow: 24px 0 48px rgba(15, 23, 41, 0.18);
 }
 
-html[dir="rtl"] .profile {
-  flex-direction: row-reverse;
-}
-
 html[dir="rtl"] .search {
   margin-right: auto;
-}
-
-html[dir="rtl"] .profile-menu {
-  right: auto;
-  left: 0;
-}
-
-html[dir="rtl"] .profile-menu button {
-  text-align: right;
 }
 
 html[dir="rtl"] .sheet-actions {

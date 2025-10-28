@@ -15,8 +15,6 @@
 #addBookingBtn{display:none;align-items:center;justify-content:center;gap:8px} /* Mobile button hidden by default */
 #addBookingBtnDesktop{display:flex;align-items:center;justify-content:center;gap:8px} /* Desktop button shown by default */
 
-#calendarGroupSelector{height:auto;min-height:44px}
-
 .filter{background:#fff;border:1px solid rgba(15,23,41,0.08);border-radius:12px;padding:8px 12px;display:flex;align-items:center;gap:8px;box-shadow:0 6px 18px rgba(15,23,41,0.05);height:auto;min-height:44px}
 .filter select{border:none;font-size:13px;color:#111;background:transparent;outline:none}
 .month-switcher{display:flex;align-items:center;gap:10px}
@@ -121,14 +119,6 @@ html[dir="rtl"] .modal-actions{flex-direction:row-reverse}
   .toolbar{flex-direction:column;gap:8px;align-items:stretch}
   .toolbar-left{flex-direction:column;width:100%;gap:8px}
   .toolbar-right{flex-direction:column;width:100%;gap:8px;order:3}
-  
-  .group-selector-wrapper{flex-direction:column;gap:8px}
-  
-  #calendarGroupSelector{
-    width:100%;
-    font-size:14px;
-    padding:10px 12px;
-  }
   
   .month-switcher{
     width:100%;

@@ -67,22 +67,17 @@
 				<div id="dashboardTab" class="tab-section active">
 					<div>
 						<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px">
-							<select id="dashboardGroupSelector" style="padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:13px;font-weight:600;background:#fff;cursor:pointer;min-width:220px">
-								<!-- Group options will be populated by JavaScript -->
-							</select>
-							<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex:1">
-								<div style="display:flex;flex-direction:column">
-									<h2 style="margin:0" data-i18n="overview">Overview</h2>
-									<div style="color:var(--muted);font-size:13px" data-i18n="summaryToday">Summary for today</div>
-								</div>
-								<div class="actions">
-									<button class="btn ghost" id="refreshBtn"><i class="fa-solid fa-rotate-right"></i> <span data-i18n="refresh">Refresh</span></button>
-									<button class="btn primary" id="newBookingBtn"><i class="fa-solid fa-plus"></i> <span data-i18n="newManualBooking">New Manual Booking</span></button>
-								</div>
+							<div style="display:flex;flex-direction:column">
+								<h2 style="margin:0" data-i18n="overview">Overview</h2>
+								<div style="color:var(--muted);font-size:13px" data-i18n="summaryToday">Summary for today</div>
+							</div>
+							<div class="actions">
+								<button class="btn ghost" id="refreshBtn"><i class="fa-solid fa-rotate-right"></i> <span data-i18n="refresh">Refresh</span></button>
+								<button class="btn primary" id="newBookingBtn"><i class="fa-solid fa-plus"></i> <span data-i18n="newManualBooking">New Manual Booking</span></button>
 							</div>
 						</div>
 
-									<div class="kpis" style="margin-top:16px">
+								<div class="kpis" style="margin-top:16px">
 										<div class="kpi">
 											<div class="icon"><i class="fa-solid fa-chart-line"></i></div>
 											<div class="label" data-i18n="occupancyRate">Occupancy Rate</div>
@@ -677,40 +672,8 @@
 			{ id: 'group_1', name: 'Main Hotel', type: 'Hotel Room', license: 'TRN-2024-001' },
 			{ id: 'group_2', name: 'Chalets Collection', type: 'Chalet', license: 'TRN-2024-002' }
 		]);
-		let currentGroupId = Storage.getString('currentGroupId', 'all');
+		let currentGroupId = 'all'; // Always show all groups
 		let currentCurrency = Storage.getString('currency', 'SAR');
-
-		function populateGroupSelectors(){
-			const selector = document.getElementById('dashboardGroupSelector');
-			if(selector){
-				selector.innerHTML = '';
-				// Add "All Groups" option first
-				const allOption = document.createElement('option');
-				allOption.value = 'all';
-				allOption.textContent = '📊 All Groups';
-				allOption.selected = currentGroupId === 'all';
-				selector.appendChild(allOption);
-				
-				// Add individual groups
-				unitsGroups.forEach(group => {
-					const option = document.createElement('option');
-					option.value = group.id;
-					option.textContent = `${group.name} (${group.type})`;
-					option.selected = group.id === currentGroupId;
-					selector.appendChild(option);
-				});
-				selector.addEventListener('change', (e) => {
-					currentGroupId = e.target.value;
-					Storage.setString('currentGroupId', currentGroupId);
-					// Refresh dashboard data based on selected group
-					updateKPIs();
-					renderRecentBookings();
-					renderUnitStatus();
-					renderWeeklyOccupancy();
-					renderWeeklyIncome();
-				});
-			}
-		}
 
 		// Set initial language
 		function setLanguage(lang){
@@ -799,7 +762,6 @@
 			}
 			
 			setLanguage(currentLanguage);
-			populateGroupSelectors();
 			// Set currency selector to current value
 			const currencySelect = document.getElementById('currencySelect');
 			if(currencySelect) currencySelect.value = currentCurrency;
@@ -845,13 +807,8 @@
 		function renderRecentBookings(){
 			const tbody = document.getElementById('recentBookings');
 			tbody.innerHTML='';
-			// Filter bookings by current group
-			const filteredBookings = currentGroupId === 'all' 
-				? sampleBookings.slice(0, 5)
-				: sampleBookings.filter(b => {
-					const unit = units.find(u => u.name === b.unit);
-					return unit && unit.groupId === currentGroupId;
-				}).slice(0, 5);
+			// Show all bookings (no filtering)
+			const filteredBookings = sampleBookings.slice(0, 5);
 			
 			filteredBookings.forEach(b=>{
 				const tr=document.createElement('tr');
@@ -865,10 +822,8 @@
 		function renderUnitStatus(){
 			const list=document.getElementById('unitStatus');
 			list.innerHTML='';
-			// Filter units by current group
-			const filteredUnits = currentGroupId === 'all'
-				? units
-				: units.filter(u => u.groupId === currentGroupId);
+			// Show all units (no filtering)
+			const filteredUnits = units;
 			
 			filteredUnits.forEach(u=>{
 				const el=document.createElement('div');
@@ -1917,33 +1872,6 @@
 			}
 		});
 	}
-</script>
-
-<script>
-// Profile Button - Ultra Simple Handler
-(function() {
-	var btn = document.getElementById('profileBtn');
-	var menu = document.getElementById('profileMenu');
-	if (!btn || !menu) return;
-	
-	btn.onclick = function(e) {
-		e.stopPropagation();
-		menu.classList.toggle('show');
-	};
-	
-	document.onclick = function(e) {
-		if (!btn.contains(e.target) && !menu.contains(e.target)) {
-			menu.classList.remove('show');
-		}
-	};
-	
-	// Menu items
-	var settings = document.getElementById('profileSettings');
-	var logout = document.getElementById('logoutBtn');
-	
-	if (settings) settings.onclick = function() { menu.classList.remove('show'); window.location.href = 'business-info.html'; };
-	if (logout) logout.onclick = function() { menu.classList.remove('show'); if (confirm('Logout?')) alert('Logging out...'); };
-})();
 </script>
 
 </body>

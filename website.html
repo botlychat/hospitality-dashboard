@@ -283,44 +283,5 @@
 	}
 </script>
 
-<script>
-// Ultra-simple profile button handler
-(function() {
-	var btn = document.getElementById('profileBtn');
-	var menu = document.getElementById('profileMenu');
-	if (!btn || !menu) return;
-	
-	btn.onclick = function(e) {
-		e.stopPropagation();
-		menu.classList.toggle('show');
-	};
-	
-	document.onclick = function(e) {
-		if (!btn.contains(e.target) && !menu.contains(e.target)) {
-			menu.classList.remove('show');
-		}
-	};
-	
-	var settings = document.getElementById('profileSettings');
-	var logout = document.getElementById('logoutBtn');
-	
-	if (settings) {
-		settings.onclick = function() {
-			menu.classList.remove('show');
-			window.location.href = 'business-info.html';
-		};
-	}
-	
-	if (logout) {
-		logout.onclick = function() {
-			menu.classList.remove('show');
-			if (confirm('Logout?')) {
-				alert('Logging out...');
-			}
-		};
-	}
-})();
-</script>
-
 </body>
 </html>

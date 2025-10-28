@@ -62,12 +62,6 @@
 			</header>
 
 			<section class="content" id="aiAgentConfigContent">
-				<div style="margin-bottom:16px;display:flex;justify-content:flex-end;position:relative;z-index:1">
-					<select id="aiAgentGroupSelector" style="padding:10px 14px;border:1px solid #e5e7eb;border-radius:8px;font-size:13px;font-weight:600;background:#fff;cursor:pointer;min-width:240px;box-shadow:0 2px 6px rgba(15,23,41,0.06);transition:all 0.2s ease;z-index:2">
-						<!-- Group options will be populated by JavaScript -->
-					</select>
-				</div>
-
 				<!-- Active Conversations Section -->
 				<div class="panel">
 					<h3><i class="fa-solid fa-comments"></i> Active Conversations</h3>
@@ -478,46 +472,7 @@
 		// Load roles on page load
 		document.addEventListener('DOMContentLoaded', function() {
 			loadCustomRoles();
-			populateUnitGroups();
 		});
-
-		// Populate unit groups selector
-		function populateUnitGroups() {
-			const selector = document.getElementById('aiAgentGroupSelector');
-			if(!selector) return;
-			
-			// Get groups from storage (same as units page) - safe
-			let unitsGroups = Storage.getJSON('unitsGroups', [
-				{ id: 'group_1', name: 'Main Hotel', type: 'Hotel Room', license: 'TRN-2024-001' },
-				{ id: 'group_2', name: 'Chalets Collection', type: 'Chalet', license: 'TRN-2024-002' }
-			]);
-			
-			// Clear existing options
-			selector.innerHTML = '';
-			
-			// Add "All Groups" option
-			const allOption = document.createElement('option');
-			allOption.value = 'all';
-			allOption.textContent = 'All Groups';
-			selector.appendChild(allOption);
-			
-			// Add group options
-			unitsGroups.forEach(group => {
-				const option = document.createElement('option');
-				option.value = group.id;
-				option.textContent = `${group.name} (${group.type})`;
-				selector.appendChild(option);
-			});
-			
-			// Load saved selection
-			const savedGroup = Storage.getString('aiAgentSelectedGroup', 'all');
-			selector.value = savedGroup;
-			
-			// Save on change (safe)
-			selector.addEventListener('change', function() {
-				Storage.setString('aiAgentSelectedGroup', this.value);
-			});
-	}
 
 	function showConfirmation(message) {
 		// Create notification element
@@ -586,33 +541,6 @@
 			}, 300);
 		}, 3000);
 	}
-</script>
-
-<script>
-// Profile Button - Ultra Simple Handler
-(function() {
-	var btn = document.getElementById('profileBtn');
-	var menu = document.getElementById('profileMenu');
-	if (!btn || !menu) return;
-	
-	btn.onclick = function(e) {
-		e.stopPropagation();
-		menu.classList.toggle('show');
-	};
-	
-	document.onclick = function(e) {
-		if (!btn.contains(e.target) && !menu.contains(e.target)) {
-			menu.classList.remove('show');
-		}
-	};
-	
-	// Menu items
-	var settings = document.getElementById('profileSettings');
-	var logout = document.getElementById('logoutBtn');
-	
-	if (settings) settings.onclick = function() { menu.classList.remove('show'); window.location.href = 'business-info.html'; };
-	if (logout) logout.onclick = function() { menu.classList.remove('show'); if (confirm('Logout?')) alert('Logging out...'); };
-})();
 </script>
 
 </body>

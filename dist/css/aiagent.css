@@ -304,24 +304,6 @@
   color: var(--accent);
 }
 
-/* Group selector */
-#aiAgentGroupSelector {
-  padding: var(--space-md) var(--space-xl);
-  border: 1px solid var(--stroke);
-  border-radius: var(--border-radius-lg);
-  font-size: var(--font-size-base);
-  font-weight: 600;
-  background: #fff;
-  cursor: pointer;
-  min-width: 240px;
-  box-shadow: 0 2px 6px rgba(15, 23, 41, 0.06);
-  transition: all var(--transition-base);
-}
-
-#aiAgentGroupSelector:hover {
-  border-color: var(--accent);
-}
-
 /* Readonly/Editable state */
 textarea[readonly] {
   background: #f9fafb;
