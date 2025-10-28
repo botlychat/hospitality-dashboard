@@ -1,21 +1,15 @@
 /**
- * PJAX Page Loader - DISABLED
- * Service Worker caching is sufficient for performance
- * Using native browser navigation instead
+ * Page Loader - DEPRECATED AND REMOVED
+ * All functionality disabled to prevent conflicts
+ * Using native browser navigation and Service Worker caching instead
  */
 
 const PageLoader = {
   init() {
-    console.log('[PageLoader] ✓ Initialized (PJAX disabled - using browser navigation)');
+    // Disabled - no functionality
   }
 };
 
-// Auto-initialize when DOM is ready
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => {
-    PageLoader.init();
-  });
-} else {
-  PageLoader.init();
-}
+// No auto-initialization
+
 

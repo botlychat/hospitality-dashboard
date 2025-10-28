@@ -1,22 +1,11 @@
 /**
- * Service Worker - Cache First Strategy
- * Caches sidebar, CSS, JS, and static assets for fast loading and offline support
+ * Service Worker - Simple Cache Strategy
+ * Only caches static assets, not HTML pages
+ * Minimizes caching issues and errors
  */
 
-const CACHE_NAME = 'hospitality-dashboard-v2';
-const ASSETS_TO_CACHE = [
-  // HTML files
-  '/',
-  '/hospitality-dashboard/',
-  '/hospitality-dashboard/index.html',
-  '/hospitality-dashboard/dashboard.html',
-  '/hospitality-dashboard/calendar.html',
-  '/hospitality-dashboard/units.html',
-  '/hospitality-dashboard/contacts.html',
-  '/hospitality-dashboard/aiagent.html',
-  '/hospitality-dashboard/website.html',
-  '/hospitality-dashboard/business-info.html',
-  
+const CACHE_NAME = 'hospitality-dashboard-v3';
+const STATIC_ASSETS = [
   // CSS files
   '/hospitality-dashboard/css/variables.css',
   '/hospitality-dashboard/css/global.css',
@@ -34,24 +23,23 @@ const ASSETS_TO_CACHE = [
   '/hospitality-dashboard/js/utils.js',
   '/hospitality-dashboard/js/components.js',
   '/hospitality-dashboard/js/components/profile.js',
-  '/hospitality-dashboard/js/page-loader.js',
   
   // External CDN (Font Awesome)
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css',
 ];
 
 /**
- * Install event - cache assets
+ * Install event - cache static assets only
  */
 self.addEventListener('install', (event) => {
   console.log('[ServiceWorker] Installing...');
   
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log('[ServiceWorker] Caching assets...');
-      return cache.addAll(ASSETS_TO_CACHE).catch((error) => {
+      console.log('[ServiceWorker] Caching static assets...');
+      return cache.addAll(STATIC_ASSETS).catch((error) => {
         console.warn('[ServiceWorker] Some assets failed to cache:', error);
-        // Continue even if some assets fail to cache
+        // Continue even if some assets fail
       });
     })
   );
@@ -80,63 +68,52 @@ self.addEventListener('activate', (event) => {
 });
 
 /**
- * Fetch event - serve from cache, fallback to network
- * Cache first strategy for assets, network first for pages
+ * Fetch event - network first for everything
+ * Falls back to cache only for static assets
  */
 self.addEventListener('fetch', (event) => {
   const { request } = event;
-  const url = new URL(request.url);
-
+  
   // Skip non-GET requests
   if (request.method !== 'GET') {
     return;
   }
 
-  // Strategy for HTML pages - network first with cache fallback
-  if (request.headers.get('accept')?.includes('text/html')) {
-    event.respondWith(
-      fetch(request)
-        .then((response) => {
-          // Cache successful responses
-          if (response.status === 200) {
-            const cache = caches.open(CACHE_NAME);
-            cache.then((c) => c.put(request, response.clone()));
-          }
-          return response;
-        })
-        .catch(() => {
-          // Fallback to cache
-          return caches.match(request);
-        })
-    );
-    return;
-  }
-
-  // Strategy for assets (CSS, JS, fonts) - cache first with network fallback
+  // Network first strategy for all requests
   event.respondWith(
-    caches.match(request).then((cachedResponse) => {
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-
-      return fetch(request).then((response) => {
+    fetch(request)
+      .then((response) => {
         // Don't cache non-successful responses
         if (!response || response.status !== 200) {
           return response;
         }
 
-        // Clone the response
-        const responseToCache = response.clone();
-
-        caches.open(CACHE_NAME).then((cache) => {
-          cache.put(request, responseToCache);
-        });
+        // Only cache CSS and JS files
+        if (request.url.includes('.css') || request.url.includes('.js')) {
+          const responseToCache = response.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(request, responseToCache);
+          });
+        }
 
         return response;
-      });
-    }).catch(() => {
-      // Return cached version or offline page
-      return caches.match(request);
-    })
+      })
+      .catch(() => {
+        // Fallback to cache for static assets only
+        return caches.match(request).then((cachedResponse) => {
+          if (cachedResponse) {
+            return cachedResponse;
+          }
+          // Return offline page or nothing
+          return new Response('Offline - please check your connection', {
+            status: 503,
+            statusText: 'Service Unavailable',
+            headers: new Headers({
+              'Content-Type': 'text/plain'
+            })
+          });
+        });
+      })
   );
 });
+
