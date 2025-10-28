@@ -592,7 +592,6 @@
     }
 
     function renderCalendar(){
-      const calendarGrid = document.getElementById('calendarGrid');
       if(!calendarGrid) {
         console.error('Calendar grid element not found');
         return;
@@ -2053,55 +2052,58 @@
       updateLanguageButtons();
     }
 
-    // Initialize with stored language BEFORE rendering
-    setLanguage(currentLanguage);
+    // Wait for DOM to be ready before initializing
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize with stored language BEFORE rendering
+      setLanguage(currentLanguage);
 
-    // Now populate and render the calendar
-    populateGroupSelectors();
-    populateUnitControls();
-    initWeekdays();
-    renderLegend();
-    renderCalendar();
+      // Now populate and render the calendar
+      populateGroupSelectors();
+      populateUnitControls();
+      initWeekdays();
+      renderLegend();
+      renderCalendar();
 
-    // Language switcher listener
-    const langToggle = document.getElementById('langToggle');
-    if(langToggle) {
-      langToggle.addEventListener('click', () => {
-        const newLang = currentLanguage === 'en' ? 'ar' : 'en';
-        setLanguage(newLang);
+      // Language switcher listener
+      const langToggle = document.getElementById('langToggle');
+      if(langToggle) {
+        langToggle.addEventListener('click', () => {
+          const newLang = currentLanguage === 'en' ? 'ar' : 'en';
+          setLanguage(newLang);
+        });
+      }
+
+      // Navigation handlers - redirect to pages
+      document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', () => {
+          const section = item.dataset.link;
+          if (section && !item.classList.contains('active')) {
+            window.location.href = section;
+          }
+        });
       });
-    }
 
-    // Navigation handlers - redirect to pages
-    document.querySelectorAll('.nav-item').forEach(item => {
-      item.addEventListener('click', () => {
-        const section = item.dataset.link;
-        if (section && !item.classList.contains('active')) {
-          window.location.href = section;
-        }
-      });
-    });
-
-  const params=new URLSearchParams(location.search);
-  if(params.get('openAdd')) openAddBooking(null,filters.unit!=='all'?filters.unit:null);
-  
-  // Mobile sidebar toggle functionality
-  const sidebarToggle = document.getElementById('sidebarToggle');
-  const sidebar = document.querySelector('.sidebar');
-  
-  if(sidebarToggle && sidebar) {
-    sidebarToggle.addEventListener('click', (e) => {
-      e.stopPropagation();
-      sidebar.classList.toggle('active');
-    });
-    
-    // Close sidebar when clicking outside
-    document.addEventListener('click', (e) => {
-      if(!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
-        sidebar.classList.remove('active');
+      const params=new URLSearchParams(location.search);
+      if(params.get('openAdd')) openAddBooking(null,filters.unit!=='all'?filters.unit:null);
+      
+      // Mobile sidebar toggle functionality
+      const sidebarToggle = document.getElementById('sidebarToggle');
+      const sidebar = document.querySelector('.sidebar');
+      
+      if(sidebarToggle && sidebar) {
+        sidebarToggle.addEventListener('click', (e) => {
+          e.stopPropagation();
+          sidebar.classList.toggle('active');
+        });
+        
+        // Close sidebar when clicking outside
+        document.addEventListener('click', (e) => {
+          if(!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
+            sidebar.classList.remove('active');
+          }
+        });
       }
     });
-  }
 </script>
 
 <!-- Loading Overlay -->
