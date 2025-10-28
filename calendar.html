@@ -111,18 +111,12 @@
   <div class="modal-backdrop" id="modalBackdrop"><div class="modal" id="modalContent"></div></div>
 
   <script>
-    // Load saved theme color
-    const savedColor = Storage.get('websiteThemeColor');
-    if(savedColor && Validator.isHexColor(savedColor)) {
-      document.documentElement.style.setProperty('--accent', savedColor);
-    }
-
     // Helper function to get proper file path (works on GitHub Pages)
     function getPagePath(filename) {
       const currentPath = window.location.pathname;
-      // Check if we're on GitHub Pages (path contains /chaletdashboard/)
-      if(currentPath.includes('/chaletdashboard/')) {
-        return '/chaletdashboard/' + filename;
+      // Check if we're on GitHub Pages (path contains /hospitality-dashboard/)
+      if(currentPath.includes('/hospitality-dashboard/')) {
+        return '/hospitality-dashboard/' + filename;
       }
       // Otherwise use relative path (local development)
       return filename;
@@ -2054,6 +2048,19 @@
 
     // Wait for DOM to be ready before initializing
     document.addEventListener('DOMContentLoaded', function() {
+      // Check if required scripts are loaded
+      if(typeof Storage === 'undefined' || typeof Validator === 'undefined') {
+        console.error('Required scripts not loaded. Storage:', typeof Storage, 'Validator:', typeof Validator);
+        alert('Error: Calendar scripts failed to load. Please refresh the page.');
+        return;
+      }
+
+      // Load saved theme color
+      const savedColor = Storage.get('websiteThemeColor');
+      if(savedColor && Validator.isHexColor(savedColor)) {
+        document.documentElement.style.setProperty('--accent', savedColor);
+      }
+
       // Initialize with stored language BEFORE rendering
       setLanguage(currentLanguage);
 
