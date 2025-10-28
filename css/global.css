@@ -214,6 +214,7 @@ nav {
   flex-direction: column;
   gap: var(--space-5xl);
   overflow-y: auto;
+  min-height: calc(100vh - 94px);
 }
 
 /* === CARDS & PANELS === */
