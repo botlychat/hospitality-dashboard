@@ -12,6 +12,10 @@
 	<link rel="stylesheet" href="css/responsive.css">
 	<link rel="stylesheet" href="css/profile.css">
 	<link rel="stylesheet" href="css/contacts.css">
+	<!-- Validation & Error Handling -->
+	<script src="js/validator.js"></script>
+	<script src="js/error-handler.js"></script>
+	<script src="js/modals.js"></script>
   </head>
 <body>
   <div class="app">
@@ -218,8 +222,8 @@
 	
 	<script>
 		// Load saved theme color
-		const savedColor = localStorage.getItem('websiteThemeColor');
-		if(savedColor && /^#[0-9A-F]{6}$/i.test(savedColor)) {
+		const savedColor = Storage.get('websiteThemeColor');
+		if(savedColor && Validator.isHexColor(savedColor)) {
 			document.documentElement.style.setProperty('--accent', savedColor);
 		}
 
@@ -249,7 +253,7 @@
 }
 
 // Sample contacts data
-let clients = JSON.parse(localStorage.getItem('clients')) || [
+let clients = Storage.get('clients', [
 	{
 		id: 1,
 		name: 'Ahmed Al-Mansouri',
@@ -332,7 +336,6 @@ function renderClientsTable() {
 	if (pageEnd) pageEnd.textContent = clients.length;
 }
 
-// Dummy functions for buttons
 function editClient(id) {
 	alert('Edit contact ID: ' + id);
 }
@@ -340,7 +343,7 @@ function editClient(id) {
 function deleteClient(id) {
 	if (confirm('Delete this contact?')) {
 		clients = clients.filter(c => c.id !== id);
-		localStorage.setItem('clients', JSON.stringify(clients));
+		Storage.set('clients', clients);
 		renderClientsTable();
 	}
 }

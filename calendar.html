@@ -6,293 +6,12 @@
   <base href="/hospitality-dashboard/">
   <title>Calendar — Hospitality Booking Admin</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <style>
-    :root{--bg:#f5f7fa;--bg-gradient:linear-gradient(130deg,#f5f7fa 0%,#eef4ff 35%,#fff8f2 100%);--sidebar:#0f1729;--accent:#f97316;--accent-soft:rgba(249,115,22,0.14);--muted:#64748b;--card:#fff;--stroke:#e2e8f0}
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{font-family:Inter,Segoe UI,Arial;background:var(--bg-gradient);margin:0;color:#111;position:relative}
-    body::before{content:"";position:fixed;inset:0;background:radial-gradient(circle at 20% 18%,rgba(249,115,22,0.18),transparent 45%),radial-gradient(circle at 80% -10%,rgba(59,130,246,0.18),transparent 45%);pointer-events:none;opacity:.65}
-    .app{display:flex;min-height:100vh;position:relative;z-index:1}
-    .sidebar{width:260px;background:var(--sidebar);color:#fff;display:flex;flex-direction:column;padding:22px 20px;gap:18px;box-shadow:6px 0 24px rgba(15,23,41,0.12)}
-    .brand{display:flex;align-items:center;gap:14px}
-    .brand .logo{width:46px;height:46px;border-radius:14px;background:linear-gradient(140deg,var(--accent),#fdba74);display:flex;align-items:center;justify-content:center;font-weight:700}
-    .brand h1{font-size:17px;margin:0}
-    nav{display:flex;flex-direction:column;gap:6px}
-    .nav-item{display:flex;align-items:center;gap:12px;padding:11px;border-radius:10px;color:#d6d9df;cursor:pointer;transition:background .2s ease,transform .2s ease}
-    .nav-item:hover,.nav-item.active{background:rgba(255,255,255,0.1);color:#fff;transform:translateX(2px)}
-    .nav-item i{width:20px;text-align:center}
-    .sidebar-footer{margin-top:auto;font-size:13px;color:rgba(255,255,255,0.55)}
-
-    .main{flex:1;display:flex;flex-direction:column}
-    .header{height:70px;background:rgba(255,255,255,0.85);backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:space-between;padding:0 26px;border-bottom:1px solid rgba(15,23,41,0.06);gap:12px;position:sticky;top:0;z-index:5}
-    .header .left{display:flex;align-items:center;gap:16px}
-    .search{background:#fff;padding:9px 14px;border-radius:12px;box-shadow:0 6px 20px rgba(15,23,41,0.06);min-width:320px;display:flex;align-items:center}
-    .search input{border:none;outline:none;margin-left:8px;font-size:14px;width:100%;background:transparent}
-    .profile{display:flex;align-items:center;gap:10px;cursor:pointer;position:relative}
-    .avatar{width:36px;height:36px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700}
-    .profile-menu{position:absolute;right:0;top:48px;background:#fff;border-radius:10px;box-shadow:0 14px 30px rgba(15,23,41,0.12);min-width:190px;overflow:hidden;display:none}
-    .profile-menu.show{display:block}
-    .profile-menu button{width:100%;padding:10px 12px;border:none;background:transparent;text-align:left;cursor:pointer;font-size:14px}
-
-    .content{padding:26px;display:flex;flex-direction:column;gap:18px}
-
-    /* Desktop Layout */
-    .toolbar{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:12px}
-    .toolbar-left{display:flex;flex-wrap:wrap;align-items:flex-start;gap:12px;flex:1}
-    .toolbar-right{display:flex;flex-direction:column;gap:8px;min-width:200px;align-items:stretch}
-    
-    .group-selector-wrapper{display:flex;gap:8px;align-items:stretch;width:100%}
-    .month-centered{display:flex;justify-content:center;margin:12px 0}
-    
-    /* Show/hide add booking buttons for desktop vs mobile */
-    #addBookingBtn{display:none;align-items:center;justify-content:center;gap:8px} /* Mobile button hidden by default */
-    #addBookingBtnDesktop{display:flex;align-items:center;justify-content:center;gap:8px} /* Desktop button shown by default */
-    
-    #calendarGroupSelector{height:auto;min-height:44px}
-    
-    .filter{background:#fff;border:1px solid rgba(15,23,41,0.08);border-radius:12px;padding:8px 12px;display:flex;align-items:center;gap:8px;box-shadow:0 6px 18px rgba(15,23,41,0.05);height:auto;min-height:44px}
-    .filter select{border:none;font-size:13px;color:#111;background:transparent;outline:none}
-    .month-switcher{display:flex;align-items:center;gap:10px}
-    .month-switcher button{width:34px;height:34px;border-radius:10px;border:1px solid rgba(15,23,41,0.08);background:#fff;cursor:pointer}
-
-    .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted)}
-    .legend span{display:flex;align-items:center;gap:6px}
-    .legend .dot{width:10px;height:10px;border-radius:50%;display:inline-block}
-
-    .btn{padding:10px 16px;border-radius:12px;border:none;cursor:pointer;font-weight:600;font-size:14px;transition:all .2s ease}
-    .btn.primary{background:var(--accent);color:#fff;box-shadow:0 10px 24px rgba(249,115,22,0.24)}
-    .btn.primary:hover{filter:brightness(.93)}
-    .btn.ghost{background:rgba(255,255,255,0.7);border:1px solid rgba(15,23,41,0.08)}
-
-    .calendar-surface{background:var(--card);padding:20px;border-radius:18px;box-shadow:0 14px 30px rgba(15,23,41,0.08)}
-    .calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:12px}
-    .weekdays{display:grid;grid-template-columns:repeat(7,1fr);gap:12px;margin-bottom:10px;font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px}
-    .day-cell{background:#f8fafc;border-radius:16px;min-height:120px;padding:12px;border:1px solid rgba(15,23,41,0.05);position:relative;display:flex;flex-direction:column;gap:4px;overflow-y:auto;max-height:200px;cursor:pointer;transition:all 0.2s ease;pointer-events:auto}
-    .day-cell:hover{background:#f0f4ff;border-color:rgba(249,115,22,0.3);box-shadow:0 4px 12px rgba(15,23,41,0.1)}
-    .day-cell.outside{opacity:.45}
-    .day-header{display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:600;color:#1e293b;margin-bottom:4px;flex-shrink:0;pointer-events:none}
-    .day-header .date{font-size:14px}
-    .event{display:flex;align-items:flex-start;gap:6px;border-radius:8px;padding:4px 6px;font-size:11px;color:#0f172a;background:rgba(255,255,255,0.85);border:1px solid transparent;cursor:pointer;transition:transform .15s ease;flex-shrink:0}
-    .event:hover{transform:translateY(-1px)}
-    .event .swatch{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:2px}
-    .event > div{display:flex;flex-direction:column;gap:1px;flex:1;min-width:0}
-    .event-client{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .event-meta{font-size:10px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .price-chip{margin-left:auto;font-size:12px;color:var(--muted);background:rgba(59,130,246,0.12);padding:4px 10px;border-radius:999px;display:inline-flex;align-items:center;gap:6px;font-weight:600;pointer-events:none}
-  .price-chip i{font-size:10px}
-  .price-chip.override{background:rgba(249,115,22,0.16);color:var(--accent)}
-  .day-cell.override-day{border-color:rgba(249,115,22,0.32);box-shadow:0 0 0 2px rgba(249,115,22,0.16)}
-
-  .lock-indicator{display:flex;align-items:center;justify-content:center;width:100%;padding:8px;background:rgba(239,68,68,0.1);border-radius:8px;cursor:pointer;margin-top:4px;transition:all 0.2s ease;color:#ef4444;font-size:14px;gap:6px}
-  .lock-indicator:hover{background:rgba(239,68,68,0.2);transform:scale(1.05)}
-  .lock-indicator i{font-size:16px}
-  .lock-text{font-size:12px;font-weight:600}
-
-    .context-menu{position:fixed;background:#fff;border:1px solid rgba(15,23,41,0.08);border-radius:12px;box-shadow:0 20px 40px rgba(15,23,41,0.12);display:none;padding:10px;z-index:9999;min-width:180px}
-    .context-menu button{width:100%;padding:8px 10px;border:none;background:transparent;text-align:left;font-size:13px;cursor:pointer}
-    .context-menu button:hover{background:rgba(249,115,22,0.08)}
-
-    .modal-backdrop{position:fixed;inset:0;background:rgba(15,23,42,0.36);display:none;align-items:center;justify-content:center;padding:20px;z-index:30}
-    .modal-backdrop.show{display:flex}
-    .modal{background:#fff;border-radius:16px;max-width:640px;width:100%;max-height:90vh;overflow:auto;padding:22px;box-shadow:0 24px 48px rgba(15,23,41,0.18);display:flex;flex-direction:column}
-    .modal h3{margin-top:0;margin-bottom:8px}
-    .modal-footer{display:flex;justify-content:flex-end;gap:10px;margin-top:18px}
-
-    .form-grid{display:grid;gap:12px;width:100%}
-    .form-grid.two{grid-template-columns:repeat(2,1fr)}
-    label{font-size:13px;font-weight:600;color:#1f2937;display:flex;flex-direction:column;gap:6px}
-    input[type="text"],input[type="date"],input[type="number"],select{padding:10px 12px;border-radius:10px;border:1px solid rgba(148,163,184,0.4);font-size:13px;font-family:inherit;width:100%;background:#fff;color:#1f2937}
-    input[type="text"]:focus,input[type="date"]:focus,input[type="number"]:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 2px rgba(249,115,22,0.1)}
-    input[type="color"]{cursor:pointer;border:none}
-    select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%231f2937' d='M6 9L1 4h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:32px;background-color:#fff}
-    .mini-btn{padding:6px 10px;border-radius:8px;border:1px solid rgba(148,163,184,0.4);background:#fff;font-size:12px;cursor:pointer;color:#1f2937}
-    .mini-btn:hover{background:rgba(15,23,41,0.05)}
-    .rate-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(15,23,41,0.06);font-size:13px}
-    .rate-row:last-child{border-bottom:none}
-    .rate-row .rate-info{display:flex;flex-direction:column}
-    .rate-row .rate-sub{font-size:11px;color:var(--muted)}
-    .rate-chip{padding:4px 8px;border-radius:999px;font-size:12px;font-weight:600}
-    .rate-chip.base{background:rgba(148,163,184,0.18);color:#475569}
-    .rate-chip.override{background:rgba(249,115,22,0.16);color:var(--accent)}
-
-    @keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-
-    /* RTL Support */
-    html[dir="rtl"] .sidebar{box-shadow:-6px 0 24px rgba(15,23,41,0.12)}
-    html[dir="rtl"] .sheet{box-shadow:24px 0 48px rgba(15,23,41,0.18)}
-    html[dir="rtl"] .profile{flex-direction:row-reverse}
-    html[dir="rtl"] .search{margin-right:auto}
-    html[dir="rtl"] .profile-menu{right:auto;left:0}
-    html[dir="rtl"] .profile-menu button{text-align:right}
-    html[dir="rtl"] .modal-actions{flex-direction:row-reverse}
-
-    @media(max-width:1100px){.calendar-grid,.weekdays{gap:8px}}
-    @media(max-width:980px){
-      .sidebar{position:fixed;left:0;top:0;height:100vh;z-index:40;transform:translateX(-100%);transition:transform 0.3s ease;box-shadow:6px 0 24px rgba(15,23,41,0.12)}
-      .sidebar.active{transform:translateX(0)}
-      .sidebar-toggle{display:block !important}
-      .search{display:none}
-    }
-    
-    /* Mobile calendar: 7 columns, fit screen width, 5 rows visible */
-    @media(max-width:980px){
-      .calendar-surface{padding:10px;overflow:hidden}
-      .calendar-grid{
-        grid-template-columns:repeat(7,1fr);
-        gap:4px;
-        width:100%;
-      }
-      .weekdays{
-        display:grid;
-        grid-template-columns:repeat(7,1fr);
-        gap:4px;
-        font-size:10px;
-        margin-bottom:6px;
-      }
-      
-      /* Mobile Layout Reordering */
-      .toolbar{flex-direction:column;gap:8px;align-items:stretch}
-      .toolbar-left{flex-direction:column;width:100%;gap:8px}
-      .toolbar-right{flex-direction:column;width:100%;gap:8px;order:3}
-      
-      .group-selector-wrapper{flex-direction:column;gap:8px}
-      
-      #calendarGroupSelector{
-        width:100%;
-        font-size:14px;
-        padding:10px 12px;
-      }
-      
-      .month-switcher{
-        width:100%;
-        justify-content:center;
-        order:1;
-      }
-      
-      .filter{
-        width:100%;
-        order:2;
-      }
-      
-      /* Hide desktop filter on mobile, show mobile filter */
-      .group-selector-wrapper .filter{
-        display:none !important;
-      }
-      
-      .filter-mobile{
-        display:flex !important;
-        order:2; /* Second in toolbar-right, above sync */
-        width:100%;
-      }
-      
-      #addBookingBtn{
-        display:flex !important; /* Show mobile button */
-        align-items:center;
-        justify-content:center;
-        gap:8px;
-        width:100%;
-        order:1; /* First in toolbar-right */
-        padding:10px 12px;
-        font-size:13px;
-        min-height:44px;
-      }
-      
-      #addBookingBtnDesktop{
-        display:none !important; /* Hide desktop button on mobile */
-      }
-      
-      #getCalendarUrlBtn{
-        order:3; /* Third in toolbar-right */
-      }
-      
-      #syncCalendarBtn{
-        order:4; /* Fourth in toolbar-right */
-      }
-      
-      .toolbar-right .btn{
-        width:100%;
-        padding:10px 12px;
-        font-size:12px;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        gap:6px;
-      }
-      
-      .legend{
-        order:4;
-        margin-top:8px;
-      }
-      
-      .day-cell{
-        min-height:80px;
-        max-height:80px;
-        padding:4px;
-        border-radius:8px;
-        gap:2px;
-        overflow-y:auto;
-        overflow-x:hidden;
-      }
-      .day-cell::-webkit-scrollbar{
-        width:3px;
-      }
-      .day-cell::-webkit-scrollbar-thumb{
-        background:#cbd5e1;
-        border-radius:3px;
-      }
-      .day-header{
-        font-size:10px;
-        margin-bottom:2px;
-      }
-      .day-header .date{
-        font-size:11px;
-      }
-      .day-header span:last-child{
-        display:none; /* Hide weekday abbreviation on mobile */
-      }
-      .event{
-        padding:2px 4px;
-        font-size:9px;
-        border-radius:4px;
-        gap:3px;
-      }
-      .event .swatch{
-        width:4px;
-        height:4px;
-      }
-      .event-client{
-        font-size:9px;
-        line-height:1.2;
-      }
-      .event-meta{
-        font-size:8px;
-        display:none; /* Hide metadata on mobile to save space */
-      }
-      .price-chip{
-        font-size:9px;
-        padding:2px 4px;
-      }
-      .price-chip i{
-        font-size:8px;
-      }
-      .lock-indicator{
-        padding:4px;
-        font-size:10px;
-      }
-      .lock-text{
-        font-size:9px;
-      }
-    }
-    
-    @media(max-width:640px){
-      .sidebar{width:240px}
-      .header h2{font-size:16px;font-weight:700}
-      .header h1{font-size:16px;font-weight:700}
-      #monthLabel{font-size:14px !important}
-      .header{padding:0 12px}
-      .content{padding:12px}
-    }
-  </style>
+  <link rel="stylesheet" href="css/calendar.css">
+  <!-- Modal Management -->
+  <script src="js/modals.js"></script>
+  <!-- Validation & Error Handling -->
+  <script src="js/validator.js"></script>
+  <script src="js/error-handler.js"></script>
 </head>
 <body>
   <div class="app">
@@ -393,8 +112,8 @@
 
   <script>
     // Load saved theme color
-    const savedColor = localStorage.getItem('websiteThemeColor');
-    if(savedColor && /^#[0-9A-F]{6}$/i.test(savedColor)) {
+    const savedColor = Storage.get('websiteThemeColor');
+    if(savedColor && Validator.isHexColor(savedColor)) {
       document.documentElement.style.setProperty('--accent', savedColor);
     }
 
@@ -694,17 +413,17 @@
     };
 
     // Current language
-    let currentLanguage = localStorage.getItem('language') || 'en';
+    let currentLanguage = Storage.get('language', 'en');
 
     // Current currency
-    let currentCurrency = localStorage.getItem('currency') || 'SAR';
+    let currentCurrency = Storage.get('currency', 'SAR');
 
     // Units Groups Management
-    let unitsGroups = JSON.parse(localStorage.getItem('unitsGroups')) || [
+    let unitsGroups = Storage.get('unitsGroups', [
       { id: 'group_1', name: 'Main Hotel', type: 'Hotel Room', license: 'TRN-2024-001' },
       { id: 'group_2', name: 'Chalets Collection', type: 'Chalet', license: 'TRN-2024-002' }
-    ];
-    let currentGroupId = localStorage.getItem('currentGroupId') || 'group_1';
+    ]);
+    let currentGroupId = Storage.get('currentGroupId', 'group_1');
 
     function populateGroupSelectors(){
       const selector = document.getElementById('calendarGroupSelector');
@@ -719,7 +438,7 @@
         });
         selector.addEventListener('change', (e) => {
           currentGroupId = e.target.value;
-          localStorage.setItem('currentGroupId', currentGroupId);
+          Storage.set('currentGroupId', currentGroupId);
         });
       }
     }
@@ -965,7 +684,6 @@
           e.stopPropagation();
           if(e.target.closest('.event')) return;
           if(e.target.closest('.lock-indicator')) return;
-          console.log('Cell clicked - showing context menu for date:', iso);
           showContextMenu(cell,iso,e);
         });
         calendarGrid.appendChild(cell);
@@ -1071,7 +789,6 @@
       console.log('attachContextMenuHandlers called, contextMenu:', contextMenu);
       // Get buttons directly from current contextMenu
       const buttons = contextMenu.querySelectorAll('button');
-      console.log('Found buttons:', buttons.length);
       buttons.forEach((btn, idx)=>{
         // Remove any existing listeners by cloning
         const newBtn = btn.cloneNode(true);
@@ -1079,7 +796,6 @@
         
         newBtn.addEventListener('click',(e)=>{
           e.stopPropagation();
-          console.log('Context menu button clicked:', e.target.dataset.action);
           hideContextMenu();
           const action=newBtn.dataset.action;
           if(action==='add'){
@@ -1096,7 +812,6 @@
     attachContextMenuHandlers();
 
     function showContextMenu(cell,iso,event){
-      console.log('showContextMenu called for:', iso, 'event:', event);
       contextDate = iso;
       contextUnit = filters.unit!=='all'? filters.unit : null;
       if(!contextUnit){
@@ -1135,8 +850,6 @@
       contextMenu.style.left = `${x}px`;
       contextMenu.style.top = `${y}px`;
       
-      console.log('Context menu positioned at:', x, y, 'menu size:', menuWidth, 'x', menuHeight);
-      
       // Create new close handler
       contextMenuCloseHandler = (e) => {
         if(!contextMenu.contains(e.target)){hideContextMenu();}
@@ -1154,70 +867,9 @@
       }
     }
 
-    // Modals
     const modalBackdrop=document.getElementById('modalBackdrop');
     const modalContent=document.getElementById('modalContent');
-
-    function openModal(content){
-      // Remove previous modal if still present
-      if(activeModalCloseHandler){
-        document.removeEventListener('click', activeModalCloseHandler);
-        activeModalCloseHandler = null;
-      }
-      
-      // Clear old content
-      modalContent.innerHTML='';
-      
-      // Append content directly
-      modalContent.appendChild(content);
-      
-      modalBackdrop.classList.add('show');
-      document.body.style.overflow='hidden';
-      
-      // Attach new click handler for backdrop
-      activeModalCloseHandler = (e) => {
-        if(e.target === modalBackdrop) {
-          closeModal();
-        }
-      };
-      document.addEventListener('click', activeModalCloseHandler);
-    }
     
-    function closeModal(){
-      // Remove active event listeners
-      if(activeModalCloseHandler){
-        document.removeEventListener('click', activeModalCloseHandler);
-        activeModalCloseHandler = null;
-      }
-      
-      // Clear all content and reset
-      modalContent.innerHTML = '';
-      
-      modalBackdrop.classList.remove('show');
-      document.body.style.overflow='';
-    }
-    
-    function showConfirmation(message){
-      const confBackdrop=document.createElement('div');
-      confBackdrop.style.cssText='position:fixed;inset:0;background:rgba(15,23,42,0.36);display:flex;align-items:center;justify-content:center;padding:20px;z-index:3000';
-      const confModal=document.createElement('div');
-      confModal.style.cssText='background:#fff;border-radius:16px;max-width:440px;width:100%;padding:30px;box-shadow:0 24px 48px rgba(15,23,41,0.18);text-align:center;animation:slideUp 0.3s ease';
-      const msgDiv=document.createElement('div');
-      msgDiv.style.cssText='white-space:pre-wrap;color:#1f2937;font-size:14px;line-height:1.6;margin-bottom:20px';
-      msgDiv.textContent=message;
-      const closeBtn=document.createElement('button');
-      closeBtn.style.cssText='padding:10px 20px;border-radius:10px;border:none;background:var(--accent);color:#fff;cursor:pointer;font-weight:600;transition:filter 0.2s';
-      closeBtn.textContent='OK';
-      closeBtn.onmouseover=()=>closeBtn.style.filter='brightness(0.92)';
-      closeBtn.onmouseout=()=>closeBtn.style.filter='brightness(1)';
-      confModal.appendChild(msgDiv);
-      confModal.appendChild(closeBtn);
-      confBackdrop.appendChild(confModal);
-      document.body.appendChild(confBackdrop);
-      closeBtn.addEventListener('click',()=>confBackdrop.remove());
-      document.addEventListener('keydown',(e)=>{if(e.key==='Escape') confBackdrop.remove();},{once:true});
-    }
-
     function openBookingDetails(id){
       const booking = bookings.find(b=>b.id===id);
       if(!booking) return;
@@ -1430,8 +1082,13 @@
         const paid=parseFloat(document.getElementById('abPaid').value)||0;
         const notes=document.getElementById('abNotes').value||'';
         
-        if(!name||!phoneOnly||!unit||!start||!end||!rate){
-          showConfirmation('Please fill in all required fields (marked with *)');
+        // Validate booking data
+        const validation = Validator.validateBooking({
+          name, phone: phoneOnly, unit, start, end, rate, email
+        });
+        
+        if (!validation.valid) {
+          showConfirmation(validation.errors[0]);
           return;
         }
         
@@ -1589,7 +1246,6 @@
       savedDiv.appendChild(savedListDiv);
       wrapper.appendChild(savedDiv);
 
-      // Function to display saved URLs
       function displaySavedUrls() {
         const unit = syncUnitSelect.value;
         const listDiv = document.getElementById('savedUrlsList');
@@ -1603,7 +1259,7 @@
           return;
         }
 
-        const savedUrls = JSON.parse(localStorage.getItem(`calendarUrls_${unit}`) || '[]');
+        const savedUrls = Storage.get(`calendarUrls_${unit}`, []);
         
         if(savedUrls.length === 0) {
           const emptyMsg = document.createElement('div');
@@ -1705,7 +1361,7 @@
               }
               urlObj.name = newName;
               urlObj.url = newUrl;
-              localStorage.setItem(`calendarUrls_${unit}`, JSON.stringify(savedUrls));
+              Storage.set(`calendarUrls_${unit}`, savedUrls);
               closeModal();
               openSyncCalendarModal();
               showConfirmation(`✅ Calendar updated to "${newName}"`);
@@ -1737,7 +1393,7 @@
             // Simulate sync
             urlObj.lastSync = new Date().toISOString();
             urlObj.status = 'valid';
-            localStorage.setItem(`calendarUrls_${unit}`, JSON.stringify(savedUrls));
+            Storage.set(`calendarUrls_${unit}`, savedUrls);
             displaySavedUrls();
             showConfirmation(`✅ Calendar "${urlObj.name}" synced successfully`);
           });
@@ -1750,7 +1406,7 @@
           deleteBtn.innerHTML = '<i class="fa-solid fa-trash"></i> Delete';
           deleteBtn.addEventListener('click', () => {
             savedUrls.splice(index, 1);
-            localStorage.setItem(`calendarUrls_${unit}`, JSON.stringify(savedUrls));
+            Storage.set(`calendarUrls_${unit}`, savedUrls);
             displaySavedUrls();
           });
           buttonsRow.appendChild(deleteBtn);
@@ -1792,7 +1448,7 @@
         }
 
         // Get existing URLs
-        const savedUrls = JSON.parse(localStorage.getItem(`calendarUrls_${unit}`) || '[]');
+        const savedUrls = Storage.get(`calendarUrls_${unit}`, []);
         
         // Add new URL with status
         const urlObj = {
@@ -1803,7 +1459,7 @@
         };
         
         savedUrls.push(urlObj);
-        localStorage.setItem(`calendarUrls_${unit}`, JSON.stringify(savedUrls));
+        Storage.set(`calendarUrls_${unit}`, savedUrls);
         
         // Reset inputs
         syncNameInput.value = '';
@@ -1829,7 +1485,6 @@
       document.head.appendChild(style);
     }
 
-    // Helper function to get units for grouped display
     function getUnitsForCalendar(){
       // Try to get unitDataset from window scope (loaded from units.html)
       if(typeof window.unitDataset !== 'undefined' && window.unitDataset && window.unitDataset.length > 0){
@@ -1839,7 +1494,6 @@
       return unitPalette || [];
     }
 
-    // Helper function to populate unit select with grouped display
     function populateUnitSelectCalendar(urlList, baseUrl){
       try {
         const units = getUnitsForCalendar();
@@ -2303,7 +1957,6 @@
         if(link){
           // Redirect to target page
           const fullPath = getPagePath(link);
-          console.log('Navigating to:', fullPath);
           location.href = fullPath;
           return;
         }
@@ -2377,7 +2030,7 @@
     // Set initial language
     function setLanguage(lang){
       currentLanguage = lang;
-      localStorage.setItem('language', lang);
+      Storage.set('language', lang);
       document.documentElement.lang = lang;
       document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
       applyTranslations();

@@ -40,13 +40,19 @@ html[lang="en"] .table-scroll-wrapper table {
 .table-scroll-wrapper table {
   width: auto;
   table-layout: auto;
-  white-space: nowrap;
 }
 
-.table-scroll-wrapper th,
+.table-scroll-wrapper th {
+  padding: 12px 16px;
+  white-space: normal;
+  overflow: visible;
+}
+
 .table-scroll-wrapper td {
   padding: 12px 16px;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Contacts table - specific column minimum widths for mobile */
@@ -121,11 +127,12 @@ html[lang="en"] .table-scroll-wrapper table {
 
 .contacts-table th {
   padding: var(--space-md) var(--space-xl);
-  text-align: left;
+  text-align: center;
   font-weight: 600;
   color: var(--stroke);
   font-size: var(--font-size-base);
-  white-space: nowrap;
+  white-space: normal;
+  overflow: visible;
 }
 
 .contacts-table td {
@@ -134,6 +141,9 @@ html[lang="en"] .table-scroll-wrapper table {
   font-size: var(--font-size-base);
   color: var(--text-primary);
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
 }
 
 .contacts-table tbody tr:hover {

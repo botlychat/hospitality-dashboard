@@ -12,6 +12,10 @@
 	<link rel="stylesheet" href="css/responsive.css">
 	<link rel="stylesheet" href="css/profile.css">
 	<link rel="stylesheet" href="css/dashboard.css">
+	<!-- Modal Management & Error Handling -->
+	<script src="js/validator.js"></script>
+	<script src="js/error-handler.js"></script>
+	<script src="js/modals.js"></script>
 </head>
 <body>
 	<div class="app">
@@ -357,13 +361,6 @@
 
 	<!-- Inline Dashboard JavaScript -->
 	<script>
-		// Note: External JS files are loaded after this one, so we can use their functions
-		// Error tracking
-		window.addEventListener('error', (event) => {
-			console.error('SCRIPT ERROR:', event.error);
-			alert('JavaScript Error: ' + event.error.message + '\n\nCheck browser console for details.');
-		});
-
 		// Helper function to get proper file path (works on GitHub Pages)
 		function getPagePath(filename) {
 			const currentPath = window.location.pathname;
@@ -375,11 +372,8 @@
 			return filename;
 		}
 
-		console.log('[DASHBOARD] Script initialized - getPagePath() ready');
-
 		// Initialize dashboard with mock data
 		window.isAuthenticated = true;
-		console.log('[DASHBOARD] Dashboard ready - using mock data');
 
 		// Language translations
 		const translations = {
@@ -660,17 +654,15 @@
 		};
 
 		// Current language
-		let currentLanguage = localStorage.getItem('language') || 'en';
+	let currentLanguage = Storage.get('language', 'en');
 
-		// Units Groups Management
-		let unitsGroups = JSON.parse(localStorage.getItem('unitsGroups')) || [
-			{ id: 'group_1', name: 'Main Hotel', type: 'Hotel Room', license: 'TRN-2024-001' },
-			{ id: 'group_2', name: 'Chalets Collection', type: 'Chalet', license: 'TRN-2024-002' }
-		];
-		let currentGroupId = localStorage.getItem('currentGroupId') || 'all';
-		let currentCurrency = localStorage.getItem('currency') || 'SAR';
-
-		function populateGroupSelectors(){
+	// Units Groups Management
+	let unitsGroups = Storage.get('unitsGroups', [
+		{ id: 'group_1', name: 'Main Hotel', type: 'Hotel Room', license: 'TRN-2024-001' },
+		{ id: 'group_2', name: 'Chalets Collection', type: 'Chalet', license: 'TRN-2024-002' }
+	]);
+	let currentGroupId = Storage.get('currentGroupId', 'all');
+	let currentCurrency = Storage.get('currency', 'SAR');		function populateGroupSelectors(){
 			const selector = document.getElementById('dashboardGroupSelector');
 			if(selector){
 				selector.innerHTML = '';
@@ -691,7 +683,7 @@
 				});
 				selector.addEventListener('change', (e) => {
 					currentGroupId = e.target.value;
-					localStorage.setItem('currentGroupId', currentGroupId);
+					Storage.set('currentGroupId', currentGroupId);
 					// Refresh dashboard data based on selected group
 					updateKPIs();
 					renderRecentBookings();
@@ -705,7 +697,7 @@
 		// Set initial language
 		function setLanguage(lang){
 			currentLanguage = lang;
-			localStorage.setItem('language', lang);
+			Storage.set('language', lang);
 			document.documentElement.lang = lang;
 			document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
 			applyTranslations();
@@ -783,8 +775,8 @@
 		// Initialize language on load
 		document.addEventListener('DOMContentLoaded',()=>{
 			// Load saved theme color
-			const savedColor = localStorage.getItem('websiteThemeColor');
-			if(savedColor && /^#[0-9A-F]{6}$/i.test(savedColor)) {
+			const savedColor = Storage.get('websiteThemeColor');
+			if(savedColor && Validator.isHexColor(savedColor)) {
 				document.documentElement.style.setProperty('--accent', savedColor);
 			}
 			
@@ -809,7 +801,6 @@
 		// Initialize dashboard with mock units
 		let units = [];
 		const initializeDashboardUnits = () => {
-			console.log('ℹ️  Using MOCK units')
 		units = [
 			{name:'Deluxe King Room',status:'Available',groupId:'group_1'},
 			{name:'Twin Bedroom Suite',status:'Available',groupId:'group_1'},
@@ -992,37 +983,6 @@
 			});
 		}
 
-		function openModal(html){
-			const backdrop=document.getElementById('modalBackdrop');const content=document.getElementById('modalContent');content.innerHTML='';content.appendChild(html);backdrop.classList.add('show');document.body.style.overflow='hidden';
-			// Apply translations to newly added modal
-			applyTranslations();
-			// attach cancel booking action if present
-			const cancelBtn=document.getElementById('cancelBookingBtn');if(cancelBtn){cancelBtn.onclick=()=>{if(confirm('Cancel this booking?')){showConfirmation('Booking cancelled (simulated)');closeModal();}}}
-		}
-
-		function closeModal(){document.getElementById('modalBackdrop').classList.remove('show');document.getElementById('modalContent').innerHTML='';document.body.style.overflow='';}
-
-		function showConfirmation(message){
-			const confBackdrop=document.createElement('div');
-			confBackdrop.style.cssText='position:fixed;inset:0;background:rgba(15,23,42,0.36);display:flex;align-items:center;justify-content:center;padding:20px;z-index:3000';
-			const confModal=document.createElement('div');
-			confModal.style.cssText='background:#fff;border-radius:16px;max-width:440px;width:100%;padding:30px;box-shadow:0 24px 48px rgba(15,23,41,0.18);text-align:center;animation:slideUp 0.3s ease';
-			const msgDiv=document.createElement('div');
-			msgDiv.style.cssText='white-space:pre-wrap;color:#1f2937;font-size:14px;line-height:1.6;margin-bottom:20px';
-			msgDiv.textContent=message;
-			const closeBtn=document.createElement('button');
-			closeBtn.style.cssText='padding:10px 20px;border-radius:10px;border:none;background:var(--accent);color:#fff;cursor:pointer;font-weight:600;transition:filter 0.2s';
-			closeBtn.textContent='OK';
-			closeBtn.onmouseover=()=>closeBtn.style.filter='brightness(0.92)';
-			closeBtn.onmouseout=()=>closeBtn.style.filter='brightness(1)';
-			confModal.appendChild(msgDiv);
-			confModal.appendChild(closeBtn);
-			confBackdrop.appendChild(confModal);
-			document.body.appendChild(confBackdrop);
-			closeBtn.addEventListener('click',()=>confBackdrop.remove());
-			document.addEventListener('keydown',(e)=>{if(e.key==='Escape') confBackdrop.remove();},{once:true});
-		}
-
 		function openBookingDetails(id){
 			const booking = sampleBookings.find(b=>b.id===id);
 			const tpl = document.getElementById('bookingDetailsTpl');
@@ -1031,7 +991,6 @@
 			openModal(frag);
 		}
 
-		// Get units from unitDataset (imported from units.html data)
 		function getUnitsForBooking(){
 			// Try to get from unitDataset if available, otherwise use fallback
 			try {
@@ -1042,7 +1001,6 @@
 			return units;
 		}
 
-		// Populate unit select with grouped units
 		function populateUnitSelect(selectElement){
 			selectElement.innerHTML = '';
 			const unitsToDisplay = getUnitsForBooking();
@@ -1162,7 +1120,6 @@
 			const totalInput = document.getElementById('abTotal');
 			const summarySpan = document.getElementById('abSummary');
 
-			// Calculate total function
 			const calculateTotal = () => {
 				const start = new Date(startInput.value);
 				const end = new Date(endInput.value);
@@ -1190,21 +1147,24 @@
 				const countryCode = document.getElementById('abCountryCode').value;
 				const phoneOnly = document.getElementById('abPhone').value;
 				const phone = countryCode + phoneOnly;
-				const email = document.getElementById('abEmail').value || '';
-				const unit = document.getElementById('abUnit').value;
-				const start = document.getElementById('abStart').value;
-				const end = document.getElementById('abEnd').value;
-				const rate = parseFloat(document.getElementById('abRate').value) || 0;
-				const payment = document.getElementById('abPayment').value;
-				const paid = parseFloat(document.getElementById('abPaid').value) || 0;
-				const notes = document.getElementById('abNotes').value || '';
-				
-				if(!name || !phoneOnly || !unit || !start || !end || !rate){
-					showConfirmation('Please fill in all required fields (marked with *)');
-					return;
-				}
-				
-				const startDate = new Date(start);
+			const email = document.getElementById('abEmail').value || '';
+			const unit = document.getElementById('abUnit').value;
+			const start = document.getElementById('abStart').value;
+			const end = document.getElementById('abEnd').value;
+			const rate = parseFloat(document.getElementById('abRate').value) || 0;
+			const payment = document.getElementById('abPayment').value;
+			const paid = parseFloat(document.getElementById('abPaid').value) || 0;
+			const notes = document.getElementById('abNotes').value || '';
+			
+			// Validate booking data
+			const validation = Validator.validateBooking({
+				name, phone: phoneOnly, unit, start, end, rate, email
+			});
+			
+			if (!validation.valid) {
+				showConfirmation(validation.errors[0]);
+				return;
+			}				const startDate = new Date(start);
 				const endDate = new Date(end);
 				if(endDate <= startDate){
 					showConfirmation('Check-out date must be after check-in date');
@@ -1309,16 +1269,15 @@
 		const colorInput = document.getElementById('colorCodeInput');
 		const color = colorInput.value;
 		
-		// Validate hex color
-		if(!/^#[0-9A-F]{6}$/i.test(color)){
-			showConfirmation('Invalid color code. Use format: #f97316');
-			return;
-		}
-		
-		// Save to localStorage
-		localStorage.setItem('websiteThemeColor', color);
-		
-		// Show success message
+	
+	// Validate hex color
+	if(!Validator.isHexColor(color)){
+		showConfirmation('Invalid color code. Use format: #f97316');
+		return;
+	}
+	
+	// Save to localStorage
+	Storage.set('websiteThemeColor', color);		// Show success message
 		showConfirmation('Website theme color saved: ' + color);
 	}
 	
@@ -1357,16 +1316,13 @@
 		
 		if(profileBtn) profileBtn.addEventListener('click',()=>{document.getElementById('profileMenu').classList.toggle('show')});
 		if(logoutBtn) logoutBtn.addEventListener('click', async ()=>{
-			console.log('Logout clicked - authentication will be added later');
 			showConfirmation('Logout functionality will be added when login system is implemented');
 		});
 		if(profileSettings) profileSettings.addEventListener('click',()=>{window.location.href='business-info.html'});
 		if(changePassword) changePassword.addEventListener('click',()=>{openChangePassword()});
 		if(changeEmail) changeEmail.addEventListener('click',()=>{openChangeEmail()});
-		console.log('[DASHBOARD] Profile menu listeners attached');
 
 	// New Booking button
-		console.log('[DASHBOARD] Attaching booking & refresh listeners...');
 		const newBookingBtn = document.getElementById('newBookingBtn');
 		const quickActionNewBookingBtn = document.getElementById('quickActionNewBookingBtn');
 		const refreshBtn = document.getElementById('refreshBtn');
@@ -1382,25 +1338,20 @@
 			showConfirmation('Dashboard refreshed successfully');
 		});
 		console.log('[DASHBOARD] Booking & refresh listeners attached');		// nav link behavior
-		console.log('[DASHBOARD] Attaching nav-item listeners...');
 		document.querySelectorAll('.nav-item').forEach(n=>{
 			n.addEventListener('click',e=>{
-				console.log('[NAV] Click detected on nav-item');
 				e.preventDefault();
 				e.stopPropagation();
 				// Get the closest nav-item (in case user clicked child element)
 				const navItem = e.target.closest('.nav-item');
 				if(!navItem) {
-					console.log('[NAV] Could not find nav-item');
 					return;
 				}
 				
 				const link = navItem.dataset.link; 
 				const section = navItem.dataset.section;
-				console.log('[NAV] link:', link, 'section:', section);
 				if(link){
 					const fullPath = getPagePath(link);
-					console.log('[NAV] Navigating to:', fullPath);
 					window.location.href = fullPath;
 					return;
 				}
@@ -1418,10 +1369,7 @@
 				}
 			});
 		});
-		console.log('[DASHBOARD] Nav-item listeners attached');
 
-		// ===== AI AGENT CONFIGURATION FUNCTIONS =====
-		// AI Agent configuration storage object
 		let aiAgentConfig = {
 			discountEnabled: false,
 			discountAmount: 0,
@@ -1432,9 +1380,9 @@
 
 		// Load AI Agent configuration from localStorage
 		function loadAIAgentConfig(){
-			const saved = localStorage.getItem('aiAgentConfig');
+			const saved = Storage.get('aiAgentConfig');
 			if(saved){
-				aiAgentConfig = JSON.parse(saved);
+				aiAgentConfig = saved;
 			}
 			
 			// Update UI
@@ -1524,7 +1472,7 @@
 				return;
 			}
 			
-			localStorage.setItem('aiAgentConfig', JSON.stringify(aiAgentConfig));
+			Storage.set('aiAgentConfig', aiAgentConfig);
 			updateAIConfigSummary();
 			generateAIInstructionsPreview();
 			showConfirmation('Discount settings saved successfully');
@@ -1545,7 +1493,7 @@
 			}
 			
 			aiAgentConfig.welcomeMessage = message;
-			localStorage.setItem('aiAgentConfig', JSON.stringify(aiAgentConfig));
+			Storage.set('aiAgentConfig', aiAgentConfig);
 			generateAIInstructionsPreview();
 			showConfirmation('Welcome message saved successfully');
 		}
@@ -1630,7 +1578,7 @@
 
 		// Save and deploy AI Agent configuration
 		function saveAIAgentConfig(){
-			localStorage.setItem('aiAgentConfig', JSON.stringify(aiAgentConfig));
+			Storage.set('aiAgentConfig', aiAgentConfig);
 			
 			// Simulate deployment
 			const btn = event.target;
@@ -1669,11 +1617,10 @@
 
 		// Load AI Reminders from localStorage
 		function loadAIReminders(){
-			const savedReminders = localStorage.getItem('aiReminders');
+			const savedReminders = Storage.get('aiReminders');
 			if(savedReminders){
-				const reminders = JSON.parse(savedReminders);
-				const reminder1 = reminders.reminder1 || '';
-				const reminder2 = reminders.reminder2 || '';
+				const reminder1 = savedReminders.reminder1 || '';
+				const reminder2 = savedReminders.reminder2 || '';
 				
 				// Set textarea values
 				document.getElementById('aiReminder1').value = reminder1;
@@ -1716,7 +1663,7 @@
 			const textarea = document.getElementById(`aiReminder${num}`);
 			const editBtn = document.getElementById(`editBtn${num}`);
 			const buttonsDiv = document.getElementById(`reminderButtons${num}`);
-			const reminders = JSON.parse(localStorage.getItem('aiReminders') || '{"reminder1":"","reminder2":""}');
+			const reminders = Storage.get('aiReminders', {reminder1:"", reminder2:""});
 			const savedText = num === 1 ? (reminders.reminder1 || '') : (reminders.reminder2 || '');
 			
 			// Reset textarea to saved value
@@ -1743,9 +1690,9 @@
 				return;
 			}
 			
-			const reminders = JSON.parse(localStorage.getItem('aiReminders') || '{"reminder1":"","reminder2":""}');
+			const reminders = Storage.get('aiReminders', {reminder1:"", reminder2:""});
 			reminders.reminder1 = text;
-			localStorage.setItem('aiReminders', JSON.stringify(reminders));
+			Storage.set('aiReminders', reminders);
 			
 			// Switch back to view mode
 			document.getElementById('aiReminder1').style.display = 'none';
@@ -1764,9 +1711,9 @@
 				return;
 			}
 			
-			const reminders = JSON.parse(localStorage.getItem('aiReminders') || '{"reminder1":"","reminder2":""}');
+			const reminders = Storage.get('aiReminders', {reminder1:"", reminder2:""});
 			reminders.reminder2 = text;
-			localStorage.setItem('aiReminders', JSON.stringify(reminders));
+			Storage.set('aiReminders', reminders);
 			
 			// Switch back to view mode
 			document.getElementById('aiReminder2').style.display = 'none';
@@ -1801,7 +1748,7 @@
 
 		function setCurrency(currency){
 			currentCurrency = currency;
-			localStorage.setItem('currency', currency);
+			Storage.set('currency', currency);
 			updateCurrencyButtons();
 			updateKPIs();
 			renderRecentBookings();
@@ -1824,14 +1771,13 @@
 
 		function setLanguage(lang){
 			currentLanguage = lang;
-			localStorage.setItem('language', lang);
+			Storage.set('language', lang);
 			document.documentElement.lang = lang;
 			document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
 			updateLanguageButtons();
 		}
 
 		// Initialize buttons with null checks
-		console.log('[DASHBOARD] Initializing language toggle button...');
 		updateLanguageButtons();
 		
 		const langToggle = document.getElementById('langToggle');
@@ -1842,13 +1788,12 @@
 				setLanguage(newLang);
 			});
 		}
-		console.log('[DASHBOARD] Language toggle button initialized');
 		
 		// Update Active Conversations display
 		function updateActiveConversations() {
 			// Get data from localStorage (synced with AI Agent page)
-			const activeCount = parseInt(localStorage.getItem('activeConvCount') || '278');
-			const totalPlan = parseInt(localStorage.getItem('totalPlanConv') || '500');
+			const activeCount = Storage.get('activeConvCount', 278);
+			const totalPlan = Storage.get('totalPlanConv', 500);
 			const percent = ((activeCount / totalPlan) * 100).toFixed(1);
 			const remaining = totalPlan - activeCount;
 			
@@ -1867,9 +1812,9 @@
 		}
 		
 		// Initialize conversation data if not exists
-		if(!localStorage.getItem('activeConvCount')) {
-			localStorage.setItem('activeConvCount', '278');
-			localStorage.setItem('totalPlanConv', '500');
+		if(!Storage.get('activeConvCount')) {
+			Storage.set('activeConvCount', 278);
+			Storage.set('totalPlanConv', 500);
 		}
 		
 		// Update on page load
@@ -1891,7 +1836,6 @@
 	<!-- Initialization Script - Runs AFTER external JS files are loaded -->
 	<script>
 		// Initial render
-		console.log('[DASHBOARD] Starting initial render...');
 		updateKPIs();
 		renderRecentBookings();
 		renderUnitStatus();

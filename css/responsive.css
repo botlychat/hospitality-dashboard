@@ -639,22 +639,50 @@
   table {
     font-size: var(--font-size-sm);
     width: auto;
-    max-width: 100%;
-    display: block;
-    overflow-x: auto;
-    box-sizing: border-box;
-  }
-  
-  thead, tbody, tr {
+    max-width: none;
     display: table;
-    width: auto;
+    overflow-x: visible;
+    box-sizing: border-box;
     table-layout: auto;
+    border-collapse: collapse;
   }
   
+  table {
+    display: table;
+  }
+  thead {
+    display: table-header-group;
+  }
+  tbody {
+    display: table-row-group;
+  }
+  tr {
+    display: table-row;
+  }
   th, td {
+    display: table-cell;
+    text-align: center;
+  }
+  
+  th {
+    padding: var(--space-sm) var(--space-xs);
+    font-size: 12px;
+    box-sizing: border-box;
+    min-width: 50px;
+    white-space: normal;
+    overflow: visible;
+    text-align: center;
+  }
+
+  td {
     padding: var(--space-sm) var(--space-xs);
     font-size: 12px;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    box-sizing: border-box;
+    min-width: 50px;
+    text-align: center;
   }
   
   /* Collapse 2-column layouts to single column */

@@ -114,13 +114,21 @@ html[lang="en"] .table-scroll-wrapper table {
   .table-scroll-wrapper table {
     width: auto; /* Allow table to size based on content */
     table-layout: auto; /* Let columns size based on content */
-    white-space: nowrap; /* Prevent text wrapping */
   }
   
-  .table-scroll-wrapper table th,
+  .table-scroll-wrapper table th {
+    padding: 12px 16px;
+    white-space: normal; /* Allow header wrapping */
+    overflow: visible;
+    text-align: center;
+  }
+
   .table-scroll-wrapper table td {
     padding: 12px 16px;
-    white-space: nowrap; /* No wrapping - single line */
+    white-space: nowrap; /* No wrapping - single line for data */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
   }
   
   /* Units table - specific column minimum widths */

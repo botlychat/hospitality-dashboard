@@ -332,6 +332,7 @@ th, td {
   text-align: left;
   border-bottom: 1px solid var(--stroke);
   font-size: var(--font-size-base);
+  box-sizing: border-box;
 }
 
 th {
