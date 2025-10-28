@@ -1,0 +1,29 @@
+{
+  "name": "hospitality-dashboard",
+  "version": "1.0.0",
+  "description": "A modern, responsive admin dashboard for hospitality booking management built with vanilla HTML, CSS, and JavaScript.",
+  "main": "service-worker.js",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "node build.js",
+    "preview": "vite preview",
+    "deploy": "npm run build && npm run push-dist",
+    "push-dist": "git add dist/ && git commit -m 'build: update dist for GitHub Pages' && git push",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/botlychat/hospitality-dashboard.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/botlychat/hospitality-dashboard/issues"
+  },
+  "homepage": "https://github.com/botlychat/hospitality-dashboard#readme",
+  "devDependencies": {
+    "vite": "^7.1.12"
+  }
+}

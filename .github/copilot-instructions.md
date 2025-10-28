@@ -143,11 +143,20 @@ python -m http.server 8000
 
 ## Critical Constraints
 
-1. **No build tools** - No webpack, no npm scripts, no bundling. Everything is direct file serving.
-2. **No frameworks** - No Vue, React, Svelte. Vanilla DOM manipulation only.
-3. **Storage-first** - All data persists locally. Treat localStorage as your database.
-4. **Error recovery** - Corrupted data must be handled gracefully with fallbacks, never crash the app.
-5. **GitHub Pages paths** - Always use `getPagePath()` for navigation, never hardcode paths.
+1. **No frameworks** - No Vue, React, Svelte. Vanilla DOM manipulation only.
+2. **Storage-first** - All data persists locally. Treat localStorage as your database.
+3. **Error recovery** - Corrupted data must be handled gracefully with fallbacks, never crash the app.
+4. **GitHub Pages paths** - Always use `getPagePath()` for navigation, never hardcode paths.
+
+## Build Tools & Optimization
+
+Build tools (webpack, Vite, Gulp, etc.) and npm scripts are **allowed and encouraged** for:
+- Eliminating HTML/CSS/JavaScript repetition (shared layouts, components)
+- Minification and bundling for production
+- Task automation and file processing
+- Development workflow improvements
+
+The project currently runs without build tools, but refactoring to use them is acceptable.
 6. **Accessibility** - Use semantic HTML, ARIA labels, keyboard navigation support.
 
 ## Refactoring Status
