@@ -3,8 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <!-- Base href for GitHub Pages - Comment out for local development -->
-  <!-- <base href="/hospitality-dashboard/"> -->
+  <base href="/hospitality-dashboard/">
   <title>Calendar — Hospitality Booking Admin</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="css/calendar.css">
@@ -593,10 +592,21 @@
     }
 
     function renderCalendar(){
+      const calendarGrid = document.getElementById('calendarGrid');
+      if(!calendarGrid) {
+        console.error('Calendar grid element not found');
+        return;
+      }
+      
       bookings.forEach(booking=>{
         booking.amount = calculateBookingAmount(booking.unit,booking.start,booking.end);
       });
       const weekdaysRow = document.getElementById('weekdaysRow');
+      if(!weekdaysRow) {
+        console.error('Weekdays row element not found');
+        return;
+      }
+      
       weekdaysRow.innerHTML = '';
       // Use translated weekday labels - show all 7 days
       const weekDays = [0,1,2,3,4,5,6].map(i=>getWeekdayLabel(i));
@@ -607,7 +617,10 @@
       } else {
         renderWeekGrid();
       }
-      document.getElementById('monthLabel').textContent = formatMonthName(currentMonth);
+      const monthLabel = document.getElementById('monthLabel');
+      if(monthLabel) {
+        monthLabel.textContent = formatMonthName(currentMonth);
+      }
     }
 
     function renderMonthGrid(){
@@ -2010,7 +2023,9 @@
         el.textContent = t(el.dataset.i18n);
       });
       // Re-render calendar when language changes to update weekday labels and month names
-      if(document.getElementById('calendarGrid')) {
+      // Only render if calendar is already initialized
+      const calendarGrid = document.getElementById('calendarGrid');
+      if(calendarGrid && calendarGrid.children.length > 0) {
         renderCalendar();
       }
     }
@@ -2057,11 +2072,11 @@
       });
     }
 
-    // Navigation handlers - redirect to dashboard.html with tab parameter
+    // Navigation handlers - redirect to pages
     document.querySelectorAll('.nav-item').forEach(item => {
       item.addEventListener('click', () => {
         const section = item.dataset.link;
-        if (section) {
+        if (section && !item.classList.contains('active')) {
           window.location.href = section;
         }
       });
@@ -2080,20 +2095,13 @@
       sidebar.classList.toggle('active');
     });
     
-    // Close sidebar when clicking on nav items
-    document.querySelectorAll('.nav-item').forEach(item => {
-      item.addEventListener('click', () => {
-        sidebar.classList.remove('active');
-      });
-    });
-    
     // Close sidebar when clicking outside
     document.addEventListener('click', (e) => {
       if(!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
         sidebar.classList.remove('active');
-    }
-  });
-}
+      }
+    });
+  }
 </script>
 
 <!-- Loading Overlay -->
