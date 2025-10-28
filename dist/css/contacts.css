@@ -1,5 +1,19 @@
 /* Contacts Management Page - Specific Styles */
 
+/* Ensure content area doesn't overflow */
+.content {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Panel must respect content boundaries */
+.panel {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 /* Table scroll wrapper - keep natural flow */
 .table-scroll-wrapper {
   overflow-x: auto;
