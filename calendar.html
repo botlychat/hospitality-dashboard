@@ -11,6 +11,16 @@
   <script src="js/storage.js"></script>
   <!-- Utils for getCountryCodes() and other utilities -->
   <script src="js/utils.js"></script>
+  <!-- Page loader for PJAX navigation (sidebar stays in place) -->
+  <script src="js/page-loader.js"></script>
+  <!-- Service Worker registration for caching -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(reg => console.log('[SW] Registered:', reg))
+        .catch(err => console.log('[SW] Registration failed:', err));
+    }
+  </script>
 </head>
 <body>
   <div class="app">
