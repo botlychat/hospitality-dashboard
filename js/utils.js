@@ -104,10 +104,13 @@ function loadTranslations() {
       website: 'Website Settings',
       aiagent: 'AI Agent',
       contacts: 'Contacts',
+      accountSettings: 'Account Settings',
+      language: 'Language',
+      logout: 'Logout',
+      confirmLogout: 'Are you sure you want to logout?',
       completeProfile: 'Complete Profile',
       changePassword: 'Change Password',
       changeEmail: 'Change Email',
-      logout: 'Logout',
       admin: 'Admin',
       refresh: 'Refresh',
       newManualBooking: 'New Manual Booking',
@@ -142,10 +145,13 @@ function loadTranslations() {
       website: 'إعدادات الموقع',
       aiagent: 'وكيل الذكاء الاصطناعي',
       contacts: 'جهات الاتصال',
+      accountSettings: 'إعدادات الحساب',
+      language: 'اللغة',
+      logout: 'تسجيل الخروج',
+      confirmLogout: 'هل أنت متأكد أنك تريد تسجيل الخروج؟',
       completeProfile: 'إكمال الملف الشخصي',
       changePassword: 'تغيير كلمة المرور',
       changeEmail: 'تغيير عنوان البريد الإلكتروني',
-      logout: 'تسجيل الخروج',
       admin: 'مسؤول',
       refresh: 'تحديث',
       newManualBooking: 'حجز يدوي جديد',
@@ -223,6 +229,7 @@ function setLanguage(language) {
   document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
   applyTranslations(language);
   updateLanguageButtons(language);
+  updateLanguageDropdownButtons(); // Update dropdown buttons
   
   // Update the toggle button text if it exists
   const langText = document.getElementById('langText');
@@ -443,6 +450,9 @@ function initializeSharedUtilities() {
   if (currencyUSD) currencyUSD.addEventListener('click', () => setCurrency('USD'));
   if (currencySAR) currencySAR.addEventListener('click', () => setCurrency('SAR'));
   if (currencyEUR) currencyEUR.addEventListener('click', () => setCurrency('EUR'));
+  
+  // Initialize profile dropdown
+  initProfileDropdown();
 }
 
 // ============================================
@@ -504,6 +514,63 @@ function getCountryCodes() {
 // ============================================
 // PROFILE DROPDOWN HANDLER
 // ============================================
+
+/**
+ * Initialize profile dropdown menu
+ */
+function initProfileDropdown() {
+  const profileBtn = document.getElementById('profileBtn');
+  const profileDropdown = document.getElementById('profileDropdown');
+  
+  if (!profileBtn || !profileDropdown) return;
+  
+  // Toggle dropdown on button click
+  profileBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    profileDropdown.classList.toggle('show');
+  });
+  
+  // Close dropdown when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!profileBtn.contains(e.target) && !profileDropdown.contains(e.target)) {
+      profileDropdown.classList.remove('show');
+    }
+  });
+  
+  // Update language button states
+  updateLanguageDropdownButtons();
+}
+
+/**
+ * Update language button active states in dropdown
+ */
+function updateLanguageDropdownButtons() {
+  const langEnBtn = document.getElementById('langEnBtn');
+  const langArBtn = document.getElementById('langArBtn');
+  const currentLang = localStorage.getItem('language') || 'en';
+  
+  if (langEnBtn && langArBtn) {
+    if (currentLang === 'en') {
+      langEnBtn.classList.add('active');
+      langArBtn.classList.remove('active');
+    } else {
+      langArBtn.classList.add('active');
+      langEnBtn.classList.remove('active');
+    }
+  }
+}
+
+/**
+ * Handle logout action
+ */
+function handleLogout() {
+  if (confirm(t('confirmLogout', localStorage.getItem('language') || 'en'))) {
+    // Clear all user data
+    localStorage.clear();
+    // Redirect to login page
+    window.location.href = getPagePath('index.html');
+  }
+}
 
 /**
  * Initialize language switching
