@@ -4,13 +4,12 @@
  * Minimizes caching issues and errors
  */
 
-const CACHE_NAME = 'hospitality-dashboard-v3';
+const CACHE_NAME = 'hospitality-dashboard-v4';
 const STATIC_ASSETS = [
   // CSS files
   '/hospitality-dashboard/css/variables.css',
   '/hospitality-dashboard/css/global.css',
   '/hospitality-dashboard/css/responsive.css',
-  '/hospitality-dashboard/css/profile.css',
   '/hospitality-dashboard/css/dashboard.css',
   '/hospitality-dashboard/css/calendar.css',
   '/hospitality-dashboard/css/units.css',
@@ -22,7 +21,6 @@ const STATIC_ASSETS = [
   '/hospitality-dashboard/js/storage.js',
   '/hospitality-dashboard/js/utils.js',
   '/hospitality-dashboard/js/components.js',
-  '/hospitality-dashboard/js/components/profile.js',
   
   // External CDN (Font Awesome)
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css',
