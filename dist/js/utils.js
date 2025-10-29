@@ -37,62 +37,6 @@ function navigateToPage(page) {
 }
 
 // ============================================
-// STORAGE HELPERS
-// ============================================
-
-/**
- * Get value from localStorage with JSON parsing
- * @param {string} key - The localStorage key
- * @param {*} defaultValue - Default value if key not found
- * @returns {*} Parsed value from localStorage
- */
-function getStorageItem(key, defaultValue = null) {
-  try {
-    const item = localStorage.getItem(key);
-    return item ? JSON.parse(item) : defaultValue;
-  } catch (error) {
-    console.error(`Error parsing localStorage key "${key}":`, error);
-    return defaultValue;
-  }
-}
-
-/**
- * Set value in localStorage with JSON stringification
- * @param {string} key - The localStorage key
- * @param {*} value - The value to store
- */
-function setStorageItem(key, value) {
-  try {
-    localStorage.setItem(key, JSON.stringify(value));
-  } catch (error) {
-    console.error(`Error storing value for key "${key}":`, error);
-  }
-}
-
-/**
- * Remove a value from localStorage
- * @param {string} key - The localStorage key to remove
- */
-function removeStorageItem(key) {
-  try {
-    localStorage.removeItem(key);
-  } catch (error) {
-    console.error(`Error removing localStorage key "${key}":`, error);
-  }
-}
-
-/**
- * Clear all localStorage (use with caution)
- */
-function clearStorage() {
-  try {
-    localStorage.clear();
-  } catch (error) {
-    console.error('Error clearing localStorage:', error);
-  }
-}
-
-// ============================================
 // TRANSLATION HELPERS
 // ============================================
 
@@ -228,7 +172,7 @@ function applyTranslations(language = 'en') {
  * @param {string} language - Language code (en/ar)
  */
 function setLanguage(language) {
-  localStorage.setItem('language', language);
+  Storage.set('language', language);
   window.currentLanguage = language; // Update global variable
   document.documentElement.lang = language;
   document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
@@ -274,7 +218,7 @@ function updateLanguageButtons(currentLanguage) {
  * @returns {string} Currency code (USD/SAR/EUR)
  */
 function getCurrentCurrency() {
-  return localStorage.getItem('currency') || 'SAR';
+  return Storage.get('currency', 'SAR');
 }
 
 /**
@@ -282,7 +226,7 @@ function getCurrentCurrency() {
  * @param {string} currency - Currency code (USD/SAR/EUR)
  */
 function setCurrency(currency) {
-  localStorage.setItem('currency', currency);
+  Storage.set('currency', currency);
   updateCurrencyButtons(currency);
 }
 
@@ -413,7 +357,7 @@ function showError(message, duration = 3000) {
  */
 function initializeSharedUtilities() {
   // Set initial language
-  const currentLanguage = localStorage.getItem('language') || 'en';
+  const currentLanguage = Storage.get('language', 'en');
   window.currentLanguage = currentLanguage; // Set global variable
   document.documentElement.lang = currentLanguage;
   document.documentElement.dir = currentLanguage === 'ar' ? 'rtl' : 'ltr';
@@ -421,7 +365,7 @@ function initializeSharedUtilities() {
   updateLanguageButtons(currentLanguage);
   
   // Set initial currency
-  const currentCurrency = localStorage.getItem('currency') || 'SAR';
+  const currentCurrency = Storage.get('currency', 'SAR');
   updateCurrencyButtons(currentCurrency);
   
   // Setup language switchers
@@ -565,7 +509,7 @@ function initProfileDropdown() {
 function updateLanguageDropdownButtons() {
   const langEnBtn = document.getElementById('langEnBtn');
   const langArBtn = document.getElementById('langArBtn');
-  const currentLang = localStorage.getItem('language') || 'en';
+  const currentLang = Storage.get('language', 'en');
   
   if (langEnBtn && langArBtn) {
     if (currentLang === 'en') {
@@ -582,9 +526,9 @@ function updateLanguageDropdownButtons() {
  * Handle logout action
  */
 function handleLogout() {
-  if (confirm(t('confirmLogout', localStorage.getItem('language') || 'en'))) {
+  if (confirm(t('confirmLogout', Storage.get('language', 'en')))) {
     // Clear all user data
-    localStorage.clear();
+    Storage.clear();
     // Redirect to login page
     window.location.href = getPagePath('index.html');
   }
@@ -616,7 +560,7 @@ function setActivePage() {
   // Update header title
   const headerTitle = document.getElementById('headerTitle');
   if (headerTitle) {
-    const currentLang = localStorage.getItem('language') || 'en';
+    const currentLang = Storage.get('language', 'en');
     headerTitle.textContent = t(currentPage, currentLang);
     headerTitle.setAttribute('data-i18n', currentPage);
   }

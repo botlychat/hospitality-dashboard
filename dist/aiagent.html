@@ -9,7 +9,7 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 	<!-- Extracted & Organized CSS Files -->
 	<link rel="stylesheet" href="css/variables.css">
-	<link rel="stylesheet" href="css/global.css?v=1761726451659">
+	<link rel="stylesheet" href="css/global.css?v=1761723700906">
 	<link rel="stylesheet" href="css/responsive.css">
 	<link rel="stylesheet" href="css/aiagent.css">
 	<!-- Storage helper with error handling -->
@@ -236,7 +236,7 @@
 	
 	<script>
 		// Load saved theme color (safe with fallback)
-		const savedColor = Storage.getString('websiteThemeColor', '');
+		const savedColor = Storage.get('websiteThemeColor', '');
 		if(savedColor && /^#[0-9A-F]{6}$/i.test(savedColor)) {
 			document.documentElement.style.setProperty('--accent', savedColor);
 		}
@@ -275,7 +275,7 @@
 			
 			if(checkbox.checked) {
 				// Check if there's already a saved amount
-				const savedAmount = Storage.getString('discountAmount', '');
+				const savedAmount = Storage.get('discountAmount', '');
 				if(savedAmount) {
 					// Show preview with saved amount and edit pen
 					preview.style.display = 'block';
@@ -305,7 +305,7 @@
 			}
 			
 			// Save amount (safe)
-			Storage.setString('discountAmount', amount);
+			Storage.set('discountAmount', amount);
 			previewAmount.textContent = 'SAR ' + amount;
 			
 			// Hide input, show preview with edit pen
@@ -322,7 +322,7 @@
 			const amountInput = document.getElementById('discountAmount');
 			
 			// Load current amount (safe)
-			const savedAmount = Storage.getString('discountAmount', '');
+			const savedAmount = Storage.get('discountAmount', '');
 			if(savedAmount) {
 				amountInput.value = savedAmount;
 			}
@@ -364,7 +364,7 @@
 			methodInfo.style.display = 'block';
 			
 			// Save immediately to storage (safe)
-			Storage.setString('bookingMethod', selectedMethod);
+			Storage.set('bookingMethod', selectedMethod);
 			
 			// Optional: Show brief confirmation
 			showConfirmation('Booking method updated to: ' + (fullBooking.checked ? 'AI Agent Full Booking' : 'Website Only Booking'));
@@ -388,7 +388,7 @@
 			const saveBtn = document.getElementById('welcomeSaveBtn');
 			
 			// Save to storage (safe)
-			Storage.setString('welcomeMessage', textarea.value);
+			Storage.set('welcomeMessage', textarea.value);
 			
 			textarea.setAttribute('readonly', 'readonly');
 			editBtn.style.display = 'block';
@@ -415,7 +415,7 @@
 			const saveBtn = document.getElementById('reminder' + reminderNum + 'SaveBtn');
 			
 			// Save to storage (safe)
-			Storage.setString('reminder' + reminderNum, textarea.value);
+			Storage.set('reminder' + reminderNum, textarea.value);
 			
 			textarea.setAttribute('readonly', 'readonly');
 			editBtn.style.display = 'block';
@@ -428,7 +428,7 @@
 		let customRoles = [];
 
 		function loadCustomRoles() {
-			const saved = Storage.getString('customRoles', '');
+			const saved = Storage.get('customRoles', '');
 			if(saved) {
 				customRoles = JSON.parse(saved);
 				renderRoles();

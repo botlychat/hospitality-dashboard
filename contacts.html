@@ -211,7 +211,7 @@
 	
 	<script>
 		// Load saved theme color (safe with fallback)
-		const savedColor = Storage.getString('websiteThemeColor', '');
+		const savedColor = Storage.get('websiteThemeColor', '');
 		if(savedColor && /^#[0-9A-F]{6}$/i.test(savedColor)) {
 			document.documentElement.style.setProperty('--accent', savedColor);
 		}
