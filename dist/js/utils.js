@@ -14,9 +14,9 @@
  */
 function getPagePath(filename) {
   const currentPath = window.location.pathname;
-  // Check if we're on GitHub Pages (path contains /chaletdashboard/)
-  if (currentPath.includes('/chaletdashboard/')) {
-    return '/chaletdashboard/' + filename;
+  // Check if we're on GitHub Pages (path contains /hospitality-dashboard/)
+  if (currentPath.includes('/hospitality-dashboard/')) {
+    return '/hospitality-dashboard/dist/' + filename;
   }
   // Otherwise use relative path (local development)
   return filename;
