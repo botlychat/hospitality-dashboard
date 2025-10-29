@@ -4,7 +4,7 @@
  * Minimizes caching issues and errors
  */
 
-const CACHE_NAME = 'hospitality-dashboard-v7';
+const CACHE_NAME = 'hospitality-dashboard-v8';
 const STATIC_ASSETS = [
   // CSS files
   '/hospitality-dashboard/css/variables.css',

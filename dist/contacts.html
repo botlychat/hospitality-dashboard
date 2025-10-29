@@ -144,6 +144,262 @@
 
 <script src="js/utils.js"></script>
 
+</div>
+
+	<!-- Modal for campaigns -->
+	<div class="modal-backdrop" id="campaignBackdrop">
+		<div class="modal" id="campaignModal">
+			<h3 style="margin-top:0">Send WhatsApp Campaign</h3>
+			<div style="display:flex;flex-direction:column;gap:12px">
+				<div>
+					<label style="font-weight:600;font-size:13px;display:block;margin-bottom:6px">Recipients <span style="color:#ef4444">*</span></label>
+					<div id="recipientsList" style="padding:12px;background:#f9fafb;border-radius:8px;border:1px solid #e5e7eb;min-height:40px;font-size:13px;color:#6b7280">Loading...</div>
+				</div>
+				<div>
+					<label style="font-weight:600;font-size:13px;display:block;margin-bottom:6px">Schedule Date & Time <span style="color:#ef4444">*</span></label>
+					<div style="position:relative;margin-bottom:8px">
+						<input type="text" id="campaignDateTimeDisplay" placeholder="Select date and time from calendar..." readonly style="width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:8px;font-size:13px;background:#f9fafb;cursor:pointer">
+						<i class="fa-solid fa-calendar" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#6b7280;pointer-events:none"></i>
+					</div>
+					<div id="campaignCalendarPicker" style="display:none;background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:12px;position:absolute;z-index:1000;width:300px;box-shadow:0 10px 25px rgba(0,0,0,0.1)">
+						<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:12px" id="campaignCalendarDays"></div>
+						<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+              <div><input type="number" id="campaignHour" placeholder="Hour (0-23)" min="0" max="23" style="width:100%;padding:8px;border:1px solid #e5e7eb;border-radius:6px;font-size:12px;text-align:center"></div>
+              <div><input type="number" id="campaignMinute" placeholder="Min (0-59)" min="0" max="59" style="width:100%;padding:8px;border:1px solid #e5e7eb;border-radius:6px;font-size:12px;text-align:center"></div>
+            </div>
+            <div style="display:flex;gap:8px">
+              <button style="flex:1;padding:6px 10px;border:1px solid #e5e7eb;background:#f9fafb;border-radius:6px;font-size:12px;cursor:pointer;font-weight:600" onclick="closeCampaignCalendar()">Cancel</button>
+              <button style="flex:1;padding:6px 10px;border:none;background:#f97316;color:#fff;border-radius:6px;font-size:12px;cursor:pointer;font-weight:600" onclick="confirmCampaignDateTime()">Confirm</button>
+            </div>
+          </div>
+          <small style="color:#6b7280;margin-top:4px;display:block">Click the field to open calendar. Campaigns must be scheduled at least 48 hours in advance.</small>
+          <input type="hidden" id="campaignDate">
+        </div>
+        <div>
+          <label style="font-weight:600;font-size:13px;display:block;margin-bottom:6px">Message</label>
+          <textarea id="campaignMessage" placeholder="Enter your message..." style="width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:8px;font-size:13px;font-family:inherit;resize:vertical;min-height:100px"></textarea>
+          <small style="color:#6b7280;margin-top:4px;display:block">Characters: <span id="msgCharCount">0</span>/500</small>
+        </div>
+        <div>
+          <label style="font-weight:600;font-size:13px;display:block;margin-bottom:6px">Attachment (Optional)</label>
+          <div style="display:flex;align-items:center;gap:8px">
+            <input type="file" id="campaignAttachment" style="flex:1;padding:10px;border:1px solid #e5e7eb;border-radius:8px;font-size:13px">
+            <span id="attachmentInfo" style="font-size:12px;color:#6b7280">No file selected</span>
+          </div>
+          <small style="color:#6b7280;margin-top:4px;display:block">Max size: 10 MB (Images, PDFs, Videos)</small>
+        </div>
+        <div style="padding:12px;background:#f0f9ff;border-radius:8px;border:1px solid #bfdbfe;border-left:3px solid #3b82f6">
+          <div style="font-size:13px;color:#0c4a6e">
+            <strong>Cost Summary:</strong><br>
+            Recipients: <span id="costRecipients">0</span> × 0.195 SR = <strong id="totalCost">0</strong> SR
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button class="btn ghost" onclick="closeCampaignModal()">Cancel</button>
+          <button class="btn primary" onclick="submitCampaign()">Send Campaign</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for editing contacts -->
+  <div class="modal-backdrop" id="editContactBackdrop">
+    <div class="modal" id="editContactModal">
+      <h3 style="margin-top:0">Edit Contact</h3>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div>
+          <label style="font-weight:600;font-size:13px;display:block;margin-bottom:6px">Name</label>
+          <input id="editContactName" type="text" placeholder="Contact name" style="width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:8px;font-size:13px">
+        </div>
+        <div>
+          <label style="font-weight:600;font-size:13px;display:block;margin-bottom:6px">Phone</label>
+          <input id="editContactPhone" type="text" placeholder="Phone number" style="width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:8px;font-size:13px">
+        </div>
+        <div>
+          <label style="font-weight:600;font-size:13px;display:block;margin-bottom:6px">Email</label>
+          <input id="editContactEmail" type="email" placeholder="Email address" style="width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:8px;font-size:13px">
+        </div>
+        <div>
+          <label style="font-weight:600;font-size:13px;display:block;margin-bottom:6px">Group</label>
+          <select id="editContactGroup" style="width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:8px;font-size:13px">
+            <option value="">Select Group</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-weight:600;font-size:13px;display:block;margin-bottom:6px">Unit</label>
+          <select id="editContactUnit" style="width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:8px;font-size:13px">
+            <option value="">Select Unit</option>
+          </select>
+        </div>
+        <div class="modal-actions">
+          <button class="btn ghost" onclick="closeEditContactModal()">Cancel</button>
+          <button class="btn primary" onclick="saveEditContact()">Save Contact</button>
+        </div>
+      </div>
+    </div>
+  </div>
+	<!-- Extracted JavaScript Files -->
+	<script src="js/utils.js"></script>
+	<script src="js/components.js"></script>
+	
+	<script>
+		// Load saved theme color (safe with fallback)
+		const savedColor = Storage.getString('websiteThemeColor', '');
+		if(savedColor && /^#[0-9A-F]{6}$/i.test(savedColor)) {
+			document.documentElement.style.setProperty('--accent', savedColor);
+		}
+
+		// Mobile sidebar toggle functionality
+		const sidebarToggle = document.getElementById('sidebarToggle');
+		const sidebar = document.querySelector('.sidebar');
+		
+		if(sidebarToggle && sidebar) {
+			sidebarToggle.addEventListener('click', (e) => {
+				e.stopPropagation();
+				sidebar.classList.toggle('active');
+			});
+			
+			// Close sidebar when clicking on nav items
+			document.querySelectorAll('.nav-item').forEach(item => {
+				item.addEventListener('click', () => {
+					sidebar.classList.remove('active');
+				});
+			});
+			
+			// Close sidebar when clicking outside
+			document.addEventListener('click', (e) => {
+			if(!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
+				sidebar.classList.remove('active');
+		}
+	});
+}
+
+// Sample contacts data
+let clients = Storage.getJSON('clients', [
+	{
+		id: 1,
+		name: 'Ahmed Al-Mansouri',
+		phone: '+966-50-123-4567',
+		email: 'ahmed.mansouri@email.com',
+		lastGroup: 'Main Hotel',
+		lastUnit: 'Luxury Ocean View Suite',
+		lastBooking: '2025-10-15',
+		review: 4.8,
+		payment: 'Paid'
+	},
+	{
+		id: 2,
+		name: 'Sarah Johnson',
+		phone: '+966-55-987-6543',
+		email: 'sarah.j@email.com',
+		lastGroup: 'Chalets Collection',
+		lastUnit: 'Garden Villa with Private Pool',
+		lastBooking: '2025-10-22',
+		review: 5.0,
+		payment: 'Paid'
+	},
+	{
+		id: 3,
+		name: 'Mohammed bin Khalid',
+		phone: '+966-50-555-8888',
+		email: 'm.khalid@email.com',
+		lastGroup: 'Main Hotel',
+		lastUnit: 'Downtown Executive Apartment',
+		lastBooking: '2025-10-25',
+		review: 4.5,
+		payment: 'Pending'
+	}
+]);
+
+// Render contacts table
+function renderClientsTable() {
+	const tbody = document.getElementById('clientsTableBody');
+	if (!tbody) return;
+	
+	tbody.innerHTML = '';
+	
+	clients.forEach(client => {
+		const row = document.createElement('tr');
+		row.innerHTML = `
+			<td><input type="checkbox" class="client-checkbox" data-id="${client.id}"></td>
+			<td style="font-weight:600">${client.name}</td>
+			<td>${client.phone}</td>
+			<td>${client.email}</td>
+			<td>${client.lastGroup}</td>
+			<td>${client.lastUnit}</td>
+			<td style="font-size:12px;color:#6b7280">${client.lastBooking}</td>
+			<td style="color:var(--accent);font-weight:600">⭐ ${client.review}</td>
+			<td>
+				<span style="padding:4px 12px;border-radius:6px;font-size:12px;font-weight:600;${
+					client.payment === 'Paid' 
+						? 'background:rgba(22,163,74,0.14);color:#15803d' 
+						: 'background:rgba(245,158,11,0.14);color:#b45309'
+				}">
+					${client.payment}
+				</span>
+			</td>
+			<td style="text-align:center">
+				<button onclick="editClient(${client.id})" style="padding:6px 12px;border:none;background:transparent;color:var(--accent);cursor:pointer;font-size:12px;font-weight:600;border-radius:6px;transition:all 0.2s" onmouseover="this.style.background='rgba(249,115,22,0.1)'" onmouseout="this.style.background='transparent'">
+					Edit
+				</button>
+				<button onclick="deleteClient(${client.id})" style="padding:6px 12px;border:none;background:transparent;color:#ef4444;cursor:pointer;font-size:12px;font-weight:600;border-radius:6px;transition:all 0.2s" onmouseover="this.style.background='rgba(239,68,68,0.1)'" onmouseout="this.style.background='transparent'">
+					Delete
+				</button>
+			</td>
+		`;
+		tbody.appendChild(row);
+	});
+	
+	// Update total count
+	const totalClients = document.getElementById('totalClients');
+	if (totalClients) totalClients.textContent = clients.length;
+	
+	const pageEnd = document.getElementById('pageEnd');
+	if (pageEnd) pageEnd.textContent = clients.length;
+}
+
+// Dummy functions for buttons
+function editClient(id) {
+	alert('Edit contact ID: ' + id);
+}
+
+function deleteClient(id) {
+	if (confirm('Delete this contact?')) {
+		clients = clients.filter(c => c.id !== id);
+		Storage.setJSON('clients', clients);
+		renderClientsTable();
+	}
+}
+
+function openCampaignModal() {
+	alert('WhatsApp Campaign feature');
+}
+
+function exportClients(type) {
+	alert('Export ' + type + ' contacts');
+}
+
+function clearFilters() {
+	document.getElementById('filterName').value = '';
+	document.getElementById('filterPhone').value = '';
+	document.getElementById('filterEmail').value = '';
+	document.getElementById('filterUnit').value = '';
+}
+
+function toggleSelectAll() {
+	const checkboxes = document.querySelectorAll('.client-checkbox');
+	const selectAll = document.getElementById('selectAllCheckbox');
+	checkboxes.forEach(cb => cb.checked = selectAll.checked);
+	
+	const selectedCount = document.getElementById('selectedCount');
+	if (selectedCount) {
+		selectedCount.textContent = selectAll.checked ? clients.length : 0;
+	}
+}
+
+// Initialize table on page load
+renderClientsTable();
+</script>
 	</div>
 </body>
 </html>

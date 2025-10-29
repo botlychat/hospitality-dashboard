@@ -87,7 +87,12 @@ htmlFiles.forEach(htmlFile => {
   const contentMatch = pageBody.match(/<section\s+class="content"[^>]*>([\s\S]*?)<\/section>/);
   const pageContent = contentMatch ? contentMatch[1] : '';
   
-  // Build the new HTML with layout template and page-specific content
+  // Extract page-specific scripts (everything after </section> closing tag but before </body>)
+  // Look for scripts that come after the main content section
+  const scriptsAfterContentMatch = pageBody.match(/<\/section>\s*<\/main>\s*([\s\S]*?)(?=<\/div>\s*<\/body>|$)/);
+  const pageScripts = scriptsAfterContentMatch ? scriptsAfterContentMatch[1].trim() : '';
+  
+  // Build the new HTML with layout template and page-specific content + scripts
   const newHtml = `<!doctype html>
 <html lang="en">
 <head>
@@ -96,6 +101,7 @@ ${pageHead}
 <body>
 	<div class="app">
 ${layoutTemplate.replace('<!-- PAGE_CONTENT_PLACEHOLDER -->', pageContent)}
+${pageScripts}
 	</div>
 </body>
 </html>`;

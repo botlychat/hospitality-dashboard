@@ -229,6 +229,338 @@
 
 <script src="js/utils.js"></script>
 
+</div>
+	<!-- Extracted JavaScript Files -->
+	<script src="js/utils.js"></script>
+	<script src="js/components.js"></script>
+	
+	<script>
+		// Load saved theme color (safe with fallback)
+		const savedColor = Storage.getString('websiteThemeColor', '');
+		if(savedColor && /^#[0-9A-F]{6}$/i.test(savedColor)) {
+			document.documentElement.style.setProperty('--accent', savedColor);
+		}
+
+		// Mobile sidebar toggle functionality
+		const sidebarToggle = document.getElementById('sidebarToggle');
+		const sidebar = document.querySelector('.sidebar');
+		
+		if(sidebarToggle && sidebar) {
+			sidebarToggle.addEventListener('click', (e) => {
+				e.stopPropagation();
+				sidebar.classList.toggle('active');
+			});
+			
+			// Close sidebar when clicking on nav items
+			document.querySelectorAll('.nav-item').forEach(item => {
+				item.addEventListener('click', () => {
+					sidebar.classList.remove('active');
+				});
+			});
+			
+			// Close sidebar when clicking outside
+			document.addEventListener('click', (e) => {
+				if(!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
+					sidebar.classList.remove('active');
+				}
+			});
+		}
+
+		// Discount Settings Functions
+		function toggleDiscountInput() {
+			const checkbox = document.getElementById('discountToggle');
+			const inputGroup = document.getElementById('discountInputGroup');
+			const preview = document.getElementById('discountPreview');
+			const editPenBtn = document.getElementById('discountEditPenBtn');
+			
+			if(checkbox.checked) {
+				// Check if there's already a saved amount
+				const savedAmount = Storage.getString('discountAmount', '');
+				if(savedAmount) {
+					// Show preview with saved amount and edit pen
+					preview.style.display = 'block';
+					document.getElementById('discountPreviewAmount').textContent = 'SAR ' + savedAmount;
+					editPenBtn.style.display = 'block';
+				} else {
+					// Show input to enter amount for first time
+					inputGroup.style.display = 'block';
+					preview.style.display = 'none';
+				}
+			} else {
+				inputGroup.style.display = 'none';
+				preview.style.display = 'none';
+			}
+		}
+
+		function saveDiscountAmount() {
+			const amount = document.getElementById('discountAmount').value;
+			const inputGroup = document.getElementById('discountInputGroup');
+			const preview = document.getElementById('discountPreview');
+			const previewAmount = document.getElementById('discountPreviewAmount');
+			const editPenBtn = document.getElementById('discountEditPenBtn');
+			
+			if(!amount || amount <= 0) {
+				alert('Please enter a valid discount amount');
+				return;
+			}
+			
+			// Save amount (safe)
+			Storage.setString('discountAmount', amount);
+			previewAmount.textContent = 'SAR ' + amount;
+			
+			// Hide input, show preview with edit pen
+			inputGroup.style.display = 'none';
+			preview.style.display = 'block';
+			editPenBtn.style.display = 'block';
+			
+			showConfirmation('Discount amount saved: SAR ' + amount);
+		}
+
+		function editDiscountAmount() {
+			const inputGroup = document.getElementById('discountInputGroup');
+			const editPenBtn = document.getElementById('discountEditPenBtn');
+			const amountInput = document.getElementById('discountAmount');
+			
+			// Load current amount (safe)
+			const savedAmount = Storage.getString('discountAmount', '');
+			if(savedAmount) {
+				amountInput.value = savedAmount;
+			}
+			
+			// Show input, hide edit pen
+			inputGroup.style.display = 'block';
+			editPenBtn.style.display = 'none';
+			amountInput.focus();
+		}
+
+		// Booking Method Functions
+		function updateBookingMethodDisplay() {
+			const fullBooking = document.getElementById('bookingFull');
+			const websiteOnly = document.getElementById('bookingWebsiteOnly');
+			const methodInfo = document.getElementById('bookingMethodInfo');
+			const methodText = document.getElementById('bookingMethodText');
+			const label1 = document.getElementById('bookingMethodLabel1');
+			const label2 = document.getElementById('bookingMethodLabel2');
+			
+			// Determine selected method
+			const selectedMethod = fullBooking.checked ? 'full' : 'website_only';
+			
+			// Update UI
+			if(fullBooking.checked) {
+				label1.style.borderColor = 'var(--accent)';
+				label1.style.background = 'rgba(249, 115, 22, 0.05)';
+				label2.style.borderColor = '#e5e7eb';
+				label2.style.background = 'transparent';
+				methodText.textContent = 'AI Agent Full Booking';
+			} else if(websiteOnly.checked) {
+				label2.style.borderColor = 'var(--accent)';
+				label2.style.background = 'rgba(249, 115, 22, 0.05)';
+				label1.style.borderColor = '#e5e7eb';
+				label1.style.background = 'transparent';
+				methodText.textContent = 'Website Only Booking';
+			}
+			
+			// Show info box
+			methodInfo.style.display = 'block';
+			
+			// Save immediately to storage (safe)
+			Storage.setString('bookingMethod', selectedMethod);
+			
+			// Optional: Show brief confirmation
+			showConfirmation('Booking method updated to: ' + (fullBooking.checked ? 'AI Agent Full Booking' : 'Website Only Booking'));
+		}
+
+		// Welcome Message Functions
+		function toggleWelcomeEdit() {
+			const textarea = document.getElementById('welcomeMessage');
+			const editBtn = document.getElementById('welcomeEditBtn');
+			const saveBtn = document.getElementById('welcomeSaveBtn');
+			
+			textarea.removeAttribute('readonly');
+			textarea.focus();
+			editBtn.style.display = 'none';
+			saveBtn.style.display = 'block';
+		}
+
+		function saveWelcomeMessage() {
+			const textarea = document.getElementById('welcomeMessage');
+			const editBtn = document.getElementById('welcomeEditBtn');
+			const saveBtn = document.getElementById('welcomeSaveBtn');
+			
+			// Save to storage (safe)
+			Storage.setString('welcomeMessage', textarea.value);
+			
+			textarea.setAttribute('readonly', 'readonly');
+			editBtn.style.display = 'block';
+			saveBtn.style.display = 'none';
+			
+			showConfirmation('Welcome message saved');
+		}
+
+		// Reminder Functions
+		function toggleReminderEdit(reminderNum) {
+			const textarea = document.getElementById('reminder' + reminderNum);
+			const editBtn = document.getElementById('reminder' + reminderNum + 'EditBtn');
+			const saveBtn = document.getElementById('reminder' + reminderNum + 'SaveBtn');
+			
+			textarea.removeAttribute('readonly');
+			textarea.focus();
+			editBtn.style.display = 'none';
+			saveBtn.style.display = 'block';
+		}
+
+		function saveReminder(reminderNum) {
+			const textarea = document.getElementById('reminder' + reminderNum);
+			const editBtn = document.getElementById('reminder' + reminderNum + 'EditBtn');
+			const saveBtn = document.getElementById('reminder' + reminderNum + 'SaveBtn');
+			
+			// Save to storage (safe)
+			Storage.setString('reminder' + reminderNum, textarea.value);
+			
+			textarea.setAttribute('readonly', 'readonly');
+			editBtn.style.display = 'block';
+			saveBtn.style.display = 'none';
+			
+			showConfirmation('Reminder ' + reminderNum + ' saved');
+		}
+
+		// Custom Roles Functions
+		let customRoles = [];
+
+		function loadCustomRoles() {
+			const saved = Storage.getString('customRoles', '');
+			if(saved) {
+				customRoles = JSON.parse(saved);
+				renderRoles();
+			}
+		}
+
+		function addCustomRole() {
+			const input = document.getElementById('newRoleInput');
+			const roleText = input.value.trim();
+			
+			if(!roleText) {
+				alert('Please enter a role description');
+				return;
+			}
+			
+			if(customRoles.length >= 10) {
+				alert('Maximum 10 roles allowed');
+				return;
+			}
+			
+			customRoles.push(roleText);
+			input.value = '';
+			
+			// Save immediately (safe)
+			Storage.setJSON('customRoles', customRoles);
+			renderRoles();
+			
+			showConfirmation('Role added successfully');
+		}
+
+		function removeRole(index) {
+			if(confirm('Remove this role?')) {
+				customRoles.splice(index, 1);
+				Storage.setJSON('customRoles', customRoles);
+				renderRoles();
+			}
+		}
+
+		function renderRoles() {
+			const rolesList = document.getElementById('rolesList');
+			const roleCount = document.getElementById('roleCount');
+			
+			roleCount.textContent = customRoles.length;
+			
+			if(customRoles.length === 0) {
+				rolesList.innerHTML = '<div style="padding:12px;background:#f9fafb;border-radius:8px;font-size:13px;color:#6b7280;text-align:center">No custom roles added yet</div>';
+				return;
+			}
+			
+			rolesList.innerHTML = customRoles.map((role, index) => `
+				<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:#f9fafb;border-radius:8px;margin-bottom:8px;border-left:3px solid var(--accent)">
+					<span style="font-size:13px;color:#111">${role}</span>
+					<button onclick="removeRole(${index})" style="background:none;border:none;cursor:pointer;color:#ef4444;padding:4px 8px;font-size:14px" title="Remove">
+						<i class="fa-solid fa-trash"></i>
+					</button>
+				</div>
+			`).join('');
+		}
+
+		// Load roles on page load
+		document.addEventListener('DOMContentLoaded', function() {
+			loadCustomRoles();
+		});
+
+	function showConfirmation(message) {
+		// Create notification element
+		const notification = document.createElement('div');
+		notification.style.cssText = `
+			position: fixed;
+			top: 20px;
+			right: 20px;
+			background: white;
+			padding: 16px 24px;
+			border-radius: 12px;
+			box-shadow: 0 10px 30px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.05);
+			z-index: 10000;
+			display: flex;
+			align-items: center;
+			gap: 12px;
+			font-size: 14px;
+			color: #0f172a;
+			font-weight: 500;
+			animation: slideIn 0.3s ease;
+			max-width: 400px;
+		`;
+		
+		notification.innerHTML = `
+			<div style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; flex-shrink: 0;"></div>
+			<div style="flex: 1;">${message}</div>
+			<i class="fa-solid fa-check" style="color: #10b981; font-size: 16px; flex-shrink: 0;"></i>
+		`;
+		
+		// Add animation keyframes if not already added
+		if (!document.getElementById('notificationStyles')) {
+			const style = document.createElement('style');
+			style.id = 'notificationStyles';
+			style.textContent = `
+				@keyframes slideIn {
+					from {
+						transform: translateX(400px);
+						opacity: 0;
+					}
+					to {
+						transform: translateX(0);
+						opacity: 1;
+					}
+				}
+				@keyframes slideOut {
+					from {
+						transform: translateX(0);
+						opacity: 1;
+					}
+					to {
+						transform: translateX(400px);
+						opacity: 0;
+					}
+				}
+			`;
+			document.head.appendChild(style);
+		}
+		
+		document.body.appendChild(notification);
+		
+		// Remove after 3 seconds
+		setTimeout(() => {
+			notification.style.animation = 'slideOut 0.3s ease';
+			setTimeout(() => {
+				notification.remove();
+			}, 300);
+		}, 3000);
+	}
+</script>
 	</div>
 </body>
 </html>
