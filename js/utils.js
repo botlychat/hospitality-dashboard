@@ -14,16 +14,11 @@
  */
 function getPagePath(filename) {
   const currentPath = window.location.pathname;
-  
-  // Check if we're on GitHub Pages with dist folder
-  if (currentPath.includes('/hospitality-dashboard/dist/')) {
-    return '/hospitality-dashboard/dist/' + filename;
+  // Check if we're on GitHub Pages (path contains /chaletdashboard/)
+  if (currentPath.includes('/chaletdashboard/')) {
+    return '/chaletdashboard/' + filename;
   }
-  // Check if we're on GitHub Pages without dist (legacy)
-  if (currentPath.includes('/hospitality-dashboard/')) {
-    return '/hospitality-dashboard/dist/' + filename;
-  }
-  // Local development
+  // Otherwise use relative path (local development)
   return filename;
 }
 
@@ -34,6 +29,62 @@ function getPagePath(filename) {
 function navigateToPage(page) {
   const fullPath = getPagePath(page);
   window.location.href = fullPath;
+}
+
+// ============================================
+// STORAGE HELPERS
+// ============================================
+
+/**
+ * Get value from localStorage with JSON parsing
+ * @param {string} key - The localStorage key
+ * @param {*} defaultValue - Default value if key not found
+ * @returns {*} Parsed value from localStorage
+ */
+function getStorageItem(key, defaultValue = null) {
+  try {
+    const item = localStorage.getItem(key);
+    return item ? JSON.parse(item) : defaultValue;
+  } catch (error) {
+    console.error(`Error parsing localStorage key "${key}":`, error);
+    return defaultValue;
+  }
+}
+
+/**
+ * Set value in localStorage with JSON stringification
+ * @param {string} key - The localStorage key
+ * @param {*} value - The value to store
+ */
+function setStorageItem(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch (error) {
+    console.error(`Error storing value for key "${key}":`, error);
+  }
+}
+
+/**
+ * Remove a value from localStorage
+ * @param {string} key - The localStorage key to remove
+ */
+function removeStorageItem(key) {
+  try {
+    localStorage.removeItem(key);
+  } catch (error) {
+    console.error(`Error removing localStorage key "${key}":`, error);
+  }
+}
+
+/**
+ * Clear all localStorage (use with caution)
+ */
+function clearStorage() {
+  try {
+    localStorage.clear();
+  } catch (error) {
+    console.error('Error clearing localStorage:', error);
+  }
 }
 
 // ============================================
@@ -53,13 +104,10 @@ function loadTranslations() {
       website: 'Website Settings',
       aiagent: 'AI Agent',
       contacts: 'Contacts',
-      accountSettings: 'Account Settings',
-      language: 'Language',
-      logout: 'Logout',
-      confirmLogout: 'Are you sure you want to logout?',
       completeProfile: 'Complete Profile',
       changePassword: 'Change Password',
       changeEmail: 'Change Email',
+      logout: 'Logout',
       admin: 'Admin',
       refresh: 'Refresh',
       newManualBooking: 'New Manual Booking',
@@ -94,13 +142,10 @@ function loadTranslations() {
       website: 'إعدادات الموقع',
       aiagent: 'وكيل الذكاء الاصطناعي',
       contacts: 'جهات الاتصال',
-      accountSettings: 'إعدادات الحساب',
-      language: 'اللغة',
-      logout: 'تسجيل الخروج',
-      confirmLogout: 'هل أنت متأكد أنك تريد تسجيل الخروج؟',
       completeProfile: 'إكمال الملف الشخصي',
       changePassword: 'تغيير كلمة المرور',
       changeEmail: 'تغيير عنوان البريد الإلكتروني',
+      logout: 'تسجيل الخروج',
       admin: 'مسؤول',
       refresh: 'تحديث',
       newManualBooking: 'حجز يدوي جديد',
@@ -172,13 +217,12 @@ function applyTranslations(language = 'en') {
  * @param {string} language - Language code (en/ar)
  */
 function setLanguage(language) {
-  Storage.set('language', language);
+  localStorage.setItem('language', language);
   window.currentLanguage = language; // Update global variable
   document.documentElement.lang = language;
   document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
   applyTranslations(language);
   updateLanguageButtons(language);
-  updateLanguageDropdownButtons(); // Update dropdown buttons
   
   // Update the toggle button text if it exists
   const langText = document.getElementById('langText');
@@ -218,7 +262,7 @@ function updateLanguageButtons(currentLanguage) {
  * @returns {string} Currency code (USD/SAR/EUR)
  */
 function getCurrentCurrency() {
-  return Storage.get('currency', 'SAR');
+  return localStorage.getItem('currency') || 'SAR';
 }
 
 /**
@@ -226,7 +270,7 @@ function getCurrentCurrency() {
  * @param {string} currency - Currency code (USD/SAR/EUR)
  */
 function setCurrency(currency) {
-  Storage.set('currency', currency);
+  localStorage.setItem('currency', currency);
   updateCurrencyButtons(currency);
 }
 
@@ -357,7 +401,7 @@ function showError(message, duration = 3000) {
  */
 function initializeSharedUtilities() {
   // Set initial language
-  const currentLanguage = Storage.get('language', 'en');
+  const currentLanguage = localStorage.getItem('language') || 'en';
   window.currentLanguage = currentLanguage; // Set global variable
   document.documentElement.lang = currentLanguage;
   document.documentElement.dir = currentLanguage === 'ar' ? 'rtl' : 'ltr';
@@ -365,7 +409,7 @@ function initializeSharedUtilities() {
   updateLanguageButtons(currentLanguage);
   
   // Set initial currency
-  const currentCurrency = Storage.get('currency', 'SAR');
+  const currentCurrency = localStorage.getItem('currency') || 'SAR';
   updateCurrencyButtons(currentCurrency);
   
   // Setup language switchers
@@ -399,12 +443,6 @@ function initializeSharedUtilities() {
   if (currencyUSD) currencyUSD.addEventListener('click', () => setCurrency('USD'));
   if (currencySAR) currencySAR.addEventListener('click', () => setCurrency('SAR'));
   if (currencyEUR) currencyEUR.addEventListener('click', () => setCurrency('EUR'));
-  
-  // Initialize profile dropdown
-  initProfileDropdown();
-  
-  // Set active page and header title
-  setActivePage();
 }
 
 // ============================================
@@ -466,105 +504,6 @@ function getCountryCodes() {
 // ============================================
 // PROFILE DROPDOWN HANDLER
 // ============================================
-
-/**
- * Initialize profile dropdown menu
- */
-function initProfileDropdown() {
-  const profileBtn = document.getElementById('profileBtn');
-  const profileDropdown = document.getElementById('profileDropdown');
-  
-  console.log('Initializing profile dropdown...', { profileBtn, profileDropdown });
-  
-  if (!profileBtn || !profileDropdown) {
-    console.error('Profile elements not found!');
-    return;
-  }
-  
-  // Toggle dropdown on button click
-  profileBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    e.preventDefault();
-    const isShowing = profileDropdown.classList.contains('show');
-    console.log('Button clicked. Current classes:', profileDropdown.className);
-    profileDropdown.classList.toggle('show');
-    console.log('After toggle. New classes:', profileDropdown.className);
-  });
-  
-  // Close dropdown when clicking outside
-  document.addEventListener('click', (e) => {
-    if (!profileBtn.contains(e.target) && !profileDropdown.contains(e.target)) {
-      if (profileDropdown.classList.contains('show')) {
-        profileDropdown.classList.remove('show');
-      }
-    }
-  });
-  
-  console.log('Profile dropdown ready!');
-}
-
-/**
- * Update language button active states in dropdown
- */
-function updateLanguageDropdownButtons() {
-  const langEnBtn = document.getElementById('langEnBtn');
-  const langArBtn = document.getElementById('langArBtn');
-  const currentLang = Storage.get('language', 'en');
-  
-  if (langEnBtn && langArBtn) {
-    if (currentLang === 'en') {
-      langEnBtn.classList.add('active');
-      langArBtn.classList.remove('active');
-    } else {
-      langArBtn.classList.add('active');
-      langEnBtn.classList.remove('active');
-    }
-  }
-}
-
-/**
- * Handle logout action
- */
-function handleLogout() {
-  if (confirm(t('confirmLogout', Storage.get('language', 'en')))) {
-    // Clear all user data
-    Storage.clear();
-    // Redirect to login page
-    window.location.href = getPagePath('index.html');
-  }
-}
-
-/**
- * Set active page in navigation and update header title
- */
-function setActivePage() {
-  // Get current page from URL
-  const currentPath = window.location.pathname;
-  let currentPage = 'dashboard'; // default
-  
-  if (currentPath.includes('calendar.html')) currentPage = 'calendar';
-  else if (currentPath.includes('units.html')) currentPage = 'units';
-  else if (currentPath.includes('contacts.html')) currentPage = 'contacts';
-  else if (currentPath.includes('aiagent.html')) currentPage = 'aiagent';
-  else if (currentPath.includes('website.html')) currentPage = 'website';
-  else if (currentPath.includes('account-settings.html')) currentPage = 'accountSettings';
-  
-  // Set active class on navigation item
-  document.querySelectorAll('.nav-item').forEach(item => {
-    item.classList.remove('active');
-    if (item.dataset.page === currentPage) {
-      item.classList.add('active');
-    }
-  });
-  
-  // Update header title
-  const headerTitle = document.getElementById('headerTitle');
-  if (headerTitle) {
-    const currentLang = Storage.get('language', 'en');
-    headerTitle.textContent = t(currentPage, currentLang);
-    headerTitle.setAttribute('data-i18n', currentPage);
-  }
-}
 
 /**
  * Initialize language switching

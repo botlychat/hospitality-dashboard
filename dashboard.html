@@ -651,7 +651,7 @@
 		};
 
 		// Current language (safe with fallback)
-		let currentLanguage = Storage.get('language', 'en');
+		let currentLanguage = Storage.getString('language', 'en');
 
 		// Units Groups Management (safe with fallback)
 		let unitsGroups = Storage.getJSON('unitsGroups', [
@@ -659,12 +659,12 @@
 			{ id: 'group_2', name: 'Chalets Collection', type: 'Chalet', license: 'TRN-2024-002' }
 		]);
 		let currentGroupId = 'all'; // Always show all groups
-		let currentCurrency = Storage.get('currency', 'SAR');
+		let currentCurrency = Storage.getString('currency', 'SAR');
 
 		// Set initial language
 		function setLanguage(lang){
 			currentLanguage = lang;
-			Storage.set('language', lang);
+			Storage.setString('language', lang);
 			document.documentElement.lang = lang;
 			document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
 			applyTranslations();
@@ -742,7 +742,7 @@
 		// Initialize language on load
 		document.addEventListener('DOMContentLoaded',()=>{
 			// Load saved theme color (safe with fallback)
-			const savedColor = Storage.get('websiteThemeColor', '');
+			const savedColor = Storage.getString('websiteThemeColor', '');
 			if(savedColor && /^#[0-9A-F]{6}$/i.test(savedColor)) {
 				document.documentElement.style.setProperty('--accent', savedColor);
 			}
@@ -1235,7 +1235,6 @@
 		const reader = new FileReader();
 		reader.onload = function(e){
 			const preview = document.getElementById('homePicturePreview');
-
 			preview.innerHTML = `<img src="${e.target.result}" class="image-preview" alt="Home picture">`;
 			showConfirmation('Home picture saved (simulated)');
 		};
@@ -1259,7 +1258,7 @@
 		}
 		
 		// Save to localStorage (safe with error handling)
-		Storage.set('websiteThemeColor', color);
+		Storage.setString('websiteThemeColor', color);
 		
 		// Show success message
 		showConfirmation('Website theme color saved: ' + color);
@@ -1601,11 +1600,213 @@
 			document.getElementById('conversationPercent').textContent = percentage + '%';
 			document.getElementById('activeConversations').textContent = active;
 		}
+
+		// Load AI Reminders from localStorage (safe)
+		function loadAIReminders(){
+			const defaultReminders = { reminder1: '', reminder2: '' };
+			const reminders = Storage.getJSON('aiReminders', defaultReminders);
+			if(reminders && typeof reminders === 'object'){
+				const reminder1 = reminders.reminder1 || '';
+				const reminder2 = reminders.reminder2 || '';
+				
+				// Set textarea values
+				document.getElementById('aiReminder1').value = reminder1;
+				document.getElementById('aiReminder2').value = reminder2;
+				
+				// Display reminders in view mode
+				displayReminderView(1, reminder1);
+				displayReminderView(2, reminder2);
+			}
+		}
+
+		// Display reminder in view mode
+		function displayReminderView(num, text){
+			const viewDiv = document.getElementById(`reminderView${num}`);
+			const textSpan = document.getElementById(`reminderText${num}`);
+			if(text){
+				textSpan.textContent = text;
+				viewDiv.style.display = 'block';
+			} else {
+				viewDiv.style.display = 'none';
+			}
+		}
+
+		// Toggle edit mode for reminders
+		function toggleReminderEdit(num){
+			const viewDiv = document.getElementById(`reminderView${num}`);
+			const textarea = document.getElementById(`aiReminder${num}`);
+			const editBtn = document.getElementById(`editBtn${num}`);
+			const buttonsDiv = document.getElementById(`reminderButtons${num}`);
+			
+			viewDiv.style.display = 'none';
+			textarea.style.display = 'block';
+			editBtn.style.display = 'none';
+			buttonsDiv.style.display = 'flex';
+		}
+
+		// Cancel edit mode for reminders
+		function cancelReminderEdit(num){
+			const viewDiv = document.getElementById(`reminderView${num}`);
+			const textarea = document.getElementById(`aiReminder${num}`);
+			const editBtn = document.getElementById(`editBtn${num}`);
+			const buttonsDiv = document.getElementById(`reminderButtons${num}`);
+			const defaultReminders = { reminder1: '', reminder2: '' };
+			const reminders = Storage.getJSON('aiReminders', defaultReminders);
+			const savedText = num === 1 ? (reminders.reminder1 || '') : (reminders.reminder2 || '');
+			
+			// Reset textarea to saved value
+			textarea.value = savedText;
+			
+			// Hide edit mode
+			textarea.style.display = 'none';
+			buttonsDiv.style.display = 'none';
+			editBtn.style.display = 'block';
+			
+			// Show view mode
+			if(savedText){
+				displayReminderView(num, savedText);
+			} else {
+				viewDiv.style.display = 'none';
+			}
+		}
+
+		// Save AI Reminder 1
+		function saveAIReminder1(){
+			const text = document.getElementById('aiReminder1').value.trim();
+			if(!text){
+				showConfirmation('Reminder 1 cannot be empty');
+				return;
+			}
+			
+			const defaultReminders = { reminder1: '', reminder2: '' };
+			const reminders = Storage.getJSON('aiReminders', defaultReminders);
+			reminders.reminder1 = text;
+			Storage.setJSON('aiReminders', reminders);
+			
+			// Switch back to view mode
+			document.getElementById('aiReminder1').style.display = 'none';
+			document.getElementById('reminderButtons1').style.display = 'none';
+			document.getElementById('editBtn1').style.display = 'block';
+			displayReminderView(1, text);
+			
+			showConfirmation('Reminder 1 saved successfully');
+		}
+
+		// Save AI Reminder 2
+		function saveAIReminder2(){
+			const text = document.getElementById('aiReminder2').value.trim();
+			if(!text){
+				showConfirmation('Reminder 2 cannot be empty');
+				return;
+			}
+			
+			const defaultReminders = { reminder1: '', reminder2: '' };
+			const reminders = Storage.getJSON('aiReminders', defaultReminders);
+			reminders.reminder2 = text;
+			Storage.setJSON('aiReminders', reminders);
+			
+			// Switch back to view mode
+			document.getElementById('aiReminder2').style.display = 'none';
+			document.getElementById('reminderButtons2').style.display = 'none';
+			document.getElementById('editBtn2').style.display = 'block';
+			displayReminderView(2, text);
+			
+			showConfirmation('Reminder 2 saved successfully');
+		}
+
+		// Currency and Language switchers
+		function updateCurrencyButtons(){
+			const usdBtn = document.getElementById('currencyUSD');
+			const sarBtn = document.getElementById('currencySAR');
+			const eurBtn = document.getElementById('currencyEUR');
+			
+			// Reset all buttons
+			[usdBtn, sarBtn, eurBtn].forEach(btn => {
+				btn.style.color = '#64748b';
+				btn.style.fontWeight = 'normal';
+			});
+			
+			// Highlight selected currency
+			if(currentCurrency === 'USD') usdBtn.style.color = '#f97316';
+			else if(currentCurrency === 'SAR') sarBtn.style.color = '#f97316';
+			else if(currentCurrency === 'EUR') eurBtn.style.color = '#f97316';
+			
+			// Update font weight for active
+			const activeBtn = document.getElementById('currency' + currentCurrency);
+			if(activeBtn) activeBtn.style.fontWeight = '600';
+		}
+
+		function setCurrency(currency){
+			currentCurrency = currency;
+			Storage.setString('currency', currency);
+			updateCurrencyButtons();
+			updateKPIs();
+			renderRecentBookings();
+			renderUnitStatus();
+			renderWeeklyOccupancy();
+			renderWeeklyIncome();
+		}
+
+		function updateLanguageButtons(){
+			const langToggle = document.getElementById('langToggle');
+			const langText = document.getElementById('langText');
+			if(langToggle && langText){
+				if(currentLanguage === 'en'){
+					langText.textContent = 'العربية';
+				} else {
+					langText.textContent = 'English';
+				}
+			}
+		}
+
+		function setLanguage(lang){
+			currentLanguage = lang;
+			Storage.setString('language', lang);
+			document.documentElement.lang = lang;
+			document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+			updateLanguageButtons();
+		}
+
+		// Initialize buttons with null checks
+		console.log('[DASHBOARD] Initializing language toggle button...');
+		updateLanguageButtons();
+		
+		const langToggle = document.getElementById('langToggle');
+		
+		if(langToggle) {
+			langToggle.addEventListener('click', () => {
+				const newLang = currentLanguage === 'en' ? 'ar' : 'en';
+				setLanguage(newLang);
+			});
+		}
+		console.log('[DASHBOARD] Language toggle button initialized');
+		
+		// Update Active Conversations display
+		function updateActiveConversations() {
+			// Get data from storage (synced with AI Agent page) - safe with fallbacks
+			const activeCount = parseInt(Storage.getString('activeConvCount', '278')) || 278;
+			const totalPlan = parseInt(Storage.getString('totalPlanConv', '500')) || 500;
+			const percent = ((activeCount / totalPlan) * 100).toFixed(1);
+			const remaining = totalPlan - activeCount;
+			
+			// Update dashboard conversation card
+			const countEl = document.getElementById('dashboardActiveConvCount');
+			const totalEl = document.getElementById('dashboardTotalPlanConv');
+			const percentEl = document.getElementById('dashboardConvPercent');
+			const remainingEl = document.getElementById('dashboardConvRemaining');
+			const progressBar = document.getElementById('dashboardConvProgressBar');
+			
+			if(countEl) countEl.textContent = activeCount;
+			if(totalEl) totalEl.textContent = totalPlan;
+			if(percentEl) percentEl.textContent = percent;
+			if(remainingEl) remainingEl.textContent = remaining + ' remaining';
+			if(progressBar) progressBar.style.width = percent + '%';
+		}
 		
 		// Initialize conversation data if not exists
 		if(!Storage.hasKey('activeConvCount')) {
-			Storage.set('activeConvCount', '278');
-			Storage.set('totalPlanConv', '500');
+			Storage.setString('activeConvCount', '278');
+			Storage.setString('totalPlanConv', '500');
 		}
 		
 		// Update on page load

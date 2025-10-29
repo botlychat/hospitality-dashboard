@@ -135,21 +135,6 @@
     display: none;
   }
   
-  /* Keep profile button visible on mobile */
-  .profile-container {
-    display: flex;
-    margin-left: auto;
-  }
-  
-  .profile-btn {
-    padding: var(--space-sm);
-  }
-  
-  .profile-dropdown {
-    right: 0;
-    min-width: 220px;
-  }
-  
   .sheet {
     width: 100%;
   }
@@ -213,25 +198,6 @@
   .header .left h1 {
     font-size: 16px;
     font-weight: 700;
-  }
-  
-  /* Profile button responsive adjustments */
-  .profile-container {
-    margin-left: auto;
-  }
-  
-  .profile-btn {
-    padding: var(--space-xs) var(--space-sm);
-  }
-  
-  .profile-avatar {
-    width: 32px;
-    height: 32px;
-    font-size: var(--font-size-sm);
-  }
-  
-  .profile-dropdown {
-    min-width: 200px;
   }
   
   .search {
@@ -330,28 +296,6 @@
   .header .left h1 {
     font-size: 16px;
     font-weight: 700;
-  }
-  
-  /* Profile button for small phones */
-  .profile-btn {
-    padding: var(--space-xs);
-    gap: var(--space-xs);
-  }
-  
-  .profile-avatar {
-    width: 30px;
-    height: 30px;
-    font-size: 12px;
-  }
-  
-  /* Hide chevron icon on very small screens to save space */
-  .profile-btn .fa-chevron-down {
-    display: none;
-  }
-  
-  .profile-dropdown {
-    min-width: 180px;
-    right: -8px;
   }
   
   .search {
