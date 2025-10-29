@@ -579,31 +579,32 @@ html[dir="rtl"] .modal-actions {
 .profile-btn {
   display: flex;
   align-items: center;
-  gap: var(--space-md);
+  gap: 10px;
   background: #fff;
-  border: none;
-  padding: var(--space-sm) var(--space-md);
-  border-radius: var(--border-radius-xl);
+  border: 1px solid #e5e7eb;
+  padding: 8px 12px;
+  border-radius: 50px;
   cursor: pointer;
-  transition: all var(--transition-base);
-  box-shadow: var(--shadow-lg);
+  transition: all 0.2s ease;
+  box-shadow: 0 6px 20px rgba(15, 23, 41, 0.06);
 }
 
 .profile-btn:hover {
-  box-shadow: var(--shadow-xl);
+  border-color: #ff6b35;
+  box-shadow: 0 14px 30px rgba(15, 23, 41, 0.08);
   transform: translateY(-1px);
 }
 
 .profile-avatar {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  background: linear-gradient(140deg, var(--accent), #fdba74);
+  background: linear-gradient(140deg, #ff6b35, #fdba74);
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 700;
-  font-size: var(--font-size-sm);
+  font-size: 12px;
   color: #fff;
   letter-spacing: 0.3px;
 }
@@ -613,13 +614,13 @@ html[dir="rtl"] .modal-actions {
   top: calc(100% + 8px) !important;
   right: 0 !important;
   background: #fff !important;
-  border-radius: var(--border-radius-xl) !important;
-  box-shadow: var(--shadow-2xl) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 24px 48px rgba(15, 23, 41, 0.18) !important;
   min-width: 240px !important;
-  padding: var(--space-md) !important;
+  padding: 12px !important;
   display: none !important;
   flex-direction: column !important;
-  gap: var(--space-xs) !important;
+  gap: 4px !important;
   z-index: 9999 !important;
   border: 1px solid rgba(15, 23, 41, 0.08) !important;
 }
@@ -631,87 +632,89 @@ html[dir="rtl"] .modal-actions {
 .dropdown-item {
   display: flex;
   align-items: center;
-  gap: var(--space-md);
-  padding: var(--space-md);
-  border-radius: var(--border-radius-lg);
-  color: var(--text-primary);
+  gap: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  color: #111;
   text-decoration: none;
-  transition: all var(--transition-base);
+  transition: all 0.2s ease;
   cursor: pointer;
-  font-size: var(--font-size-md);
+  font-size: 14px;
 }
 
 .dropdown-item:hover {
-  background: var(--background);
-  color: var(--accent);
+  background: #f9fafb;
+  color: #ff6b35;
 }
 
 .dropdown-item i {
   width: 20px;
   text-align: center;
-  color: var(--text-muted);
+  color: #6b7280;
+  font-size: 16px;
 }
 
 .dropdown-item:hover i {
-  color: var(--accent);
+  color: #ff6b35;
 }
 
 .dropdown-divider {
   height: 1px;
-  background: var(--border);
-  margin: var(--space-xs) 0;
+  background: #e5e7eb;
+  margin: 8px 0;
 }
 
 .language-switch {
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-sm);
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
 }
 
 .language-toggle {
   display: flex;
-  gap: var(--space-sm);
-  width: 100%;
-  margin-top: var(--space-xs);
+  gap: 4px;
+  background: #f3f4f6;
+  padding: 4px;
+  border-radius: 6px;
 }
 
 .lang-btn {
-  flex: 1;
-  padding: var(--space-sm) var(--space-md);
-  border: 1px solid var(--border);
-  background: #fff;
-  border-radius: var(--border-radius-lg);
+  padding: 4px 12px;
+  border: none;
+  background: transparent;
+  border-radius: 4px;
   cursor: pointer;
-  font-size: var(--font-size-sm);
-  font-weight: 600;
-  color: var(--text-muted);
-  transition: all var(--transition-base);
+  font-size: 12px;
+  font-weight: 500;
+  color: #6b7280;
+  transition: all 0.2s ease;
 }
 
 .lang-btn:hover {
-  background: var(--background);
-  border-color: var(--accent);
+  background: white;
+  color: #ff6b35;
 }
 
 .lang-btn.active {
-  background: var(--accent);
-  color: #fff;
-  border-color: var(--accent);
+  background: white;
+  color: #ff6b35;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
 .logout-item {
-  color: #ef4444;
+  color: #ef4444 !important;
 }
 
 .logout-item:hover {
-  background: rgba(239, 68, 68, 0.1);
-  color: #dc2626;
+  background: #fef2f2 !important;
+  color: #dc2626 !important;
 }
 
 .logout-item i {
-  color: #ef4444;
+  color: #ef4444 !important;
 }
 
 .logout-item:hover i {
-  color: #dc2626;
+  color: #dc2626 !important;
 }
