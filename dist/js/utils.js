@@ -530,11 +530,17 @@ function initProfileDropdown() {
   const profileBtn = document.getElementById('profileBtn');
   const profileDropdown = document.getElementById('profileDropdown');
   
-  if (!profileBtn || !profileDropdown) return;
+  console.log('[Profile Dropdown] Initializing...', { profileBtn, profileDropdown });
+  
+  if (!profileBtn || !profileDropdown) {
+    console.warn('[Profile Dropdown] Elements not found!');
+    return;
+  }
   
   // Toggle dropdown on button click
   profileBtn.addEventListener('click', (e) => {
     e.stopPropagation();
+    console.log('[Profile Dropdown] Button clicked, toggling...');
     profileDropdown.classList.toggle('show');
   });
   
@@ -547,6 +553,8 @@ function initProfileDropdown() {
   
   // Update language button states
   updateLanguageDropdownButtons();
+  
+  console.log('[Profile Dropdown] Initialized successfully');
 }
 
 /**
