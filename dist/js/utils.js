@@ -560,6 +560,25 @@ function initProfileDropdown() {
 }
 
 /**
+ * Update language button active states in dropdown
+ */
+function updateLanguageDropdownButtons() {
+  const langEnBtn = document.getElementById('langEnBtn');
+  const langArBtn = document.getElementById('langArBtn');
+  const currentLang = localStorage.getItem('language') || 'en';
+  
+  if (langEnBtn && langArBtn) {
+    if (currentLang === 'en') {
+      langEnBtn.classList.add('active');
+      langArBtn.classList.remove('active');
+    } else {
+      langArBtn.classList.add('active');
+      langEnBtn.classList.remove('active');
+    }
+  }
+}
+
+/**
  * Handle logout action
  */
 function handleLogout() {
