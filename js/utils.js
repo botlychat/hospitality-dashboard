@@ -397,6 +397,41 @@ function showError(message, duration = 3000) {
 }
 
 // ============================================
+// HEADER & NAVIGATION
+// ============================================
+
+/**
+ * Update header title based on current page
+ */
+function updateHeaderTitle() {
+  const headerTitle = document.getElementById('headerTitle');
+  if (!headerTitle) return;
+
+  // Get current page from URL or pathname
+  const pathname = window.location.pathname;
+  const currentPage = pathname.split('/').pop() || 'dashboard.html';
+  
+  // Map page filenames to translation keys
+  const pageToKeyMap = {
+    'dashboard.html': 'dashboard',
+    'calendar.html': 'calendar',
+    'units.html': 'units',
+    'website.html': 'website',
+    'aiagent.html': 'aiagent',
+    'contacts.html': 'contacts',
+    'account-settings.html': 'accountSettings',
+    'index.html': 'dashboard'
+  };
+  
+  const translationKey = pageToKeyMap[currentPage] || 'dashboard';
+  const translations = loadTranslations();
+  const currentLang = window.currentLanguage || 'en';
+  const titleText = translations[currentLang]?.[translationKey] || translations['en']?.[translationKey] || 'Dashboard';
+  
+  headerTitle.textContent = titleText;
+}
+
+// ============================================
 // INITIALIZATION
 // ============================================
 
@@ -415,6 +450,9 @@ function initializeSharedUtilities() {
   // Set initial currency
   const currentCurrency = localStorage.getItem('currency') || 'SAR';
   updateCurrencyButtons(currentCurrency);
+  
+  // Update header title based on current page
+  updateHeaderTitle();
   
   // Setup language switchers
   const langEnBtn = document.getElementById('langEnglish');
@@ -554,9 +592,10 @@ function initializeProfileMenu() {
  * Toggle language between English and Arabic
  */
 function toggleLanguage() {
-  const currentLang = Storage.get('language', 'en');
+  const currentLang = localStorage.getItem('language') || 'en';
   const newLang = currentLang === 'en' ? 'ar' : 'en';
-  Storage.set('language', newLang);
+  localStorage.setItem('language', newLang);
+  window.currentLanguage = newLang;
 
   // Update HTML direction and reload
   document.documentElement.lang = newLang;
@@ -570,7 +609,7 @@ function toggleLanguage() {
 function handleLogout() {
   if (confirm('Are you sure you want to logout?')) {
     // Clear user session data if any
-    Storage.remove('userSession');
+    localStorage.removeItem('userSession');
     // Redirect to login or home page
     window.location.href = getPagePath('index.html');
   }
