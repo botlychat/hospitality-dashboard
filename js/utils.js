@@ -14,11 +14,16 @@
  */
 function getPagePath(filename) {
   const currentPath = window.location.pathname;
-  // Check if we're on GitHub Pages (path contains /chaletdashboard/)
-  if (currentPath.includes('/chaletdashboard/')) {
-    return '/chaletdashboard/' + filename;
+  
+  // Check if we're on GitHub Pages with dist folder
+  if (currentPath.includes('/hospitality-dashboard/dist/')) {
+    return '/hospitality-dashboard/dist/' + filename;
   }
-  // Otherwise use relative path (local development)
+  // Check if we're on GitHub Pages without dist (legacy)
+  if (currentPath.includes('/hospitality-dashboard/')) {
+    return '/hospitality-dashboard/dist/' + filename;
+  }
+  // Local development
   return filename;
 }
 
