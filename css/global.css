@@ -131,7 +131,7 @@ nav {
   z-index: var(--z-sticky);
   width: 100%;
   max-width: 100%;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .header .left {
@@ -620,7 +620,7 @@ html[dir="rtl"] .modal-actions {
   display: none;
   flex-direction: column;
   gap: var(--space-xs);
-  z-index: var(--z-modal);
+  z-index: 9999;
   border: 1px solid rgba(15, 23, 41, 0.08);
 }
 
