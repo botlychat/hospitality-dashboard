@@ -131,7 +131,7 @@ nav {
   z-index: var(--z-sticky);
   width: 100%;
   max-width: 100%;
-  overflow: visible;
+  overflow: visible !important;
 }
 
 .header .left {
@@ -609,23 +609,23 @@ html[dir="rtl"] .modal-actions {
 }
 
 .profile-dropdown {
-  position: absolute;
-  top: calc(100% + 8px);
-  right: 0;
-  background: #fff;
-  border-radius: var(--border-radius-xl);
-  box-shadow: var(--shadow-2xl);
-  min-width: 240px;
-  padding: var(--space-md);
-  display: none;
-  flex-direction: column;
-  gap: var(--space-xs);
-  z-index: 9999;
-  border: 1px solid rgba(15, 23, 41, 0.08);
+  position: absolute !important;
+  top: calc(100% + 8px) !important;
+  right: 0 !important;
+  background: #fff !important;
+  border-radius: var(--border-radius-xl) !important;
+  box-shadow: var(--shadow-2xl) !important;
+  min-width: 240px !important;
+  padding: var(--space-md) !important;
+  display: none !important;
+  flex-direction: column !important;
+  gap: var(--space-xs) !important;
+  z-index: 9999 !important;
+  border: 1px solid rgba(15, 23, 41, 0.08) !important;
 }
 
 .profile-dropdown.show {
-  display: flex;
+  display: flex !important;
 }
 
 .dropdown-item {
