@@ -133,33 +133,7 @@ function loadTranslations() {
       websiteSettings: 'Website Settings',
       manageUnits: 'Manage Units',
       search: 'Search',
-      searchPlaceholder: 'Search bookings, units, clients...',
-      accountSettings: 'Account Settings',
-      language: 'Language',
-      accountSettingsDesc: 'Manage your business information and account credentials',
-      businessInformation: 'Business Information',
-      businessName: 'Business Name',
-      phoneNumber: 'Phone Number',
-      accountSecurity: 'Account Security',
-      email: 'Email',
-      password: 'Password',
-      edit: 'Edit',
-      save: 'Save',
-      cancel: 'Cancel',
-      editBusinessName: 'Edit Business Name',
-      newBusinessName: 'New Business Name',
-      editPhoneNumber: 'Edit Phone Number',
-      newPhoneNumber: 'New Phone Number',
-      editEmail: 'Edit Email',
-      editEmailDesc: 'You must provide your current email to change it',
-      currentEmail: 'Current Email',
-      newEmail: 'New Email',
-      confirmNewEmail: 'Confirm New Email',
-      editPassword: 'Edit Password',
-      editPasswordDesc: 'You must provide your current password to change it',
-      currentPassword: 'Current Password',
-      newPassword: 'New Password',
-      confirmNewPassword: 'Confirm New Password'
+      searchPlaceholder: 'Search bookings, units, clients...'
     },
     ar: {
       dashboard: 'لوحة التحكم',
@@ -197,33 +171,7 @@ function loadTranslations() {
       websiteSettings: 'إعدادات الموقع',
       manageUnits: 'إدارة الوحدات',
       search: 'بحث',
-      searchPlaceholder: 'ابحث عن الحجوزات والوحدات والعملاء...',
-      accountSettings: 'إعدادات الحساب',
-      language: 'اللغة',
-      accountSettingsDesc: 'إدارة معلومات عملك وبيانات الحساب',
-      businessInformation: 'معلومات الأعمال',
-      businessName: 'اسم الشركة',
-      phoneNumber: 'رقم الهاتف',
-      accountSecurity: 'أمان الحساب',
-      email: 'البريد الإلكتروني',
-      password: 'كلمة المرور',
-      edit: 'تعديل',
-      save: 'حفظ',
-      cancel: 'إلغاء',
-      editBusinessName: 'تعديل اسم الشركة',
-      newBusinessName: 'اسم الشركة الجديد',
-      editPhoneNumber: 'تعديل رقم الهاتف',
-      newPhoneNumber: 'رقم الهاتف الجديد',
-      editEmail: 'تعديل البريد الإلكتروني',
-      editEmailDesc: 'يجب تقديم بريدك الإلكتروني الحالي لتغييره',
-      currentEmail: 'البريد الإلكتروني الحالي',
-      newEmail: 'البريد الإلكتروني الجديد',
-      confirmNewEmail: 'تأكيد البريد الإلكتروني الجديد',
-      editPassword: 'تعديل كلمة المرور',
-      editPasswordDesc: 'يجب تقديم كلمة المرور الحالية لتغييرها',
-      currentPassword: 'كلمة المرور الحالية',
-      newPassword: 'كلمة المرور الجديدة',
-      confirmNewPassword: 'تأكيد كلمة المرور الجديدة'
+      searchPlaceholder: 'ابحث عن الحجوزات والوحدات والعملاء...'
     }
   };
 }
@@ -558,88 +506,17 @@ function getCountryCodes() {
 // ============================================
 
 /**
- * Initialize profile dropdown functionality
+ * Initialize language switching
  */
-function initializeProfileDropdown() {
-  const profileBtn = document.getElementById('profileIconBtn');
-  const profileMenu = document.getElementById('profileDropdownMenu');
-  const accountSettingsBtn = document.getElementById('accountSettingsBtn');
-  const languageToggleBtn = document.getElementById('languageToggleBtn');
-  const logoutBtn = document.getElementById('logoutBtn');
-  const currentLangBadge = document.getElementById('currentLangBadge');
-
-  if (!profileBtn || !profileMenu) return;
-
-  // Update language badge
-  function updateLanguageBadge() {
-    const currentLang = Storage.getString('language', 'en');
-    if (currentLangBadge) {
-      currentLangBadge.textContent = currentLang.toUpperCase();
-    }
-  }
-
-  // Toggle dropdown menu
-  profileBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    profileMenu.classList.toggle('active');
-    updateLanguageBadge();
-  });
-
-  // Close dropdown when clicking outside
-  document.addEventListener('click', (e) => {
-    if (!profileBtn.contains(e.target) && !profileMenu.contains(e.target)) {
-      profileMenu.classList.remove('active');
-    }
-  });
-
-  // Account Settings navigation
-  if (accountSettingsBtn) {
-    accountSettingsBtn.addEventListener('click', () => {
-      profileMenu.classList.remove('active');
-      navigateToPage('account-settings.html');
-    });
-  }
-
-  // Language toggle
-  if (languageToggleBtn) {
-    languageToggleBtn.addEventListener('click', () => {
-      const currentLang = Storage.getString('language', 'en');
-      const newLang = currentLang === 'en' ? 'ar' : 'en';
-      Storage.setString('language', newLang);
-      
-      // Reload page to apply language change
-      window.location.reload();
-    });
-  }
-
-  // Logout functionality
-  if (logoutBtn) {
-    logoutBtn.addEventListener('click', () => {
-      profileMenu.classList.remove('active');
-      
-      // Confirm logout
-      if (confirm('Are you sure you want to logout?')) {
-        // Clear any session data if needed
-        // Storage.remove('userSession'); // Uncomment if you have session management
-        
-        // Redirect to login or home page
-        alert('Logging out...');
-        // window.location.href = 'index.html'; // Uncomment to redirect to login page
-      }
-    });
-  }
-
-  // Update badge on initialization
-  updateLanguageBadge();
+function initializeLanguageSwitching() {
+  // Language switching can be added here if needed in the future
 }
 
 // Auto-initialize when DOM is ready
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => {
     initializeSharedUtilities();
-    initializeProfileDropdown();
   });
 } else {
   initializeSharedUtilities();
-  initializeProfileDropdown();
 }

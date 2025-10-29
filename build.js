@@ -12,9 +12,7 @@ const htmlFiles = [
   'calendar.html',
   'contacts.html',
   'aiagent.html',
-  'website.html',
-  'business-info.html',
-  'account-settings.html'
+  'website.html'
 ];
 
 // Read the layout template
