@@ -540,8 +540,11 @@ function initProfileDropdown() {
   // Toggle dropdown on button click
   profileBtn.addEventListener('click', (e) => {
     e.stopPropagation();
-    console.log('[Profile Dropdown] Button clicked, toggling...');
+    e.preventDefault();
+    const isShowing = profileDropdown.classList.contains('show');
+    console.log('[Profile Dropdown] Button clicked! Current state:', isShowing ? 'shown' : 'hidden');
     profileDropdown.classList.toggle('show');
+    console.log('[Profile Dropdown] After toggle, classList:', profileDropdown.className);
   });
   
   // Close dropdown when clicking outside
