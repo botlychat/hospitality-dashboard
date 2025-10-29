@@ -135,7 +135,19 @@ function loadTranslations() {
       search: 'Search',
       searchPlaceholder: 'Search bookings, units, clients...',
       accountSettings: 'Account Settings',
-      languageSelect: 'Language'
+      languageSelect: 'Language',
+      profileInformation: 'Profile Information',
+      fullName: 'Full Name',
+      email: 'Email',
+      phone: 'Phone',
+      saveChanges: 'Save Changes',
+      languageSettings: 'Language Settings',
+      selectLanguageDescription: 'Choose your preferred language for the dashboard',
+      changePassword: 'Change Password',
+      currentPassword: 'Current Password',
+      newPassword: 'New Password',
+      confirmPassword: 'Confirm Password',
+      updatePassword: 'Update Password'
     },
     ar: {
       dashboard: 'لوحة التحكم',
@@ -175,7 +187,19 @@ function loadTranslations() {
       search: 'بحث',
       searchPlaceholder: 'ابحث عن الحجوزات والوحدات والعملاء...',
       accountSettings: 'إعدادات الحساب',
-      languageSelect: 'اللغة'
+      languageSelect: 'اللغة',
+      profileInformation: 'معلومات الملف الشخصي',
+      fullName: 'الاسم الكامل',
+      email: 'البريد الإلكتروني',
+      phone: 'الهاتف',
+      saveChanges: 'حفظ التغييرات',
+      languageSettings: 'إعدادات اللغة',
+      selectLanguageDescription: 'اختر لغتك المفضلة لوحة التحكم',
+      changePassword: 'تغيير كلمة المرور',
+      currentPassword: 'كلمة المرور الحالية',
+      newPassword: 'كلمة المرور الجديدة',
+      confirmPassword: 'تأكيد كلمة المرور',
+      updatePassword: 'تحديث كلمة المرور'
     }
   };
 }

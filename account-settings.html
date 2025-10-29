@@ -1,17 +1,219 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Account Settings - Riyadh Getaways</title>
-	<base href="/hospitality-dashboard/">
-	<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🏨%3C/text%3E%3C/svg%3E">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<base href="/hospitality-dashboard/dist/">
+	<title>Account Settings — Hospitality Booking</title>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+	<!-- Extracted & Organized CSS Files -->
 	<link rel="stylesheet" href="css/variables.css">
 	<link rel="stylesheet" href="css/global.css">
 	<link rel="stylesheet" href="css/responsive.css">
-	<style>
-		.account-settings-container {
+	<!-- Storage helper with error handling -->
+	<script src="js/storage.js"></script>
+	<!-- Service Worker registration for caching -->
+	<script>
+		if ('serviceWorker' in navigator) {
+			navigator.serviceWorker.register('service-worker.js')
+				.then(reg => console.log('[SW] Registered:', reg))
+				.catch(err => console.log('[SW] Registration failed:', err));
+		}
+	</script>
+</head>
+<body>
+	<div class="app">
+		<aside class="sidebar">
+			<div class="brand"><div class="logo">RG</div><h1>Riyadh Getaways</h1></div>
+			<nav>
+				<div class="nav-item" data-link="dashboard.html"><i class="fa-solid fa-gauge"></i> <span data-i18n="dashboard">Dashboard</span></div>
+				<div class="nav-item" data-link="calendar.html"><i class="fa-regular fa-calendar"></i> <span data-i18n="calendar">Calendar</span></div>
+				<div class="nav-item" data-link="units.html"><i class="fa-solid fa-building"></i> <span data-i18n="units">Units</span></div>
+				<div class="nav-item" data-link="website.html"><i class="fa-solid fa-globe"></i> <span data-i18n="website">Website Settings</span></div>
+				<div class="nav-item" data-link="aiagent.html"><i class="fa-solid fa-robot"></i> <span data-i18n="aiagent">AI Agent</span></div>
+				<div class="nav-item" data-link="contacts.html"><i class="fa-solid fa-address-book"></i> <span data-i18n="contacts">Contacts</span></div>
+			</nav>
+			<div class="sidebar-footer">© <strong>Riyadh Getaways</strong><br>Admin Dashboard</div>
+		</aside>
+
+		<main class="main">
+			<section class="content">
+				<div class="panel">
+					<h1 style="margin-top:0"><i class="fa-solid fa-user-gear"></i> <span data-i18n="accountSettings">Account Settings</span></h1>
+					
+					<!-- Profile Information Section -->
+					<div style="margin-top:24px">
+						<h3 data-i18n="profileInformation">Profile Information</h3>
+						<div class="form-group">
+							<label data-i18n="fullName">Full Name</label>
+							<input type="text" id="fullName" placeholder="Enter your full name" style="padding:10px;border:1px solid #e5e7eb;border-radius:6px;width:100%;font-size:14px;box-sizing:border-box">
+						</div>
+						<div class="form-group">
+							<label data-i18n="email">Email</label>
+							<input type="email" id="email" placeholder="Enter your email" style="padding:10px;border:1px solid #e5e7eb;border-radius:6px;width:100%;font-size:14px;box-sizing:border-box">
+						</div>
+						<div class="form-group">
+							<label data-i18n="phone">Phone</label>
+							<input type="tel" id="phone" placeholder="Enter your phone number" style="padding:10px;border:1px solid #e5e7eb;border-radius:6px;width:100%;font-size:14px;box-sizing:border-box">
+						</div>
+						<button class="btn primary" onclick="saveProfile()" style="margin-top:12px"><i class="fa-solid fa-save"></i> <span data-i18n="saveChanges">Save Changes</span></button>
+					</div>
+
+					<!-- Language Settings Section -->
+					<div style="margin-top:32px;padding-top:24px;border-top:1px solid #e5e7eb">
+						<h3 data-i18n="languageSettings">Language Settings</h3>
+						<p style="color:var(--muted);font-size:14px" data-i18n="selectLanguageDescription">Choose your preferred language for the dashboard</p>
+						<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:16px">
+							<button class="btn ghost" id="langEnBtn" onclick="setLanguage('en')" style="justify-content:center;border:2px solid #e5e7eb">
+								<i class="fa-solid fa-circle" style="margin-right:8px"></i> English
+							</button>
+							<button class="btn ghost" id="langArBtn" onclick="setLanguage('ar')" style="justify-content:center;border:2px solid #e5e7eb">
+								<i class="fa-solid fa-circle" style="margin-right:8px"></i> العربية
+							</button>
+						</div>
+					</div>
+
+					<!-- Change Password Section -->
+					<div style="margin-top:32px;padding-top:24px;border-top:1px solid #e5e7eb">
+						<h3 data-i18n="changePassword">Change Password</h3>
+						<div class="form-group">
+							<label data-i18n="currentPassword">Current Password</label>
+							<input type="password" id="currentPassword" placeholder="Enter current password" style="padding:10px;border:1px solid #e5e7eb;border-radius:6px;width:100%;font-size:14px;box-sizing:border-box">
+						</div>
+						<div class="form-group">
+							<label data-i18n="newPassword">New Password</label>
+							<input type="password" id="newPassword" placeholder="Enter new password" style="padding:10px;border:1px solid #e5e7eb;border-radius:6px;width:100%;font-size:14px;box-sizing:border-box">
+						</div>
+						<div class="form-group">
+							<label data-i18n="confirmPassword">Confirm Password</label>
+							<input type="password" id="confirmPassword" placeholder="Confirm new password" style="padding:10px;border:1px solid #e5e7eb;border-radius:6px;width:100%;font-size:14px;box-sizing:border-box">
+						</div>
+						<button class="btn primary" onclick="changePassword()" style="margin-top:12px"><i class="fa-solid fa-lock"></i> <span data-i18n="updatePassword">Update Password</span></button>
+					</div>
+				</div>
+			</section>
+		</main>
+	</div>
+
+	<!-- Extracted JavaScript Files - Load external dependencies -->
+	<script src="js/utils.js"></script>
+	<script src="js/components.js"></script>
+
+	<!-- Initialization Script -->
+	<script>
+		/**
+		 * Save profile changes
+		 */
+		function saveProfile() {
+			const fullName = document.getElementById('fullName').value;
+			const email = document.getElementById('email').value;
+			const phone = document.getElementById('phone').value;
+
+			if (!fullName || !email) {
+				alert('Please fill in all required fields');
+				return;
+			}
+
+			const profile = {
+				fullName,
+				email,
+				phone,
+				lastUpdated: new Date().toISOString()
+			};
+
+			localStorage.setItem('userProfile', JSON.stringify(profile));
+			alert('Profile saved successfully!');
+		}
+
+		/**
+		 * Change password
+		 */
+		function changePassword() {
+			const currentPassword = document.getElementById('currentPassword').value;
+			const newPassword = document.getElementById('newPassword').value;
+			const confirmPassword = document.getElementById('confirmPassword').value;
+
+			if (!currentPassword || !newPassword || !confirmPassword) {
+				alert('Please fill in all password fields');
+				return;
+			}
+
+			if (newPassword !== confirmPassword) {
+				alert('New passwords do not match');
+				return;
+			}
+
+			if (newPassword.length < 6) {
+				alert('Password must be at least 6 characters long');
+				return;
+			}
+
+			localStorage.setItem('userPassword', btoa(newPassword));
+			alert('Password updated successfully!');
+			
+			document.getElementById('currentPassword').value = '';
+			document.getElementById('newPassword').value = '';
+			document.getElementById('confirmPassword').value = '';
+		}
+
+		/**
+		 * Set language and update button states
+		 */
+		function setLanguage(lang) {
+			localStorage.setItem('language', lang);
+			window.currentLanguage = lang;
+			document.documentElement.lang = lang;
+			document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+			updateTranslations();
+			updateLanguageButtonStates();
+		}
+
+		/**
+		 * Update language button visual states
+		 */
+		function updateLanguageButtonStates() {
+			const langEnBtn = document.getElementById('langEnBtn');
+			const langArBtn = document.getElementById('langArBtn');
+			const currentLang = window.currentLanguage || 'en';
+
+			if (langEnBtn) {
+				if (currentLang === 'en') {
+					langEnBtn.style.borderColor = 'var(--accent)';
+					langEnBtn.style.background = 'rgba(249, 115, 22, 0.1)';
+					langEnBtn.style.color = 'var(--accent)';
+				} else {
+					langEnBtn.style.borderColor = '#e5e7eb';
+					langEnBtn.style.background = 'transparent';
+					langEnBtn.style.color = 'var(--text-primary)';
+				}
+			}
+
+			if (langArBtn) {
+				if (currentLang === 'ar') {
+					langArBtn.style.borderColor = 'var(--accent)';
+					langArBtn.style.background = 'rgba(249, 115, 22, 0.1)';
+					langArBtn.style.color = 'var(--accent)';
+				} else {
+					langArBtn.style.borderColor = '#e5e7eb';
+					langArBtn.style.background = 'transparent';
+					langArBtn.style.color = 'var(--text-primary)';
+				}
+			}
+		}
+
+		// Load profile data and update language buttons on page load
+		window.addEventListener('load', () => {
+			const profile = JSON.parse(localStorage.getItem('userProfile') || '{}');
+			if (profile.fullName) document.getElementById('fullName').value = profile.fullName;
+			if (profile.email) document.getElementById('email').value = profile.email;
+			if (profile.phone) document.getElementById('phone').value = profile.phone;
+
+			// Update language button states
+			updateLanguageButtonStates();
+		});
+	</script>
+</body>
+</html>
 			max-width: 800px;
 			margin: 0 auto;
 		}
