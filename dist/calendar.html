@@ -47,8 +47,18 @@
 			<button id="sidebarToggle" class="sidebar-toggle" aria-label="Toggle sidebar" style="display:none;background:none;border:none;cursor:pointer;font-size:20px;color:var(--sidebar);padding:8px;margin-right:8px"><i class="fa-solid fa-bars"></i></button>
 			<h2 style="margin:0" id="headerTitle" data-i18n="dashboard">Dashboard</h2>
 		</div>
-		<div style="display:flex;align-items:center;gap:12px">
-			<div class="search"><i class="fa-solid fa-magnifying-glass" style="color:var(--muted)"></i> <input placeholder="Search bookings, units, clients..." data-i18n-placeholder="searchPlaceholder" style="border:none;outline:none;margin-left:8px;font-size:14px;"></div>
+		<div class="profile-menu-container">
+			<button class="profile-btn" id="profileBtn" aria-label="Profile menu">
+				<i class="fa-solid fa-user-circle"></i>
+				<span class="profile-name" id="profileName">Admin</span>
+				<i class="fa-solid fa-chevron-down"></i>
+			</button>
+			<div class="profile-dropdown" id="profileDropdown">
+				<div class="profile-dropdown-item" onclick="navigateToPage('account-settings.html')" data-i18n="accountSettings">Account Settings</div>
+				<div class="profile-dropdown-item" onclick="toggleLanguage()" data-i18n="languageSelect">Language</div>
+				<div class="profile-dropdown-divider"></div>
+				<div class="profile-dropdown-item logout-item" onclick="handleLogout()" data-i18n="logout">Logout</div>
+			</div>
 		</div>
 	</header>
 

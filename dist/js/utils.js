@@ -133,7 +133,9 @@ function loadTranslations() {
       websiteSettings: 'Website Settings',
       manageUnits: 'Manage Units',
       search: 'Search',
-      searchPlaceholder: 'Search bookings, units, clients...'
+      searchPlaceholder: 'Search bookings, units, clients...',
+      accountSettings: 'Account Settings',
+      languageSelect: 'Language'
     },
     ar: {
       dashboard: 'لوحة التحكم',
@@ -171,7 +173,9 @@ function loadTranslations() {
       websiteSettings: 'إعدادات الموقع',
       manageUnits: 'إدارة الوحدات',
       search: 'بحث',
-      searchPlaceholder: 'ابحث عن الحجوزات والوحدات والعملاء...'
+      searchPlaceholder: 'ابحث عن الحجوزات والوحدات والعملاء...',
+      accountSettings: 'إعدادات الحساب',
+      languageSelect: 'اللغة'
     }
   };
 }
@@ -512,11 +516,75 @@ function initializeLanguageSwitching() {
   // Language switching can be added here if needed in the future
 }
 
+/**
+ * Initialize profile menu
+ */
+function initializeProfileMenu() {
+  const profileBtn = document.getElementById('profileBtn');
+  const profileDropdown = document.getElementById('profileDropdown');
+
+  if (!profileBtn || !profileDropdown) return;
+
+  // Toggle dropdown
+  profileBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    profileDropdown.classList.toggle('active');
+    profileBtn.classList.toggle('active');
+  });
+
+  // Close dropdown when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!profileBtn.contains(e.target) && !profileDropdown.contains(e.target)) {
+      profileDropdown.classList.remove('active');
+      profileBtn.classList.remove('active');
+    }
+  });
+
+  // Close dropdown when clicking a menu item
+  const items = profileDropdown.querySelectorAll('.profile-dropdown-item');
+  items.forEach(item => {
+    item.addEventListener('click', () => {
+      profileDropdown.classList.remove('active');
+      profileBtn.classList.remove('active');
+    });
+  });
+}
+
+/**
+ * Toggle language between English and Arabic
+ */
+function toggleLanguage() {
+  const currentLang = Storage.get('language', 'en');
+  const newLang = currentLang === 'en' ? 'ar' : 'en';
+  Storage.set('language', newLang);
+
+  // Update HTML direction and reload
+  document.documentElement.lang = newLang;
+  document.documentElement.dir = newLang === 'ar' ? 'rtl' : 'ltr';
+  updateTranslations();
+}
+
+/**
+ * Handle logout
+ */
+function handleLogout() {
+  if (confirm('Are you sure you want to logout?')) {
+    // Clear user session data if any
+    Storage.remove('userSession');
+    // Redirect to login or home page
+    window.location.href = getPagePath('index.html');
+  }
+}
+
+// ============================================
+
 // Auto-initialize when DOM is ready
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => {
     initializeSharedUtilities();
+    initializeProfileMenu();
   });
 } else {
   initializeSharedUtilities();
+  initializeProfileMenu();
 }
