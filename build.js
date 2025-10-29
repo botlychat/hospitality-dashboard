@@ -96,7 +96,7 @@ htmlFiles.forEach(htmlFile => {
   const newHtml = `<!doctype html>
 <html lang="en">
 <head>
-${pageHead}
+${pageHead.replace('<link rel="stylesheet" href="css/global.css">', `<link rel="stylesheet" href="css/global.css?v=${Date.now()}">`)}
 </head>
 <body>
 	<div class="app">
