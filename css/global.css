@@ -131,7 +131,7 @@ nav {
   z-index: var(--z-sticky);
   width: 100%;
   max-width: 100%;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .header .left {
