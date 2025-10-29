@@ -455,6 +455,26 @@ function updateHeaderTitle() {
   headerTitle.textContent = titleText;
 }
 
+/**
+ * Update active nav-item in sidebar based on current page
+ */
+function updateActiveNavItem() {
+  const pathname = window.location.pathname;
+  const currentPage = pathname.split('/').pop() || 'dashboard.html';
+  
+  // Remove active class from all nav items
+  const navItems = document.querySelectorAll('.nav-item');
+  navItems.forEach(item => {
+    item.classList.remove('active');
+  });
+  
+  // Add active class to the current page's nav item
+  const currentNavItem = document.querySelector(`.nav-item[data-link="${currentPage}"]`);
+  if (currentNavItem) {
+    currentNavItem.classList.add('active');
+  }
+}
+
 // ============================================
 // INITIALIZATION
 // ============================================
@@ -478,7 +498,8 @@ function initializeSharedUtilities() {
   // Update header title based on current page
   updateHeaderTitle();
   
-  // Setup language switchers
+  // Update active nav item based on current page
+  updateActiveNavItem();
   const langEnBtn = document.getElementById('langEnglish');
   const langArBtn = document.getElementById('langArabic');
   if (langEnBtn) langEnBtn.addEventListener('click', () => setLanguage('en'));
