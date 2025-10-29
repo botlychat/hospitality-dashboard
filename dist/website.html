@@ -117,5 +117,134 @@
 </main>
 
 	</div>
+</main>
+	</div>
+	<!-- Extracted JavaScript Files -->
+	<script src="js/utils.js"></script>
+	<script src="js/components.js"></script>
+	
+	<script>
+		// Mobile sidebar toggle functionality
+		const sidebarToggle = document.getElementById('sidebarToggle');
+		const sidebar = document.querySelector('.sidebar');
+		
+		if(sidebarToggle && sidebar) {
+			sidebarToggle.addEventListener('click', (e) => {
+				e.stopPropagation();
+				sidebar.classList.toggle('active');
+			});
+			
+			// Close sidebar when clicking on nav items
+			document.querySelectorAll('.nav-item').forEach(item => {
+				item.addEventListener('click', () => {
+					sidebar.classList.remove('active');
+				});
+			});
+			
+			// Close sidebar when clicking outside
+			document.addEventListener('click', (e) => {
+				if(!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
+					sidebar.classList.remove('active');
+				}
+			});
+		}
+
+		// Website Groups Management
+		let currentGroupId = Storage.getString('currentWebsiteGroup', 'group_1');
+		
+		// Initialize sample groups if not already present
+		function initializeWebsiteGroups() {
+			const defaultGroups = [
+				{ id: 'group_1', name: 'Main Hotel Collection', type: 'Hotel' },
+				{ id: 'group_2', name: 'Chalets & Villas', type: 'Chalet' }
+			];
+			let groups = Storage.getJSON('websiteGroups', defaultGroups);
+			if (!groups || groups.length === 0) {
+				groups = defaultGroups;
+				Storage.setJSON('websiteGroups', groups);
+			}
+			return groups;
+		}
+
+		// Load settings for a specific group
+		function loadGroupSettings(groupId) {
+			let groupSettings = Storage.getJSON('websiteGroupSettings', {});
+			const settings = groupSettings[groupId] || {};
+			
+			// Load theme color
+			const themeColor = settings.themeColor || '#f97316';
+			const colorPicker = document.getElementById('websiteColorPicker');
+			const colorCodeInput = document.getElementById('colorCodeInput');
+			const colorDisplay = document.getElementById('colorDisplay');
+			const colorCodeDisplay = document.getElementById('colorCodeDisplay');
+			
+			if(colorPicker) colorPicker.value = themeColor;
+			if(colorCodeInput) colorCodeInput.value = themeColor;
+			if(colorDisplay) colorDisplay.style.background = themeColor;
+			if(colorCodeDisplay) colorCodeDisplay.textContent = themeColor.toUpperCase();
+			document.documentElement.style.setProperty('--accent', themeColor);
+			
+			// Load general settings (if you want to add more fields later)
+			// Example: document.querySelector('[data-field="title"]').value = settings.title || '';
+		}
+
+		// Save settings for current group
+		function saveGroupSettings() {
+			let groupSettings = Storage.getJSON('websiteGroupSettings', {});
+			
+			const colorPicker = document.getElementById('websiteColorPicker');
+			
+			groupSettings[currentGroupId] = {
+				themeColor: colorPicker ? colorPicker.value : '#f97316',
+				// Add more settings here as needed
+			};
+			
+			Storage.setJSON('websiteGroupSettings', groupSettings);
+		}
+
+		// Initialize groups on page load
+		loadGroupSettings(currentGroupId);
+
+		// Color picker initialization and functionality
+		const colorPicker = document.getElementById('websiteColorPicker');
+		const colorCodeInput = document.getElementById('colorCodeInput');
+		const colorDisplay = document.getElementById('colorDisplay');
+		const colorCodeDisplay = document.getElementById('colorCodeDisplay');
+
+		// Real-time color picker update
+		if(colorPicker) {
+			colorPicker.addEventListener('input', function() {
+				const color = this.value;
+				// Update preview box immediately
+				if(colorDisplay) colorDisplay.style.background = color;
+				if(colorCodeDisplay) colorCodeDisplay.textContent = color.toUpperCase();
+				if(colorCodeInput) colorCodeInput.value = color;
+				
+				// Update theme immediately
+				document.documentElement.style.setProperty('--accent', color);
+				
+				// Save to current group
+				saveGroupSettings();
+			});
+		}
+
+		// Text input update
+		if(colorCodeInput) {
+			colorCodeInput.addEventListener('input', function() {
+				const color = this.value;
+				if(/^#[0-9A-F]{6}$/i.test(color)) {
+					if(colorPicker) colorPicker.value = color;
+					if(colorDisplay) colorDisplay.style.background = color;
+					if(colorCodeDisplay) colorCodeDisplay.textContent = color.toUpperCase();
+					
+					// Update theme immediately
+					document.documentElement.style.setProperty('--accent', color);
+					
+					// Save to current group
+					saveGroupSettings();
+			}
+		});
+	}
+</script>
 </body>
 </html>

@@ -157,5 +157,1714 @@
 </main>
 
 	</div>
+</main>
+	</div>
+
+	<!-- Modals -->
+	<div class="modal-backdrop" id="modalBackdrop">
+		<div class="modal" role="dialog" aria-modal="true" id="modalContent">
+			<!-- content injected by JS -->
+		</div>
+	</div>
+
+	<!-- Profile Completion Modal Template -->
+	<template id="completeProfileTpl">
+		<h3 data-i18n="completeProfile">Complete Your Profile</h3>
+		<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px">
+			<div class="form-group">
+				<label data-i18n="chaletName">Chalet/Commercial Name</label>
+				<input id="cpChaletName" placeholder="Business name" value="Riyadh Getaways">
+			</div>
+			<div class="form-group">
+				<label data-i18n="regNumber">Commercial Registration Number</label>
+				<input id="cpRegNumber" placeholder="e.g., 1010234567">
+			</div>
+			<div class="form-group">
+				<label data-i18n="license">Ministry of Tourism License</label>
+				<input id="cpLicense" placeholder="License number">
+			</div>
+			<div class="form-group">
+				<label data-i18n="adminEmail">Admin Email</label>
+				<input id="cpEmail" type="email" value="admin@riyadhgetaways.com">
+			</div>
+		</div>
+		<div class="modal-actions">
+			<button class="btn ghost" onclick="closeModal()" data-i18n="cancel">Cancel</button>
+			<button class="btn primary" id="confirmProfileBtn" data-i18n="saveProfile">Save Profile</button>
+		</div>
+	</template>
+
+	<!-- Change Password Modal Template -->
+	<template id="changePasswordTpl">
+		<h3 data-i18n="changePassword">Change Password</h3>
+		<div style="display:flex;flex-direction:column;gap:10px;margin-top:8px">
+			<div class="form-group">
+				<label data-i18n="currentPassword">Current Password</label>
+				<input type="password" id="cpOldPassword" placeholder="Enter current password">
+			</div>
+			<div class="form-group">
+				<label data-i18n="newPassword">New Password</label>
+				<input type="password" id="cpNewPassword" placeholder="Enter new password">
+			</div>
+			<div class="form-group">
+				<label data-i18n="confirmPassword">Confirm New Password</label>
+				<input type="password" id="cpConfirmPassword" placeholder="Confirm new password">
+			</div>
+		</div>
+		<div class="modal-actions">
+			<button class="btn ghost" onclick="closeModal()" data-i18n="cancel">Cancel</button>
+			<button class="btn primary" id="confirmPasswordBtn" data-i18n="changePasswordBtn">Change Password</button>
+		</div>
+	</template>
+
+	<!-- Change Email Modal Template -->
+	<template id="changeEmailTpl">
+		<h3 data-i18n="changeEmail">Change Email Address</h3>
+		<div style="display:flex;flex-direction:column;gap:10px;margin-top:8px">
+			<div class="form-group">
+				<label data-i18n="currentEmail">Current Email</label>
+				<input type="email" id="ceCurrentEmail" disabled value="admin@riyadhgetaways.com">
+			</div>
+			<div class="form-group">
+				<label data-i18n="newEmail">New Email</label>
+				<input type="email" id="ceNewEmail" placeholder="Enter new email address">
+			</div>
+			<div class="form-group">
+				<label data-i18n="passwordConfirmation">Password Confirmation</label>
+				<input type="password" id="cePassword" placeholder="Enter your password">
+			</div>
+		</div>
+		<div class="modal-actions">
+			<button class="btn ghost" onclick="closeModal()" data-i18n="cancel">Cancel</button>
+			<button class="btn primary" id="confirmEmailBtn" data-i18n="changeEmailBtn">Change Email</button>
+		</div>
+	</template>
+
+	<!-- Booking details modal template (hidden) -->
+	<template id="bookingDetailsTpl">
+		<h3 data-i18n="bookingDetails">Booking Details</h3>
+		<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px">
+			<div><strong data-i18n="clientName">Client Name</strong><div id="bdClient">—</div></div>
+			<div><strong data-i18n="phone">Phone</strong><div id="bdPhone">—</div></div>
+			<div><strong data-i18n="unit">Unit</strong><div id="bdUnit">—</div></div>
+			<div><strong data-i18n="dates">Dates</strong><div id="bdDates">—</div></div>
+			<div><strong data-i18n="paymentStatus">Payment Status</strong><div id="bdPayment">—</div></div>
+			<div><strong data-i18n="bookingId">Booking ID</strong><div id="bdId">—</div></div>
+		</div>
+		<div class="modal-actions">
+			<button class="btn ghost" onclick="closeModal()" data-i18n="close">Close</button>
+			<button class="btn" style="background:#ef4444;color:#fff" id="cancelBookingBtn" data-i18n="cancelBooking">Cancel Booking</button>
+		</div>
+	</template>
+
+	<!-- Add booking form template -->
+	<template id="addBookingTpl">
+		<h3 style="margin-bottom:20px;font-size:18px;color:#0f1729">Add New Reservation</h3>
+		<div style="display:grid;gap:16px;margin-top:8px">
+			<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+				<div>
+					<label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px">Client Name *</label>
+					<input id="abName" placeholder="Full name" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit">
+				</div>
+				<div>
+					<label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px">Phone Number *</label>
+					<input id="abPhone" placeholder="+966..." style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit">
+				</div>
+			</div>
+
+			<div>
+				<label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px">Email Address</label>
+				<input id="abEmail" type="email" placeholder="guest@example.com" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit">
+			</div>
+
+			<div>
+				<label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px">Unit *</label>
+				<select id="abUnit" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit">
+					<option value="">Select a unit</option>
+				</select>
+			</div>
+
+			<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+				<div>
+					<label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px">Check-in Date *</label>
+					<input id="abStart" type="date" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit">
+				</div>
+				<div>
+					<label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px">Check-out Date *</label>
+					<input id="abEnd" type="date" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit">
+				</div>
+			</div>
+
+			<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+				<div>
+					<label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px">Nightly Rate ($) *</label>
+					<input id="abRate" type="number" placeholder="0.00" min="0" step="0.01" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit">
+				</div>
+				<div>
+					<label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px">Total Amount ($)</label>
+					<input id="abTotal" type="text" placeholder="0.00" disabled style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit;background:#f3f4f6;color:#6b7280">
+				</div>
+			</div>
+
+			<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+				<div>
+					<label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px">Payment Status *</label>
+					<select id="abPayment" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit">
+						<option value="Paid">Paid</option>
+						<option value="Pending">Pending</option>
+						<option value="Partial">Partial Payment</option>
+					</select>
+				</div>
+				<div>
+					<label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px">Paid Amount ($)</label>
+					<input id="abPaid" type="number" placeholder="0.00" min="0" step="0.01" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit">
+				</div>
+			</div>
+
+			<div>
+				<label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px">Special Requests / Notes</label>
+				<textarea id="abNotes" placeholder="Any special requests or additional notes..." style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit;resize:vertical;min-height:80px"></textarea>
+			</div>
+
+			<div style="background:#f0f9ff;border:1px solid #bfdbfe;border-radius:10px;padding:12px;margin-top:8px">
+				<div style="display:flex;justify-content:space-between;align-items:center;font-size:14px;font-weight:600;color:#0f1729">
+					<span>Summary:</span>
+					<span><strong id="abSummary">0 nights × $0.00 = $0.00</strong></span>
+				</div>
+			</div>
+		</div>
+		<div class="modal-actions" style="margin-top:20px">
+			<button class="btn ghost" onclick="closeModal()">Cancel</button>
+			<button class="btn primary" id="confirmAddBooking">Create Reservation</button>
+		</div>
+	</template>
+
+	<!-- Block dates template -->
+	<template id="blockDatesTpl">
+		<h3>Block Dates</h3>
+		<div style="display:grid;gap:8px;margin-top:8px">
+			<label>Unit <select id="bdUnitSelect" style="width:100%;padding:8px;border:1px solid #eee;border-radius:8px"></select></label>
+			<div style="display:flex;gap:8px"><label style="flex:1">Start <input id="bdStart" type="date" style="width:100%;padding:8px;border:1px solid #eee;border-radius:8px"></label><label style="flex:1">End <input id="bdEnd" type="date" style="width:100%;padding:8px;border:1px solid #eee;border-radius:8px"></label></div>
+			<label>Reason <select id="bdReason" style="width:100%;padding:8px;border:1px solid #eee;border-radius:8px"><option>Maintenance</option><option>Owner Stay</option><option>Cleaning</option></select></label>
+		</div>
+		<div class="modal-actions">
+			<button class="btn ghost" onclick="closeModal()">Cancel</button>
+			<button class="btn primary" id="confirmBlock">Block Unit</button>
+		</div>
+	</template>
+
+	<!-- Inline Dashboard JavaScript -->
+	<script>
+		// Note: External JS files are loaded after this one, so we can use their functions
+		// Error tracking
+		window.addEventListener('error', (event) => {
+			console.error('SCRIPT ERROR:', event.error);
+			alert('JavaScript Error: ' + event.error.message + '\n\nCheck browser console for details.');
+		});
+
+		// Helper function to get proper file path (works on GitHub Pages)
+		function getPagePath(filename) {
+			const currentPath = window.location.pathname;
+			// Check if we're on GitHub Pages (path contains /hospitality-dashboard/)
+			if(currentPath.includes('/hospitality-dashboard/')) {
+				return '/hospitality-dashboard/' + filename;
+			}
+			// Otherwise use relative path (local development)
+			return filename;
+		}
+
+		console.log('[DASHBOARD] Script initialized - getPagePath() ready');
+
+		// Initialize dashboard with mock data
+		window.isAuthenticated = true;
+		console.log('[DASHBOARD] Dashboard ready - using mock data');
+
+		// Language translations
+		const translations = {
+			en: {
+				dashboard: 'Dashboard',
+				calendar: 'Calendar',
+				units: 'Units',
+				website: 'Website Settings',
+				overview: 'Overview',
+				summaryToday: 'Summary for today',
+				refresh: 'Refresh',
+				newManualBooking: 'New Manual Booking',
+				occupancyRate: 'Occupancy Rate',
+				currentOccupancy: 'Current occupancy (units)',
+				monthlyRevenue: 'Monthly Revenue',
+				estimatedMonth: 'Estimated this month',
+				recentBookings: 'Recent Bookings',
+				client: 'Client',
+				unit: 'Unit',
+				dates: 'Dates',
+				status: 'Status',
+				todayUnitStatus: 'Today\'s Unit Status',
+				available: 'Available',
+				booked: 'Booked',
+				maintenance: 'Maintenance',
+				edit: 'Edit',
+				weeklyOccupancyRate: 'Weekly Occupancy Rate',
+				daysBooked: 'Days Booked',
+				weeklyIncome: 'Weekly Income',
+				income: 'Income',
+				bookings: 'Bookings',
+				quickActions: 'Quick Actions',
+				openCalendar: 'Open Calendar',
+				activeConversations: 'Active Conversations',
+				conversationsInPlan: 'conversations in your plan',
+				websiteSettings: 'Website Settings',
+				manageUnits: 'Manage Units',
+				homePagePicture: 'Home Page Picture',
+				uploadHomePicture: 'Upload Home Picture',
+				savePicture: 'Save Picture',
+				websiteThemeColor: 'Website Theme Color',
+				selectThemeColor: 'Select your preferred theme color for the website:',
+				saveTheme: 'Save Theme',
+				generalSettings: 'General Settings',
+				websiteTitle: 'Website Title',
+				websiteDescription: 'Website Description',
+				contactEmail: 'Contact Email',
+				contactPhone: 'Contact Phone',
+				saveSettings: 'Save Settings',
+				preview: 'Preview',
+				themePreview: 'Theme Preview',
+				themeAppearance: 'This is how your theme will look',
+				completeProfile: 'Complete Your Profile',
+				chaletName: 'Chalet/Commercial Name',
+				businessName: 'Business name',
+				regNumber: 'Commercial Registration Number',
+				license: 'Ministry of Tourism License',
+				adminEmail: 'Admin Email',
+				cancel: 'Cancel',
+				saveProfile: 'Save Profile',
+				changePassword: 'Change Password',
+				currentPassword: 'Current Password',
+				enterCurrentPassword: 'Enter current password',
+				newPassword: 'New Password',
+				enterNewPassword: 'Enter new password',
+				confirmPassword: 'Confirm New Password',
+				confirmNewPassword: 'Confirm new password',
+				changePasswordBtn: 'Change Password',
+				changeEmail: 'Change Email Address',
+				currentEmail: 'Current Email',
+				newEmail: 'New Email',
+				enterNewEmail: 'Enter new email address',
+				passwordConfirmation: 'Password Confirmation',
+				enterPassword: 'Enter your password',
+				changeEmailBtn: 'Change Email',
+				logout: 'Logout',
+				close: 'Close',
+				cancelBooking: 'Cancel Booking',
+				bookingDetails: 'Booking Details',
+				phone: 'Phone',
+				bookingId: 'Booking ID',
+				addNewReservation: 'Add New Reservation',
+				clientName: 'Client Name',
+				fullName: 'Full name',
+				phoneNumber: 'Phone Number',
+				plus966: '+966...',
+				emailAddress: 'Email Address',
+				guestExample: 'guest@example.com',
+				selectUnit: 'Select a unit',
+				checkinDate: 'Check-in Date',
+				checkoutDate: 'Check-out Date',
+				nightlyRate: 'Nightly Rate ($)',
+				rate000: '0.00',
+				totalAmount: 'Total Amount ($)',
+				disabled: 'disabled',
+				paymentStatus: 'Payment Status',
+				paid: 'Paid',
+				pending: 'Pending',
+				partialPayment: 'Partial Payment',
+				paidAmount: 'Paid Amount ($)',
+				specialRequests: 'Special Requests / Notes',
+				anySpecialRequests: 'Any special requests or additional notes...',
+				summary: 'Summary:',
+				summaryText: '0 nights × $0.00 = $0.00',
+				createReservation: 'Create Reservation',
+				blockDates: 'Block Dates',
+				start: 'Start',
+				end: 'End',
+				reason: 'Reason',
+				blockUnit: 'Block Unit',
+				active: 'Active',
+				past: 'Past',
+				admin: 'Admin',
+				riyadhGetaways: 'Riyadh Getaways',
+				searchPlaceholder: 'Search bookings, units, clients...',
+				averageADR: 'Average ADR',
+				averageNightly: 'Average nightly rate',
+				profileSettings: 'Profile Settings',
+				youAreLoggedOut: 'You are logged out',
+				simulationOnly: 'Simulation only. Reload to return.',
+				orange: 'Orange',
+				blue: 'Blue',
+				green: 'Green',
+				purple: 'Purple',
+				red: 'Red',
+				cyan: 'Cyan',
+				pink: 'Pink',
+				amber: 'Amber',
+				discountsEnabled: 'Discounts Enabled',
+				maxDiscount: 'Max Discount (%)',
+				assignedRoles: 'Assigned Roles',
+				discountSettings: 'Discount Settings',
+				allowAIDiscounts: 'Allow AI Discounts',
+				aiDiscountPercentage: 'AI Discount Percentage (%)',
+				aiAgent: 'AI Agent',
+				roles: 'Roles',
+				settings: 'Settings',
+				aiAgentActive: 'AI Agent is Active',
+				aiAgentDescription: 'Your AI Agent is ready to assist guests with inquiries, bookings, and support. Monitor agent activity in the analytics section.',
+			},
+			ar: {
+				dashboard: 'لوحة التحكم',
+				calendar: 'التقويم',
+				units: 'الوحدات',
+				website: 'إعدادات الموقع',
+				overview: 'نظرة عامة',
+				summaryToday: 'ملخص اليوم',
+				refresh: 'تحديث',
+				newManualBooking: 'حجز يدوي جديد',
+				occupancyRate: 'معدل الإشغال',
+				currentOccupancy: 'معدل الإشغال الحالي (الوحدات)',
+				monthlyRevenue: 'الإيرادات الشهرية',
+				estimatedMonth: 'المقدر لهذا الشهر',
+				recentBookings: 'الحجوزات الأخيرة',
+				client: 'العميل',
+				unit: 'الوحدة',
+				dates: 'التواريخ',
+				status: 'الحالة',
+				todayUnitStatus: 'حالة الوحدات اليوم',
+				available: 'متاح',
+				booked: 'محجوز',
+				maintenance: 'صيانة',
+				edit: 'تعديل',
+				weeklyOccupancyRate: 'معدل الإشغال الأسبوعي',
+				daysBooked: 'أيام محجوزة',
+				weeklyIncome: 'الدخل الأسبوعي',
+				income: 'الدخل',
+				bookings: 'الحجوزات',
+				quickActions: 'إجراءات سريعة',
+				openCalendar: 'فتح التقويم',
+				activeConversations: 'المحادثات النشطة',
+				conversationsInPlan: 'محادثة في خطتك',
+				websiteSettings: 'إعدادات الموقع',
+				manageUnits: 'إدارة الوحدات',
+				homePagePicture: 'صورة الصفحة الرئيسية',
+				uploadHomePicture: 'تحميل صورة الصفحة الرئيسية',
+				savePicture: 'حفظ الصورة',
+				websiteThemeColor: 'لون موضوع الموقع',
+				selectThemeColor: 'اختر لون الموضوع المفضل لديك للموقع:',
+				saveTheme: 'حفظ الموضوع',
+				generalSettings: 'الإعدادات العامة',
+				websiteTitle: 'عنوان الموقع',
+				websiteDescription: 'وصف الموقع',
+				contactEmail: 'البريد الإلكتروني للتواصل',
+				contactPhone: 'رقم الهاتف للتواصل',
+				saveSettings: 'حفظ الإعدادات',
+				preview: 'معاينة',
+				themePreview: 'معاينة الموضوع',
+				themeAppearance: 'هذا هو شكل موضوعك',
+				completeProfile: 'إكمال ملفك الشخصي',
+				chaletName: 'اسم الشاليه / اسم تجاري',
+				businessName: 'اسم النشاط التجاري',
+				regNumber: 'رقم السجل التجاري',
+				license: 'رخصة وزارة السياحة',
+				adminEmail: 'بريد إداري',
+				cancel: 'إلغاء',
+				saveProfile: 'حفظ الملف الشخصي',
+				changePassword: 'تغيير كلمة المرور',
+				currentPassword: 'كلمة المرور الحالية',
+				enterCurrentPassword: 'أدخل كلمة المرور الحالية',
+				newPassword: 'كلمة مرور جديدة',
+				enterNewPassword: 'أدخل كلمة مرور جديدة',
+				confirmPassword: 'تأكيد كلمة المرور الجديدة',
+				confirmNewPassword: 'أكد كلمة المرور الجديدة',
+				changePasswordBtn: 'تغيير كلمة المرور',
+				changeEmail: 'تغيير عنوان البريد الإلكتروني',
+				currentEmail: 'البريد الإلكتروني الحالي',
+				newEmail: 'بريد إلكتروني جديد',
+				enterNewEmail: 'أدخل عنوان بريد إلكتروني جديد',
+				passwordConfirmation: 'تأكيد كلمة المرور',
+				enterPassword: 'أدخل كلمة المرور الخاصة بك',
+				changeEmailBtn: 'تغيير البريد الإلكتروني',
+				logout: 'تسجيل الخروج',
+				close: 'إغلاق',
+				cancelBooking: 'إلغاء الحجز',
+				bookingDetails: 'تفاصيل الحجز',
+				phone: 'الهاتف',
+				bookingId: 'معرف الحجز',
+				addNewReservation: 'إضافة حجز جديد',
+				clientName: 'اسم العميل',
+				fullName: 'الاسم الكامل',
+				phoneNumber: 'رقم الهاتف',
+				plus966: '+966...',
+				emailAddress: 'عنوان البريد الإلكتروني',
+				guestExample: 'guest@example.com',
+				selectUnit: 'اختر وحدة',
+				checkinDate: 'تاريخ الوصول',
+				checkoutDate: 'تاريخ المغادرة',
+				nightlyRate: 'السعر الليلي ($)',
+				rate000: '0.00',
+				totalAmount: 'المبلغ الإجمالي ($)',
+				disabled: 'معطل',
+				paymentStatus: 'حالة الدفع',
+				paid: 'مدفوع',
+				pending: 'قيد الانتظار',
+				partialPayment: 'دفعة جزئية',
+				paidAmount: 'المبلغ المدفوع ($)',
+				specialRequests: 'طلبات خاصة / ملاحظات',
+				anySpecialRequests: 'أي طلبات خاصة أو ملاحظات إضافية...',
+				summary: 'الملخص:',
+				summaryText: '0 nights × $0.00 = $0.00',
+				createReservation: 'إنشاء حجز',
+				blockDates: 'حجب التواريخ',
+				start: 'البداية',
+				end: 'النهاية',
+				reason: 'السبب',
+				blockUnit: 'حجب الوحدة',
+				active: 'نشط',
+				past: 'ماضي',
+				admin: 'مسؤول',
+				riyadhGetaways: 'Riyadh Getaways',
+				searchPlaceholder: 'ابحث عن الحجوزات أو الوحدات أو العملاء...',
+				averageADR: 'متوسط السعر اليومي',
+				averageNightly: 'متوسط السعر الليلي',
+				profileSettings: 'إعدادات الملف الشخصي',
+				youAreLoggedOut: 'تم تسجيل خروجك',
+				simulationOnly: 'محاكاة فقط. أعد التحميل للعودة.',
+				orange: 'برتقالي',
+				blue: 'أزرق',
+				green: 'أخضر',
+				purple: 'بنفسجي',
+				red: 'أحمر',
+				cyan: 'سماوي',
+				pink: 'وردي',
+				amber: 'كهرماني',
+				discountsEnabled: 'تفعيل الخصومات',
+				maxDiscount: 'الحد الأقصى للخصم (%)',
+				assignedRoles: 'الأدوار المعينة',
+				discountSettings: 'إعدادات الخصم',
+				allowAIDiscounts: 'السماح بخصومات الذكاء الاصطناعي',
+				aiDiscountPercentage: 'نسبة خصم الذكاء الاصطناعي (%)',
+				aiAgent: 'وكيل الذكاء الاصطناعي',
+				roles: 'الأدوار',
+				settings: 'الإعدادات',
+				aiAgentActive: 'وكيل الذكاء الاصطناعي نشط',
+				aiAgentDescription: 'وكيل الذكاء الاصطناعي الخاص بك جاهز للمساعدة الضيوف في الاستفسارات والحجوزات والدعم. قم بمراقبة نشاط الوكيل في قسم التحليلات.',
+			}
+		};
+
+		// Current language (safe with fallback)
+		let currentLanguage = Storage.getString('language', 'en');
+
+		// Units Groups Management (safe with fallback)
+		let unitsGroups = Storage.getJSON('unitsGroups', [
+			{ id: 'group_1', name: 'Main Hotel', type: 'Hotel Room', license: 'TRN-2024-001' },
+			{ id: 'group_2', name: 'Chalets Collection', type: 'Chalet', license: 'TRN-2024-002' }
+		]);
+		let currentGroupId = 'all'; // Always show all groups
+		let currentCurrency = Storage.getString('currency', 'SAR');
+
+		// Set initial language
+		function setLanguage(lang){
+			currentLanguage = lang;
+			Storage.setString('language', lang);
+			document.documentElement.lang = lang;
+			document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+			applyTranslations();
+			updateLanguageButtons();
+		}
+
+		// Convert camelCase to spaced text
+		function camelCaseToSpaced(str) {
+			if (!str) return str;
+			// Special case for "aiagent" -> "AI Agent"
+			if (str.toLowerCase() === 'aiagent') return 'AI Agent';
+			return str
+				.replace(/([A-Z])/g, ' $1')
+				.replace(/^./, (char) => char.toUpperCase())
+				.trim();
+		}
+
+		// Get translated text
+		function t(key){
+			const translated = translations[currentLanguage]?.[key] || translations.en[key];
+			if (translated) return translated;
+			// If no translation found, convert camelCase to spaced text
+			return camelCaseToSpaced(key);
+		}
+
+		// Apply translations to all elements with data-i18n attribute
+		function applyTranslations(){
+			document.querySelectorAll('[data-i18n]').forEach(el=>{
+				const key = el.dataset.i18n;
+				if(el.tagName === 'INPUT' && el.type === 'placeholder'){
+					el.placeholder = t(key);
+				} else if(el.tagName === 'INPUT' || el.tagName === 'TEXTAREA'){
+					el.value = t(key);
+				} else {
+					el.textContent = t(key);
+				}
+			});
+			document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{
+				el.placeholder = t(el.dataset.i18nPlaceholder);
+			});
+
+			// Update status and other translations in tables
+			document.querySelectorAll('th, td, .status, .label, .meta').forEach(el=>{
+				const key = el.dataset.i18n;
+				if(key) el.textContent = t(key);
+			});
+		}
+
+		// Update language button styles
+		function updateLanguageButtons(){
+			const enBtn = document.getElementById('langEnglish');
+			const arBtn = document.getElementById('langArabic');
+			if(currentLanguage === 'en'){
+				enBtn.style.color = '#f97316';
+				enBtn.style.fontWeight = '600';
+				arBtn.style.color = '#64748b';
+				arBtn.style.fontWeight = 'normal';
+			} else {
+				arBtn.style.color = '#f97316';
+				arBtn.style.fontWeight = '600';
+				enBtn.style.color = '#64748b';
+				enBtn.style.fontWeight = 'normal';
+			}
+		}
+
+		// Language switcher listeners (with null checks)
+		const langEnglishBtn = document.getElementById('langEnglish');
+		if(langEnglishBtn) langEnglishBtn.addEventListener('click',()=>{setLanguage('en');});
+		const langArabicBtn = document.getElementById('langArabic');
+		if(langArabicBtn) langArabicBtn.addEventListener('click',()=>{setLanguage('ar');});
+
+		// Currency selector listener - removed as currencySelect element doesn't exist
+		// Using button clicks instead (see line 1930+)
+
+		// Initialize language on load
+		document.addEventListener('DOMContentLoaded',()=>{
+			// Load saved theme color (safe with fallback)
+			const savedColor = Storage.getString('websiteThemeColor', '');
+			if(savedColor && /^#[0-9A-F]{6}$/i.test(savedColor)) {
+				document.documentElement.style.setProperty('--accent', savedColor);
+			}
+			
+			setLanguage(currentLanguage);
+			// Set currency selector to current value
+			const currencySelect = document.getElementById('currencySelect');
+			if(currencySelect) currencySelect.value = currentCurrency;
+		});
+
+		// Sample placeholder data with proper unit names
+		const sampleBookings = [
+			{id:'BKG-002',client:'Sara Khan',unit:'Palm Oasis Chalet',start:'2025-10-24',end:'2025-10-25',status:'Pending',phone:'+966598765432',payment:'Pending',source:'Manual'},
+			{id:'BKG-003',client:'John Doe',unit:'Skyline Executive Apartment',start:'2025-10-20',end:'2025-10-22',status:'Past',phone:'+966500111222',payment:'Paid',source:'Website'},
+			{id:'BKG-004',client:'Fatima Al',unit:'Palm Oasis Chalet',start:'2025-10-28',end:'2025-10-29',status:'Active',phone:'+966599000111',payment:'Paid',source:'Manual'},
+			{id:'BKG-005',client:'Omar N',unit:'Desert Bloom Retreat',start:'2025-10-26',end:'2025-10-27',status:'Pending',phone:'+966511223344',payment:'Pending',source:'Website'},
+			{id:'BKG-006',client:'Nora Hassan',unit:'Palm Oasis Chalet',start:'2025-10-30',end:'2025-11-02',status:'Pending',phone:'+966545612345',payment:'Paid',source:'Website'},
+			{id:'BKG-007',client:'Mohammed Ali',unit:'Skyline Executive Apartment',start:'2025-10-25',end:'2025-10-26',status:'Active',phone:'+966599876543',payment:'Paid',source:'Manual'},
+			{id:'BKG-008',client:'Zainab Al',unit:'City Studio Deluxe',start:'2025-10-28',end:'2025-10-31',status:'Pending',phone:'+966512345000',payment:'Pending',source:'Website'},
+		];
+
+		// Initialize dashboard with mock units
+		let units = [];
+		const initializeDashboardUnits = () => {
+			console.log('ℹ️  Using MOCK units')
+		units = [
+			{name:'Deluxe King Room',status:'Available',groupId:'group_1'},
+			{name:'Twin Bedroom Suite',status:'Available',groupId:'group_1'},
+			{name:'Executive Suite',status:'Booked',groupId:'group_1'},
+			{name:'Family Room',status:'Available',groupId:'group_1'},
+			{name:'Desert Escape Chalet',status:'Available',groupId:'group_2'},
+			{name:'Luxury Mountain Villa',status:'Booked',groupId:'group_2'},
+			{name:'Garden Oasis Resort',status:'Available',groupId:'group_2'},
+			{name:'Romantic Starlight Chalet',status:'Maintenance',groupId:'group_2'}
+		];
+		};
+		
+		// Initialize units on page load
+		initializeDashboardUnits();		// Profile data storage
+		let profileData = {
+			chaletName: 'Riyadh Getaways',
+			regNumber: '',
+			license: '',
+			email: 'admin@riyadhgetaways.com'
+		};
+
+		// Tab switching
+		function renderRecentBookings(){
+			const tbody = document.getElementById('recentBookings');
+			tbody.innerHTML='';
+			// Show all bookings (no filtering)
+			const filteredBookings = sampleBookings.slice(0, 5);
+			
+			filteredBookings.forEach(b=>{
+				const tr=document.createElement('tr');
+				tr.innerHTML=`<td><a href="#" data-id="${b.id}" class="booking-link" style="color:var(--accent);text-decoration:none;cursor:pointer">${b.client}</a></td><td>${b.unit}</td><td><span class="status ${b.status.toLowerCase()}">${b.status}</span></td><td>${b.start}</td><td>${b.end}</td>`;
+				tbody.appendChild(tr);
+			});
+			// attach handlers
+			document.querySelectorAll('.booking-link').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();openBookingDetails(a.dataset.id);}));
+		}
+
+		function renderUnitStatus(){
+			const list=document.getElementById('unitStatus');
+			list.innerHTML='';
+			// Show all units (no filtering)
+			const filteredUnits = units;
+			
+			filteredUnits.forEach(u=>{
+				const el=document.createElement('div');
+				el.className='unit-item';
+				el.innerHTML=`<div><div class="name">${u.name}</div><div style="font-size:13px;color:var(--muted)">${u.status}</div></div><div><button class="btn ghost" style="padding:6px 10px;font-size:12px">Edit</button></div>`;
+				list.appendChild(el);
+			});
+		}
+
+		function updateKPIs(){
+			// Calculate Monthly Revenue and Occupancy Rate based on selected group
+			
+			// Build metrics from actual units and bookings
+			const unitMetrics = [];
+			units.forEach(u => {
+				// Count bookings for this unit
+				const unitBookings = sampleBookings.filter(b => b.unit === u.name);
+				const occupiedDays = unitBookings.reduce((sum, b) => {
+					const start = new Date(b.start);
+					const end = new Date(b.end);
+					const days = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+					return sum + (b.status === 'Active' || b.status === 'Pending' ? days : 0);
+				}, 0);
+				
+				// Estimate occupancy (based on 30 day month)
+				const occupancy = Math.min(Math.round((occupiedDays / 30) * 100), 100);
+				
+				// Calculate monthly revenue (sum of booking amounts)
+				const monthlyRevenue = unitBookings.reduce((sum, b) => {
+					if(b.status === 'Paid' || b.status === 'Pending') {
+						const nights = Math.ceil((new Date(b.end) - new Date(b.start)) / (1000 * 60 * 60 * 24));
+						const nightlyRate = u.nightlyRate || 1000;
+						return sum + (nights * nightlyRate);
+					}
+					return sum;
+				}, 0);
+				
+				unitMetrics.push({
+					unit: u.name,
+					monthlyRevenue: monthlyRevenue,
+					occupancy: occupancy,
+					groupId: u.groupId
+				});
+			});
+			
+			let filteredMetrics = unitMetrics;
+			if(currentGroupId !== 'all'){
+				filteredMetrics = unitMetrics.filter(m => m.groupId === currentGroupId);
+			}
+			
+			// Calculate totals
+			const totalRevenue = filteredMetrics.reduce((sum, m) => sum + m.monthlyRevenue, 0);
+			const avgOccupancy = filteredMetrics.length > 0 ? Math.round(filteredMetrics.reduce((sum, m) => sum + m.occupancy, 0) / filteredMetrics.length) : 0;
+			
+			// Format revenue with currency
+			const currencySymbol = {SAR: 'ر.س', USD: '$', EUR: '€', AED: 'د.إ'}[currentCurrency] || currentCurrency;
+			const formattedRevenue = new Intl.NumberFormat('en-US', {style: 'currency', currency: currentCurrency, minimumFractionDigits: 0}).format(totalRevenue).replace('$', currencySymbol);
+			
+			// Update KPI elements
+			document.getElementById('kpiOccupancy').textContent = avgOccupancy + '%';
+			document.getElementById('kpiRevenue').textContent = formattedRevenue;
+		}
+
+		function renderWeeklyOccupancy(){
+			const tbody=document.getElementById('weeklyOccupancy');
+			tbody.innerHTML='';
+			// Filter occupancy data by current group
+			let weeklyData = [];
+			units.forEach(u => {
+				const unitBookings = sampleBookings.filter(b => b.unit === u.name);
+				const occupiedDays = unitBookings.reduce((sum, b) => {
+					const start = new Date(b.start);
+					const end = new Date(b.end);
+					const days = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+					return sum + (b.status === 'Active' || b.status === 'Pending' ? days : 0);
+				}, 0);
+				const occupancy = Math.min(Math.round((occupiedDays / 30) * 100), 100);
+				weeklyData.push({
+					unit: u.name,
+					occupancy: occupancy + '%',
+					days: occupiedDays + ' days',
+					groupId: u.groupId
+				});
+			});
+			
+			if(currentGroupId !== 'all'){
+				weeklyData = weeklyData.filter(d => d.groupId === currentGroupId);
+			}
+			
+			weeklyData.forEach(d=>{
+				const tr=document.createElement('tr');
+				tr.innerHTML=`<td>${d.unit}</td><td><strong>${d.occupancy}</strong></td><td style="color:var(--muted);font-size:12px">${d.days}</td>`;
+				tbody.appendChild(tr);
+			});
+		}
+
+		function renderWeeklyIncome(){
+			const tbody=document.getElementById('weeklyIncome');tbody.innerHTML='';
+			
+			// Build income data from actual bookings
+			const incomeData = [];
+			units.forEach(u => {
+				const unitBookings = sampleBookings.filter(b => b.unit === u.name && (b.status === 'Paid' || b.status === 'Pending'));
+				const income = unitBookings.reduce((sum, b) => {
+					const nights = Math.ceil((new Date(b.end) - new Date(b.start)) / (1000 * 60 * 60 * 24));
+					const nightlyRate = u.nightlyRate || 1000;
+					return sum + (nights * nightlyRate);
+				}, 0);
+				incomeData.push({
+					unit: u.name,
+					income: income,
+					bookings: unitBookings.length + '',
+					groupId: u.groupId
+				});
+			});
+			
+			// Filter by current group
+			let filteredData = incomeData;
+			if(currentGroupId !== 'all'){
+				filteredData = incomeData.filter(d => d.groupId === currentGroupId);
+			}
+			
+			// Format currency
+			const currencySymbol = {SAR: 'ر.س', USD: '$', EUR: '€', AED: 'د.إ'}[currentCurrency] || currentCurrency;
+			
+			filteredData.forEach(d=>{
+				const tr=document.createElement('tr');
+				const formattedIncome = new Intl.NumberFormat('en-US', {style: 'currency', currency: currentCurrency, minimumFractionDigits: 0}).format(d.income).replace('$', currencySymbol);
+				tr.innerHTML=`<td>${d.unit}</td><td><strong>${formattedIncome}</strong></td><td style="color:var(--muted);font-size:12px">${d.bookings} bookings</td>`;
+				tbody.appendChild(tr);
+			});
+		}
+
+		function openModal(html){
+			const backdrop=document.getElementById('modalBackdrop');const content=document.getElementById('modalContent');content.innerHTML='';content.appendChild(html);backdrop.classList.add('show');document.body.style.overflow='hidden';
+			// Apply translations to newly added modal
+			applyTranslations();
+			// attach cancel booking action if present
+			const cancelBtn=document.getElementById('cancelBookingBtn');if(cancelBtn){cancelBtn.onclick=()=>{if(confirm('Cancel this booking?')){showConfirmation('Booking cancelled (simulated)');closeModal();}}}
+		}
+
+		function closeModal(){document.getElementById('modalBackdrop').classList.remove('show');document.getElementById('modalContent').innerHTML='';document.body.style.overflow='';}
+
+		function showConfirmation(message){
+			const confBackdrop=document.createElement('div');
+			confBackdrop.style.cssText='position:fixed;inset:0;background:rgba(15,23,42,0.36);display:flex;align-items:center;justify-content:center;padding:20px;z-index:3000';
+			const confModal=document.createElement('div');
+			confModal.style.cssText='background:#fff;border-radius:16px;max-width:440px;width:100%;padding:30px;box-shadow:0 24px 48px rgba(15,23,41,0.18);text-align:center;animation:slideUp 0.3s ease';
+			const msgDiv=document.createElement('div');
+			msgDiv.style.cssText='white-space:pre-wrap;color:#1f2937;font-size:14px;line-height:1.6;margin-bottom:20px';
+			msgDiv.textContent=message;
+			const closeBtn=document.createElement('button');
+			closeBtn.style.cssText='padding:10px 20px;border-radius:10px;border:none;background:var(--accent);color:#fff;cursor:pointer;font-weight:600;transition:filter 0.2s';
+			closeBtn.textContent='OK';
+			closeBtn.onmouseover=()=>closeBtn.style.filter='brightness(0.92)';
+			closeBtn.onmouseout=()=>closeBtn.style.filter='brightness(1)';
+			confModal.appendChild(msgDiv);
+			confModal.appendChild(closeBtn);
+			confBackdrop.appendChild(confModal);
+			document.body.appendChild(confBackdrop);
+			closeBtn.addEventListener('click',()=>confBackdrop.remove());
+			document.addEventListener('keydown',(e)=>{if(e.key==='Escape') confBackdrop.remove();},{once:true});
+		}
+
+		function openBookingDetails(id){
+			const booking = sampleBookings.find(b=>b.id===id);
+			const tpl = document.getElementById('bookingDetailsTpl');
+			const frag = tpl.content.cloneNode(true);
+			if(booking){frag.getElementById('bdClient').textContent=booking.client;frag.getElementById('bdPhone').textContent=booking.phone;frag.getElementById('bdUnit').textContent=booking.unit;frag.getElementById('bdDates').textContent=booking.start+' → '+booking.end;frag.getElementById('bdPayment').textContent=booking.payment;frag.getElementById('bdId').textContent=booking.id}
+			openModal(frag);
+		}
+
+		// Get units from unitDataset (imported from units.html data)
+		function getUnitsForBooking(){
+			// Try to get from unitDataset if available, otherwise use fallback
+			try {
+				if(typeof unitDataset !== 'undefined' && Array.isArray(unitDataset)){
+					return unitDataset;
+				}
+			} catch(e) {}
+			return units;
+		}
+
+		// Populate unit select with grouped units
+		function populateUnitSelect(selectElement){
+			selectElement.innerHTML = '';
+			const unitsToDisplay = getUnitsForBooking();
+			
+			if(!Array.isArray(unitsToDisplay) || unitsToDisplay.length === 0){
+				const opt = document.createElement('option');
+				opt.textContent = 'No units available';
+				selectElement.appendChild(opt);
+				return;
+			}
+
+			// Get unique groups and organize units by group
+			const unitsByGroup = {};
+			unitsToDisplay.forEach(unit => {
+				const groupId = unit.groupId || 'unassigned';
+				const groupName = unitsGroups.find(g => g.id === groupId)?.name || 'Other';
+				if(!unitsByGroup[groupName]){
+					unitsByGroup[groupName] = [];
+				}
+				unitsByGroup[groupName].push(unit);
+			});
+
+			// Create optgroup for each group
+			Object.keys(unitsByGroup).sort().forEach(groupName => {
+				const optgroup = document.createElement('optgroup');
+				optgroup.label = groupName;
+				unitsByGroup[groupName].forEach(unit => {
+					const opt = document.createElement('option');
+					opt.value = unit.name || `${unit.id}`;
+					opt.textContent = unit.name || unit.id;
+					optgroup.appendChild(opt);
+				});
+				selectElement.appendChild(optgroup);
+			});
+		}
+
+		function openAddBooking(){
+			// Create wrapper element with innerHTML (same as calendar.html)
+			const wrapper = document.createElement('div');
+			wrapper.innerHTML = `<h3 style="margin-bottom:20px;font-size:18px;color:#0f1729">Add New Reservation</h3>
+<div style="display:grid;gap:16px;margin-top:8px">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px">Client Name *</label><input id="abName" placeholder="Full name" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit"></div>
+    <div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px">Phone Number *</label><div style="display:grid;grid-template-columns:95px 1fr;gap:8px"><select id="abCountryCode" style="padding:10px 8px;border:1px solid #e5e7eb;border-radius:10px;font-size:14px;font-family:inherit;appearance:none;background-image:url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2712%27 height=%2712%27 viewBox=%270 0 12 12%27%3E%3Cpath fill=%27%231f2937%27 d=%27M6 9L1 4h10z%27/%3E%3C/svg%3E');background-repeat:no-repeat;background-position:right 6px center;padding-right:24px;background-color:#fff;text-align:left"><option value="+966">🇸🇦 +966</option></select><input id="abPhone" placeholder="501234567" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit;min-width:0;color:#1f2937" type="tel"></div></div>
+  </div>
+  <div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px">Email Address</label><input id="abEmail" type="email" placeholder="guest@example.com" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit"></div>
+  <div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px">Unit *</label><select id="abUnit" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit"><option value="">Select a unit</option></select></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px">Check-in Date *</label><input id="abStart" type="date" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit"></div>
+    <div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px">Check-out Date *</label><input id="abEnd" type="date" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit"></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px">Nightly Rate ($) *</label><input id="abRate" type="number" placeholder="0.00" min="0" step="0.01" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit"></div>
+    <div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px">Total Amount ($)</label><input id="abTotal" type="text" placeholder="0.00" disabled style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit;background:#f3f4f6;color:#6b7280"></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px">Payment Status *</label><select id="abPayment" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit"><option value="Paid">Paid</option><option value="Pending">Pending</option><option value="Partial">Partial Payment</option></select></div>
+    <div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px">Paid Amount ($)</label><input id="abPaid" type="number" placeholder="0.00" min="0" step="0.01" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit"></div>
+  </div>
+  <div><label style="font-weight:600;font-size:13px;color:#475569;display:block;margin-bottom:6px">Special Requests / Notes</label><textarea id="abNotes" placeholder="Any special requests or additional notes..." style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit;resize:vertical;min-height:80px"></textarea></div>
+  <div style="background:#f0f9ff;border:1px solid #bfdbfe;border-radius:10px;padding:12px;margin-top:8px"><div style="display:flex;justify-content:space-between;align-items:center;font-size:14px;font-weight:600;color:#0f1729"><span>Summary:</span><span><strong id="abSummary">0 nights × $0.00 = $0.00</strong></span></div></div>
+</div>`;
+
+			// Create footer with buttons
+			const footer = document.createElement('div');
+			footer.className = 'modal-actions';
+			footer.style.marginTop = '20px';
+			
+			const cancelBtn = document.createElement('button');
+			cancelBtn.className = 'btn ghost';
+			cancelBtn.textContent = 'Cancel';
+			cancelBtn.addEventListener('click', closeModal);
+			
+			const saveBtn = document.createElement('button');
+			saveBtn.className = 'btn primary';
+			saveBtn.textContent = 'Create Reservation';
+			saveBtn.id = 'confirmAddBooking';
+			
+			footer.appendChild(cancelBtn);
+			footer.appendChild(saveBtn);
+			wrapper.appendChild(footer);
+
+			// Open modal with the wrapper
+			openModal(wrapper);
+
+			// Populate country code selector using utility function
+			const countryCodeSelect = document.getElementById('abCountryCode');
+			if(countryCodeSelect) {
+				const countryCodes = getCountryCodes();
+				countryCodeSelect.innerHTML = '';
+				countryCodes.forEach(c => {
+					const option = document.createElement('option');
+					option.value = c.code;
+					option.textContent = `${c.flag} ${c.code}`;
+					if(c.code === '+966') option.selected = true; // Default to Saudi Arabia
+					countryCodeSelect.appendChild(option);
+				});
+			}
+
+			// Now populate unit select - elements are immediately available
+			const unitSelect = document.getElementById('abUnit');
+			populateUnitSelect(unitSelect);
+
+			// Get form elements - they exist immediately
+			const startInput = document.getElementById('abStart');
+			const endInput = document.getElementById('abEnd');
+			const rateInput = document.getElementById('abRate');
+			const totalInput = document.getElementById('abTotal');
+			const summarySpan = document.getElementById('abSummary');
+
+			// Calculate total function
+			const calculateTotal = () => {
+				const start = new Date(startInput.value);
+				const end = new Date(endInput.value);
+				const rate = parseFloat(rateInput.value) || 0;
+				
+				if(startInput.value && endInput.value && end > start){
+					const nights = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+					const total = nights * rate;
+					totalInput.value = total.toFixed(2);
+					summarySpan.textContent = `${nights} nights × $${rate.toFixed(2)} = $${total.toFixed(2)}`;
+				} else {
+					totalInput.value = '0.00';
+					summarySpan.textContent = '0 nights × $0.00 = $0.00';
+				}
+			};
+
+			// Attach event listeners
+			startInput.addEventListener('change', calculateTotal);
+			endInput.addEventListener('change', calculateTotal);
+			rateInput.addEventListener('input', calculateTotal);
+
+			// Save button click handler
+			saveBtn.addEventListener('click', function(){
+				const name = document.getElementById('abName').value;
+				const countryCode = document.getElementById('abCountryCode').value;
+				const phoneOnly = document.getElementById('abPhone').value;
+				const phone = countryCode + phoneOnly;
+				const email = document.getElementById('abEmail').value || '';
+				const unit = document.getElementById('abUnit').value;
+				const start = document.getElementById('abStart').value;
+				const end = document.getElementById('abEnd').value;
+				const rate = parseFloat(document.getElementById('abRate').value) || 0;
+				const payment = document.getElementById('abPayment').value;
+				const paid = parseFloat(document.getElementById('abPaid').value) || 0;
+				const notes = document.getElementById('abNotes').value || '';
+				
+				if(!name || !phoneOnly || !unit || !start || !end || !rate){
+					showConfirmation('Please fill in all required fields (marked with *)');
+					return;
+				}
+				
+				const startDate = new Date(start);
+				const endDate = new Date(end);
+				if(endDate <= startDate){
+					showConfirmation('Check-out date must be after check-in date');
+					return;
+				}
+				
+				const nights = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+				const total = nights * rate;
+				
+				const id = 'BKG-' + String(Math.floor(Math.random() * 9000 + 1000));
+				sampleBookings.unshift({
+					id,
+					client: name,
+					unit,
+					start,
+					end,
+					status: 'Active',
+					phone,
+					email,
+					payment,
+					source: 'Manual',
+					rate,
+					nights,
+					total,
+					paid,
+					notes
+				});
+				renderRecentBookings();
+				closeModal();
+				showConfirmation(`Booking created successfully!\nBooking ID: ${id}\nClient: ${name}\nNights: ${nights}\nTotal: $${total.toFixed(2)}`);
+			});
+		}
+
+	function openBlockDates(){
+		const tpl=document.getElementById('blockDatesTpl');const frag=tpl.content.cloneNode(true);
+		const sel=frag.getElementById('bdUnitSelect');units.forEach(u=>{const o=document.createElement('option');o.value=u.name;o.textContent=u.name;sel.appendChild(o)});
+		openModal(frag);
+		document.getElementById('confirmBlock').onclick=function(){const unit=document.getElementById('bdUnitSelect').value;const start=document.getElementById('bdStart').value;const end=document.getElementById('bdEnd').value;const reason=document.getElementById('bdReason').value; if(!start||!end){showConfirmation('Pick dates');return}showConfirmation('Blocked '+unit+" from "+start+" to "+end+" (simulated: reason: "+reason+")");closeModal();}
+	}		// Profile Management
+		function openCompleteProfile(){
+			const tpl = document.getElementById('completeProfileTpl');
+			const frag = tpl.content.cloneNode(true);
+			frag.getElementById('cpChaletName').value = profileData.chaletName;
+			frag.getElementById('cpRegNumber').value = profileData.regNumber;
+			frag.getElementById('cpLicense').value = profileData.license;
+			frag.getElementById('cpEmail').value = profileData.email;
+			openModal(frag);
+			document.getElementById('confirmProfileBtn').onclick = function(){
+				profileData.chaletName = document.getElementById('cpChaletName').value;
+				profileData.regNumber = document.getElementById('cpRegNumber').value;
+				profileData.license = document.getElementById('cpLicense').value;
+				profileData.email = document.getElementById('cpEmail').value;
+				closeModal();
+			showConfirmation('Profile updated successfully (simulated)');
+		};
+	}		function openChangePassword(){
+			const tpl = document.getElementById('changePasswordTpl');
+			const frag = tpl.content.cloneNode(true);
+			openModal(frag);
+			document.getElementById('confirmPasswordBtn').onclick = function(){
+				const oldPwd = document.getElementById('cpOldPassword').value;
+				const newPwd = document.getElementById('cpNewPassword').value;
+				const confirmPwd = document.getElementById('cpConfirmPassword').value;
+			if(!oldPwd || !newPwd || !confirmPwd){showConfirmation('Fill all fields');return}
+			if(newPwd !== confirmPwd){showConfirmation('New passwords do not match');return}
+			closeModal();
+			showConfirmation('Password changed successfully (simulated)');
+		};
+	}		function openChangeEmail(){
+			const tpl = document.getElementById('changeEmailTpl');
+			const frag = tpl.content.cloneNode(true);
+			openModal(frag);
+			document.getElementById('confirmEmailBtn').onclick = function(){
+				const newEmail = document.getElementById('ceNewEmail').value;
+				const pwd = document.getElementById('cePassword').value;
+			if(!newEmail || !pwd){showConfirmation('Fill all fields');return}
+			if(!newEmail.includes('@')){showConfirmation('Invalid email');return}
+			profileData.email = newEmail;
+			closeModal();
+			showConfirmation('Email changed successfully (simulated)');
+		};
+	}	// Website Settings Functions
+	function saveHomePicture(){
+		const file = document.getElementById('homePictureUpload').files[0];
+		if(!file){showConfirmation('Please select an image');return}
+		const reader = new FileReader();
+		reader.onload = function(e){
+			const preview = document.getElementById('homePicturePreview');
+			preview.innerHTML = `<img src="${e.target.result}" class="image-preview" alt="Home picture">`;
+			showConfirmation('Home picture saved (simulated)');
+		};
+		reader.readAsDataURL(file);
+		}
+
+		function selectColor(element, color){
+			document.querySelectorAll('.color-option').forEach(e => e.classList.remove('selected'));
+			element.classList.add('selected');
+			document.getElementById('colorPreview').style.backgroundColor = color;
+		}
+
+	function saveThemeColor(){
+		const colorInput = document.getElementById('colorCodeInput');
+		const color = colorInput.value;
+		
+		// Validate hex color
+		if(!/^#[0-9A-F]{6}$/i.test(color)){
+			showConfirmation('Invalid color code. Use format: #f97316');
+			return;
+		}
+		
+		// Save to localStorage (safe with error handling)
+		Storage.setString('websiteThemeColor', color);
+		
+		// Show success message
+		showConfirmation('Website theme color saved: ' + color);
+	}
+	
+	function updateWebsiteThemeColor(hex){
+		// Validate hex color
+		if(!/^#[0-9A-F]{6}$/i.test(hex)){
+			return;
+		}
+		
+		// Update display
+		const colorDisplay = document.getElementById('colorDisplay');
+		const colorPicker = document.getElementById('websiteColorPicker');
+		const colorCodeInput = document.getElementById('colorCodeInput');
+		
+		if(colorPicker) colorPicker.value = hex;
+		if(colorCodeInput) colorCodeInput.value = hex;
+		if(colorDisplay){
+			colorDisplay.style.background = hex;
+			colorDisplay.textContent = hex.toUpperCase();
+		}
+		
+		// Update preview
+		const preview = document.getElementById('colorPreview');
+		if(preview){
+			preview.style.background = hex;
+		}
+	}
+	
+	// Profile menu is now handled by profile.js component
+	// The component auto-initializes when the script loads
+
+	// New Booking button
+		console.log('[DASHBOARD] Attaching booking & refresh listeners...');
+		const newBookingBtn = document.getElementById('newBookingBtn');
+		const quickActionNewBookingBtn = document.getElementById('quickActionNewBookingBtn');
+		const refreshBtn = document.getElementById('refreshBtn');
+		
+		if(newBookingBtn) newBookingBtn.addEventListener('click',()=>{openAddBooking()});
+		if(quickActionNewBookingBtn) quickActionNewBookingBtn.addEventListener('click',()=>{openAddBooking()});
+		if(refreshBtn) refreshBtn.addEventListener('click',()=>{
+			updateKPIs();
+			renderRecentBookings();
+			renderUnitStatus();
+			renderWeeklyOccupancy();
+			renderWeeklyIncome();
+			showConfirmation('Dashboard refreshed successfully');
+		});
+		console.log('[DASHBOARD] Booking & refresh listeners attached');		// nav link behavior
+		console.log('[DASHBOARD] Attaching nav-item listeners...');
+		document.querySelectorAll('.nav-item').forEach(n=>{
+			n.addEventListener('click',e=>{
+				console.log('[NAV] Click detected on nav-item');
+				e.preventDefault();
+				e.stopPropagation();
+				// Get the closest nav-item (in case user clicked child element)
+				const navItem = e.target.closest('.nav-item');
+				if(!navItem) {
+					console.log('[NAV] Could not find nav-item');
+					return;
+				}
+				
+				const link = navItem.dataset.link; 
+				const section = navItem.dataset.section;
+				console.log('[NAV] link:', link, 'section:', section);
+				if(link){
+					const fullPath = getPagePath(link);
+					console.log('[NAV] Navigating to:', fullPath);
+					window.location.href = fullPath;
+					return;
+				}
+				if(section){
+					document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));
+					navItem.classList.add('active');
+					switchSection(section);
+					// Refresh content after switching
+					if(section === 'dashboard'){
+						renderRecentBookings();
+						renderUnitStatus();
+						renderWeeklyOccupancy();
+						renderWeeklyIncome();
+					}
+				}
+			});
+		});
+		console.log('[DASHBOARD] Nav-item listeners attached');
+
+		// ===== AI AGENT CONFIGURATION FUNCTIONS =====
+		// AI Agent configuration storage object
+		let aiAgentConfig = {
+			discountEnabled: false,
+			discountAmount: 0,
+			welcomeMessage: 'Hello! Welcome to Riyadh Getaways. How can I help you today?',
+			roles: [],
+			monthlyConversations: 1247
+		};
+
+		// Load AI Agent configuration from localStorage (safe)
+		function loadAIAgentConfig(){
+			const defaultConfig = {
+				discountEnabled: false,
+				discountAmount: 10,
+				welcomeMessage: 'Hello! Welcome to Riyadh Getaways. How can I help you today?',
+				roles: [],
+				monthlyConversations: 1247
+			};
+			const saved = Storage.getJSON('aiAgentConfig', defaultConfig);
+			if(saved && typeof saved === 'object'){
+				aiAgentConfig = saved;
+			}
+			
+			// Update UI
+			document.getElementById('aiDiscountEnable').checked = aiAgentConfig.discountEnabled;
+			document.getElementById('aiDiscountAmount').value = aiAgentConfig.discountAmount;
+			document.getElementById('aiWelcomeMessage').value = aiAgentConfig.welcomeMessage;
+			
+			// Update character count
+			document.getElementById('welcomeCharCount').textContent = aiAgentConfig.welcomeMessage.length;
+			
+			// Render roles
+			renderAIRoles();
+			
+			// Update configuration summary
+			updateAIConfigSummary();
+			
+			// Generate AI instructions preview
+			generateAIInstructionsPreview();
+			
+			// Load reminders
+			loadAIReminders();
+			
+			// Update conversation pipe
+			updateConversationPipe();
+		}
+
+		// Render AI roles list
+		function renderAIRoles(){
+			const rolesList = document.getElementById('aiRolesList');
+			rolesList.innerHTML = '';
+			
+			aiAgentConfig.roles.forEach((role, index) => {
+				const roleEl = document.createElement('div');
+				roleEl.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:#f3f4f6;border-radius:8px;border-left:4px solid var(--accent)';
+				roleEl.innerHTML = `
+					<span style="font-size:14px;font-weight:500">${role}</span>
+					<button class="btn ghost" onclick="removeAIRole(${index})" style="padding:6px 10px;font-size:12px"><i class="fa-solid fa-trash"></i> Remove</button>
+				`;
+				rolesList.appendChild(roleEl);
+			});
+			
+			document.getElementById('aiRoleCount').textContent = aiAgentConfig.roles.length;
+		}
+
+		// Add AI role
+		function addAIRole(){
+			const input = document.getElementById('aiNewRoleInput');
+			const role = input.value.trim();
+			
+			if(!role){
+				showConfirmation('Please enter a role name');
+				return;
+			}
+			
+			if(aiAgentConfig.roles.length >= 10){
+				showConfirmation('Maximum 10 roles allowed');
+				return;
+			}
+			
+			if(aiAgentConfig.roles.includes(role)){
+				showConfirmation('This role already exists');
+				return;
+			}
+			
+			aiAgentConfig.roles.push(role);
+			input.value = '';
+			renderAIRoles();
+			updateAIConfigSummary();
+			generateAIInstructionsPreview();
+		}
+
+		// Remove AI role
+		function removeAIRole(index){
+			aiAgentConfig.roles.splice(index, 1);
+			renderAIRoles();
+			updateAIConfigSummary();
+			generateAIInstructionsPreview();
+		}
+
+		// Save AI discount settings
+		function saveAIDiscountSettings(){
+			aiAgentConfig.discountEnabled = document.getElementById('aiDiscountEnable').checked;
+			aiAgentConfig.discountAmount = parseFloat(document.getElementById('aiDiscountAmount').value) || 0;
+			
+			if(aiAgentConfig.discountEnabled && !aiAgentConfig.discountAmount){
+				showConfirmation('Please enter a discount amount');
+				return;
+			}
+			
+			Storage.setJSON('aiAgentConfig', aiAgentConfig);
+			updateAIConfigSummary();
+			generateAIInstructionsPreview();
+			showConfirmation('Discount settings saved successfully');
+		}
+
+		// Save AI welcome message
+		function saveAIWelcomeMessage(){
+			const message = document.getElementById('aiWelcomeMessage').value.trim();
+			
+			if(!message){
+				showConfirmation('Welcome message cannot be empty');
+				return;
+			}
+			
+			if(message.length > 500){
+				showConfirmation('Welcome message cannot exceed 500 characters');
+				return;
+			}
+			
+			aiAgentConfig.welcomeMessage = message;
+			Storage.setJSON('aiAgentConfig', aiAgentConfig);
+			generateAIInstructionsPreview();
+			showConfirmation('Welcome message saved successfully');
+		}
+
+		// Update AI configuration summary
+		function updateAIConfigSummary(){
+			// Discount status
+			const discountStatus = aiAgentConfig.discountEnabled ? 'Enabled' : 'Disabled';
+			document.getElementById('aiConfigDiscount').textContent = discountStatus;
+			document.getElementById('aiConfigDiscount').style.color = aiAgentConfig.discountEnabled ? '#22c55e' : 'var(--muted)';
+			
+			// Max discount
+			let maxDiscountText = '—';
+			if(aiAgentConfig.discountEnabled){
+				if(aiAgentConfig.discountAmount){
+					maxDiscountText = 'SAR ' + aiAgentConfig.discountAmount;
+				}
+			}
+			document.getElementById('aiConfigMaxDiscount').textContent = maxDiscountText;
+			
+			// Roles count
+			document.getElementById('aiConfigRoles').textContent = aiAgentConfig.roles.length;
+			
+			// Roles list
+			const rolesList = document.getElementById('aiConfigRolesList');
+			rolesList.innerHTML = '';
+			if(aiAgentConfig.roles.length > 0){
+				aiAgentConfig.roles.forEach(role => {
+					const roleTag = document.createElement('div');
+					roleTag.style.cssText = 'display:inline-block;background:var(--accent);color:#fff;padding:4px 8px;border-radius:4px;font-size:11px;margin:2px;font-weight:500';
+					roleTag.textContent = role;
+					rolesList.appendChild(roleTag);
+				});
+			} else {
+				rolesList.innerHTML = '<span style="color:var(--muted);font-size:12px">No roles assigned yet</span>';
+			}
+		}
+
+		// Generate AI Instructions Preview
+		function generateAIInstructionsPreview(){
+			let instructions = 'You are an AI Assistant for Riyadh Getaways.\n\n';
+			
+			// Add welcome message
+			instructions += 'WELCOME MESSAGE:\n' + aiAgentConfig.welcomeMessage + '\n\n';
+			
+			// Add discount policy
+			instructions += 'DISCOUNT POLICY:\n';
+			if(aiAgentConfig.discountEnabled){
+				instructions += '✓ You are authorized to offer discounts.\n';
+				if(aiAgentConfig.discountAmount){
+					instructions += `  - Maximum amount discount: SAR ${aiAgentConfig.discountAmount}\n`;
+				}
+				instructions += '✓ Always request confirmation before applying discount.\n';
+				instructions += '✓ Log all discount applications for audit trail.\n';
+			} else {
+				instructions += '✗ You are NOT authorized to offer discounts.\n';
+				instructions += '✗ Escalate discount requests to human staff.\n';
+			}
+			
+			// Add assigned roles
+			instructions += '\nASSIGNED ROLES:\n';
+			if(aiAgentConfig.roles.length > 0){
+				aiAgentConfig.roles.forEach(role => {
+					instructions += `• ${role}\n`;
+				});
+			} else {
+				instructions += '• Standard Assistant (limited capabilities)\n';
+			}
+			
+			// Add general guidelines
+			instructions += '\nGUIDELINES:\n';
+			instructions += '✓ Always be professional and courteous\n';
+			instructions += '✓ Provide accurate information about units and availability\n';
+			instructions += '✓ Confirm all bookings and changes with the client\n';
+			instructions += '✓ Escalate to human support for complex requests\n';
+			instructions += '✓ Maintain confidentiality of guest information\n';
+			instructions += '✓ Log all interactions in the audit trail';
+			
+			const preview = document.getElementById('aiInstructionsPreview');
+			preview.innerHTML = instructions.replace(/\n/g, '<br>');
+		}
+
+		// Save and deploy AI Agent configuration
+		function saveAIAgentConfig(){
+			Storage.setJSON('aiAgentConfig', aiAgentConfig);
+			
+			// Simulate deployment
+			const btn = event.target;
+			const originalText = btn.innerHTML;
+			btn.disabled = true;
+			btn.innerHTML = '<i class="fa-solid fa-spinner"></i> Deploying...';
+			
+			setTimeout(() => {
+				btn.disabled = false;
+				btn.innerHTML = originalText;
+				document.getElementById('aiLastSync').textContent = 'Just now';
+				showConfirmation('AI Agent configuration deployed successfully!\n\nConfiguration:\n' + 
+					'• Discounts: ' + (aiAgentConfig.discountEnabled ? 'Enabled' : 'Disabled') + '\n' +
+					'• Assigned Roles: ' + aiAgentConfig.roles.length + '\n' +
+					'• Status: Active & Ready');
+			}, 1500);
+		}
+
+		// Initial AI Agent config load when page loads
+		function initializeAIAgent(){
+			loadAIAgentConfig();
+			loadAIReminders();
+			updateConversationPipe();
+		}
+
+		// Update conversation progress pipe
+		function updateConversationPipe(){
+			const active = 270;  // Sample active conversations
+			const plan = 500;     // Plan limit
+			const percentage = Math.round((active / plan) * 100);
+			
+			document.getElementById('conversationPipeBar').style.width = percentage + '%';
+			document.getElementById('conversationPercent').textContent = percentage + '%';
+			document.getElementById('activeConversations').textContent = active;
+		}
+
+		// Load AI Reminders from localStorage (safe)
+		function loadAIReminders(){
+			const defaultReminders = { reminder1: '', reminder2: '' };
+			const reminders = Storage.getJSON('aiReminders', defaultReminders);
+			if(reminders && typeof reminders === 'object'){
+				const reminder1 = reminders.reminder1 || '';
+				const reminder2 = reminders.reminder2 || '';
+				
+				// Set textarea values
+				document.getElementById('aiReminder1').value = reminder1;
+				document.getElementById('aiReminder2').value = reminder2;
+				
+				// Display reminders in view mode
+				displayReminderView(1, reminder1);
+				displayReminderView(2, reminder2);
+			}
+		}
+
+		// Display reminder in view mode
+		function displayReminderView(num, text){
+			const viewDiv = document.getElementById(`reminderView${num}`);
+			const textSpan = document.getElementById(`reminderText${num}`);
+			if(text){
+				textSpan.textContent = text;
+				viewDiv.style.display = 'block';
+			} else {
+				viewDiv.style.display = 'none';
+			}
+		}
+
+		// Toggle edit mode for reminders
+		function toggleReminderEdit(num){
+			const viewDiv = document.getElementById(`reminderView${num}`);
+			const textarea = document.getElementById(`aiReminder${num}`);
+			const editBtn = document.getElementById(`editBtn${num}`);
+			const buttonsDiv = document.getElementById(`reminderButtons${num}`);
+			
+			viewDiv.style.display = 'none';
+			textarea.style.display = 'block';
+			editBtn.style.display = 'none';
+			buttonsDiv.style.display = 'flex';
+		}
+
+		// Cancel edit mode for reminders
+		function cancelReminderEdit(num){
+			const viewDiv = document.getElementById(`reminderView${num}`);
+			const textarea = document.getElementById(`aiReminder${num}`);
+			const editBtn = document.getElementById(`editBtn${num}`);
+			const buttonsDiv = document.getElementById(`reminderButtons${num}`);
+			const defaultReminders = { reminder1: '', reminder2: '' };
+			const reminders = Storage.getJSON('aiReminders', defaultReminders);
+			const savedText = num === 1 ? (reminders.reminder1 || '') : (reminders.reminder2 || '');
+			
+			// Reset textarea to saved value
+			textarea.value = savedText;
+			
+			// Hide edit mode
+			textarea.style.display = 'none';
+			buttonsDiv.style.display = 'none';
+			editBtn.style.display = 'block';
+			
+			// Show view mode
+			if(savedText){
+				displayReminderView(num, savedText);
+			} else {
+				viewDiv.style.display = 'none';
+			}
+		}
+
+		// Save AI Reminder 1
+		function saveAIReminder1(){
+			const text = document.getElementById('aiReminder1').value.trim();
+			if(!text){
+				showConfirmation('Reminder 1 cannot be empty');
+				return;
+			}
+			
+			const defaultReminders = { reminder1: '', reminder2: '' };
+			const reminders = Storage.getJSON('aiReminders', defaultReminders);
+			reminders.reminder1 = text;
+			Storage.setJSON('aiReminders', reminders);
+			
+			// Switch back to view mode
+			document.getElementById('aiReminder1').style.display = 'none';
+			document.getElementById('reminderButtons1').style.display = 'none';
+			document.getElementById('editBtn1').style.display = 'block';
+			displayReminderView(1, text);
+			
+			showConfirmation('Reminder 1 saved successfully');
+		}
+
+		// Save AI Reminder 2
+		function saveAIReminder2(){
+			const text = document.getElementById('aiReminder2').value.trim();
+			if(!text){
+				showConfirmation('Reminder 2 cannot be empty');
+				return;
+			}
+			
+			const defaultReminders = { reminder1: '', reminder2: '' };
+			const reminders = Storage.getJSON('aiReminders', defaultReminders);
+			reminders.reminder2 = text;
+			Storage.setJSON('aiReminders', reminders);
+			
+			// Switch back to view mode
+			document.getElementById('aiReminder2').style.display = 'none';
+			document.getElementById('reminderButtons2').style.display = 'none';
+			document.getElementById('editBtn2').style.display = 'block';
+			displayReminderView(2, text);
+			
+			showConfirmation('Reminder 2 saved successfully');
+		}
+
+		// Currency and Language switchers
+		function updateCurrencyButtons(){
+			const usdBtn = document.getElementById('currencyUSD');
+			const sarBtn = document.getElementById('currencySAR');
+			const eurBtn = document.getElementById('currencyEUR');
+			
+			// Reset all buttons
+			[usdBtn, sarBtn, eurBtn].forEach(btn => {
+				btn.style.color = '#64748b';
+				btn.style.fontWeight = 'normal';
+			});
+			
+			// Highlight selected currency
+			if(currentCurrency === 'USD') usdBtn.style.color = '#f97316';
+			else if(currentCurrency === 'SAR') sarBtn.style.color = '#f97316';
+			else if(currentCurrency === 'EUR') eurBtn.style.color = '#f97316';
+			
+			// Update font weight for active
+			const activeBtn = document.getElementById('currency' + currentCurrency);
+			if(activeBtn) activeBtn.style.fontWeight = '600';
+		}
+
+		function setCurrency(currency){
+			currentCurrency = currency;
+			Storage.setString('currency', currency);
+			updateCurrencyButtons();
+			updateKPIs();
+			renderRecentBookings();
+			renderUnitStatus();
+			renderWeeklyOccupancy();
+			renderWeeklyIncome();
+		}
+
+		function updateLanguageButtons(){
+			const langToggle = document.getElementById('langToggle');
+			const langText = document.getElementById('langText');
+			if(langToggle && langText){
+				if(currentLanguage === 'en'){
+					langText.textContent = 'العربية';
+				} else {
+					langText.textContent = 'English';
+				}
+			}
+		}
+
+		function setLanguage(lang){
+			currentLanguage = lang;
+			Storage.setString('language', lang);
+			document.documentElement.lang = lang;
+			document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+			updateLanguageButtons();
+		}
+
+		// Initialize buttons with null checks
+		console.log('[DASHBOARD] Initializing language toggle button...');
+		updateLanguageButtons();
+		
+		const langToggle = document.getElementById('langToggle');
+		
+		if(langToggle) {
+			langToggle.addEventListener('click', () => {
+				const newLang = currentLanguage === 'en' ? 'ar' : 'en';
+				setLanguage(newLang);
+			});
+		}
+		console.log('[DASHBOARD] Language toggle button initialized');
+		
+		// Update Active Conversations display
+		function updateActiveConversations() {
+			// Get data from storage (synced with AI Agent page) - safe with fallbacks
+			const activeCount = parseInt(Storage.getString('activeConvCount', '278')) || 278;
+			const totalPlan = parseInt(Storage.getString('totalPlanConv', '500')) || 500;
+			const percent = ((activeCount / totalPlan) * 100).toFixed(1);
+			const remaining = totalPlan - activeCount;
+			
+			// Update dashboard conversation card
+			const countEl = document.getElementById('dashboardActiveConvCount');
+			const totalEl = document.getElementById('dashboardTotalPlanConv');
+			const percentEl = document.getElementById('dashboardConvPercent');
+			const remainingEl = document.getElementById('dashboardConvRemaining');
+			const progressBar = document.getElementById('dashboardConvProgressBar');
+			
+			if(countEl) countEl.textContent = activeCount;
+			if(totalEl) totalEl.textContent = totalPlan;
+			if(percentEl) percentEl.textContent = percent;
+			if(remainingEl) remainingEl.textContent = remaining + ' remaining';
+			if(progressBar) progressBar.style.width = percent + '%';
+		}
+		
+		// Initialize conversation data if not exists
+		if(!Storage.hasKey('activeConvCount')) {
+			Storage.setString('activeConvCount', '278');
+			Storage.setString('totalPlanConv', '500');
+		}
+		
+		// Update on page load
+		updateActiveConversations();
+		
+		// Listen for storage changes from AI Agent page
+		window.addEventListener('storage', function(e) {
+			if(e.key === 'activeConvCount' || e.key === 'totalPlanConv') {
+				updateActiveConversations();
+			}
+		});
+	</script>
+
+	<!-- Extracted JavaScript Files - Load external dependencies -->
+	<script src="js/utils.js"></script>
+	<script src="js/components.js"></script>
+
+	<!-- Initialization Script - Runs AFTER external JS files are loaded -->
+	<script>
+		// Initial render
+		console.log('[DASHBOARD] Starting initial render...');
+		updateKPIs();
+		renderRecentBookings();
+		renderUnitStatus();
+		renderWeeklyOccupancy();
+		renderWeeklyIncome();
+		
+		// Mobile sidebar toggle functionality
+		const sidebarToggle = document.getElementById('sidebarToggle');
+		const sidebar = document.querySelector('.sidebar');
+		
+		if(sidebarToggle && sidebar) {
+			sidebarToggle.addEventListener('click', (e) => {
+				e.stopPropagation();
+				sidebar.classList.toggle('active');
+			});
+			
+			// Close sidebar when clicking on nav items
+			document.querySelectorAll('.nav-item').forEach(item => {
+				item.addEventListener('click', () => {
+					sidebar.classList.remove('active');
+				});
+			});
+			
+			// Close sidebar when clicking outside
+			document.addEventListener('click', (e) => {
+				if(!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
+					sidebar.classList.remove('active');
+			}
+		});
+	}
+</script>
 </body>
 </html>
