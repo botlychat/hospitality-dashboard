@@ -233,6 +233,29 @@ nav {
   background: rgba(211, 47, 47, 0.08);
 }
 
+.profile-dropdown-item.language-option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.profile-dropdown-item.language-option.active {
+  color: var(--accent);
+  font-weight: 600;
+  background: rgba(249, 115, 22, 0.08);
+  border-left-color: var(--accent);
+  padding-left: calc(var(--space-lg) + 3px);
+}
+
+.profile-dropdown-label {
+  padding: var(--space-md) var(--space-lg);
+  color: var(--muted);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
 .profile-dropdown-divider {
   height: 1px;
   background: rgba(15, 23, 41, 0.08);
@@ -448,6 +471,14 @@ html[dir="rtl"] .sheet {
 html[dir="rtl"] .profile-dropdown {
   right: auto;
   left: 0;
+}
+
+html[dir="rtl"] .profile-dropdown-label {
+  text-align: right;
+}
+
+html[dir="rtl"] .profile-dropdown-item.language-option {
+  flex-direction: row-reverse;
 }
 
 html[dir="rtl"] .profile-dropdown-item {

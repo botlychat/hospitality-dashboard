@@ -52,7 +52,16 @@
 			</button>
 			<div class="profile-dropdown" id="profileDropdown">
 				<div class="profile-dropdown-item" onclick="navigateToPage('account-settings.html')" data-i18n="accountSettings">Account Settings</div>
-				<div class="profile-dropdown-item" onclick="toggleLanguage()" data-i18n="languageSelect">Language</div>
+				<div class="profile-dropdown-divider"></div>
+				<div class="profile-dropdown-label" data-i18n="selectLanguage">Select Language</div>
+				<div class="profile-dropdown-item language-option" onclick="setLanguageFromDropdown('en')" id="langOptionEn">
+					<i class="fa-solid fa-check" style="margin-right:8px;display:none"></i>
+					<span>English</span>
+				</div>
+				<div class="profile-dropdown-item language-option" onclick="setLanguageFromDropdown('ar')" id="langOptionAr">
+					<i class="fa-solid fa-check" style="margin-right:8px;display:none"></i>
+					<span>العربية</span>
+				</div>
 				<div class="profile-dropdown-divider"></div>
 				<div class="profile-dropdown-item logout-item" onclick="handleLogout()" data-i18n="logout">Logout</div>
 			</div>
@@ -80,20 +89,6 @@
 							<input type="tel" id="phone" placeholder="Enter your phone number" style="padding:10px;border:1px solid #e5e7eb;border-radius:6px;width:100%;font-size:14px;box-sizing:border-box">
 						</div>
 						<button class="btn primary" onclick="saveProfile()" style="margin-top:12px"><i class="fa-solid fa-save"></i> <span data-i18n="saveChanges">Save Changes</span></button>
-					</div>
-
-					<!-- Language Settings Section -->
-					<div style="margin-top:32px;padding-top:24px;border-top:1px solid #e5e7eb">
-						<h3 data-i18n="languageSettings">Language Settings</h3>
-						<p style="color:var(--muted);font-size:14px" data-i18n="selectLanguageDescription">Choose your preferred language for the dashboard</p>
-						<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:16px">
-							<button class="btn ghost" id="langEnBtn" onclick="setLanguage('en')" style="justify-content:center;border:2px solid #e5e7eb">
-								<i class="fa-solid fa-circle" style="margin-right:8px"></i> English
-							</button>
-							<button class="btn ghost" id="langArBtn" onclick="setLanguage('ar')" style="justify-content:center;border:2px solid #e5e7eb">
-								<i class="fa-solid fa-circle" style="margin-right:8px"></i> العربية
-							</button>
-						</div>
 					</div>
 
 					<!-- Change Password Section -->
@@ -183,60 +178,12 @@
 			document.getElementById('confirmPassword').value = '';
 		}
 
-		/**
-		 * Set language and update button states
-		 */
-		function setLanguage(lang) {
-			localStorage.setItem('language', lang);
-			window.currentLanguage = lang;
-			document.documentElement.lang = lang;
-			document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-			updateTranslations();
-			updateLanguageButtonStates();
-		}
-
-		/**
-		 * Update language button visual states
-		 */
-		function updateLanguageButtonStates() {
-			const langEnBtn = document.getElementById('langEnBtn');
-			const langArBtn = document.getElementById('langArBtn');
-			const currentLang = window.currentLanguage || 'en';
-
-			if (langEnBtn) {
-				if (currentLang === 'en') {
-					langEnBtn.style.borderColor = 'var(--accent)';
-					langEnBtn.style.background = 'rgba(249, 115, 22, 0.1)';
-					langEnBtn.style.color = 'var(--accent)';
-				} else {
-					langEnBtn.style.borderColor = '#e5e7eb';
-					langEnBtn.style.background = 'transparent';
-					langEnBtn.style.color = 'var(--text-primary)';
-				}
-			}
-
-			if (langArBtn) {
-				if (currentLang === 'ar') {
-					langArBtn.style.borderColor = 'var(--accent)';
-					langArBtn.style.background = 'rgba(249, 115, 22, 0.1)';
-					langArBtn.style.color = 'var(--accent)';
-				} else {
-					langArBtn.style.borderColor = '#e5e7eb';
-					langArBtn.style.background = 'transparent';
-					langArBtn.style.color = 'var(--text-primary)';
-				}
-			}
-		}
-
-		// Load profile data and update language buttons on page load
+		// Load profile data on page load
 		window.addEventListener('load', () => {
 			const profile = JSON.parse(localStorage.getItem('userProfile') || '{}');
 			if (profile.fullName) document.getElementById('fullName').value = profile.fullName;
 			if (profile.email) document.getElementById('email').value = profile.email;
 			if (profile.phone) document.getElementById('phone').value = profile.phone;
-
-			// Update language button states
-			updateLanguageButtonStates();
 		});
 	</script>
 </body>

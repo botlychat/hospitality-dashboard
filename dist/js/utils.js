@@ -619,6 +619,9 @@ function initializeProfileMenu() {
       profileBtn.classList.remove('active');
     });
   });
+
+  // Set initial active state for language options
+  updateLanguageDropdownState();
 }
 
 /**
@@ -634,6 +637,43 @@ function toggleLanguage() {
   document.documentElement.lang = newLang;
   document.documentElement.dir = newLang === 'ar' ? 'rtl' : 'ltr';
   updateTranslations();
+}
+
+/**
+ * Set language from profile dropdown
+ * @param {string} lang - Language code ('en' or 'ar')
+ */
+function setLanguageFromDropdown(lang) {
+  localStorage.setItem('language', lang);
+  window.currentLanguage = lang;
+  
+  // Update HTML direction
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  
+  // Update translations and visual state
+  updateTranslations();
+  updateLanguageDropdownState();
+}
+
+/**
+ * Update language dropdown state to show active language
+ */
+function updateLanguageDropdownState() {
+  const currentLang = localStorage.getItem('language') || 'en';
+  
+  const langOptionEn = document.getElementById('langOptionEn');
+  const langOptionAr = document.getElementById('langOptionAr');
+  
+  if (langOptionEn && langOptionAr) {
+    if (currentLang === 'en') {
+      langOptionEn.classList.add('active');
+      langOptionAr.classList.remove('active');
+    } else {
+      langOptionEn.classList.remove('active');
+      langOptionAr.classList.add('active');
+    }
+  }
 }
 
 /**
