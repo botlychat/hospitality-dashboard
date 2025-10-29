@@ -50,16 +50,8 @@
 
 			<section class="content">
 				<div>
-					<!-- Mobile Group Selector (hidden on desktop) -->
-					<select id="groupSelector" onchange="handleGroupChange(this.value)">
-						<!-- Options will be populated by JavaScript -->
-					</select>
-					
-					<!-- Units Groups Tabs Section (hidden on mobile) -->
-					<div style="display:flex;gap:8px;margin-bottom:20px;overflow-x:auto;padding-bottom:8px;border-bottom:2px solid #e5e7eb;align-items:center">
-						<div id="groupsTabs" style="display:flex;gap:8px;flex:1">
-							<!-- Group tabs will be rendered here -->
-						</div>
+					<!-- Units List Header -->
+					<div style="display:flex;gap:8px;margin-bottom:20px;padding-bottom:8px;border-bottom:2px solid #e5e7eb;align-items:center;justify-content:flex-end">
 						<button class="btn primary" onclick="openAddGroupModal()" style="flex-shrink:0"><i class="fa-solid fa-plus"></i> Add Group</button>
 					</div>
 
@@ -407,38 +399,9 @@
 		// Populate group tabs
 		function populateGroupTabs() {
 			const groupsTabs = document.getElementById('groupsTabs');
-			const groupSelector = document.getElementById('groupSelector');
 			if (!groupsTabs) return;
 			
 			groupsTabs.innerHTML = '';
-			
-			// Populate mobile select dropdown
-			if (groupSelector) {
-				groupSelector.innerHTML = '';
-				
-				// Add "All Groups" option
-				const allOption = document.createElement('option');
-				allOption.value = 'all';
-				allOption.textContent = 'All Groups';
-				allOption.selected = currentGroupId === 'all';
-				groupSelector.appendChild(allOption);
-				
-				// Add group options
-				unitsGroups.forEach(group => {
-					const option = document.createElement('option');
-					option.value = group.id;
-					option.textContent = `${group.name} (${group.type})`;
-					option.selected = currentGroupId === group.id;
-					groupSelector.appendChild(option);
-				});
-				
-				// Add "Create New Group" option at the end
-				const createOption = document.createElement('option');
-				createOption.value = '__create__';
-				createOption.textContent = '+ Create New Group';
-				createOption.style.fontWeight = '600';
-				groupSelector.appendChild(createOption);
-			}
 			
 			// Add "All Groups" tab
 			const allTab = document.createElement('div');
@@ -461,20 +424,6 @@
 				tab.addEventListener('click', () => switchGroup(group.id));
 				groupsTabs.appendChild(tab);
 			});
-		}
-		
-		// Handle group change from mobile selector
-		function handleGroupChange(value) {
-			if (value === '__create__') {
-				openAddGroupModal();
-				// Reset selector to current group
-				setTimeout(() => {
-					const groupSelector = document.getElementById('groupSelector');
-					if (groupSelector) groupSelector.value = currentGroupId;
-				}, 100);
-			} else {
-				switchGroup(value);
-			}
 		}
 		
 		// Switch active group

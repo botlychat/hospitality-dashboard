@@ -63,9 +63,6 @@
 						<input type="text" id="filterName" placeholder="Filter by name..." style="padding:8px;border:1px solid #e5e7eb;border-radius:6px;font-size:13px">
 						<input type="text" id="filterPhone" placeholder="Filter by phone..." style="padding:8px;border:1px solid #e5e7eb;border-radius:6px;font-size:13px">
 						<input type="text" id="filterEmail" placeholder="Filter by email..." style="padding:8px;border:1px solid #e5e7eb;border-radius:6px;font-size:13px">
-						<select id="filterGroup" style="padding:8px;border:1px solid #e5e7eb;border-radius:6px;font-size:13px">
-							<option value="">All Groups</option>
-						</select>
 						<select id="filterUnit" style="padding:8px;border:1px solid #e5e7eb;border-radius:6px;font-size:13px">
 							<option value="">All Units</option>
 						</select>
@@ -353,7 +350,6 @@ function clearFilters() {
 	document.getElementById('filterName').value = '';
 	document.getElementById('filterPhone').value = '';
 	document.getElementById('filterEmail').value = '';
-	document.getElementById('filterGroup').value = '';
 	document.getElementById('filterUnit').value = '';
 }
 

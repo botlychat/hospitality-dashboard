@@ -52,9 +52,6 @@
 				<div>
 					<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px">
 						<h2 style="margin:0" data-i18n="websiteSettings">Website Settings</h2>
-						<select id="websiteGroupSelector" style="padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:13px;font-weight:600;background:#fff;cursor:pointer;min-width:220px">
-							<!-- Group options will be populated by JavaScript -->
-						</select>
 					</div>
 					<div class="panel">
 						<h3><i class="fa-solid fa-image"></i> <span data-i18n="homePagePicture">Home Page Picture</span></h3>
@@ -162,31 +159,6 @@
 			return groups;
 		}
 
-		// Populate group selector
-		function populateGroupSelector() {
-			const selector = document.getElementById('websiteGroupSelector');
-			if (!selector) return;
-			
-			const groups = initializeWebsiteGroups();
-			selector.innerHTML = '';
-			
-			groups.forEach(group => {
-				const option = document.createElement('option');
-				option.value = group.id;
-				option.textContent = `${group.name} (${group.type})`;
-				if (group.id === currentGroupId) {
-					option.selected = true;
-				}
-				selector.appendChild(option);
-			});
-			
-			selector.addEventListener('change', function() {
-				currentGroupId = this.value;
-				Storage.setString('currentWebsiteGroup', currentGroupId);
-				loadGroupSettings(currentGroupId);
-			});
-		}
-
 		// Load settings for a specific group
 		function loadGroupSettings(groupId) {
 			let groupSettings = Storage.getJSON('websiteGroupSettings', {});
@@ -224,7 +196,6 @@
 		}
 
 		// Initialize groups on page load
-		populateGroupSelector();
 		loadGroupSettings(currentGroupId);
 
 		// Color picker initialization and functionality
