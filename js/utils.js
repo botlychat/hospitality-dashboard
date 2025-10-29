@@ -458,6 +458,9 @@ function initializeSharedUtilities() {
   
   // Initialize profile dropdown
   initProfileDropdown();
+  
+  // Set active page and header title
+  setActivePage();
 }
 
 // ============================================
@@ -574,6 +577,38 @@ function handleLogout() {
     localStorage.clear();
     // Redirect to login page
     window.location.href = getPagePath('index.html');
+  }
+}
+
+/**
+ * Set active page in navigation and update header title
+ */
+function setActivePage() {
+  // Get current page from URL
+  const currentPath = window.location.pathname;
+  let currentPage = 'dashboard'; // default
+  
+  if (currentPath.includes('calendar.html')) currentPage = 'calendar';
+  else if (currentPath.includes('units.html')) currentPage = 'units';
+  else if (currentPath.includes('contacts.html')) currentPage = 'contacts';
+  else if (currentPath.includes('aiagent.html')) currentPage = 'aiagent';
+  else if (currentPath.includes('website.html')) currentPage = 'website';
+  else if (currentPath.includes('account-settings.html')) currentPage = 'accountSettings';
+  
+  // Set active class on navigation item
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.classList.remove('active');
+    if (item.dataset.page === currentPage) {
+      item.classList.add('active');
+    }
+  });
+  
+  // Update header title
+  const headerTitle = document.getElementById('headerTitle');
+  if (headerTitle) {
+    const currentLang = localStorage.getItem('language') || 'en';
+    headerTitle.textContent = t(currentPage, currentLang);
+    headerTitle.setAttribute('data-i18n', currentPage);
   }
 }
 
