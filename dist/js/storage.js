@@ -93,7 +93,7 @@ const Storage = {
    * @param {string} fallback - Fallback value if key doesn't exist (default: '')
    * @returns {string} String value or fallback
    */
-  getString(key, fallback = '') {
+  get(key, fallback = '') {
     try {
       if (!key) {
         console.warn('[Storage] getString: key is required');
@@ -114,7 +114,7 @@ const Storage = {
    * @param {string} value - String value to store
    * @returns {boolean} True if successful, false otherwise
    */
-  setString(key, value) {
+  set(key, value) {
     try {
       if (!key) {
         console.warn('[Storage] setString: key is required');
