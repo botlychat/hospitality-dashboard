@@ -530,10 +530,10 @@ function initProfileDropdown() {
   const profileBtn = document.getElementById('profileBtn');
   const profileDropdown = document.getElementById('profileDropdown');
   
-  console.log('[Profile Dropdown] Initializing...', { profileBtn, profileDropdown });
+  console.log('Initializing profile dropdown...', { profileBtn, profileDropdown });
   
   if (!profileBtn || !profileDropdown) {
-    console.warn('[Profile Dropdown] Elements not found!');
+    console.error('Profile elements not found!');
     return;
   }
   
@@ -542,41 +542,21 @@ function initProfileDropdown() {
     e.stopPropagation();
     e.preventDefault();
     const isShowing = profileDropdown.classList.contains('show');
-    console.log('[Profile Dropdown] Button clicked! Current state:', isShowing ? 'shown' : 'hidden');
+    console.log('Button clicked. Current classes:', profileDropdown.className);
     profileDropdown.classList.toggle('show');
-    console.log('[Profile Dropdown] After toggle, classList:', profileDropdown.className);
+    console.log('After toggle. New classes:', profileDropdown.className);
   });
   
   // Close dropdown when clicking outside
   document.addEventListener('click', (e) => {
     if (!profileBtn.contains(e.target) && !profileDropdown.contains(e.target)) {
-      profileDropdown.classList.remove('show');
+      if (profileDropdown.classList.contains('show')) {
+        profileDropdown.classList.remove('show');
+      }
     }
   });
   
-  // Update language button states
-  updateLanguageDropdownButtons();
-  
-  console.log('[Profile Dropdown] Initialized successfully');
-}
-
-/**
- * Update language button active states in dropdown
- */
-function updateLanguageDropdownButtons() {
-  const langEnBtn = document.getElementById('langEnBtn');
-  const langArBtn = document.getElementById('langArBtn');
-  const currentLang = localStorage.getItem('language') || 'en';
-  
-  if (langEnBtn && langArBtn) {
-    if (currentLang === 'en') {
-      langEnBtn.classList.add('active');
-      langArBtn.classList.remove('active');
-    } else {
-      langArBtn.classList.add('active');
-      langEnBtn.classList.remove('active');
-    }
-  }
+  console.log('Profile dropdown ready!');
 }
 
 /**

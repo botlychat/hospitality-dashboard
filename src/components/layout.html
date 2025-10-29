@@ -22,10 +22,10 @@
 			<div class="profile-container">
 				<button class="profile-btn" id="profileBtn" aria-label="Profile menu">
 					<div class="profile-avatar">RG</div>
-					<i class="fa-solid fa-chevron-down" style="font-size:12px;color:var(--text-muted)"></i>
+					<i class="fa-solid fa-chevron-down" style="font-size:12px;color:#9ca3af"></i>
 				</button>
 				<div class="profile-dropdown" id="profileDropdown">
-					<a href="#" class="dropdown-item" data-link="account-settings.html">
+					<a href="#" class="dropdown-item" onclick="updateStatus('Account Settings clicked'); return false;">
 						<i class="fa-solid fa-user-gear"></i>
 						<span data-i18n="accountSettings">Account Settings</span>
 					</a>
@@ -34,12 +34,12 @@
 						<i class="fa-solid fa-language"></i>
 						<span data-i18n="language">Language</span>
 						<div class="language-toggle">
-							<button class="lang-btn" id="langEnBtn" onclick="setLanguage('en')">EN</button>
-							<button class="lang-btn" id="langArBtn" onclick="setLanguage('ar')">عربي</button>
+							<button class="lang-btn active" onclick="setLanguage('en')">EN</button>
+							<button class="lang-btn" onclick="setLanguage('ar')">عربي</button>
 						</div>
 					</div>
 					<div class="dropdown-divider"></div>
-					<a href="#" class="dropdown-item logout-item" onclick="handleLogout()">
+					<a href="#" class="dropdown-item logout-item" onclick="handleLogout(); return false;">
 						<i class="fa-solid fa-right-from-bracket"></i>
 						<span data-i18n="logout">Logout</span>
 					</a>
